@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="webonthego">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_admin"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_config"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_logging"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_report"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_security"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_support"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_ticketing"/>
+        <property name="context-root" value="webonthego"/>
+        <property name="java-output-path" value="/webonthego/build/classes"/>
+    </wb-module>
+</project-modules>
