@@ -57,14 +57,20 @@ Header
 #header {
 	height: 88px;
 	width: 950px;
+	position: relative;
 }
 
 #header .logo {
-	margin: 15px 0 0 0;
+	position: absolute;
+	left: 0;
+	top: 5px;
 }
 
 #header .secondary-navigation {
 	text-align: right;
+	position: absolute;
+	top: 10px;
+	right: 0;
 }
 
 #header .secondary-navigation ul {
@@ -147,7 +153,9 @@ Header
 	font-weight: 600;
 	font-style: normal;
 	font-size: 15px;
-	color: #000;
+	position: absolute;
+	right: 0;
+	bottom: 5px;
 }
 
 #header .navigation ul {
@@ -163,12 +171,12 @@ Header
 
 #header .navigation a:link {
 	text-decoration: none;
-	color: #000;
+	color: #444;
 }
 
 #header .navigation a:visited {
 	text-decoration: none;
-	color: #000;
+	color: #444;
 }
 
 #header .navigation a:hover {

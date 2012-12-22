@@ -38,7 +38,7 @@
 
           <!-- Display Plans -->
           <div class="row">
-            <div class="registrationTerms"><%@ include file="/WEB-INF/views/activation/terms/registrationTos.jsp"%></div>
+            <div class="registrationTerms"><%@ include file="/WEB-INF/views/terms/registrationTos.jsp"%></div>
           </div>
 
           <!-- Term Acceptance -->

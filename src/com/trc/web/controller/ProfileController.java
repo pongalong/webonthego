@@ -41,7 +41,7 @@ public class ProfileController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showProfile(HttpSession session) {
-		ResultModel model = new ResultModel("profile/profile");
+		ResultModel model = new ResultModel("account/profile/profile");
 		User user = userManager.getCurrentUser();
 		if (notificationSent(session)) {
 			showNotification(session, model);
@@ -74,9 +74,10 @@ public class ProfileController {
 		return model.getSuccess();
 	}
 
-	@RequestMapping(value = "/address/add", method = RequestMethod.GET)
+	@Deprecated
+	// @RequestMapping(value = "/address/add", method = RequestMethod.GET)
 	public ModelAndView addAddress(HttpSession session) {
-		ResultModel model = new ResultModel("profile/address/addAddress");
+		ResultModel model = new ResultModel("account/profile/address/addAddress");
 		model.addObject("states", Config.states.entrySet());
 		model.addObject("months", Config.months.entrySet());
 		model.addObject("years", Config.yearsFuture.entrySet());
@@ -84,9 +85,10 @@ public class ProfileController {
 		return model.getSuccess();
 	}
 
-	@RequestMapping(value = "/address/add", method = RequestMethod.POST)
+	@Deprecated
+	// @RequestMapping(value = "/address/add", method = RequestMethod.POST)
 	public ModelAndView postAddAddress(HttpSession session, @ModelAttribute Address address, BindingResult result) {
-		ResultModel model = new ResultModel("redirect:/profile", "profile/address/addAddress");
+		ResultModel model = new ResultModel("redirect:/profile", "account/profile/address/addAddress");
 		User user = userManager.getCurrentUser();
 		AddressValidator addressValidator = new AddressValidator();
 		addressValidator.validate(address, result);
@@ -106,7 +108,8 @@ public class ProfileController {
 		}
 	}
 
-	@RequestMapping(value = "/address/edit/{encodedAddressId}", method = RequestMethod.GET)
+	@Deprecated
+	// @RequestMapping(value = "/address/edit/{encodedAddressId}", method = RequestMethod.GET)
 	public ModelAndView editAddress(HttpSession session, @PathVariable("encodedAddressId") String encodedAddressId) {
 		ResultModel model = new ResultModel("profile/address/editAddress");
 		User user = userManager.getCurrentUser();
@@ -122,7 +125,8 @@ public class ProfileController {
 		}
 	}
 
-	@RequestMapping(value = "/address/edit/{encodedAddressId}", method = RequestMethod.POST)
+	@Deprecated
+	// @RequestMapping(value = "/address/edit/{encodedAddressId}", method = RequestMethod.POST)
 	public ModelAndView postEditAddress(HttpSession session, @ModelAttribute Address address, BindingResult result) {
 		ResultModel model = new ResultModel("redirect:/profile", "profile/address/editAddress");
 		User user = userManager.getCurrentUser();
@@ -144,7 +148,8 @@ public class ProfileController {
 		}
 	}
 
-	@RequestMapping(value = "/address/remove/{encodedAddressId}", method = RequestMethod.GET)
+	@Deprecated
+	// @RequestMapping(value = "/address/remove/{encodedAddressId}", method = RequestMethod.GET)
 	public ModelAndView removeAddress(HttpSession session, @PathVariable("encodedAddressId") String encodedAddressId) {
 		ResultModel model = new ResultModel("profile/address/removeAddress");
 		User user = userManager.getCurrentUser();
@@ -160,7 +165,8 @@ public class ProfileController {
 		}
 	}
 
-	@RequestMapping(value = "/address/remove/{encodedAddressId}", method = RequestMethod.POST)
+	@Deprecated
+	// @RequestMapping(value = "/address/remove/{encodedAddressId}", method = RequestMethod.POST)
 	public ModelAndView postRemoveAddress(HttpSession session, @ModelAttribute Address address) {
 		ResultModel model = new ResultModel("redirect:/profile");
 		User user = userManager.getCurrentUser();
@@ -193,12 +199,6 @@ public class ProfileController {
 			userManager.updateUser(user);
 		}
 		return "redirect:/profile";
-	}
-
-	private void encodeAddressIds(List<Address> addressList) {
-		for (Address address : addressList) {
-			address.setEncodedAddressId(SessionEncrypter.encryptId(address.getAddressId()));
-		}
 	}
 
 	private boolean notificationSent(HttpSession session) {

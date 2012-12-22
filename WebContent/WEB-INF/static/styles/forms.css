@@ -52,6 +52,28 @@ form.validatedForm .buttons a.button {
 }
 
 /***********************************************
+Styles for Login Form
+***********************************************/
+form.login fieldset {
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+
+form.login fieldset legend {
+	font-size: 18px;
+	color: #0067B2;
+	font-weight: normal;
+	margin: 0;
+	padding: 10px 0 10px 0;
+	font-family: "myriad-pro-1", "myriad-pro-2", sans-serif;
+}
+
+form.login input {
+	line-height: 22px;
+}
+
+/***********************************************
 Form definition
 ***********************************************/
 form.validatedForm {

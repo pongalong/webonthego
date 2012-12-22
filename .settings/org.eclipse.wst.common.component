@@ -9,6 +9,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_security"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_support"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_ticketing"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/WEB-INF/resources"/>
         <property name="context-root" value="webonthego"/>
         <property name="java-output-path" value="/webonthego/build/classes"/>
     </wb-module>

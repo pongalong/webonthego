@@ -4,7 +4,7 @@
   <div class="span-12">
     <div class="logo">
       <a href="<spring:url value='/' />">
-        <img src="<spring:url value='/static/images/logo_s1.jpg'/>" alt="TruConnect Logo"  />
+        <img src="<spring:url value='/static/images/logo/logo_s1.png'/>" alt="WebOnTheGo Logo"  />
       </a>
     </div>
   </div>
