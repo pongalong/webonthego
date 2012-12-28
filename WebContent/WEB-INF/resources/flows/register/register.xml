@@ -31,13 +31,11 @@
   <!-- BEGIN CREATING THE USER -->
   <action-state id="createUser">
     <evaluate expression="simpleRegistrationManager.createUser(simpleRegistration)" result="flowScope.user" />
-    <transition on="success" to="success">
-      <evaluate expression="simpleActivationManager.trace('skipping email notice temporarily', null)" />
-    </transition>
+    <transition on="success" to="sendNotification" />
     <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
   </action-state>
 
-  <action-state id="emailVerification">
+  <action-state id="sendNotification">
     <evaluate expression="simpleRegistrationManager.sendAccountNotice(user)" />
     <transition on="success" to="success">
       <evaluate expression="simpleRegistrationManager.autoLogin(user)" />

@@ -12,9 +12,9 @@
   </appender>
 
   <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/truconnect.log</File>
+    <File>../logs/webonthego.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/truconnect/truconnect.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/webonthego/webonthego.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -25,9 +25,9 @@
   </appender>
 
   <appender name="ERR_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/truconnect_errors.log</File>
+    <File>../logs/webonthego_errors.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/truconnect/truconnect_errors.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/webonthego/webonthego_errors.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -38,9 +38,9 @@
   </appender>
 
   <appender name="DEV_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/truconnect_dev.log</File>
+    <File>../logs/webonthego_dev.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/truconnect/truconnect_dev.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/webonthego/webonthego_dev.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -50,7 +50,7 @@
     </encoder>
   </appender>
 
-  <logger name="truconnect" level="ALL">
+  <logger name="aspect" level="ALL">
     <appender-ref ref="ROLLINGFILE" />
   </logger>
 

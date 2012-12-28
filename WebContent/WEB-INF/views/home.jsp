@@ -42,14 +42,13 @@
 
         <form id="loginForm" action="<spring:url value='/j_spring_security_check' />" method="post">
           <div>
-            <input class="span-9" style="line-height: 22px;" id="j_username" type="text" name="j_username" title="Email Address" value="${last_username}" />
-            <input class="span-9" style="line-height: 22px; display: none;" id="j_password" type="password" name="j_password" />
-            <input class="span-9" style="line-height: 22px;" id="j_password_holder" type="text" name="j_password_holder" title="Password" value="Password" />
+            <input class="span-9" style="line-height: 22px;" id="j_username" type="text" name="j_username" title="Email Address" value="${last_username}" /> <input
+              class="span-9" style="line-height: 22px; display: none;" id="j_password" type="password" name="j_password" /> <input class="span-9"
+              style="line-height: 22px;" id="j_password_holder" type="text" name="j_password_holder" title="Password" value="Password" />
           </div>
           <div>
-            <a id="loginForm_button_submit" href="#" class="button action-m" style="float: right;"><span>Sign In</span> </a> 
-            <input id="loginForm_submit" type="submit" class="hidden" />
-            <a href="<spring:url value='/retrieve/password' />" style="float: left;">Lost password</a>
+            <a id="loginForm_button_submit" href="#" class="button action-m" style="float: right;"><span>Sign In</span> </a> <input id="loginForm_submit"
+              type="submit" class="hidden" /> <a href="<spring:url value='/retrieve/password' />" style="float: left;">Lost password</a>
           </div>
         </form>
 

@@ -6,5 +6,7 @@ import com.tscp.mvne.Account;
 
 public interface EmailServiceModel {
 
-  public void sendActivationEmail(User user, Account account) throws GatewayException;
+	public void sendActivationEmail(User user, Account account) throws GatewayException;
+
+	public void sendRegistrationEmail(User user) throws GatewayException;
 }

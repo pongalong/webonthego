@@ -31,23 +31,29 @@
             <td>Category:</td>
             <td>${ticket.category.description}</td>
           </tr>
-          <tr>
-            <td>Customer:</td>
-            <td>${ticket.customerId}</td>
-          </tr>
-          <tr>
-            <td>Assigned to:</td>
-            <td><c:choose>
-                <c:when test="${ticket.assigneeId > 0}">
+
+          <c:if test="${ticket.type != 'INQUIRY'}">
+            <tr>
+              <td>Customer:</td>
+              <td>${ticket.customerId}</td>
+            </tr>
+          </c:if>
+
+          <c:if test="${ticket.type != 'INQUIRY'}">
+            <tr>
+              <td>Assigned to:</td>
+              <td><c:choose>
+                  <c:when test="${ticket.assigneeId > 0}">
                   ${ticket.assigneeId}
                 </c:when>
-                <c:otherwise>
+                  <c:otherwise>
                   Unassigned
                 </c:otherwise>
-              </c:choose></td>
-          </tr>
+                </c:choose></td>
+            </tr>
+          </c:if>
 
-          <c:if test="${ticket.type != 'CUSTOMER'}">
+          <c:if test="${ticket.type != 'CUSTOMER' && ticket.type != 'INQUIRY'}">
             <tr>
               <td>Requester:</td>
               <td>${ticket.creatorId}</td>

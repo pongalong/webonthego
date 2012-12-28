@@ -38,14 +38,17 @@ public class HomeController {
 
 	private String getUserHomePage(User user) {
 		boolean isUser = user.isUser();
-		boolean hasDevice;
-		try {
-			List<Device> devices = deviceManager.getDeviceInfoList(user);
-			hasDevice = devices != null && !devices.isEmpty();
-		} catch (DeviceManagementException e) {
-			return "home";
+		boolean hasDevice = false;
+		if (isUser) {
+			try {
+				List<Device> devices = deviceManager.getDeviceInfoList(user);
+				hasDevice = devices != null && !devices.isEmpty();
+				return hasDevice ? "redirect:/account" : "start";
+			} catch (DeviceManagementException e) {
+				return "start";
+			}
 		}
-		return isUser && hasDevice ? "redirect:/account" : "start";
+		return "home";
 	}
 
 	private String getAdminHomepage(User user) {

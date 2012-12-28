@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.trc.coupon.Coupon;
 import com.trc.exception.EmailException;
+import com.trc.exception.GatewayException;
 import com.trc.exception.WebFlowException;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.exception.management.AddressManagementException;
@@ -31,11 +32,14 @@ import com.trc.manager.CouponManager;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
+import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.service.gateway.TSCPMVNAUtil;
 import com.trc.user.User;
 import com.trc.user.contact.Address;
 import com.trc.user.contact.ContactInfo;
+import com.trc.util.logger.LogLevel;
+import com.trc.util.logger.aspect.Loggable;
 import com.trc.web.flow.util.WebFlowUtil;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
@@ -58,6 +62,8 @@ public class SimpleActivationManager {
 	private PaymentManager paymentManager;
 	@Autowired
 	private CouponManager couponManager;
+	@Autowired
+	private EmailService emailService;
 	@Autowired
 	private VelocityEmailService velocityEmailService;
 
@@ -109,6 +115,7 @@ public class SimpleActivationManager {
 	 * ***********************************************************************
 	 */
 
+	@Loggable(value = LogLevel.TRACE)
 	public Account createShellAccount(SimpleActivation sa) throws AccountManagementException, AddressManagementException {
 		logger.trace("Creating shell account.");
 
@@ -118,8 +125,17 @@ public class SimpleActivationManager {
 			logger.debug("sa.creditCardPayment is null");
 
 		CreditCard creditCard = sa.getCreditCardPayment().getCreditCard();
-		String firstName = creditCard.getNameOnCreditCard().substring(0, creditCard.getNameOnCreditCard().lastIndexOf(" "));
-		String lastName = creditCard.getNameOnCreditCard().substring(creditCard.getNameOnCreditCard().lastIndexOf(" ") + 1);
+
+		String firstName;
+		String lastName;
+		int indexOfSpace = creditCard.getNameOnCreditCard().lastIndexOf(" ");
+		if (indexOfSpace > -1) {
+			firstName = creditCard.getNameOnCreditCard().substring(0, creditCard.getNameOnCreditCard().lastIndexOf(" "));
+			lastName = creditCard.getNameOnCreditCard().substring(creditCard.getNameOnCreditCard().lastIndexOf(" ") + 1);
+		} else {
+			firstName = creditCard.getNameOnCreditCard();
+			lastName = "";
+		}
 
 		Address address = new Address();
 		address.setAddress1(creditCard.getAddress1());
@@ -247,20 +263,23 @@ public class SimpleActivationManager {
 
 	protected Account createService(SimpleActivation sa, int numRetry, long delay) throws DeviceServiceCreationException {
 		logger.trace("creating service in Kenan, {} attempts left", numRetry);
-		try {
-			if (numRetry > 0) {
+		if (numRetry > 0) {
+			try {
+
 				if (delay > 0)
 					Thread.sleep(delay);
 				sa.setAccount(deviceManager.createServiceInstance(sa.getAccount(), sa.getNetworkInfo()));
 				return sa.getAccount();
+
+			} catch (InterruptedException e) {
+				throw new DeviceServiceCreationException("Thread sleep interrupted. Service not created for account " + sa.getAccount().getAccountNo() + " with MDN "
+						+ sa.getNetworkInfo().getMdn());
+			} catch (DeviceServiceCreationException e) {
+				return createService(sa, --numRetry, delay);
 			}
+		} else {
 			throw new DeviceServiceCreationException("Max number of tries reached. Service not created for account " + sa.getAccount().getAccountNo() + " with MDN "
 					+ sa.getNetworkInfo().getMdn());
-		} catch (InterruptedException e) {
-			throw new DeviceServiceCreationException("Thread sleep interrupted. Service not created for account " + sa.getAccount().getAccountNo() + " with MDN "
-					+ sa.getNetworkInfo().getMdn());
-		} catch (DeviceServiceCreationException e) {
-			return createService(sa, --numRetry, delay);
 		}
 	}
 
@@ -427,21 +446,20 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public void sendAccountNotice(SimpleRegistration sr) {
-		logger.trace("sending account creation notice to user");
-		logger.debug("skipping notification temporarily");
-	}
-
 	public void sendActivationNotice(SimpleActivation sa) {
 		logger.trace("sending activation notice to user");
-		logger.debug("skipping notification temporarily");
+		try {
+			emailService.sendActivationEmail(sa.getUser(), sa.getAccount());
+		} catch (GatewayException e) {
+			logger.error("Error sending activation email for user " + sa.getUser().getEmail() + " account " + sa.getAccount().getAccountNo());
+		}
 	}
 
 	public void sendDisconnectExceptionNotice(SimpleActivation sa) {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
-			myMessage.setTo("truconnect_alerts@telscape.net");
-			myMessage.setFrom("system-activations@truconnect.com");
+			myMessage.setTo("wotg_alerts@telscape.net");
+			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while disconnecting MDN " + sa.getNetworkInfo().getMdn());
 			Map<Object, Object> mailModel = new HashMap<Object, Object>();
 			mailModel.put("dateTime", new Date());
@@ -459,8 +477,8 @@ public class SimpleActivationManager {
 	public void notifyReleaseMdnException(SimpleActivation sa) {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
-			myMessage.setTo("truconnect_alerts@telscape.net");
-			myMessage.setFrom("system-activations@truconnect.com");
+			myMessage.setTo("wotg_alerts@telscape.net");
+			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while releasing a reserved MDN on a failed activation " + sa.getNetworkInfo().getMdn());
 			Map<Object, Object> mailModel = new HashMap<Object, Object>();
 			mailModel.put("dateTime", new Date());

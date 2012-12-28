@@ -78,7 +78,7 @@
         </c:forEach>
 
         <div class="buttons" style="margin-top: 10px; padding-top: 10px; border-top: 1px #ccc dotted;">
-          <a href="<spring:url value="/activateAdditionalDevice" />" class="button action-m" style="float: right;"><span>Add New Device</span> </a>
+          <a href="<spring:url value="/activate" />" class="button action-m" style="float: right;"><span>Add New Device</span> </a>
         </div>
 
       </div>

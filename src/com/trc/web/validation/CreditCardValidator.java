@@ -47,6 +47,8 @@ public class CreditCardValidator extends AddressValidator {
 			errors.rejectValue("nameOnCreditCard", "creditCard.name.required", "You must enter the name on the card");
 		} else if (!ValidationUtil.isBetween(name, 3, 100)) {
 			errors.rejectValue("nameOnCreditCard", "creditCard.name.size", "Name must be at least 3 characters");
+		} else if (name.indexOf(" ") < 0) {
+			errors.rejectValue("nameOnCreditCard", "creditCard.name.firstandlast", "You must enter a first a last name");
 		}
 	}
 

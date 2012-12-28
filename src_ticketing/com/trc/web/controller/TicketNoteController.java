@@ -22,6 +22,7 @@ import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
 import com.trc.web.validation.TicketValidator;
 
+//TODO CREATE ticketNoteValidator
 @Controller
 @RequestMapping("/support/ticket/note")
 public class TicketNoteController {

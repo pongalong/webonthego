@@ -81,8 +81,8 @@ public class RegistrationManager implements RegistrationManagerModel {
 			}
 			SimpleMailMessage myMessage = new SimpleMailMessage();
 			myMessage.setTo(user.getEmail());
-			myMessage.setFrom("no-reply@truconnect.com");
-			myMessage.setSubject("Your TruConnect Account");
+			myMessage.setFrom("no-reply@webonthego.com");
+			myMessage.setSubject("Your WebOnTheGo Account");
 			Map<Object, Object> mailModel = new HashMap<Object, Object>();
 			mailModel.put("user", user);
 			mailModel.put("code", user.getPassword().substring(0, 8));

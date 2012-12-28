@@ -16,7 +16,7 @@
 
 
       
-        <form class="login span-10" action="<spring:url value='/j_spring_security_check' />" method="post">
+        <form id="loginForm" class="login span-10" action="<spring:url value='/j_spring_security_check' />" method="post">
 
           <fieldset>
             <legend>Login</legend>
