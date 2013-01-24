@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="<spring:url value="/static/styles/admin/controlBar.css" />" type="text/css" />
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/admin/controlBar.js" />"></script>
 
 <div id="admin_control_bar">

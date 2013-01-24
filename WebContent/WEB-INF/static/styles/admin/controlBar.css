@@ -106,7 +106,7 @@
 .admin_tooltip {
   background: #eee;
   padding: 0px 15px 0px 15px;
-  position: absolute;
+  margin-top: 20px;
   border: 1px black solid;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -114,7 +114,7 @@
   -moz-box-shadow: 5px 5px 5px #ccc;
   -webkit-box-shadow: 5px 5px 5px #ccc;
   box-shadow: 5px 5px 5px #ccc;
-  width: 240px;
+  width: 265px;
 }
 
 .admin_tooltip li,.device_detail li {

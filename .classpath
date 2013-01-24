@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="src_admin"/>
-	<classpathentry kind="src" path="src_config"/>
-	<classpathentry kind="src" path="src_logging"/>
+	<classpathentry kind="src" path="service"/>
+	<classpathentry kind="src" path="config"/>
+	<classpathentry kind="src" path="logging"/>
+	<classpathentry kind="src" path="sales"/>
+	<classpathentry kind="src" path="admin"/>
 	<classpathentry kind="src" path="src_report"/>
 	<classpathentry kind="src" path="src_security"/>
 	<classpathentry kind="src" path="src_support"/>

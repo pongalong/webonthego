@@ -21,7 +21,7 @@ import com.trc.dao.CouponDao;
 import com.trc.dao.CouponDetailDao;
 import com.trc.dao.UserCouponDao;
 import com.trc.exception.service.CouponServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
 import com.trc.util.Formatter;
 import com.tscp.mvne.Account;
@@ -42,7 +42,7 @@ public class CouponService {
    */
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway, CouponDao couponDao, CouponDetailDao couponDetailDao, UserCouponDao userCouponDao) {
+  public void init(WebserviceGateway gateway, CouponDao couponDao, CouponDetailDao couponDetailDao, UserCouponDao userCouponDao) {
     this.port = gateway.getPort();
     this.couponDao = couponDao;
     this.couponDetailDao = couponDetailDao;

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Payment Management</title>
+<title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 <script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/navigation/paymentMethods.js" />"></script>

@@ -9,7 +9,7 @@ import com.trc.exception.GatewayException;
 import com.trc.exception.WebFlowException;
 import com.trc.exception.management.PaymentManagementException;
 import com.trc.manager.PaymentManager;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.web.flow.util.WebFlowUtil;
 import com.tscp.mvne.Account;
@@ -57,13 +57,13 @@ public class PaymentFlowManager {
   }
 
   public void bindCreditCard(CreditCard outCreditCard, CreditCard inCreditCard) {
-    TSCPMVNAUtil.copyCreditCard(outCreditCard, inCreditCard);
+    WebserviceAdapter.copyCreditCard(outCreditCard, inCreditCard);
   }
 
   public void addPaymentMethod(User user, CreditCard creditCard) throws GatewayException {
     try {
       CreditCard createdCreditCard = paymentManager.addCreditCard(user, creditCard);
-      TSCPMVNAUtil.copyCreditCard(creditCard, createdCreditCard);
+      WebserviceAdapter.copyCreditCard(creditCard, createdCreditCard);
     } catch (PaymentManagementException e) {
       e.printStackTrace();
       WebFlowUtil.addError(ERROR_ADD_METHOD);

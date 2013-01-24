@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.PaymentServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceGateway;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.web.session.SessionManager;
 import com.tscp.mvne.Account;
@@ -23,7 +23,7 @@ public class PaymentService implements PaymentServiceModel {
   private TSCPMVNA port;
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     this.port = gateway.getPort();
   }
 
@@ -46,7 +46,7 @@ public class PaymentService implements PaymentServiceModel {
       if (user == null || creditCard.getIsDefault() == null) {
         creditCard.setIsDefault("N");
       }
-      return port.addCreditCard(TSCPMVNAUtil.toCustomer(user), creditCard);
+      return port.addCreditCard(WebserviceAdapter.toCustomer(user), creditCard);
     } catch (WebServiceException e) {
       throw new PaymentServiceException(e.getMessage(), e.getCause());
     }
@@ -55,7 +55,7 @@ public class PaymentService implements PaymentServiceModel {
   @Override
   public List<CustPmtMap> removeCreditCard(User user, int paymentId) throws PaymentServiceException {
     try {
-      List<CustPmtMap> paymentMapList = port.deleteCreditCardPaymentMethod(TSCPMVNAUtil.toCustomer(user), paymentId);
+      List<CustPmtMap> paymentMapList = port.deleteCreditCardPaymentMethod(WebserviceAdapter.toCustomer(user), paymentId);
       if (!paymentMapList.isEmpty()) {
         boolean updateDefault = true;
         CustPmtMap newDefault = paymentMapList.get(0);
@@ -84,7 +84,7 @@ public class PaymentService implements PaymentServiceModel {
       if (creditCard.getCreditCardNumber().toLowerCase().contains("x")) {
         creditCard.setCreditCardNumber(null);
       }
-      List<CustPmtMap> paymentMapList = port.updateCreditCardPaymentMethod(TSCPMVNAUtil.toCustomer(user), creditCard);
+      List<CustPmtMap> paymentMapList = port.updateCreditCardPaymentMethod(WebserviceAdapter.toCustomer(user), creditCard);
       CustPmtMap paymentMap = getPaymentMap(paymentMapList, creditCard.getPaymentid());
       paymentMap.setPaymentalias(creditCard.getAlias());
       if (creditCard.getIsDefault() == null) {
@@ -146,7 +146,7 @@ public class PaymentService implements PaymentServiceModel {
   @Override
   public PaymentUnitResponse makePayment(User user, Account account, int paymentId, String amount) throws PaymentServiceException {
     try {
-      return port.submitPaymentByPaymentId(SessionManager.getCurrentSessionId(), TSCPMVNAUtil.toCustomer(user), paymentId, account, amount);
+      return port.submitPaymentByPaymentId(SessionManager.getCurrentSessionId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
     } catch (WebServiceException e) {
       throw new PaymentServiceException(e.getMessage(), e.getCause());
     }

@@ -13,7 +13,7 @@ import com.trc.exception.WebFlowException;
 import com.trc.exception.management.DeviceManagementException;
 import com.trc.manager.DeviceManager;
 import com.trc.service.email.VelocityEmailService;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.web.flow.util.WebFlowUtil;
 import com.tscp.mvne.Account;
@@ -47,7 +47,7 @@ public class DeviceFlowManager {
   public void reserveMdn(NetworkInfo networkInfo) throws WebFlowException {
     try {
       NetworkInfo reservedNetworkInfo = deviceManager.reserveMdn();
-      TSCPMVNAUtil.copyNetworkInfo(networkInfo, reservedNetworkInfo);
+      WebserviceAdapter.copyNetworkInfo(networkInfo, reservedNetworkInfo);
       Thread.sleep(500);
     } catch (DeviceManagementException e) {
       e.printStackTrace();
@@ -67,7 +67,7 @@ public class DeviceFlowManager {
   public void addDeviceInfo(Device deviceInfo, Account account, User user) throws WebFlowException {
     try {
       Device newDeviceInfo = deviceManager.addDeviceInfo(deviceInfo, account, user);
-      TSCPMVNAUtil.copyDeviceInfo(deviceInfo, newDeviceInfo);
+      WebserviceAdapter.copyDeviceInfo(deviceInfo, newDeviceInfo);
     } catch (DeviceManagementException e) {
       e.printStackTrace();
       WebFlowUtil.addError(ERROR_ACTIVATE);
@@ -88,7 +88,7 @@ public class DeviceFlowManager {
   public void activateService(NetworkInfo networkInfo, User user) throws WebFlowException {
     try {
       NetworkInfo newNetworkInfo = deviceManager.activateService(networkInfo, user);
-      TSCPMVNAUtil.copyNetworkInfo(networkInfo, newNetworkInfo);
+      WebserviceAdapter.copyNetworkInfo(networkInfo, newNetworkInfo);
       Thread.sleep(500);
     } catch (DeviceManagementException e) {
       e.printStackTrace();
@@ -139,7 +139,7 @@ public class DeviceFlowManager {
   public void createServiceInstance(Account account, NetworkInfo networkInfo) throws WebFlowException {
     try {
       Account result = deviceManager.createServiceInstance(account, networkInfo);
-      TSCPMVNAUtil.copyAccount(account, result);
+      WebserviceAdapter.copyAccount(account, result);
       Thread.sleep(500);
     } catch (DeviceManagementException e) {
       e.printStackTrace();

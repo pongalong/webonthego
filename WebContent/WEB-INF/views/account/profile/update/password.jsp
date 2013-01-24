@@ -2,10 +2,9 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480;t Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/navigation/profile.js" />"></script>
+
 </head>
 <body>
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
@@ -30,10 +29,12 @@
           </c:if>
           <!--End Error Display -->
 
-          <div class="row">
-            <form:label path="oldPassword" cssClass="required">Old Password</form:label>
-            <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-          </div>
+          <c:if test="${empty sessionScope.controlling_user}">
+            <div class="row">
+              <form:label path="oldPassword" cssClass="required">Old Password</form:label>
+              <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+            </div>
+          </c:if>
 
           <div class="row">
             <form:label path="password" cssClass="required">New Password</form:label>

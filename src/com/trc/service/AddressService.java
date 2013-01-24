@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.AddressServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceGateway;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.user.contact.Address;
 import com.tscp.mvne.Account;
@@ -24,7 +24,7 @@ public class AddressService implements AddressServiceModel {
   private TSCPMVNA port;
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     this.port = gateway.getPort();
   }
 
@@ -40,7 +40,7 @@ public class AddressService implements AddressServiceModel {
 
   private List<Address> getAllAddressesFromAccounts(User user) throws AddressServiceException {
     List<Address> addressList = new ArrayList<Address>();
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
+    Customer customer = WebserviceAdapter.toCustomer(user);
     try {
       Account account;
       Address address;
@@ -66,7 +66,7 @@ public class AddressService implements AddressServiceModel {
       List<CustAddress> custAddressList = port.getCustAddressList(customer, 0);
       if (custAddressList != null) {
         for (CustAddress custAddress : custAddressList) {
-          addressList.add(TSCPMVNAUtil.toAddress(custAddress));
+          addressList.add(WebserviceAdapter.toAddress(custAddress));
         }
       }
       return addressList;
@@ -78,7 +78,7 @@ public class AddressService implements AddressServiceModel {
   @Override
   public List<Address> getAllAddresses(User user) throws AddressServiceException {
     List<Address> addressList = new ArrayList<Address>();
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
+    Customer customer = WebserviceAdapter.toCustomer(user);
     try {
       if (isNewActivation(user)) {
         return getAddressFromUserDetails(user);
@@ -108,8 +108,8 @@ public class AddressService implements AddressServiceModel {
 
   @Override
   public void addAddress(User user, Address address) throws AddressServiceException {
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
-    CustAddress custAddress = TSCPMVNAUtil.toCustAddress(user, address);
+    Customer customer = WebserviceAdapter.toCustomer(user);
+    CustAddress custAddress = WebserviceAdapter.toCustAddress(user, address);
     try {
       port.addCustAddress(customer, custAddress);
     } catch (WebServiceException e) {
@@ -119,10 +119,10 @@ public class AddressService implements AddressServiceModel {
 
   @Override
   public List<Address> removeAddress(User user, Address address) throws AddressServiceException {
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
-    CustAddress custAddress = TSCPMVNAUtil.toCustAddress(user, address);
+    Customer customer = WebserviceAdapter.toCustomer(user);
+    CustAddress custAddress = WebserviceAdapter.toCustAddress(user, address);
     try {
-      return TSCPMVNAUtil.toAddressList(port.deleteCustAddress(customer, custAddress));
+      return WebserviceAdapter.toAddressList(port.deleteCustAddress(customer, custAddress));
     } catch (WebServiceException e) {
       throw new AddressServiceException(e.getMessage(), e.getCause());
     }
@@ -130,10 +130,10 @@ public class AddressService implements AddressServiceModel {
 
   @Override
   public List<Address> updateAddress(User user, Address address) throws AddressServiceException {
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
-    CustAddress custAddress = TSCPMVNAUtil.toCustAddress(user, address);
+    Customer customer = WebserviceAdapter.toCustomer(user);
+    CustAddress custAddress = WebserviceAdapter.toCustAddress(user, address);
     try {
-      return TSCPMVNAUtil.toAddressList(port.updateCustAddress(customer, custAddress));
+      return WebserviceAdapter.toAddressList(port.updateCustAddress(customer, custAddress));
     } catch (WebServiceException e) {
       throw new AddressServiceException(e.getMessage());
     }

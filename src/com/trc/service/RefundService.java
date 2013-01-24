@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.RefundServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.util.Formatter;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
@@ -25,7 +25,7 @@ public class RefundService {
   private TSCPMVNA port;
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     this.port = gateway.getPort();
   }
 

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480; Terms of Service</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 <script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/step/addDevice.js" />"></script>
@@ -11,7 +11,7 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="blueTruConnectGradient">
+  <div class="blueGradient">
     <div class="container">Plan Information</div>
   </div>
 
@@ -47,7 +47,7 @@
 
           <!-- Display Plans -->
           <div class="box">
-            <h3>TruConnect Data Plan</h3>
+            <h3>Web on the Go &#8480; Data Plan</h3>
             <div class="span-6">
               <ul style="list-style: none; font-weight: bold;">
                 <li style="padding: 0; margin: 0; text-align: right; float: right; width: 100%;">$4.99 per month</li>
@@ -56,7 +56,7 @@
             </div>
             <div class="span-11 colborderleft last">
               <ul style="margin: 0; padding-top: 0; font-size: 13px;">
-                <li>Your TruConnect Data Plan has a balance, just like a pre-paid plan.</li>
+                <li>Your Web on the Go &#8480; Data Plan has a balance, just like a pre-paid plan.</li>
                 <li>If you balance drops below $2.00, it will automatically top up.</li>
                 <li>A valid credit card is required to keep your plan active.</li>
                 <li>The monthly access fee is paid automatically from your balance.</li>

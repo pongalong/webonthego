@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.DeviceServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceGateway;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.BillingException_Exception;
@@ -26,7 +26,7 @@ public class DeviceService implements DeviceServiceModel {
   private TSCPMVNA port;
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     this.port = gateway.getPort();
   }
 
@@ -44,7 +44,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public void updateDeviceInfo(User user, Device deviceInfo) throws DeviceServiceException {
     try {
-      port.updateDeviceInfoObject(TSCPMVNAUtil.toCustomer(user), deviceInfo);
+      port.updateDeviceInfoObject(WebserviceAdapter.toCustomer(user), deviceInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -53,7 +53,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public List<Device> getDeviceInfoList(User user) throws DeviceServiceException {
     try {
-      return port.getDeviceList(TSCPMVNAUtil.toCustomer(user));
+      return port.getDeviceList(WebserviceAdapter.toCustomer(user));
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -62,7 +62,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public NetworkInfo swapDevice(User user, NetworkInfo oldNetworkInfo, Device deviceInfo) throws DeviceServiceException {
     try {
-      return port.swapDevice(TSCPMVNAUtil.toCustomer(user), oldNetworkInfo, deviceInfo);
+      return port.swapDevice(WebserviceAdapter.toCustomer(user), oldNetworkInfo, deviceInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -80,7 +80,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public Device addDeviceInfo(User user, Device deviceInfo) throws DeviceServiceException {
     try {
-      return port.addDeviceInfoObject(TSCPMVNAUtil.toCustomer(user), deviceInfo);
+      return port.addDeviceInfoObject(WebserviceAdapter.toCustomer(user), deviceInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -89,7 +89,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public List<Device> deleteDeviceInfo(User user, Device deviceInfo) throws DeviceServiceException {
     try {
-      return port.deleteDeviceInfoObject(TSCPMVNAUtil.toCustomer(user), deviceInfo);
+      return port.deleteDeviceInfoObject(WebserviceAdapter.toCustomer(user), deviceInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -132,7 +132,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public NetworkInfo activateService(User user, NetworkInfo networkInfo) throws DeviceServiceException {
     try {
-      return port.activateService(TSCPMVNAUtil.toCustomer(user), networkInfo);
+      return port.activateService(WebserviceAdapter.toCustomer(user), networkInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }
@@ -177,7 +177,7 @@ public class DeviceService implements DeviceServiceModel {
   @Override
   public NetworkInfo reinstallCustomerDevice(User user, Device deviceInfo) throws DeviceServiceException {
     try {
-      return port.reinstallCustomerDevice(TSCPMVNAUtil.toCustomer(user), deviceInfo);
+      return port.reinstallCustomerDevice(WebserviceAdapter.toCustomer(user), deviceInfo);
     } catch (WebServiceException e) {
       throw new DeviceServiceException(e.getMessage(), e.getCause());
     }

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 </head>
 <body>
@@ -17,8 +17,8 @@
       <div class="span-18 colborder">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Our Apologies, There was a problem</h3>
         <p style="font-size: 1.3em;">
-          Your request could not be completed at this time and no changes were made to your account. Please try again later or contact TruConnect Customer
-          Support at 855-878-2666 (Monday-Friday 7am-8pm PST, Saturday 8am - 5pm PST) or via <a href="http://support.truconnect.com/">http://support.truconect.com/</a>.
+          Your request could not be completed at this time and no changes were made to your account. Please try again later or contact Web on the Go &#8480; Customer
+          Support <a href="http://account.webonthego.com/support">http://account.webontehgo.com/support</a>.
         </p>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
           <hr />

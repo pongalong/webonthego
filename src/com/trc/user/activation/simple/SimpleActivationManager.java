@@ -34,7 +34,7 @@ import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
 import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.user.contact.Address;
 import com.trc.user.contact.ContactInfo;
@@ -169,10 +169,12 @@ public class SimpleActivationManager {
 	public Device addDevice(SimpleActivation sa) throws DeviceManagementException {
 		logger.trace("adding device with ESN {} to user {}", sa.getDevice().getValue(), sa.getUser().getEmail());
 		sa.setDevice(deviceManager.addDeviceInfo(sa.getDevice(), sa.getAccount(), sa.getUser()));
+		logger.trace("device added to user with id {}", sa.getDevice().getId());
 		return sa.getDevice();
 	}
 
 	public List<Device> removeDevice(SimpleActivation sa) throws DeviceManagementException {
+		logger.trace("removing device with ESN {} from user {}", sa.getDevice().getValue(), sa.getUser().getEmail());
 		return deviceManager.removeDeviceInfo(sa.getDevice(), sa.getAccount(), sa.getUser());
 	}
 
@@ -188,6 +190,7 @@ public class SimpleActivationManager {
 				if (delay > 0)
 					Thread.sleep(delay);
 				deviceManager.disconnectFromNetwork(sa.getNetworkInfo());
+				logger.trace("MDN {} has been released", sa.getNetworkInfo().getMdn());
 				sa.setNetworkInfo(null);
 			} catch (InterruptedException e) {
 				throw new DeviceDisconnectException("Thread sleep interrupted. Disconnect never reached.");
@@ -361,7 +364,7 @@ public class SimpleActivationManager {
 	public void savePaymentMethod(User user, CreditCard creditCard) throws PaymentManagementException {
 		logger.debug("Adding payment method for user " + userManager.getCurrentUser().getEmail() + " " + creditCard.getCreditCardNumber());
 		CreditCard createdCreditCard = paymentManager.addCreditCard(user, creditCard);
-		TSCPMVNAUtil.copyCreditCard(creditCard, createdCreditCard);
+		WebserviceAdapter.copyCreditCard(creditCard, createdCreditCard);
 	}
 
 	public void updatePaymentMethod(User user, CreditCard creditCard) throws PaymentManagementException {
@@ -399,10 +402,10 @@ public class SimpleActivationManager {
 		if (amount > 0.0) {
 			NumberFormat formatter = NumberFormat.getCurrencyInstance();
 			String moneyString = formatter.format(amount);
-			logger.debug("skipping activation payment temporarily");
-			return new PaymentUnitResponse();
-			// return paymentManager.makePayment(user, account, cc.getPaymentid(),
-			// moneyString.substring(1));
+			// logger.debug("skipping activation payment temporarily");
+			// return new PaymentUnitResponse();
+			logger.trace("sending payment of {}", moneyString.substring(1));
+			return paymentManager.makePayment(user, account, cc.getPaymentid(), moneyString.substring(1));
 		} else {
 			return new PaymentUnitResponse();
 		}

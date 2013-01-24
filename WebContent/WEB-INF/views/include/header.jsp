@@ -9,7 +9,7 @@
 
     <!-- Begin Logo -->
     <div class="logo">
-      <a href="http://www.webonthego.com/"> <img src="<spring:url value='/static/images/logo/logo_s1.png' />" alt="WebOnTheGo Logo" />
+      <a href="http://account.webonthego.com/"> <img src="<spring:url value='/static/images/logo/logo_s1.png' />" alt="WebOnTheGo Logo" />
       </a>
     </div>
     <!-- End Logo -->
@@ -34,9 +34,8 @@
     <!-- Begin Navigation -->
     <div class="navigation">
       <ul>
-        <li><a href="http://www.webonthego.com/">Home</a></li>
-        <li><a href="http://www.webonthego.com/plans/">Plans</a></li>
-        <li><a href="https://store.webonthego.com/">Devices</a></li>
+        <li><a href="http://account.webonthego.com/">Home</a></li>
+        <li><a href="https://store.webonthego.com/">Store</a></li>
         <li><a href="<spring:url value="/support"/>">Support</a></li>
       </ul>
     </div>
@@ -46,4 +45,4 @@
 </div>
 
 <div class="clear"></div>
-<div class="blueTruConnectGradient"></div>
+<div class="blueGradient"></div>

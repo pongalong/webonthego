@@ -28,12 +28,8 @@
     <custom-filter position="FORM_LOGIN_FILTER" ref="myAuthFilter" />
     <session-management session-authentication-strategy-ref="sas" />
 
-    <!-- 
-    <port-mappings>
-      <port-mapping http="80" https="443" /> 
-    </port-mappings> 
-    -->
-     
+    <!-- <port-mappings> <port-mapping http="80" https="443" /> </port-mappings> -->
+
     <intercept-url pattern="/static/**" filters="none" />
     <intercept-url pattern="/favicon.ico" filters="none" />
     <intercept-url pattern="/home" access="permitAll" />
@@ -47,9 +43,10 @@
     <intercept-url pattern="/servicerep/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SERVICEREP')" />
     <intercept-url pattern="/manager/**" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')" />
     <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN')" />
+    <intercept-url pattern="/sales/**" access="hasAnyRole('ROLE_SALES')" />
     <intercept-url pattern="/" access="permitAll" />
     <intercept-url pattern="/**" access="isAuthenticated()" />
-    
+
     <access-denied-handler error-page="/exception/accessDenied.jsp" />
     <logout invalidate-session="true" logout-success-url="http://www.webonthego.com/" />
   </http>
@@ -75,6 +72,7 @@
   <beans:bean id="successHandler" class="com.trc.web.security.authentication.MySavedRequestAwareAuthenticationSuccessHandler">
     <beans:property name="defaultTargetUrl" value="/manage" />
   </beans:bean>
+
   <beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
     <beans:property name="defaultFailureUrl" value="/login?login_error=1" />
   </beans:bean>

@@ -7,7 +7,7 @@ import com.trc.exception.WebFlowException;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.exception.management.AddressManagementException;
 import com.trc.manager.AccountManager;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.user.contact.ContactInfo;
 import com.trc.web.flow.util.WebFlowUtil;
@@ -38,7 +38,7 @@ public class AccountFlowManager {
   public void createShellAccount(User user, Account account) throws WebFlowException {
     try {
       Account createdAccount = accountManager.createShellAccount(user);
-      TSCPMVNAUtil.copyAccount(account, createdAccount);
+      WebserviceAdapter.copyAccount(account, createdAccount);
     } catch (AccountManagementException e) {
       e.printStackTrace();
       WebFlowUtil.addError(ERROR_CREATE_SHELL);

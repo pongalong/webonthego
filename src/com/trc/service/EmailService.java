@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.GatewayException;
-import com.trc.service.gateway.TSCPMVNAUtil;
-import com.trc.service.gateway.TSCPMVNEGateway;
+import com.trc.service.gateway.WebserviceAdapter;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.TSCPMVNA;
@@ -17,14 +17,14 @@ public class EmailService implements EmailServiceModel {
 	private TSCPMVNA port;
 
 	@Autowired
-	public void init(TSCPMVNEGateway gateway) {
+	public void init(WebserviceGateway gateway) {
 		this.port = gateway.getPort();
 	}
 
 	@Override
 	public void sendActivationEmail(User user, Account account) throws GatewayException {
 		try {
-			port.sendActivationSuccessNotice(TSCPMVNAUtil.toCustomer(user), account);
+			port.sendActivationSuccessNotice(WebserviceAdapter.toCustomer(user), account);
 		} catch (WebServiceException e) {
 			throw new GatewayException(e.getMessage(), e.getCause());
 		}

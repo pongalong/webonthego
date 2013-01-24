@@ -2,11 +2,10 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/mousePositionPopup.js" />"></script>
+
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/accountActivity.js" />"></script>
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/navigation/activity.js" />"></script>
 
 </head>
 <body class="app">
@@ -26,16 +25,16 @@
           </select>
           <div style="position: absolute; top: 0; bottom: 0; right: 0; margin: auto; height: 15px;">
             <c:choose>
-                <c:when test="${not empty accountDetail.account.inactiveDate}">
-                  <div class="badge" style="float: right;">Current Balance: Disconnected</div>
-                </c:when>
-                <c:otherwise>
-                  <div class="badge" style="float: right;">
-                    Current Balance: $
-                    <fmt:formatNumber value="${accountDetail.account.balance}" pattern="0.00" />
-                  </div>
-                </c:otherwise>
-              </c:choose>
+              <c:when test="${not empty accountDetail.account.inactiveDate}">
+                <div class="badge" style="float: right;">Current Balance: Disconnected</div>
+              </c:when>
+              <c:otherwise>
+                <div class="badge" style="float: right;">
+                  Current Balance: $
+                  <fmt:formatNumber value="${accountDetail.account.balance}" pattern="0.00" />
+                </div>
+              </c:otherwise>
+            </c:choose>
           </div>
         </div>
 

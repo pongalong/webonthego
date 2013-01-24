@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 <script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/selectPaymentMethod.js" />"></script>
@@ -64,11 +64,13 @@
           <div class="clear"></div>
 
           <!-- Coupon -->
-          <h3 style="margin: 10px 0 10px 0; padding: 10px 0 0 0; border-top: 1px #ccc solid;">Coupons</h3>
-          <div>
-            <p>If you have have a coupon, enter the code below.</p>
+          <h3 style="margin: 10px 0 10px 0; padding: 10px 0 0 0; border-top: 1px #ccc solid;" onClick="$(this).next('div').slideToggle();">
+            <img src="<spring:url value="/static/images/buttons/icons/add.png" />" style="vertical-align: middle;" /> Click Here If You Have a Coupon
+          </h3>
+
+          <div style="display: none;">
             <div class="row">
-              <form:label cssClass="required" path="coupon.couponCode">Coupon Code</form:label>
+              <form:label cssClass="required" path="coupon.couponCode">Enter Coupon Code</form:label>
               <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="coupon.couponCode" />
             </div>
             <div class="row pushed">
@@ -78,13 +80,13 @@
 
 
           <form:input path="creditCard.paymentid" cssClass="hidden" />
-          
-          
+
+
 
           <div class="buttons">
-            <a id="choose_payment_button_submit" href="#" class="button action-m"><span>Continue</span> </a>
-            <input id="choose_payment_submit" class="hidden" type="submit" name="_eventId_select" value="Select" />         
-            <input id="addNewMethod_submit" class="hidden" type="submit" name="_eventId_new" value="Create New" />
+            <a id="choose_payment_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="choose_payment_submit" class="hidden"
+              type="submit" name="_eventId_select" value="Select" /> <input id="addNewMethod_submit" class="hidden" type="submit" name="_eventId_new"
+              value="Create New" />
           </div>
 
 
@@ -92,6 +94,7 @@
 
       </div>
     </div>
+    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
   </div>
 
 </body>

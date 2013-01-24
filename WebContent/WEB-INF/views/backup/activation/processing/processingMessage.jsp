@@ -10,18 +10,17 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="blueTruConnectGradient"></div>
+  <div class="blueGradient"></div>
 
   <div class="container">
     <div id="main-content">
 
       <div class="span-18">
-        <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Activating your TruConnect Device</h3>
+        <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Activating your Device</h3>
         <form:form id="processingActivation" method="post" commandName="activationMessage">
           <div style="position: relative;">
-            <img src="<spring:url value="/static/images/util/ajax-loader-ball-gray-sm.gif" />"
-              style="margin-right: 15px;" /> Your account is being created. This may take up to 3 minutes. Please do
-            not refresh or close this page.
+            <img src="<spring:url value="/static/images/util/ajax-loader-ball-gray-sm.gif" />" style="margin-right: 15px;" /> Your account is being created.
+            This may take up to 3 minutes. Please do not refresh or close this page.
           </div>
           <div class="buttons hidden">
             <input id="processingActivationSubmit" type="submit" name="_eventId_autoSubmit" />

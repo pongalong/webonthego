@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect - Page Not Found</title>
+<title>Web on the Go &#8480; - Page Not Found</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 </head>
 <body>

@@ -16,7 +16,7 @@ import com.trc.manager.DeviceManager;
 import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
 import com.trc.manager.webflow.PaymentFlowManager;
-import com.trc.service.gateway.TSCPMVNEGateway;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
 import com.trc.util.ClassUtils;
 import com.trc.util.logger.DevLogger;
@@ -49,7 +49,7 @@ public class TestController {
   private TSCPMVNA port;
 
   // @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     port = gateway.getPort();
   }
 

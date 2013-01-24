@@ -50,5 +50,7 @@ public class UserUpdateValidator extends UserValidator {
     }
     validateNewEmail(updateEmail, errors);
   }
+  
+
 
 }

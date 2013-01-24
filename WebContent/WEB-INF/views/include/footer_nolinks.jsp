@@ -5,7 +5,7 @@
   <!-- Begin Footer Navigtion -->
   <div class="footer-navigation">
     <div class="span-12">
-      <p>&copy; webonthego</p>
+      <p>Web on the Go &#8480;</p>
     </div>
   </div>
   <!-- End Footer Navigation -->

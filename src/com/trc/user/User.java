@@ -222,12 +222,11 @@ public class User implements UserModel, UserDetails {
 
 	@Transient
 	public boolean isAuthenticated() {
-		GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_ANONYMOUS");
-		boolean origCheck = !UserManager.securityContext.getContext().getAuthentication().getAuthorities().contains(ga) && !getAuthorities().contains(ga);
+		// Previous version of checking if a user is authenticated searched for given roles
+		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_ANONYMOUS");
+		// boolean origCheck = !UserManager.securityContext.getContext().getAuthentication().getAuthorities().contains(ga) && !getAuthorities().contains(ga);
 		Authentication authentication = UserManager.securityContext.getContext().getAuthentication();
-		boolean newCheck = authentication != null && authentication.getPrincipal() instanceof UserDetails;
-		logger.debug("origCheck: {} newCheck: {}", origCheck, newCheck);
-		return origCheck;
+		return authentication != null && authentication.getPrincipal() instanceof UserDetails;
 	}
 
 	@Override

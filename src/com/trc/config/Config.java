@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.trc.service.gateway.TSCPMVNE;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.util.logger.DevLogger;
 
 @Component
@@ -38,6 +38,7 @@ public final class Config {
 	public static void loadProperties() {
 		if (!initialized) {
 			classLoader = Config.class.getClassLoader();
+
 			try {
 				loadConfig();
 				loadMonths();
@@ -51,24 +52,25 @@ public final class Config {
 	}
 
 	private static void loadConfig() throws IOException {
-		if (!TSCPMVNE.initialized) {
+		if (!WebserviceGateway.initialized) {
+
 			Properties props = new Properties();
 			props.load(classLoader.getResourceAsStream(configFile));
+
 			ENVIRONMENT = props.getProperty("environment");
 			ADMIN = props.getProperty("admin").equals("0") ? false : true;
-			TSCPMVNE.serviceName = props.getProperty("serviceName");
-			TSCPMVNE.namespace = props.getProperty("namespace");
+			WebserviceGateway.serviceName = props.getProperty("serviceName");
+			WebserviceGateway.namespace = props.getProperty("namespace");
 
 			if (ENVIRONMENT.equalsIgnoreCase("production")) {
-				TSCPMVNE.location = props.getProperty("wsdl_production_ip");
+				WebserviceGateway.location = props.getProperty("wsdl_production_ip");
 			} else if (ENVIRONMENT.equalsIgnoreCase("development")) {
-				TSCPMVNE.location = props.getProperty("wsdl_development_ip");
+				WebserviceGateway.location = props.getProperty("wsdl_development_ip");
 			} else if (ENVIRONMENT.equalsIgnoreCase("local")) {
-				TSCPMVNE.location = props.getProperty("wsdl_localhost");
+				WebserviceGateway.location = props.getProperty("wsdl_localhost");
 			}
 
-			TSCPMVNE.initialized = true;
-			DevLogger.debug("TSCPMVNE location set to " + TSCPMVNE.location);
+			DevLogger.debug("TSCPMVNA WSDL location set to " + WebserviceGateway.location);
 		}
 	}
 

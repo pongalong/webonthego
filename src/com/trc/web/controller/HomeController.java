@@ -1,7 +1,5 @@
 package com.trc.web.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.trc.config.Config;
-import com.trc.exception.management.DeviceManagementException;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.tscp.mvne.Device;
 
 @Controller
 @RequestMapping("/")
@@ -26,29 +22,17 @@ public class HomeController {
 
 	private String getHomePage() {
 		User user = userManager.getLoggedInUser();
-		if (Config.ADMIN) {
-			if (user.isAdmin())
-				return getAdminHomepage(user);
-			else
-				return getUserHomePage(user);
-		} else {
+		if (Config.ADMIN && user.isAdmin())
+			return getAdminHomepage(user);
+		else
 			return getUserHomePage(user);
-		}
 	}
 
 	private String getUserHomePage(User user) {
-		boolean isUser = user.isUser();
-		boolean hasDevice = false;
-		if (isUser) {
-			try {
-				List<Device> devices = deviceManager.getDeviceInfoList(user);
-				hasDevice = devices != null && !devices.isEmpty();
-				return hasDevice ? "redirect:/account" : "start";
-			} catch (DeviceManagementException e) {
-				return "start";
-			}
-		}
-		return "home";
+		if (user.isAuthenticated())
+			return "redirect:/account";
+		else
+			return "home";
 	}
 
 	private String getAdminHomepage(User user) {
@@ -66,12 +50,18 @@ public class HomeController {
 	}
 
 	private String getLoginpage() {
-		return Config.ADMIN ? "admin/login" : "login";
+		// return Config.ADMIN ? "admin/login" : "login";
+		return "login";
 	}
 
 	@RequestMapping(value = { "", "/", "home" }, method = RequestMethod.GET)
 	public String showHome(HttpServletRequest request) {
 		return getHomePage();
+	}
+
+	@RequestMapping(value = "start", method = RequestMethod.GET)
+	public String showStartPage() {
+		return "start";
 	}
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)

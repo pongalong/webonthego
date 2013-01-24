@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.contact.Address;
 import com.trc.util.SimpleDate;
 import com.tscp.mvne.CreditCard;
@@ -135,7 +135,7 @@ public class CreditCardValidator extends AddressValidator {
 	// }
 
 	private void checkAddress(CreditCard creditCard, Errors errors) {
-		Address address = TSCPMVNAUtil.getAddress(creditCard);
+		Address address = WebserviceAdapter.getAddress(creditCard);
 		super.validate(address, errors);
 		// if (creditCard.getAddress1() == null ||
 		// creditCard.getAddress1().trim().isEmpty()

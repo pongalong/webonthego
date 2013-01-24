@@ -10,10 +10,6 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="blueTruConnectGradient">
-    <div class="container">Swap Device</div>
-  </div>
-
   <div class="container">
     <div id="main-content">
       <div class="span-18 colborder">

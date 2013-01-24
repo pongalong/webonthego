@@ -55,8 +55,8 @@ form.validatedForm .buttons a.button {
 Styles for Login Form
 ***********************************************/
 form.login fieldset {
-	-moz-border-radius: 5px;
 	border-radius: 5px;
+	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 }
 
@@ -258,7 +258,7 @@ form.validatedForm div.registrationTerms {
 }
 
 .unselected {
-	opacity: 0.75;
+	opacity: 0.5;
 	/*background-image: -webkit-linear-gradient(#FFF9BF, #EBC98F);
 	background-image: -o-linear-gradient(#FFF9BF, #EBC98F);
 	background-image: linear-gradient(#FFF9BF, #EBC98F);

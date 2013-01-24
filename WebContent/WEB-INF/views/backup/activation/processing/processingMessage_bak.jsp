@@ -10,19 +10,15 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="blueTruConnectGradient"></div>
-
   <div class="container">
     <div id="main-content">
 
       <div class="span-18">
-        <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Building your TruConnect services... this may take a
-          few minutes</h3>
+        <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Building your services... this may take a few minutes</h3>
         <form:form id="processingActivation" method="post" commandName="activationMessage">
           <div style="position: relative;">
             <img src="<spring:url value="/static/images/util/ajax_working.gif" />" style="margin-right: 30px;" />
-            <form:input path="message"
-              cssStyle="line-height:16px; font-size:16px; border: none; position:absolute; bottom:40%; width:100%;"
+            <form:input path="message" cssStyle="line-height:16px; font-size:16px; border: none; position:absolute; bottom:40%; width:100%;"
               title="${activationMessage.message}" />
           </div>
           <div class="buttons hidden">

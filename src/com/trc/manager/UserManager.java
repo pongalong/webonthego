@@ -22,7 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.trc.dao.UserDao;
 import com.trc.exception.management.AccountManagementException;
-import com.trc.service.gateway.TSCPMVNEGateway;
+import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.AnonymousUser;
 import com.trc.user.User;
 import com.trc.user.authority.Authority;
@@ -45,7 +45,7 @@ public class UserManager implements UserManagerModel {
 	private TSCPMVNA port;
 
 	@Autowired
-	public void init(UserDao userDao, AccountManager accountManager, SecurityContextFacade securityContextFacade, TSCPMVNEGateway gateway) {
+	public void init(UserDao userDao, AccountManager accountManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
 		this.userDao = userDao;
 		this.accountManager = accountManager;
 		this.port = gateway.getPort();

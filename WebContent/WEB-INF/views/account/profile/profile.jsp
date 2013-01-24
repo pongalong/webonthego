@@ -2,11 +2,8 @@
 <%@ include file="/WEB-INF/views/include/doctype.jsp"%>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>TruConnect Account Management</title>
+<title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/navigation/profile.js" />"></script>
-<link rel="stylesheet" href="<spring:url value="/static/styles/bootstrap.css" htmlEscape="true" />" type="text/css"></link>
 
 </head>
 <body>
@@ -59,38 +56,49 @@
 
         <h3 style="margin: 10px 0 10px 0; border-bottom: 1px #ccc dotted;">Credit Cards</h3>
 
-        <c:forEach var="creditCard" items="${paymentMethods}" varStatus="status">
-          <div class="address dontsplit">
-            <div class="btn-group">
-              <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
-                style="background: white; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
+        <c:choose>
+          <c:when test="${not empty paymentMethods}">
+            <c:forEach var="creditCard" items="${paymentMethods}" varStatus="status">
+              <div class="address dontsplit">
+                <div class="btn-group">
+                  <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
+                    style="background: white; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
 
-                <c:choose>
-                  <c:when test="${creditCard.isDefault == 'Y'}">
-                    <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>
-                  </c:when>
-                  <c:otherwise>
-                    <div>${creditCard.creditCardNumber}</div>
-                  </c:otherwise>
-                </c:choose>
-                <span class="caret" style="position: absolute; top: 8px; right: 0;"></span>
-              </button>
-              <ul class="dropdown-menu" style="margin: 1px; padding: 0;">
-                <li><a href="<spring:url value="/account/payment/methods/edit/${encodedPaymentIds[status.index]}" />">Edit</a></li>
-                <c:if test="${fn:length(paymentMethods) > 1}">
-                  <li style="margin-bottom: 10px;"><a href="<spring:url value="/account/payment/methods/remove/${encodedPaymentIds[status.index]}" />">Remove</a></li>
-                </c:if>
-              </ul>
-            </div>
-            <div>${creditCard.nameOnCreditCard}</div>
-            <div>${creditCard.city}, ${creditCard.state} ${creditCard.zip}</div>
-          </div>
-        </c:forEach>
+                    <c:choose>
+                      <c:when test="${creditCard.isDefault == 'Y'}">
+                        <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>
+                      </c:when>
+                      <c:otherwise>
+                        <div>${creditCard.creditCardNumber}</div>
+                      </c:otherwise>
+                    </c:choose>
+                    <span class="caret" style="position: absolute; top: 8px; right: 0;"></span>
+                  </button>
+                  <ul class="dropdown-menu" style="margin: 1px; padding: 0;">
+                    <li><a href="<spring:url value="/account/payment/methods/edit/${encodedPaymentIds[status.index]}" />">Edit</a></li>
+                    <c:if test="${fn:length(paymentMethods) > 1}">
+                      <li style="margin-bottom: 10px;"><a href="<spring:url value="/account/payment/methods/remove/${encodedPaymentIds[status.index]}" />">Remove</a></li>
+                    </c:if>
+                  </ul>
+                </div>
+                <div>${creditCard.nameOnCreditCard}</div>
+                <div>${creditCard.city}, ${creditCard.state} ${creditCard.zip}</div>
+              </div>
+            </c:forEach>
+          </c:when>
+          <c:otherwise>
+            <p>You have no credit cards saved</p>
+          </c:otherwise>
+        </c:choose>
+
+
 
         <div class="clear"></div>
-        <div class="buttons" style="margin-top: 10px 0 10px 0; padding: 10px 0 10px 0; border-top: 1px #ccc dotted;">
-          <a href="<spring:url value="/account/payment/methods/add" />" class="button action-m" style="float: right;"><span>Add New Card</span> </a>
-        </div>
+        <c:if test="${not empty sessionScope.controlling_user}">
+          <div class="buttons" style="margin-top: 10px 0 10px 0; padding: 10px 0 10px 0; border-top: 1px #ccc dotted;">
+            <a href="<spring:url value="/account/payment/methods/add" />" class="button action-m" style="float: right;"><span>Add New Card</span> </a>
+          </div>
+        </c:if>
 
       </div>
 

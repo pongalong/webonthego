@@ -11,10 +11,6 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="blueTruConnectGradient">
-    <div class="container">Swap Device</div>
-  </div>
-
   <div class="container">
     <div id="main-content">
       <div class="span-18 colborder">
@@ -51,9 +47,8 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="swapEsnButton" href="#" class="button action-m"><span>Continue</span> </a> <a
-              href="<spring:url value="/devices" />" class="button escape-m multi"><span>Cancel</span> </a> <input
-              id="swapEsnSubmit" type="submit" value="Continue" class="hidden" />
+            <a id="swapEsnButton" href="#" class="button action-m"><span>Continue</span> </a> <a href="<spring:url value="/devices" />"
+              class="button escape-m multi"><span>Cancel</span> </a> <input id="swapEsnSubmit" type="submit" value="Continue" class="hidden" />
           </div>
         </form:form>
       </div>

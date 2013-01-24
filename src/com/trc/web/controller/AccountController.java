@@ -25,7 +25,7 @@ public class AccountController {
 	@Autowired
 	private AccountManager accountManager;
 
-	@RequestMapping(value = { "", "/", "manage" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/" }, method = RequestMethod.GET)
 	public ModelAndView showOverview() {
 		ResultModel model = new ResultModel("account/overview");
 		User user = userManager.getCurrentUser();

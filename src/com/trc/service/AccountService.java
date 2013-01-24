@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.AccountServiceException;
-import com.trc.service.gateway.TSCPMVNEGateway;
-import com.trc.service.gateway.TSCPMVNAUtil;
+import com.trc.service.gateway.WebserviceGateway;
+import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.util.Formatter;
 import com.tscp.mvne.Account;
@@ -26,7 +26,7 @@ public class AccountService implements AccountServiceModel {
   private TSCPMVNA port;
 
   @Autowired
-  public void init(TSCPMVNEGateway gateway) {
+  public void init(WebserviceGateway gateway) {
     this.port = gateway.getPort();
   }
 
@@ -47,7 +47,7 @@ public class AccountService implements AccountServiceModel {
   @Override
   public CustInfo getCustInfo(User user) throws AccountServiceException {
     try {
-      return port.getCustInfo(TSCPMVNAUtil.toCustomer(user));
+      return port.getCustInfo(WebserviceAdapter.toCustomer(user));
     } catch (WebServiceException e) {
       throw new AccountServiceException(e.getMessage(), e.getCause());
     }
@@ -57,7 +57,7 @@ public class AccountService implements AccountServiceModel {
   public Account createShellAccount(User user) throws AccountServiceException {
     Account account = makeAccount(user);
     try {
-      Account createdAccount = port.createBillingAccount(TSCPMVNAUtil.toCustomer(user), account);
+      Account createdAccount = port.createBillingAccount(WebserviceAdapter.toCustomer(user), account);
       setTopUp(user, 10.00, createdAccount);
       return createdAccount;
     } catch (WebServiceException e) {
@@ -67,7 +67,7 @@ public class AccountService implements AccountServiceModel {
 
   @Override
   public List<CustAcctMapDAO> getAccountMap(User user) throws AccountServiceException {
-    Customer customer = TSCPMVNAUtil.toCustomer(user);
+    Customer customer = WebserviceAdapter.toCustomer(user);
     try {
       return port.getCustomerAccounts(customer.getId());
     } catch (WebServiceException e) {
@@ -78,7 +78,7 @@ public class AccountService implements AccountServiceModel {
   @Override
   public List<UsageDetail> getChargeHistory(User user, int accountNumber) throws AccountServiceException {
     try {
-      return port.getCustomerChargeHistory(TSCPMVNAUtil.toCustomer(user), accountNumber, null);
+      return port.getCustomerChargeHistory(WebserviceAdapter.toCustomer(user), accountNumber, null);
     } catch (WebServiceException e) {
       throw new AccountServiceException(e.getMessage(), e.getCause());
     }
@@ -87,7 +87,7 @@ public class AccountService implements AccountServiceModel {
   @Override
   public List<PaymentRecord> getPaymentRecords(User user) throws AccountServiceException {
     try {
-      return port.getPaymentHistory(TSCPMVNAUtil.toCustomer(user));
+      return port.getPaymentHistory(WebserviceAdapter.toCustomer(user));
     } catch (WebServiceException e) {
       throw new AccountServiceException(e.getMessage(), e.getCause());
     }
@@ -114,7 +114,7 @@ public class AccountService implements AccountServiceModel {
   @Override
   public CustTopUp getTopUp(User user, Account account) throws AccountServiceException {
     try {
-      return port.getCustTopUpAmount(TSCPMVNAUtil.toCustomer(user), account);
+      return port.getCustTopUpAmount(WebserviceAdapter.toCustomer(user), account);
     } catch (WebServiceException e) {
       throw new AccountServiceException(e.getMessage(), e.getCause());
     }
@@ -124,7 +124,7 @@ public class AccountService implements AccountServiceModel {
   public CustTopUp setTopUp(User user, double amount, Account account) throws AccountServiceException {
     try {
       String stringAmount = Formatter.formatDollarAmount(amount);
-      return port.setCustTopUpAmount(TSCPMVNAUtil.toCustomer(user), stringAmount, account);
+      return port.setCustTopUpAmount(WebserviceAdapter.toCustomer(user), stringAmount, account);
     } catch (WebServiceException e) {
       throw new AccountServiceException(e.getMessage(), e.getCause());
     }

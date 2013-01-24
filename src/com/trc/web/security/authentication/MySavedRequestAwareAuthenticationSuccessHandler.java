@@ -1,6 +1,7 @@
 package com.trc.web.security.authentication;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +13,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.trc.config.Config;
+import com.trc.exception.management.DeviceManagementException;
+import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.security.encryption.StringEncrypter;
 import com.trc.user.AnonymousUser;
 import com.trc.user.User;
+import com.trc.util.logger.DevLogger;
 import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
+import com.tscp.mvne.Device;
 
 public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	@Autowired
 	private UserManager userManager;
+	@Autowired
+	private DeviceManager deviceManager;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException,
@@ -54,7 +61,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		// setAlwaysUseDefaultTargetUrl(true);
 		// setDefaultTargetUrl("/servicerep/home");
 		if (Config.ADMIN && user.isInternalUser()) {
-			MDC.put("internalUser", user.getUsername());			
+			MDC.put("internalUser", user.getUsername());
 			userManager.setSessionControllingUser(user);
 			userManager.setSessionUser(new AnonymousUser());
 			if (user.isAdmin()) {
@@ -69,8 +76,28 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		} else {
 			MDC.put("username", user.getUsername());
 			userManager.setSessionUser(user);
-			setAlwaysUseDefaultTargetUrl(false);
-			setDefaultTargetUrl("/home");
+
+			String targetUrl = "/";
+			boolean alwaysUseDefaultTarget = false;
+			boolean hasDevice = false;
+
+			if (!user.isAdmin()) {
+				try {
+					List<Device> devices = deviceManager.getDeviceInfoList(user);
+					hasDevice = devices != null && !devices.isEmpty();
+					targetUrl = hasDevice ? "/account" : "/start";
+					alwaysUseDefaultTarget = !hasDevice;
+				} catch (DeviceManagementException e) {
+					targetUrl = "/start";
+					alwaysUseDefaultTarget = false;
+				}
+			}
+			
+			DevLogger.debug("target URL is " + targetUrl);
+			DevLogger.debug("always use default target? " + alwaysUseDefaultTarget);
+			
+			setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTarget);
+			setDefaultTargetUrl(targetUrl);
 		}
 
 		SessionManager.set(SessionKey.ENCRYPTER, new StringEncrypter(SessionManager.getCurrentSessionId()));
