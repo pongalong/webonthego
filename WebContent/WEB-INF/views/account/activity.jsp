@@ -19,7 +19,7 @@
 
         <div style="position: relative; margin-bottom: 30px;">
           <select id="deviceSelect" style="border-radius: 3px; border-color: #aaa;">
-            <c:forEach var="acc" items="${accountList}">
+            <c:forEach var="acc" items="${accountDetails}">
               <option value="${acc.encodedAccountNum}">${acc.deviceInfo.label}</option>
             </c:forEach>
           </select>

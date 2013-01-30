@@ -27,13 +27,13 @@ import com.trc.user.AnonymousUser;
 import com.trc.user.User;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
-import com.trc.util.logger.LogLevel;
-import com.trc.util.logger.aspect.Loggable;
 import com.trc.web.context.SecurityContextFacade;
 import com.trc.web.session.SessionManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CustInfo;
 import com.tscp.mvne.TSCPMVNA;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Service
 public class UserManager implements UserManagerModel {
@@ -45,7 +45,11 @@ public class UserManager implements UserManagerModel {
 	private TSCPMVNA port;
 
 	@Autowired
-	public void init(UserDao userDao, AccountManager accountManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
+	public void init(
+			UserDao userDao,
+			AccountManager accountManager,
+			SecurityContextFacade securityContextFacade,
+			WebserviceGateway gateway) {
 		this.userDao = userDao;
 		this.accountManager = accountManager;
 		this.port = gateway.getPort();
@@ -82,61 +86,75 @@ public class UserManager implements UserManagerModel {
 	}
 
 	@Override
-	public User getUserByEmail(String email) {
+	public User getUserByEmail(
+			String email) {
 		return userDao.getUserByEmail(email);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public User getUserByUsername(String username) {
+	public User getUserByUsername(
+			String username) {
 		return userDao.getUserByUsername(username);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public User getUserById(int id) {
+	public User getUserById(
+			int id) {
 		return userDao.getUserById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> searchByEmail(String email) {
+	public List<User> searchByEmail(
+			String email) {
 		return userDao.searchByEmail(email);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> searchById(int id) {
+	public List<User> searchById(
+			int id) {
 		return userDao.searchById(id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public User searchByAccountNo(int accountNo) {
+	public User searchByAccountNo(
+			int accountNo) {
 		Account account = port.getAccountInfo(accountNo);
 		List<User> users = searchByEmail(account.getContactEmail());
 		return users != null && users.size() > 0 ? users.get(0) : new User();
 	}
 
 	@Transactional(readOnly = true)
-	public List<User> searchByEmailAndDate(String email, DateTime startDate, DateTime endDate) {
+	public List<User> searchByEmailAndDate(
+			String email,
+			DateTime startDate,
+			DateTime endDate) {
 		return userDao.searchByEmailAndDate(email, startDate, endDate);
 	}
 
 	@Transactional(readOnly = true)
-	public List<User> searchByNotEmailAndDate(String email, DateTime startDate, DateTime endDate) {
+	public List<User> searchByNotEmailAndDate(
+			String email,
+			DateTime startDate,
+			DateTime endDate) {
 		return userDao.searchByNotEmailAndDate(email, startDate, endDate);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> searchByUsername(String username) {
+	public List<User> searchByUsername(
+			String username) {
 		return userDao.searchByUsername(username);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> search(String param) {
+	public List<User> search(
+			String param) {
 		return userDao.search(param);
 	}
 
@@ -152,7 +170,8 @@ public class UserManager implements UserManagerModel {
 		}
 	}
 
-	private boolean isAnonymousUser(Authentication authentication) {
+	private boolean isAnonymousUser(
+			Authentication authentication) {
 		return authentication.getName().equals("anonymousUser");
 	}
 
@@ -163,7 +182,8 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Serializable saveUser(User user) {
+	public Serializable saveUser(
+			User user) {
 		if (user.getAuthorities().isEmpty()) {
 			user.getRoles().add(new Authority(user, ROLE.ROLE_USER));
 		}
@@ -172,48 +192,56 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional
-	public void saveOrUpdateUser(User user) {
+	public void saveOrUpdateUser(
+			User user) {
 		userDao.saveOrUpdateUser(user);
 	}
 
 	@Override
 	@Transactional
-	public void persistUser(User user) {
+	public void persistUser(
+			User user) {
 		userDao.persistUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void deleteUser(User user) {
+	public void deleteUser(
+			User user) {
 		userDao.deleteUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	@PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
-	public void updateUser(User user) {
+	// @PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
+	public void updateUser(
+			User user) {
 		userDao.updateUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void enableUser(User user) {
+	public void enableUser(
+			User user) {
 		userDao.enableUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void disableUser(User user) {
+	public void disableUser(
+			User user) {
 		userDao.disableUser(user);
 	}
 
 	@Override
-	public boolean isUsernameAvailable(String username) {
+	public boolean isUsernameAvailable(
+			String username) {
 		return getUserByUsername(username) == null;
 	}
 
 	@Override
-	public boolean isEmailAvailable(String email) {
+	public boolean isEmailAvailable(
+			String email) {
 		return getUserByEmail(email) == null;
 	}
 
@@ -222,11 +250,13 @@ public class UserManager implements UserManagerModel {
 		return user == null ? new AnonymousUser() : user;
 	}
 
-	public void setSessionUser(User user) {
+	public void setSessionUser(
+			User user) {
 		SessionManager.set(USER_KEY, user);
 	}
 
-	public void setSessionControllingUser(User user) {
+	public void setSessionControllingUser(
+			User user) {
 		SessionManager.set(CONTROLLING_USER_KEY, user);
 	}
 
@@ -235,7 +265,8 @@ public class UserManager implements UserManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public void getUserRealName(User user) {
+	public void getUserRealName(
+			User user) {
 		if (user.isAdmin()) {
 			user.getContactInfo().setFirstName(user.getUsername());
 			user.getContactInfo().setLastName("Administrator");
@@ -259,12 +290,17 @@ public class UserManager implements UserManagerModel {
 		}
 	}
 
-	public void autoLogin(User user, AuthenticationManager authenticationManager) {
+	public void autoLogin(
+			User user,
+			AuthenticationManager authenticationManager) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		autoLogin(user, request, authenticationManager);
 	}
 
-	public void autoLogin(User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
+	public void autoLogin(
+			User user,
+			HttpServletRequest request,
+			AuthenticationManager authenticationManager) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 
 		// generate session if one doesn't exist

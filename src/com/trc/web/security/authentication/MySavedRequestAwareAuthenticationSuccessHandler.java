@@ -7,101 +7,114 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.trc.config.Config;
-import com.trc.exception.management.DeviceManagementException;
-import com.trc.manager.DeviceManager;
+import com.trc.exception.management.AccountManagementException;
+import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
+import com.trc.security.encryption.SessionEncrypter;
 import com.trc.security.encryption.StringEncrypter;
-import com.trc.user.AnonymousUser;
+import com.trc.user.NoControllingUser;
 import com.trc.user.User;
-import com.trc.util.logger.DevLogger;
+import com.trc.user.account.AccountDetail;
+import com.trc.user.account.PaymentHistory;
 import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
-import com.tscp.mvne.Device;
+import com.tscp.util.logger.DevLogger;
 
 public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	@Autowired
 	private UserManager userManager;
 	@Autowired
-	private DeviceManager deviceManager;
+	private AccountManager accountManager;
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException,
-			ServletException {
+	public void onAuthenticationSuccess(
+			HttpServletRequest request,
+			HttpServletResponse response,
+			Authentication authentication) throws IOException, ServletException {
+
 		User user = userManager.getLoggedInUser();
-		userManager.getUserRealName(user);
-		MDC.put("sessionId", SessionManager.getCurrentSessionId());
-		// if (Config.ADMIN && user.isSuperUser()) {
-		// MDC.put("internalUser", user.getUsername());
-		// userManager.setSessionAdmin(user);
-		// userManager.setSessionUser(new AnonymousUser());
-		// setAlwaysUseDefaultTargetUrl(true);
-		// setDefaultTargetUrl("/admin/home");
-		// } else if (Config.ADMIN && user.isAdmin()) {
-		// MDC.put("internalUser", user.getUsername());
-		// userManager.setSessionAdmin(user);
-		// userManager.setSessionUser(new AnonymousUser());
-		// setAlwaysUseDefaultTargetUrl(true);
-		// setDefaultTargetUrl("/admin/home");
-		// } else if (Config.ADMIN && user.isManager()) {
-		// MDC.put("internalUser", user.getUsername());
-		// userManager.setSessionManager(user);
-		// userManager.setSessionUser(new AnonymousUser());
-		// setAlwaysUseDefaultTargetUrl(true);
-		// setDefaultTargetUrl("/manager/home");
-		// } else if (Config.ADMIN && user.isServiceRep()) {
-		// MDC.put("internalUser", user.getUsername());
-		// userManager.setSessionManager(user);
-		// userManager.setSessionUser(new AnonymousUser());
-		// setAlwaysUseDefaultTargetUrl(true);
-		// setDefaultTargetUrl("/servicerep/home");
+
+		if (!user.isInternalUser())
+			userManager.getUserRealName(user);
+
+		setSessionAttributes(user);
+
 		if (Config.ADMIN && user.isInternalUser()) {
-			MDC.put("internalUser", user.getUsername());
-			userManager.setSessionControllingUser(user);
-			userManager.setSessionUser(new AnonymousUser());
-			if (user.isAdmin()) {
-				setDefaultTargetUrl("/admin/home");
-			} else if (user.isManager()) {
-				setDefaultTargetUrl("/manager/home");
-			} else if (user.isServiceRep()) {
-				setDefaultTargetUrl("/servicerep/home");
-			} else if (user.isSuperUser()) {
-				setDefaultTargetUrl("/it/home");
-			}
+			setAdminDefaultTargetUrl(user);
 		} else {
-			MDC.put("username", user.getUsername());
-			userManager.setSessionUser(user);
-
-			String targetUrl = "/";
-			boolean alwaysUseDefaultTarget = false;
-			boolean hasDevice = false;
-
-			if (!user.isAdmin()) {
-				try {
-					List<Device> devices = deviceManager.getDeviceInfoList(user);
-					hasDevice = devices != null && !devices.isEmpty();
-					targetUrl = hasDevice ? "/account" : "/start";
-					alwaysUseDefaultTarget = !hasDevice;
-				} catch (DeviceManagementException e) {
-					targetUrl = "/start";
-					alwaysUseDefaultTarget = false;
-				}
-			}
-			
-			DevLogger.debug("target URL is " + targetUrl);
-			DevLogger.debug("always use default target? " + alwaysUseDefaultTarget);
-			
-			setAlwaysUseDefaultTargetUrl(alwaysUseDefaultTarget);
-			setDefaultTargetUrl(targetUrl);
+			setUserDefaultTargetUrl(user);
 		}
 
-		SessionManager.set(SessionKey.ENCRYPTER, new StringEncrypter(SessionManager.getCurrentSessionId()));
 		super.onAuthenticationSuccess(request, response, authentication);
+	}
+
+	private void setSessionAttributes(
+			User user) {
+
+		StringEncrypter encrypter = new StringEncrypter(SessionManager.getCurrentSessionId());
+
+		SessionManager.set(SessionKey.ENCRYPTER, encrypter);
+
+		if (Config.ADMIN && user.isInternalUser()) {
+			SessionManager.set("controlling_user", user);
+			SessionManager.set("user", null);
+		} else {
+			SessionManager.set("controlling_user", new NoControllingUser());
+			SessionManager.set("user", user);
+		}
+
+		try {
+			List<AccountDetail> accountDetails = accountManager.getAllAccountDetails(user);
+			for (AccountDetail ad : accountDetails) {
+				ad.setEncodedAccountNum(SessionEncrypter.encryptId(ad.getAccount().getAccountNo()));
+				ad.setEncodedDeviceId(SessionEncrypter.encryptId(ad.getDeviceInfo().getId()));
+			}
+			SessionManager.set("accountDetails", accountDetails);
+		} catch (AccountManagementException e) {
+			DevLogger.debug("Exception fetching account details at login", e);
+		}
+
+		try {
+			PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
+			SessionManager.set("paymentHistory", paymentHistory);
+		} catch (AccountManagementException e) {
+			DevLogger.debug("Exception fetching paymentHistory at login", e);
+		}
+	}
+
+	private void setAdminDefaultTargetUrl(
+			User user) {
+
+		setAlwaysUseDefaultTargetUrl(true);
+
+		if (user.isAdmin()) {
+			setDefaultTargetUrl("/admin/home");
+		} else if (user.isManager()) {
+			setDefaultTargetUrl("/manager/home");
+		} else if (user.isServiceRep()) {
+			setDefaultTargetUrl("/servicerep/home");
+		} else if (user.isSuperUser()) {
+			setDefaultTargetUrl("/it/home");
+		}
+	}
+
+	private void setUserDefaultTargetUrl(
+			User user) {
+
+		String targetUrl = "/";
+		boolean hasDevice = false;
+
+		List<AccountDetail> accountDetails = (List<AccountDetail>) SessionManager.get("accountDetails");
+		hasDevice = accountDetails != null && !accountDetails.isEmpty();
+		targetUrl = hasDevice ? "/account" : "/start";
+
+		setAlwaysUseDefaultTargetUrl(!hasDevice);
+		setDefaultTargetUrl(targetUrl);
 	}
 
 }

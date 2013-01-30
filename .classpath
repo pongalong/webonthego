@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="service"/>
 	<classpathentry kind="src" path="config"/>
 	<classpathentry kind="src" path="logging"/>
-	<classpathentry kind="src" path="sales"/>
 	<classpathentry kind="src" path="admin"/>
 	<classpathentry kind="src" path="src_report"/>
 	<classpathentry kind="src" path="src_security"/>

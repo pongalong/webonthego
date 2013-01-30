@@ -5,58 +5,50 @@ import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.trc.exception.AccountCreationException;
 import com.trc.exception.management.AccountManagementException;
-import com.trc.exception.management.AddressManagementException;
 import com.trc.exception.management.DeviceManagementException;
 import com.trc.exception.service.AccountServiceException;
 import com.trc.service.AccountService;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.account.Overview;
-import com.trc.user.account.PaymentHistory;
 import com.trc.user.account.UsageHistory;
-import com.trc.user.contact.Address;
-import com.trc.user.contact.ContactInfo;
-import com.trc.util.logger.LogLevel;
-import com.trc.util.logger.aspect.Loggable;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
-import com.tscp.mvne.CustAcctMapDAO;
 import com.tscp.mvne.CustInfo;
 import com.tscp.mvne.CustTopUp;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.PaymentRecord;
 import com.tscp.mvne.UsageDetail;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Component
 @SuppressWarnings("unchecked")
-public class AccountManager implements AccountManagerModel {
+public class AccountManager {
 	@Autowired
 	private AccountService accountService;
 	@Autowired
-	private AddressManager addressManager;
-	@Autowired
 	private DeviceManager deviceManager;
 
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public Account createShellAccount(User user) throws AccountManagementException, AddressManagementException {
+	@Loggable(value = LogLevel.INFO)
+	public Account createShellAccount(
+			User user) throws AccountCreationException {
 		try {
 			return accountService.createShellAccount(user);
 		} catch (AccountServiceException e) {
-			throw new AccountManagementException(e.getMessage(), e.getCause());
+			throw new AccountCreationException(e.getMessage(), e.getCause());
 		}
 	}
 
-	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public CustInfo getCustInfo(User user) throws AccountManagementException {
+	public CustInfo getCustInfo(
+			User user) throws AccountManagementException {
 		try {
 			return accountService.getCustInfo(user);
 		} catch (AccountServiceException e) {
@@ -64,118 +56,137 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public AccountDetail getAccountDetail(User user, Device deviceInfo) throws AccountManagementException {
-		int accountNumber = deviceInfo.getAccountNo();
+	public AccountDetail getAccountDetail(
+			User user,
+			Device device) throws AccountManagementException {
+		return getAccountDetail(user, device, false);
+	}
+
+	public AccountDetail getAccountDetailAndUsage(
+			User user,
+			Device device) throws AccountManagementException {
+		return getAccountDetail(user, device, true);
+	}
+
+	@Loggable(value = LogLevel.INFO)
+	private AccountDetail getAccountDetail(
+			User user,
+			Device device,
+			boolean getUsage) throws AccountManagementException {
+
+		Account account;
+		CustTopUp topup;
+
 		try {
-			Account account = getAccount(accountNumber);
-			AccountDetail accountDetail = new AccountDetail();
-			accountDetail.setDeviceInfo(deviceInfo);
-			accountDetail.setAccount(account);
-			accountDetail.setTopUp(getTopUp(user, account).getTopupAmount());
-			accountDetail.setUsageHistory(new UsageHistory(getChargeHistory(user, account.getAccountNo()), user, account.getAccountNo()));
-			return accountDetail;
+			account = getAccount(device.getAccountNo());
 		} catch (AccountManagementException e) {
 			throw e;
 		}
+
+		try {
+			topup = getTopup(user, account);
+		} catch (AccountManagementException e) {
+			throw e;
+		}
+
+		AccountDetail accountDetail = new AccountDetail();
+		accountDetail.setDeviceInfo(device);
+		accountDetail.setAccount(account);
+		accountDetail.setTopUp(topup.getTopupAmount());
+		if (getUsage)
+			accountDetail.setUsageHistory(new UsageHistory(getChargeHistory(user, account.getAccountNo()), user, account.getAccountNo()));
+		return accountDetail;
 	}
 
-	public AccountDetail getAccountDetail(User user, int deviceId) throws AccountManagementException {
+	public AccountDetail getAccountDetail(
+			User user,
+			int deviceId) throws AccountManagementException {
 		try {
 			return getAccountDetail(user, deviceManager.getDeviceInfo(user, deviceId));
 		} catch (DeviceManagementException e) {
-			throw new AccountManagementException(e.getMessage(), e.getCause());
+			throw new AccountManagementException(e);
 		}
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public List<AccountDetail> getAccountDetailList(User user) throws AccountManagementException {
-		List<Device> deviceList;
+	@Loggable(value = LogLevel.INFO)
+	public List<AccountDetail> getAllAccountDetails(
+			User user) throws AccountManagementException {
+
+		List<Device> devices;
+		List<AccountDetail> accountDetails;
 
 		try {
-			deviceList = deviceManager.getDeviceInfoList(user);
+			devices = deviceManager.getDeviceInfoList(user);
 		} catch (DeviceManagementException e) {
-			deviceList = new ArrayList<Device>();
+			devices = new ArrayList<Device>();
 		}
 
-		List<AccountDetail> accountDetailList = new ArrayList<AccountDetail>();
-		AccountDetail accountDetail;
+		accountDetails = new ArrayList<AccountDetail>();
 		try {
-			for (Device deviceInfo : deviceList) {
-				accountDetail = getAccountDetail(user, deviceInfo);
-				accountDetailList.add(accountDetail);
-			}
+			for (Device device : devices)
+				accountDetails.add(getAccountDetail(user, device));
+			saveToCache(accountDetails);
 		} catch (AccountManagementException e) {
 			throw e;
 		}
-		return accountDetailList;
+		return accountDetails;
 	}
 
-	private List<Account> getAccountListFromCache() {
-		return (List<Account>) CacheManager.get(CacheKey.ACCOUNTS);
-	}
-
-	private Account getAccountFromCache(int accountNumber) {
-		List<Account> accountList = getAccountListFromCache();
-		if (accountList != null) {
-			for (Account account : accountList) {
-				if (account.getAccountNo() == accountNumber) {
-					return account;
-				}
-			}
-		}
-		return null;
-	}
-
-	static final Logger logger = LoggerFactory.getLogger("devLogger");
-
-	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public Account getAccount(int accountNumber) throws AccountManagementException {
-		Account account = getAccountFromCache(accountNumber);
-		if (account != null) {
-			return account;
-		} else {
-			try {
-				return accountService.getAccount(accountNumber);
-			} catch (AccountServiceException e) {
-				throw new AccountManagementException(e.getMessage(), e.getCause());
-			}
-		}
+	private void saveToCache(
+			List<AccountDetail> accountDetails) {
+		CacheManager.set(CacheKey.ACCOUNT_DETAILS, accountDetails);
 	}
 
-	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public List<CustAcctMapDAO> getAccountMap(User user) throws AccountManagementException {
+	private List<AccountDetail> getFromCache() {
+		return (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
+	}
+
+	@Loggable(value = LogLevel.DEBUG)
+	public Account getAccount(
+			int accountNumber) throws AccountManagementException {
+
+		List<AccountDetail> accountDetails = getFromCache();
+		if (accountDetails != null)
+			for (AccountDetail ad : accountDetails)
+				if (ad.getAccount().getAccountNo() == accountNumber)
+					return ad.getAccount();
+
 		try {
-			return accountService.getAccountMap(user);
+			return accountService.getAccount(accountNumber);
 		} catch (AccountServiceException e) {
 			throw new AccountManagementException(e.getMessage(), e.getCause());
 		}
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public List<Account> getAccounts(User user) throws AccountManagementException {
-		List<Account> accountList = getAccountListFromCache();
-		if (accountList != null) {
-			return accountList;
-		} else {
-			try {
-				accountList = new ArrayList<Account>();
-				for (CustAcctMapDAO accountMap : getAccountMap(user)) {
-					accountList.add(getAccount(accountMap.getAccountNo()));
-				}
-				CacheManager.set(CacheKey.ACCOUNTS, accountList);
-				return accountList;
-			} catch (AccountManagementException e) {
-				throw e;
-			}
-		}
-	}
+	// @Loggable(value = LogLevel.TRACE)
+	// public List<CustAcctMapDAO> getAccountMap(
+	// User user) throws AccountManagementException {
+	// try {
+	// return accountService.getAccountMap(user);
+	// } catch (AccountServiceException e) {
+	// throw new AccountManagementException(e.getMessage(), e.getCause());
+	// }
+	// }
 
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public List<UsageDetail> getChargeHistory(User user, int accountNumber) throws AccountManagementException {
+	// @Loggable(value = LogLevel.TRACE)
+	// public List<Account> getAccounts(
+	// User user) throws AccountManagementException {
+	// try {
+	// List<Account> accountList = new ArrayList<Account>();
+	// for (CustAcctMapDAO accountMap : getAccountMap(user))
+	// accountList.add(getAccount(accountMap.getAccountNo()));
+	// return accountList;
+	// } catch (AccountManagementException e) {
+	// throw e;
+	// }
+	// }
+
+	@Loggable(value = LogLevel.DEBUG)
+	public List<UsageDetail> getChargeHistory(
+			User user,
+			int accountNumber) throws AccountManagementException {
 		try {
 			return accountService.getChargeHistory(user, accountNumber);
 		} catch (AccountServiceException e) {
@@ -183,77 +194,73 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public ContactInfo getDefaultContactInfo(User user) throws AccountManagementException, AddressManagementException {
-		List<Account> accountList;
-		try {
-			accountList = getAccounts(user);
-			Account account = accountList.get(0);
-			Address address = addressManager.getDefaultAddress(user);
-			ContactInfo contactInfo = new ContactInfo();
-			contactInfo.setAddress(address);
-			contactInfo.setFirstName(account.getFirstname());
-			contactInfo.setLastName(account.getLastname());
-			contactInfo.setPhoneNumber(account.getContactNumber());
-			return contactInfo;
-		} catch (AccountManagementException e) {
-			throw e;
-		} catch (AddressManagementException e) {
-			throw e;
-		}
-	}
+	// @Deprecated
+	// @Loggable(value = LogLevel.TRACE)
+	// public ContactInfo getDefaultContactInfo(
+	// User user) throws AccountManagementException, AddressManagementException {
+	// List<Account> accountList;
+	// try {
+	// accountList = getAccounts(user);
+	// Account account = accountList.get(0);
+	// Address address = addressManager.getDefaultAddress(user);
+	// ContactInfo contactInfo = new ContactInfo();
+	// contactInfo.setAddress(address);
+	// contactInfo.setFirstName(account.getFirstname());
+	// contactInfo.setLastName(account.getLastname());
+	// contactInfo.setPhoneNumber(account.getContactNumber());
+	// return contactInfo;
+	// } catch (AccountManagementException e) {
+	// throw e;
+	// } catch (AddressManagementException e) {
+	// throw e;
+	// }
+	// }
 
-	@Loggable(value = LogLevel.TRACE)
-	public XMLGregorianCalendar getLastAccessFeeDate(User user, Account account) {
-		XMLGregorianCalendar accessFeeDate = null;
+	@Loggable(value = LogLevel.DEBUG)
+	public XMLGregorianCalendar getLastAccessFeeDate(
+			User user,
+			Account account) {
+
 		List<UsageDetail> usageDetails;
 		try {
 			usageDetails = getChargeHistory(user, account.getAccountNo());
 		} catch (AccountManagementException e) {
 			usageDetails = new ArrayList<UsageDetail>();
 		}
-		for (UsageDetail usageDetail : usageDetails) {
-			if (accessFeeDate == null && usageDetail.getUsageType().equals("Access Fee")) {
-				accessFeeDate = usageDetail.getEndTime();
-				break;
-			}
-		}
-		return accessFeeDate;
+
+		for (UsageDetail usageDetail : usageDetails)
+			if (usageDetail.getUsageType().equals("Access Fee"))
+				return usageDetail.getEndTime();
+
+		return null;
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public int getNumAccounts(User user) {
-		try {
-			List<CustAcctMapDAO> accounts = getAccountMap(user);
-			return accounts != null ? accounts.size() : 0;
-		} catch (AccountManagementException e) {
-			return 0;
-		}
-	}
+	// @Loggable(value = LogLevel.TRACE)
+	// public int getNumAccounts(
+	// User user) {
+	// try {
+	// List<CustAcctMapDAO> accounts = getAccountMap(user);
+	// return accounts != null ? accounts.size() : 0;
+	// } catch (AccountManagementException e) {
+	// return 0;
+	// }
+	// }
 
-	@Loggable(value = LogLevel.TRACE)
-	public Overview getOverview(User user) {
-		List<Device> deviceInfoList;
+	@Loggable(value = LogLevel.INFO)
+	public Overview getOverview(
+			User user) {
+		List<Device> devices;
 		try {
-			deviceInfoList = deviceManager.getDeviceInfoList(user);
+			devices = deviceManager.getDeviceInfoList(user);
 		} catch (DeviceManagementException e) {
-			deviceInfoList = new ArrayList<Device>();
+			devices = new ArrayList<Device>();
 		}
-		return new Overview(this, deviceInfoList, user);
+		return new Overview(this, devices, user);
 	}
 
-	@Loggable(value = LogLevel.TRACE)
-	public PaymentHistory getPaymentHistory(User user) throws AccountManagementException {
-		try {
-			return new PaymentHistory(getPaymentRecords(user), user);
-		} catch (AccountManagementException e) {
-			throw e;
-		}
-	}
-
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public List<PaymentRecord> getPaymentRecords(User user) throws AccountManagementException {
+	@Loggable(value = LogLevel.DEBUG)
+	public List<PaymentRecord> getPaymentRecords(
+			User user) throws AccountManagementException {
 		try {
 			return accountService.getPaymentRecords(user);
 		} catch (AccountServiceException e) {
@@ -261,9 +268,10 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public CustTopUp getTopUp(User user, Account account) throws AccountManagementException {
+	@Loggable(value = LogLevel.DEBUG)
+	public CustTopUp getTopup(
+			User user,
+			Account account) throws AccountManagementException {
 		try {
 			return accountService.getTopUp(user, account);
 		} catch (AccountServiceException e) {
@@ -271,9 +279,11 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public CustTopUp setTopUp(User user, double amount, Account account) throws AccountManagementException {
+	@Loggable(value = LogLevel.DEBUG)
+	public CustTopUp setTopup(
+			User user,
+			double amount,
+			Account account) throws AccountManagementException {
 		try {
 			return accountService.setTopUp(user, amount, account);
 		} catch (AccountServiceException e) {
@@ -281,12 +291,11 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Override
-	@Loggable(value = LogLevel.TRACE)
-	public void updateEmail(Account account) throws AccountManagementException {
+	@Loggable(value = LogLevel.INFO)
+	public void updateEmail(
+			Account account) throws AccountManagementException {
 		try {
 			accountService.updateEmail(account);
-			CacheManager.clear(CacheKey.ACCOUNTS);
 		} catch (AccountServiceException e) {
 			throw new AccountManagementException(e.getMessage(), e.getCause());
 		}

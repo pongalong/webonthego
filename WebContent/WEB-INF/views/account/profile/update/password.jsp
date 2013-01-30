@@ -22,14 +22,14 @@
               <div class="alert error">
                 <h1>Please correct the following problems</h1>
                 <form:errors path="oldPassword" />
-                <form:errors path="password" />
-                <form:errors path="confirmPassword" />
+                <form:errors path="newPassword" />
+                <form:errors path="confirmNewPassword" />
               </div>
             </div>
           </c:if>
           <!--End Error Display -->
 
-          <c:if test="${empty sessionScope.controlling_user}">
+          <c:if test="${sessionScope.controlling_user.userId == -1}">
             <div class="row">
               <form:label path="oldPassword" cssClass="required">Old Password</form:label>
               <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
@@ -37,19 +37,19 @@
           </c:if>
 
           <div class="row">
-            <form:label path="password" cssClass="required">New Password</form:label>
-            <form:password path="password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+            <form:label path="newPassword" cssClass="required">New Password</form:label>
+            <form:password path="newPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
           <div class="row">
-            <form:label path="confirmPassword" cssClass="required">Confirm Password</form:label>
-            <form:password path="confirmPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+            <form:label path="confirmNewPassword" cssClass="required">Confirm Password</form:label>
+            <form:password path="confirmNewPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
           <!-- Buttons -->
           <div class="buttons">
             <a id="updatePassword_button_submit" href="#" class="button action-m"><span>Update Password</span> </a> <a href="<spring:url value="/profile" />"
-              class="button escape-m multi"><span>Cancel</span> </a> <input id="updatePassword_submit" type="submit" value="Update Password" class="hidden" />
+              class="button escape-m multi"><span>Cancel</span> </a> <input id="updatePassword_submit" type="submit" value="Update Password" class="hidden"></input>
           </div>
 
         </form:form>

@@ -1,23 +1,34 @@
 package com.trc.user.security;
 
 public class UpdatePassword extends UpdateUser {
-  private String password;
-  private String confirmPassword;
+	private String newPassword;
+	private String confirmNewPassword;
 
-  public String getPassword() {
-    return password;
-  }
+	public String getNewPassword() {
+		return newPassword;
+	}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public void setNewPassword(
+			String password) {
+		this.newPassword = password;
+	}
 
-  public String getConfirmPassword() {
-    return confirmPassword;
-  }
+	public String getConfirmNewPassword() {
+		return confirmNewPassword;
+	}
 
-  public void setConfirmPassword(String confirmPassword) {
-    this.confirmPassword = confirmPassword;
-  }
+	public void setConfirmNewPassword(
+			String confirmPassword) {
+		this.confirmNewPassword = confirmPassword;
+	}
+
+	public boolean isEmpty() {
+		return newPassword == null;
+	}
+
+	public void clear() {
+		newPassword = null;
+		confirmNewPassword = null;
+	}
 
 }

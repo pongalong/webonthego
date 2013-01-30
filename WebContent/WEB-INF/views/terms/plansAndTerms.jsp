@@ -4,7 +4,6 @@
 <head>
 <title>Web on the Go &#8480; Terms of Service</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/pages/highlight/step/addDevice.js" />"></script>
 </head>
 <body>
@@ -73,8 +72,8 @@
             <span onclick="$('#accept1').click()">I have read and understand the terms and conditions.</span>
           </div>
           <div class="buttons">
-            <a id="plansAndTermsButton" href="#" class="button action-m"><span>Continue</span> </a> <input
-              id="plansAndTermsSubmit" type="submit" name="_eventId_submit" value="Continue" class="hidden" />
+            <a id="plansAndTermsButton" href="#" class="button action-m"><span>Continue</span> </a> <input id="plansAndTermsSubmit" type="submit"
+              name="_eventId_submit" value="Continue" class="hidden" />
           </div>
 
         </form:form>

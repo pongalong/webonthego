@@ -1,5 +1,6 @@
 package com.trc.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,16 @@ import com.trc.exception.management.DeviceServiceCreationException;
 import com.trc.exception.service.DeviceServiceException;
 import com.trc.service.DeviceService;
 import com.trc.user.User;
-import com.trc.util.logger.DevLogger;
-import com.trc.util.logger.LogLevel;
-import com.trc.util.logger.aspect.Loggable;
+import com.trc.user.account.AccountDetail;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.NetworkInfo;
 import com.tscp.mvne.ServiceInstance;
+import com.tscp.util.logger.DevLogger;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Service
 public class DeviceManager implements DeviceManagerModel {
@@ -29,7 +31,9 @@ public class DeviceManager implements DeviceManagerModel {
 	private DeviceService deviceService;
 
 	@Loggable(value = LogLevel.TRACE)
-	public void setDefaultDeviceLabel(Device deviceInfo, String firstName) {
+	public void setDefaultDeviceLabel(
+			Device deviceInfo,
+			String firstName) {
 		deviceInfo.setLabel(firstName + "'s Device");
 	}
 
@@ -45,7 +49,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public NetworkInfo getNetworkInfo(String esn, String msid) throws DeviceManagementException {
+	public NetworkInfo getNetworkInfo(
+			String esn,
+			String msid) throws DeviceManagementException {
 		try {
 			return deviceService.getNetworkInfo(esn, msid);
 		} catch (DeviceServiceException e) {
@@ -55,14 +61,15 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public List<Device> getDeviceInfoList(User user) throws DeviceManagementException {
+	public List<Device> getDeviceInfoList(
+			User user) throws DeviceManagementException {
 		List<Device> deviceInfoList = getDevicesFromCache();
 		if (deviceInfoList != null) {
 			return deviceInfoList;
 		} else {
 			try {
 				deviceInfoList = deviceService.getDeviceInfoList(user);
-				saveDevicesToCache(deviceInfoList);
+				// saveDevicesToCache(deviceInfoList);
 				return deviceInfoList;
 			} catch (DeviceServiceException e) {
 				throw new DeviceManagementException(e.getMessage(), e.getCause());
@@ -71,7 +78,9 @@ public class DeviceManager implements DeviceManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public Device getDeviceInfo(User user, int deviceId) throws DeviceManagementException {
+	public Device getDeviceInfo(
+			User user,
+			int deviceId) throws DeviceManagementException {
 		try {
 			List<Device> deviceInfoList = getDeviceInfoList(user);
 			for (Device deviceInfo : deviceInfoList) {
@@ -86,7 +95,10 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public Device addDeviceInfo(Device deviceInfo, Account account, User user) throws DeviceManagementException {
+	public Device addDeviceInfo(
+			Device deviceInfo,
+			Account account,
+			User user) throws DeviceManagementException {
 		try {
 			deviceInfo.setId(0);
 			deviceInfo.setCustId(user.getUserId());
@@ -100,7 +112,10 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public List<Device> removeDeviceInfo(Device deviceInfo, Account account, User user) throws DeviceManagementException {
+	public List<Device> removeDeviceInfo(
+			Device deviceInfo,
+			Account account,
+			User user) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			return deviceService.deleteDeviceInfo(user, deviceInfo);
@@ -111,7 +126,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void updateDeviceInfo(User user, Device deviceInfo) throws DeviceManagementException {
+	public void updateDeviceInfo(
+			User user,
+			Device deviceInfo) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			deviceService.updateDeviceInfo(user, deviceInfo);
@@ -122,7 +139,10 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public NetworkInfo swapDevice(User user, Device oldDeviceInfo, Device newDeviceInfo) throws DeviceManagementException {
+	public NetworkInfo swapDevice(
+			User user,
+			Device oldDeviceInfo,
+			Device newDeviceInfo) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			NetworkInfo oldNetworkInfo = deviceService.getNetworkInfo(oldDeviceInfo.getValue(), null);
@@ -135,7 +155,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public NetworkInfo activateService(NetworkInfo networkInfo, User user) throws DeviceActivationException {
+	public NetworkInfo activateService(
+			NetworkInfo networkInfo,
+			User user) throws DeviceActivationException {
 		try {
 			return deviceService.activateService(user, networkInfo);
 		} catch (DeviceServiceException e) {
@@ -145,7 +167,10 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void suspendService(int userId, int accountNo, int deviceId) throws DeviceManagementException {
+	public void suspendService(
+			int userId,
+			int accountNo,
+			int deviceId) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			deviceService.suspendService(userId, accountNo, deviceId);
@@ -156,7 +181,10 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void restoreService(int userId, int accountNo, int deviceId) throws DeviceManagementException {
+	public void restoreService(
+			int userId,
+			int accountNo,
+			int deviceId) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			deviceService.restoreService(userId, accountNo, deviceId);
@@ -167,7 +195,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public Account createServiceInstance(Account account, NetworkInfo networkInfo) throws DeviceServiceCreationException {
+	public Account createServiceInstance(
+			Account account,
+			NetworkInfo networkInfo) throws DeviceServiceCreationException {
 		try {
 			ServiceInstance serviceInstance = new ServiceInstance();
 			serviceInstance.setExternalId(networkInfo.getMdn());
@@ -179,7 +209,8 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void disconnectService(ServiceInstance serviceInstance) throws DeviceManagementException {
+	public void disconnectService(
+			ServiceInstance serviceInstance) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			deviceService.disconnectService(serviceInstance);
@@ -189,7 +220,8 @@ public class DeviceManager implements DeviceManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public void disconnectService(Account account) throws DeviceManagementException {
+	public void disconnectService(
+			Account account) throws DeviceManagementException {
 		try {
 			disconnectService(account.getServiceinstancelist().get(0));
 		} catch (DeviceManagementException e) {
@@ -199,7 +231,8 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void disconnectFromNetwork(NetworkInfo networkInfo) throws DeviceDisconnectException {
+	public void disconnectFromNetwork(
+			NetworkInfo networkInfo) throws DeviceDisconnectException {
 		try {
 			clearDevicesFromCache();
 			deviceService.disconnectFromNetwork(networkInfo);
@@ -210,7 +243,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public void disconnectFromKenan(Account account, ServiceInstance serviceInstance) throws DeviceManagementException {
+	public void disconnectFromKenan(
+			Account account,
+			ServiceInstance serviceInstance) throws DeviceManagementException {
 		try {
 			deviceService.disconnectFromKenan(account, serviceInstance);
 		} catch (DeviceServiceException e) {
@@ -220,7 +255,9 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
-	public NetworkInfo reinstallCustomerDevice(User user, Device deviceInfo) throws DeviceManagementException {
+	public NetworkInfo reinstallCustomerDevice(
+			User user,
+			Device deviceInfo) throws DeviceManagementException {
 		try {
 			clearDevicesFromCache();
 			return deviceService.reinstallCustomerDevice(user, deviceInfo);
@@ -230,7 +267,8 @@ public class DeviceManager implements DeviceManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public boolean isDeviceAvailable(String esn) {
+	public boolean isDeviceAvailable(
+			String esn) {
 		try {
 			NetworkInfo networkInfo = deviceService.getNetworkInfo(esn, null);
 			DevLogger.log("isDeviceAvailable: " + esn + " received " + networkInfo);
@@ -245,7 +283,9 @@ public class DeviceManager implements DeviceManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public void bindEsn(NetworkInfo networkInfo, Device deviceInfo) {
+	public void bindEsn(
+			NetworkInfo networkInfo,
+			Device deviceInfo) {
 		String esn = deviceInfo.getValue();
 		if (isDec(esn)) {
 			networkInfo.setEsnmeiddec(esn);
@@ -254,47 +294,62 @@ public class DeviceManager implements DeviceManagerModel {
 		}
 	}
 
-	public boolean compareEsn(Device deviceInfo, NetworkInfo networkInfo) {
+	public boolean compareEsn(
+			Device deviceInfo,
+			NetworkInfo networkInfo) {
 		String deviceEsn = deviceInfo.getValue();
 		return compareEsn(networkInfo, deviceEsn);
 	}
 
-	private boolean compareEsn(NetworkInfo networkInfo, String esn) {
-		DevLogger.log("comparEsn: " + networkInfo.getEsnmeiddec() + " " + networkInfo.getEsnmeidhex() + " " + esn);
+	private boolean compareEsn(
+			NetworkInfo networkInfo,
+			String esn) {
 		return networkInfo != null && (esn.equals(networkInfo.getEsnmeiddec()) || esn.equals(networkInfo.getEsnmeidhex()));
 	}
 
 	// TODO possibly check for status R as well
-	private boolean isEsnInUse(NetworkInfo networkInfo) {
+	private boolean isEsnInUse(
+			NetworkInfo networkInfo) {
 		DevLogger.log("isEsnInUse: " + networkInfo.getStatus());
 		return networkInfo.getStatus() != null
 				&& (networkInfo.getStatus().equals("A") || networkInfo.getStatus().equals("S") || networkInfo.getStatus().equals("H"));
 	}
 
-	public static boolean isDec(String esn) {
+	public static boolean isDec(
+			String esn) {
 		return esn.matches("\\d+") && (esn.length() == 11 || esn.length() == 18);
 	}
 
-	public static boolean isHex(String esn) {
+	public static boolean isHex(
+			String esn) {
 		return !esn.matches("\\d+") && (esn.length() == 8 || esn.length() == 14);
 	}
 
-	/* *************************************************************
+	/* *************************************************************************************************
 	 * CacheManger helper functions
-	 * *************************************************************
+	 * *************************************************************************************************
 	 */
 
 	@SuppressWarnings("unchecked")
 	private List<Device> getDevicesFromCache() {
-		return (List<Device>) CacheManager.get(CacheKey.DEVICES);
+		List<AccountDetail> accountDetails = (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
+		if (accountDetails != null) {
+			List<Device> devices = new ArrayList<Device>();
+			for (AccountDetail ad : accountDetails)
+				devices.add(ad.getDeviceInfo());
+			return devices;
+		}
+		return null;
 	}
 
 	private void clearDevicesFromCache() {
-		CacheManager.clear(CacheKey.DEVICES);
+		// CacheManager.clear(CacheKey.DEVICES);
+		CacheManager.clear(CacheKey.ACCOUNT_DETAILS);
 	}
 
-	private void saveDevicesToCache(List<Device> deviceInfoList) {
-		CacheManager.set(CacheKey.DEVICES, deviceInfoList);
-	}
+	// private void saveDevicesToCache(
+	// List<Device> deviceInfoList) {
+	// CacheManager.set(CacheKey.DEVICES, deviceInfoList);
+	// }
 
 }

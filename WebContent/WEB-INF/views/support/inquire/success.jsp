@@ -4,7 +4,6 @@
 <head>
 <title>Create Ticket Successful</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 </head>
 <body>
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>

@@ -10,12 +10,14 @@ import javax.annotation.PostConstruct;
 
 import org.joda.time.DateTime;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.trc.service.gateway.WebserviceGateway;
-import com.trc.util.logger.DevLogger;
+import com.tscp.util.logger.DevLogger;
 
 @Component
+@Scope("singleton")
 public final class Config {
 	private static ClassLoader classLoader;
 	private static final String configFile = "config/config.properties";
@@ -35,10 +37,9 @@ public final class Config {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(Config.class);
 
 	@PostConstruct
-	public static void loadProperties() {
+	public static void init() {
 		if (!initialized) {
 			classLoader = Config.class.getClassLoader();
-
 			try {
 				loadConfig();
 				loadMonths();
@@ -70,7 +71,8 @@ public final class Config {
 				WebserviceGateway.location = props.getProperty("wsdl_localhost");
 			}
 
-			DevLogger.debug("TSCPMVNA WSDL location set to " + WebserviceGateway.location);
+			DevLogger.debug("Environment: " + ENVIRONMENT);
+			DevLogger.debug("Admin: " + ADMIN);
 		}
 	}
 
@@ -112,7 +114,8 @@ public final class Config {
 		return yearRange;
 	}
 
-	public static void setYearRange(int yearRange) {
+	public static void setYearRange(
+			int yearRange) {
 		Config.yearRange = yearRange;
 	}
 
@@ -120,7 +123,8 @@ public final class Config {
 		return yearsFuture;
 	}
 
-	public static void setYearsFuture(SortedMap<Integer, String> yearsFuture) {
+	public static void setYearsFuture(
+			SortedMap<Integer, String> yearsFuture) {
 		Config.yearsFuture = yearsFuture;
 	}
 
@@ -128,7 +132,8 @@ public final class Config {
 		return yearsPast;
 	}
 
-	public static void setYearsPast(SortedMap<Integer, String> yearsPast) {
+	public static void setYearsPast(
+			SortedMap<Integer, String> yearsPast) {
 		Config.yearsPast = yearsPast;
 	}
 
@@ -136,7 +141,8 @@ public final class Config {
 		return states;
 	}
 
-	public static void setStates(SortedMap<String, String> states) {
+	public static void setStates(
+			SortedMap<String, String> states) {
 		Config.states = states;
 	}
 
@@ -144,7 +150,8 @@ public final class Config {
 		return months;
 	}
 
-	public static void setMonths(SortedMap<String, String> months) {
+	public static void setMonths(
+			SortedMap<String, String> months) {
 		Config.months = months;
 	}
 

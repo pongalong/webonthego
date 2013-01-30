@@ -12,18 +12,6 @@
     <property name="suffix" value=".jsp" />
   </bean>
 
-  <!-- Begin Locale Changer
-  <mvc:interceptors> 
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"> 
-      <property name="paramName" value="lang" />
-    </bean>
-  </mvc:interceptors> 
-  
-  <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-    <property name="defaultLocale" value="en" /> 
-  </bean> 
-  -->
-  
   <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
     <property name="basename" value="classpath:messages/messages" />
     <property name="defaultEncoding" value="UTF-8" />
@@ -33,7 +21,6 @@
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
     <property name="host">
       <value>209.127.161.5</value>
-      <!-- <value>209.127.162.26</value> -->
     </property>
   </bean>
 
@@ -54,10 +41,5 @@
 
   <!-- Begin jCaptcha -->
   <bean class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService" id="imageCaptchaService" />
-
-  <!-- <bean id="customizableTraceInterceptor" class="com.trc.util.logger.aspect.TraceInterceptor"> <property name="userManager" ref="userManager" 
-    /> <property name="loggerName" value="truconnect" /> <property name="enterMessage" value="Entering $[methodName]($[arguments])" /> <property name="exitMessage" 
-    value="Leaving $[methodName](): $[returnValue]" /> </bean> -->
-
 
 </beans>

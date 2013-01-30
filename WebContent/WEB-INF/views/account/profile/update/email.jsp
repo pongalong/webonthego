@@ -21,14 +21,14 @@
               <div class="alert error">
                 <h1>Please correct the following problems</h1>
                 <form:errors path="oldPassword" />
-                <form:errors path="email" />
-                <form:errors path="confirmEmail" />
+                <form:errors path="newEmail" />
+                <form:errors path="confirmNewEmail" />
               </div>
             </div>
           </c:if>
           <!--End Error Display -->
 
-          <c:if test="${empty sessionScope.controlling_user}">
+          <c:if test="${sessionScope.controlling_user.userId == -1}">
             <div class="row">
               <form:label path="oldPassword" cssClass="required">Password</form:label>
               <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
@@ -36,13 +36,13 @@
           </c:if>
 
           <div class="row">
-            <form:label path="email" cssClass="required">New E-Mail Address</form:label>
-            <form:input path="email" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+            <form:label path="newEmail" cssClass="required">New E-Mail Address</form:label>
+            <form:input path="newEmail" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
           <div class="row">
-            <form:label path="confirmEmail" cssClass="required">Confirm E-Mail Address</form:label>
-            <form:input path="confirmEmail" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+            <form:label path="confirmNewEmail" cssClass="required">Confirm E-Mail Address</form:label>
+            <form:input path="confirmNewEmail" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
           <!-- Buttons -->

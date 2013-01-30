@@ -14,12 +14,24 @@
     <div id="main-content">
       <div class="span-18 colborder">
 
-        <c:if test="${updateEmailNotification}">
-          <%@ include file="/WEB-INF/views/include/display/profileEmailUpdate.jsp"%>
+
+        <c:if test="${not empty param.notification_sent}">
+          <div class="info">
+            <h1>An E-Mail has been sent to you</h1>
+            <p>An email has been sent to ${param.notification_sent} verify the changes to your account.</p>
+          </div>
         </c:if>
 
-        <c:if test="${profileUpdate}">
-          <%@ include file="/WEB-INF/views/include/display/profileUpdate.jsp"%>
+        <c:if test="${param.updated == 'password'}">
+          <div class="success">
+            <p>Your password has been successfully updated!</p>
+          </div>
+        </c:if>
+
+        <c:if test="${param.updated == 'email'}">
+          <div class="success">
+            <p>Your email has been successfully updated!</p>
+          </div>
         </c:if>
 
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Login Information</h3>
@@ -95,7 +107,7 @@
 
         <div class="clear"></div>
         <c:if test="${not empty sessionScope.controlling_user}">
-          <div class="buttons" style="margin-top: 10px 0 10px 0; padding: 10px 0 10px 0; border-top: 1px #ccc dotted;">
+          <div class="buttons" style="margin-top: 10px 0 10px 0; padding: 10px 0 10px 0;">
             <a href="<spring:url value="/account/payment/methods/add" />" class="button action-m" style="float: right;"><span>Add New Card</span> </a>
           </div>
         </c:if>

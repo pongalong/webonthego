@@ -4,7 +4,6 @@
 <head>
 <title>Web on the Go &#8480; Account Management</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
 
 <script type="text/javascript">

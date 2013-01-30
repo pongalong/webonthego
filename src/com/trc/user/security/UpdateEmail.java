@@ -1,23 +1,56 @@
 package com.trc.user.security;
 
 public class UpdateEmail extends UpdateUser {
-  private String email;
-  private String confirmEmail;
+	private String newEmail;
+	private String confirmNewEmail;
+	private boolean notificationSent;
+	private boolean success;
 
-  public String getEmail() {
-    return email;
-  }
+	public String getNewEmail() {
+		return newEmail;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public void setNewEmail(
+			String email) {
+		this.newEmail = email;
+	}
 
-  public String getConfirmEmail() {
-    return confirmEmail;
-  }
+	public String getConfirmNewEmail() {
+		return confirmNewEmail;
+	}
 
-  public void setConfirmEmail(String confirmEmail) {
-    this.confirmEmail = confirmEmail;
-  }
+	public void setConfirmNewEmail(
+			String confirmEmail) {
+		this.confirmNewEmail = confirmEmail;
+	}
+
+	public boolean isNotificationSent() {
+		return notificationSent;
+	}
+
+	public void setNotificationSent(
+			boolean notificationSent) {
+		this.notificationSent = notificationSent;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(
+			boolean success) {
+		this.success = success;
+	}
+
+	public boolean isEmpty() {
+		return newEmail == null;
+	}
+
+	public void clear() {
+		newEmail = null;
+		confirmNewEmail = null;
+		notificationSent = false;
+		success = false;
+	}
 
 }

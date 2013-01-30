@@ -21,8 +21,8 @@ import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.trc.util.logger.LogLevel;
-import com.trc.util.logger.aspect.Loggable;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Component
 public class SimpleRegistrationManager {

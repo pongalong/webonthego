@@ -211,7 +211,7 @@ $.fn.enableTooltip = function() {
  * Caption Effects
  ******************************************************************************/
 $.fn.enableCaption = function() {
-	var caption = $(this).attr("title");
+	var caption = $(this).attr("placeholder");
 	var val = $(this).val();
 	if (val.length == 0) {
 		val = caption;
@@ -233,7 +233,7 @@ $.fn.showCaption = function(caption) {
 	if (caption != null) {
 		type($(this), caption, 0);
 	} else {
-		type($(this), $(this).attr("title"), 0);
+		type($(this), $(this).attr("placeholder"), 0);
 	}
 };
 

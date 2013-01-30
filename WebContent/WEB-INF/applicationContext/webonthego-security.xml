@@ -32,22 +32,28 @@
 
     <intercept-url pattern="/static/**" filters="none" />
     <intercept-url pattern="/favicon.ico" filters="none" />
-    <intercept-url pattern="/home" access="permitAll" />
+
     <intercept-url pattern="/login/**" access="permitAll" />
     <intercept-url pattern="/logout/**" access="isAuthenticated()" />
+
     <intercept-url pattern="/register/**" access="permitAll" />
     <intercept-url pattern="/activate/**" access="isAuthenticated()" />
+
     <intercept-url pattern="/support/ticket/**" access="isAuthenticated()" />
     <intercept-url pattern="/support/**" access="permitAll" />
-    <intercept-url pattern="/retrieve/**" access="permitAll" />
+
+    <intercept-url pattern="/reset/**" access="permitAll" />
+
+    <intercept-url pattern="/home" access="permitAll" />
+
     <intercept-url pattern="/servicerep/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SERVICEREP')" />
     <intercept-url pattern="/manager/**" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')" />
     <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN')" />
-    <intercept-url pattern="/sales/**" access="hasAnyRole('ROLE_SALES')" />
+
     <intercept-url pattern="/" access="permitAll" />
     <intercept-url pattern="/**" access="isAuthenticated()" />
 
-    <access-denied-handler error-page="/exception/accessDenied.jsp" />
+    <access-denied-handler error-page="/WEB-INF/views/exception/accessDenied.jsp" />
     <logout invalidate-session="true" logout-success-url="http://www.webonthego.com/" />
   </http>
 

@@ -19,8 +19,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -54,7 +52,8 @@ public class User implements UserModel, UserDetails {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(
+			int userId) {
 		this.userId = userId;
 	}
 
@@ -64,7 +63,8 @@ public class User implements UserModel, UserDetails {
 		return this.username;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(
+			String username) {
 		this.username = username;
 	}
 
@@ -74,7 +74,8 @@ public class User implements UserModel, UserDetails {
 		return this.password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(
+			String password) {
 		this.password = password;
 	}
 
@@ -83,7 +84,8 @@ public class User implements UserModel, UserDetails {
 		return this.email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(
+			String email) {
 		this.email = email;
 	}
 
@@ -92,7 +94,8 @@ public class User implements UserModel, UserDetails {
 		return contactInfo;
 	}
 
-	public void setContactInfo(ContactInfo contactInfo) {
+	public void setContactInfo(
+			ContactInfo contactInfo) {
 		this.contactInfo = contactInfo;
 	}
 
@@ -101,7 +104,8 @@ public class User implements UserModel, UserDetails {
 		return this.enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(
+			boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -110,7 +114,8 @@ public class User implements UserModel, UserDetails {
 		return this.dateEnabled;
 	}
 
-	public void setDateEnabled(Date dateEnabled) {
+	public void setDateEnabled(
+			Date dateEnabled) {
 		this.dateEnabled = dateEnabled;
 	}
 
@@ -119,7 +124,8 @@ public class User implements UserModel, UserDetails {
 		return this.dateDisabled;
 	}
 
-	public void setDateDisabled(Date dateDisabled) {
+	public void setDateDisabled(
+			Date dateDisabled) {
 		this.dateDisabled = dateDisabled;
 	}
 
@@ -128,7 +134,8 @@ public class User implements UserModel, UserDetails {
 		return this.userHint;
 	}
 
-	public void setSecurityQuestionAnswer(SecurityQuestionAnswer securityQuestionAnswer) {
+	public void setSecurityQuestionAnswer(
+			SecurityQuestionAnswer securityQuestionAnswer) {
 		this.userHint = securityQuestionAnswer;
 	}
 
@@ -138,15 +145,15 @@ public class User implements UserModel, UserDetails {
 		return this.authorities;
 	}
 
-	public void setRoles(Collection<Authority> roles) {
+	public void setRoles(
+			Collection<Authority> roles) {
 		this.authorities = roles;
 	}
 
-	/*****************************************************************************
-	 * Begins Spring UserDetails implementation methods // TODO User class should
-	 * not implement UserDetails, instead we should create another class that uses
-	 * Assembler to keep our design separate from Spring.
-	 *****************************************************************************/
+	/********************************************************************************************************************************
+	 * Begins Spring UserDetails implementation methods. User class should not implement UserDetails, instead we should
+	 * create another class that uses Assembler to keep our design separate from Spring.
+	 ********************************************************************************************************************************/
 
 	private Collection<GrantedAuthority> grantedAuthorities;
 
@@ -192,39 +199,31 @@ public class User implements UserModel, UserDetails {
 
 	@Transient
 	public boolean isAdmin() {
-		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_ADMIN");
-		// return getAuthorities().contains(ga);
 		return getRoles().contains(new Authority(ROLE.ROLE_ADMIN));
 	}
 
 	@Transient
 	public boolean isManager() {
-		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_MANAGER");
-		// return getAuthorities().contains(ga);
 		return getRoles().contains(new Authority(ROLE.ROLE_MANAGER));
 	}
 
 	@Transient
 	public boolean isServiceRep() {
-		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_SERVICEREP");
-		// return getAuthorities().contains(ga);
 		return getRoles().contains(new Authority(ROLE.ROLE_SERVICEREP));
 	}
 
 	@Transient
 	public boolean isUser() {
-		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_USER");
-		// return getAuthorities().contains(ga);
 		return getRoles().contains(new Authority(ROLE.ROLE_USER));
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger("devLogger");
+	@Transient
+	public boolean isAnon() {
+		return getRoles().contains(new Authority(ROLE.ROLE_ANONYMOUS));
+	}
 
 	@Transient
 	public boolean isAuthenticated() {
-		// Previous version of checking if a user is authenticated searched for given roles
-		// GrantedAuthority ga = new GrantedAuthorityImpl("ROLE_ANONYMOUS");
-		// boolean origCheck = !UserManager.securityContext.getContext().getAuthentication().getAuthorities().contains(ga) && !getAuthorities().contains(ga);
 		Authentication authentication = UserManager.securityContext.getContext().getAuthentication();
 		return authentication != null && authentication.getPrincipal() instanceof UserDetails;
 	}
@@ -239,7 +238,8 @@ public class User implements UserModel, UserDetails {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(
+			Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -263,9 +263,12 @@ public class User implements UserModel, UserDetails {
 	@Override
 	@Transient
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", email=" + email + ", dateEnabled=" + dateEnabled
-				+ ", dateDisabled=" + dateDisabled + ", enabled=" + enabled + ", userHint=" + userHint + ", authorities=" + authorities + ", contactInfo="
-				+ contactInfo + "]";
+		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", dateEnabled=" + dateEnabled + ", dateDisabled=" + dateDisabled
+				+ ", enabled=" + enabled + ", authorities=" + authorities + "]";
 	}
 
+	@Transient
+	public String toShortString() {
+		return "User [userId=" + userId + ", username=" + username + ", email=" + email + "]";
+	}
 }

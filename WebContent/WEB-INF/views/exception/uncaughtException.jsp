@@ -17,8 +17,8 @@
       <div class="span-18 colborder">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Our Apologies, There was a problem</h3>
         <p style="font-size: 1.3em;">
-          Your request could not be completed at this time and no changes were made to your account. Please try again later or contact Web on the Go &#8480; Customer
-          Support <a href="http://account.webonthego.com/support">http://account.webontehgo.com/support</a>.
+          Your request could not be completed at this time and no changes were made to your account. Please try again later or contact Web on the Go &#8480;
+          Customer Support <a href="http://account.webonthego.com/support">http://account.webonthego.com/support</a>.
         </p>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
           <hr />

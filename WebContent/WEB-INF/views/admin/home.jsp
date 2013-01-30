@@ -13,7 +13,7 @@
     <div id="main-content">
       <div class="span-18 colborder">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Users currently online</h3>
-        <p>This is a list of users currently viewing their TruConnect accounts as well as their active sessions, time of their last action, and whether
+        <p>This is a list of users currently viewing their accounts as well as their active sessions, time of their last action, and whether
           their session has been invalidated. Clicking "logout" will force users out of their active session.</p>
         <div style="margin-left: 30px; font-size: 12px; color: gray;">
           <span>[User email/login] - logout]</span><br /> <span style="margin-left: 30px;">[session ID] - [Last activity] - [Session invalidated]</span>

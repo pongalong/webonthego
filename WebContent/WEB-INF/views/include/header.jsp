@@ -15,7 +15,7 @@
     <!-- End Logo -->
 
     <!-- Begin Login/Logout -->
-    <c:if test="${empty sessionScope.controlling_user}">
+    <c:if test="${sessionScope.controlling_user.userId == -1}">
       <div class="secondary-navigation">
         <ul>
           <sec:authorize ifNotGranted="ROLE_ANONYMOUS">

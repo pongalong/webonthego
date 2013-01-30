@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import com.trc.report.ActivationReport;
 import com.trc.report.UserActivationReport;
 import com.trc.user.User;
-import com.trc.util.logger.DevLogger;
 import com.trc.util.logger.activation.ActState;
 import com.trc.util.logger.activation.ActivationMap;
 import com.trc.util.logger.activation.ActivationState;
+import com.tscp.util.logger.DevLogger;
 
 @Component
 public class ActivationReportManager {

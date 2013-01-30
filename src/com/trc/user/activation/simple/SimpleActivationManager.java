@@ -27,7 +27,6 @@ import com.trc.exception.management.DeviceReservationException;
 import com.trc.exception.management.DeviceServiceCreationException;
 import com.trc.exception.management.PaymentManagementException;
 import com.trc.manager.AccountManager;
-import com.trc.manager.AddressManager;
 import com.trc.manager.CouponManager;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.PaymentManager;
@@ -38,8 +37,6 @@ import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.user.contact.Address;
 import com.trc.user.contact.ContactInfo;
-import com.trc.util.logger.LogLevel;
-import com.trc.util.logger.aspect.Loggable;
 import com.trc.web.flow.util.WebFlowUtil;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
@@ -47,6 +44,8 @@ import com.tscp.mvne.Device;
 import com.tscp.mvne.NetworkInfo;
 import com.tscp.mvne.PaymentUnitResponse;
 import com.tscp.mvne.ServiceInstance;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Component
 public class SimpleActivationManager {
@@ -56,8 +55,8 @@ public class SimpleActivationManager {
 	private AccountManager accountManager;
 	@Autowired
 	private DeviceManager deviceManager;
-	@Autowired
-	private AddressManager addressManager;
+	// @Autowired
+	// private AddressManager addressManager;
 	@Autowired
 	private PaymentManager paymentManager;
 	@Autowired
@@ -70,21 +69,23 @@ public class SimpleActivationManager {
 	static final Logger logger = LoggerFactory.getLogger("devLogger");
 
 	/* ***********************************************************************
-	 * Decision and Fetch Methods
-	 * ***********************************************************************
+	 * Decision and Fetch Methods ***********************************************************************
 	 */
 
-	public boolean isListEmpty(List<Object> list) {
+	public boolean isListEmpty(
+			List<Object> list) {
 		return list == null || list.isEmpty();
 	}
 
-	public boolean hasCoupon(Coupon coupon) {
+	public boolean hasCoupon(
+			Coupon coupon) {
 		boolean result = coupon != null && !coupon.isEmpty();
 		logger.trace("coupon entered... {}", result);
 		return result;
 	}
 
-	public List<Device> fetchDevices(User user) {
+	public List<Device> fetchDevices(
+			User user) {
 		try {
 			List<Device> devices = deviceManager.getDeviceInfoList(user);
 			logger.trace("fetching existing devices... {} found", devices.size());
@@ -94,29 +95,31 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public List<Account> fetchAccounts(User user) {
-		try {
-			List<Account> accounts = accountManager.getAccounts(user);
-			logger.trace("fetching existing accounts... {} found", accounts.size());
-			return accounts;
-		} catch (AccountManagementException e) {
-			return null;
-		}
-	}
+	// public List<Account> fetchAccounts(
+	// User user) {
+	// try {
+	// List<Account> accounts = accountManager.getAccounts(user);
+	// logger.trace("fetching existing accounts... {} found", accounts.size());
+	// return accounts;
+	// } catch (AccountManagementException e) {
+	// return null;
+	// }
+	// }
 
-	public List<CreditCard> fetchPaymentMethods(User user) throws PaymentManagementException {
+	public List<CreditCard> fetchPaymentMethods(
+			User user) throws PaymentManagementException {
 		List<CreditCard> creditCards = paymentManager.getCreditCards(user);
 		logger.trace("fetching existing payment methods... {} found", creditCards.size());
 		return creditCards;
 	}
 
 	/* ***********************************************************************
-	 * Account Creation Methods
-	 * ***********************************************************************
+	 * Account Creation Methods ***********************************************************************
 	 */
 
 	@Loggable(value = LogLevel.TRACE)
-	public Account createShellAccount(SimpleActivation sa) throws AccountManagementException, AddressManagementException {
+	public Account createShellAccount(
+			SimpleActivation sa) throws AccountManagementException, AddressManagementException {
 		logger.trace("Creating shell account.");
 
 		if (sa == null)
@@ -158,32 +161,38 @@ public class SimpleActivationManager {
 	}
 
 	/* ***********************************************************************
-	 * Device Methods
-	 * ***********************************************************************
+	 * Device Methods ***********************************************************************
 	 */
 
-	public String getSuggestedName(String firstName) {
+	public String getSuggestedName(
+			String firstName) {
 		return firstName + "'s Device";
 	}
 
-	public Device addDevice(SimpleActivation sa) throws DeviceManagementException {
+	public Device addDevice(
+			SimpleActivation sa) throws DeviceManagementException {
 		logger.trace("adding device with ESN {} to user {}", sa.getDevice().getValue(), sa.getUser().getEmail());
 		sa.setDevice(deviceManager.addDeviceInfo(sa.getDevice(), sa.getAccount(), sa.getUser()));
 		logger.trace("device added to user with id {}", sa.getDevice().getId());
 		return sa.getDevice();
 	}
 
-	public List<Device> removeDevice(SimpleActivation sa) throws DeviceManagementException {
+	public List<Device> removeDevice(
+			SimpleActivation sa) throws DeviceManagementException {
 		logger.trace("removing device with ESN {} from user {}", sa.getDevice().getValue(), sa.getUser().getEmail());
 		return deviceManager.removeDeviceInfo(sa.getDevice(), sa.getAccount(), sa.getUser());
 	}
 
-	public void releaseMdn(SimpleActivation sa) throws DeviceDisconnectException {
+	public void releaseMdn(
+			SimpleActivation sa) throws DeviceDisconnectException {
 		logger.trace("releasing MDN {} for failed activation", sa.getNetworkInfo().getMdn());
 		releaseMdn(sa, 3, 1000l);
 	}
 
-	protected void releaseMdn(SimpleActivation sa, int numRetry, long delay) throws DeviceDisconnectException {
+	protected void releaseMdn(
+			SimpleActivation sa,
+			int numRetry,
+			long delay) throws DeviceDisconnectException {
 		logger.trace("releasing MDN, {} attempts left", numRetry);
 		if (numRetry > 0) {
 			try {
@@ -202,13 +211,17 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public NetworkInfo reserveMdn(SimpleActivation sa) throws DeviceReservationException {
+	public NetworkInfo reserveMdn(
+			SimpleActivation sa) throws DeviceReservationException {
 		NetworkInfo networkInfo = reserveMdn(sa, 3, 1000l);
 		logger.trace("reserved MDN {} for activation", networkInfo.getMdn());
 		return networkInfo;
 	}
 
-	protected NetworkInfo reserveMdn(SimpleActivation sa, int numRetry, long delay) throws DeviceReservationException {
+	protected NetworkInfo reserveMdn(
+			SimpleActivation sa,
+			int numRetry,
+			long delay) throws DeviceReservationException {
 		logger.trace("reserving MDN, {} attempts left", numRetry);
 		if (numRetry > 0) {
 			try {
@@ -227,7 +240,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public NetworkInfo activateService(SimpleActivation sa) throws DeviceActivationException {
+	public NetworkInfo activateService(
+			SimpleActivation sa) throws DeviceActivationException {
 		if (DeviceManager.isDec(sa.getDevice().getValue())) {
 			sa.getNetworkInfo().setEsnmeiddec(sa.getDevice().getValue());
 		} else if (DeviceManager.isHex(sa.getDevice().getValue())) {
@@ -238,7 +252,10 @@ public class SimpleActivationManager {
 		return activateService(sa, 3, 1000l);
 	}
 
-	protected NetworkInfo activateService(SimpleActivation sa, int numRetry, long delay) throws DeviceActivationException {
+	protected NetworkInfo activateService(
+			SimpleActivation sa,
+			int numRetry,
+			long delay) throws DeviceActivationException {
 		logger.trace("activating service, {} attempts left", numRetry);
 		if (numRetry > 0) {
 			try {
@@ -259,12 +276,16 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public Account createService(SimpleActivation sa) throws DeviceServiceCreationException {
+	public Account createService(
+			SimpleActivation sa) throws DeviceServiceCreationException {
 		sa.setAccount(createService(sa, 3, 1000l));
 		return sa.getAccount();
 	}
 
-	protected Account createService(SimpleActivation sa, int numRetry, long delay) throws DeviceServiceCreationException {
+	protected Account createService(
+			SimpleActivation sa,
+			int numRetry,
+			long delay) throws DeviceServiceCreationException {
 		logger.trace("creating service in Kenan, {} attempts left", numRetry);
 		if (numRetry > 0) {
 			try {
@@ -286,8 +307,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public NetworkInfo reserveAndActivate(SimpleActivation sa) throws DeviceReservationException, DeviceActivationException, DeviceDisconnectException,
-			DeviceManagementException {
+	public NetworkInfo reserveAndActivate(
+			SimpleActivation sa) throws DeviceReservationException, DeviceActivationException, DeviceDisconnectException, DeviceManagementException {
 		try {
 			reserveMdn(sa);
 			return activateService(sa);
@@ -299,13 +320,13 @@ public class SimpleActivationManager {
 	}
 
 	/* ***********************************************************************
-	 * Coupon Methods
-	 * ***********************************************************************
+	 * Coupon Methods ***********************************************************************
 	 */
 
 	private static String ERROR_APPLY_COUPON = "An error occurred while applying your coupon. No changes were made, please try again.";
 
-	public Coupon getCouponByCode(Coupon coupon) throws CouponManagementException, CouponDoesNotExistException {
+	public Coupon getCouponByCode(
+			Coupon coupon) throws CouponManagementException, CouponDoesNotExistException {
 		String code = coupon.getCouponCode();
 		logger.debug("fetching coupon {}", code);
 		Coupon fetchedCoupon = couponManager.getCouponByCode(code);
@@ -317,7 +338,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public int applyCoupon(SimpleActivation sa) throws CouponManagementException {
+	public int applyCoupon(
+			SimpleActivation sa) throws CouponManagementException {
 		Coupon coupon = sa.getCreditCardPayment().getCoupon();
 		if (coupon != null && !coupon.isEmpty()) {
 			if (coupon.getCouponDetail().getContract().getContractType() == -1) {
@@ -333,7 +355,8 @@ public class SimpleActivationManager {
 		return 0;
 	}
 
-	public int applyContract(SimpleActivation sa) throws CouponManagementException {
+	public int applyContract(
+			SimpleActivation sa) throws CouponManagementException {
 		Coupon coupon = sa.getCreditCardPayment().getCoupon();
 		if (coupon != null && !coupon.isEmpty()) {
 			if (coupon.getCouponDetail().getContract().getContractType() != -1) {
@@ -350,40 +373,48 @@ public class SimpleActivationManager {
 	}
 
 	/* ***********************************************************************
-	 * Payment Methods
-	 * ***********************************************************************
+	 * Payment Methods ***********************************************************************
 	 */
 
-	public void saveOrUpdatePaymentMethod(User user, CreditCard creditCard) throws PaymentManagementException {
+	public void saveOrUpdatePaymentMethod(
+			User user,
+			CreditCard creditCard) throws PaymentManagementException {
 		if (creditCard.getPaymentid() == 0)
 			savePaymentMethod(user, creditCard);
 		else
 			updatePaymentMethod(user, creditCard);
 	}
 
-	public void savePaymentMethod(User user, CreditCard creditCard) throws PaymentManagementException {
+	public void savePaymentMethod(
+			User user,
+			CreditCard creditCard) throws PaymentManagementException {
 		logger.debug("Adding payment method for user " + userManager.getCurrentUser().getEmail() + " " + creditCard.getCreditCardNumber());
 		CreditCard createdCreditCard = paymentManager.addCreditCard(user, creditCard);
 		WebserviceAdapter.copyCreditCard(creditCard, createdCreditCard);
 	}
 
-	public void updatePaymentMethod(User user, CreditCard creditCard) throws PaymentManagementException {
+	public void updatePaymentMethod(
+			User user,
+			CreditCard creditCard) throws PaymentManagementException {
 		logger.debug("Updating payment method for user " + userManager.getCurrentUser().getEmail() + " " + creditCard.getCreditCardNumber());
 		paymentManager.updateCreditCard(user, creditCard);
 	}
 
-	public CreditCard getPaymentMethod(int paymentId) throws PaymentManagementException {
+	public CreditCard getPaymentMethod(
+			int paymentId) throws PaymentManagementException {
 		CreditCard cc = paymentManager.getCreditCard(paymentId);
 		logger.trace("fetching payment method with ID {} and value {}", paymentId, cc.getCreditCardNumber());
 		return cc;
 	}
 
-	public CreditCard getDefaultPaymentMethod(User user) throws PaymentManagementException {
+	public CreditCard getDefaultPaymentMethod(
+			User user) throws PaymentManagementException {
 		logger.debug("fetching default payment method for {}", user.getEmail());
 		return paymentManager.getDefaultCreditCard(user);
 	}
 
-	public PaymentUnitResponse makeActivationPayment(SimpleActivation sa) throws PaymentManagementException {
+	public PaymentUnitResponse makeActivationPayment(
+			SimpleActivation sa) throws PaymentManagementException {
 		User user = sa.getUser();
 		Account account = sa.getAccount();
 		CreditCard cc = sa.getCreditCardPayment().getCreditCard();
@@ -413,27 +444,35 @@ public class SimpleActivationManager {
 	}
 
 	/* ***********************************************************************
-	 * Helper Methods
-	 * ***********************************************************************
+	 * Helper Methods ***********************************************************************
 	 */
 
-	public void addFlowError(String message) {
+	public void addFlowError(
+			String message) {
 		WebFlowUtil.addError(message);
 	}
 
-	public void addFlowError(String code, String message) {
+	public void addFlowError(
+			String code,
+			String message) {
 		WebFlowUtil.addError(code, message);
 	}
 
-	public void addFlowError(String source, String code, String message) {
+	public void addFlowError(
+			String source,
+			String code,
+			String message) {
 		WebFlowUtil.addError(source, code, message);
 	}
 
-	public void trace(String pattern, Object obj) {
+	public void trace(
+			String pattern,
+			Object obj) {
 		logger.trace(pattern, obj);
 	}
 
-	public void printStatus(SimpleActivation simpleActivation) {
+	public void printStatus(
+			SimpleActivation simpleActivation) {
 		if (simpleActivation != null) {
 			logger.debug("activation state:");
 			if (simpleActivation.getUser() != null)
@@ -449,7 +488,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public void sendActivationNotice(SimpleActivation sa) {
+	public void sendActivationNotice(
+			SimpleActivation sa) {
 		logger.trace("sending activation notice to user");
 		try {
 			emailService.sendActivationEmail(sa.getUser(), sa.getAccount());
@@ -458,7 +498,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public void sendDisconnectExceptionNotice(SimpleActivation sa) {
+	public void sendDisconnectExceptionNotice(
+			SimpleActivation sa) {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
 			myMessage.setTo("wotg_alerts@telscape.net");
@@ -477,7 +518,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public void notifyReleaseMdnException(SimpleActivation sa) {
+	public void notifyReleaseMdnException(
+			SimpleActivation sa) {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
 			myMessage.setTo("wotg_alerts@telscape.net");
@@ -496,7 +538,8 @@ public class SimpleActivationManager {
 		}
 	}
 
-	public void sendServiceErrorNotice(SimpleActivation sa) throws WebFlowException {
+	public void sendServiceErrorNotice(
+			SimpleActivation sa) throws WebFlowException {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
 			myMessage.setTo("truconnect_alerts@telscape.net");

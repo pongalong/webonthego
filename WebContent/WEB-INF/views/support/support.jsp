@@ -4,7 +4,6 @@
 <head>
 <title>Search</title>
 <%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-<script type="text/javascript" src="<spring:url value="/static/javascript/setupForms.js" />"></script>
 <script type="text/javascript">
 	$(function() {
 		$("#search_support_input").enableCaption();
