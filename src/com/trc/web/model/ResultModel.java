@@ -3,118 +3,134 @@ package com.trc.web.model;
 import org.springframework.web.servlet.ModelAndView;
 
 public class ResultModel {
-  private ModelAndView model = new ModelAndView();
-  private String successViewName;
-  private String errorViewName;
-  private String accessDeniedViewName = "exception/accessDenied";
-  private String accessExceptionViewName = "exception/dataAccessException";
-  private String exceptionViewName = "exception/uncaughtException";
-  private String timeoutViewName = "exception/timeout";
+	private ModelAndView model = new ModelAndView();
+	private String successViewName;
+	private String errorViewName;
+	private String accessDeniedViewName = "exception/accessDenied";
+	private String accessExceptionViewName = "exception/dataAccessException";
+	private String exceptionViewName = "exception/uncaughtException";
+	private String timeoutViewName = "exception/timeout";
 
-  public ResultModel(String successView, String errorView) {
-    setSuccessViewName(successView);
-    setErrorViewName(errorView);
-    setViewName(errorView);
-  }
+	public ResultModel(String successView, String errorView) {
+		setSuccessViewName(successView);
+		setErrorViewName(errorView);
+		model.setViewName(errorView);
+	}
 
-  public ResultModel(String view) {
-    setSuccessViewName(view);
-    setErrorViewName(view);
-    setViewName(view);
-  }
+	public ResultModel(String view) {
+		setSuccessViewName(view);
+		setErrorViewName(view);
+		model.setViewName(view);
+	}
 
-  public ModelAndView getModel() {
-    return model;
-  }
+	ModelAndView getModel() {
+		return model;
+	}
 
-  public void setModel(ModelAndView model) {
-    this.model = model;
-  }
+	void setModel(
+			ModelAndView model) {
+		this.model = model;
+	}
 
-  public void setViewName(String viewName) {
-    getModel().setViewName(viewName);
-  }
+	public ModelAndView addAttribute(
+			String attributeName,
+			Object attributeValue) {
+		return getModel().addObject(attributeName, attributeValue);
+	}
 
-  public ModelAndView addObject(String attributeName, Object attributeValue) {
-    return getModel().addObject(attributeName, attributeValue);
-  }
+	public ModelAndView addAttribute(
+			Enum attributeName,
+			Object attributeValue) {
+		return getModel().addObject(attributeName.toString(), attributeValue);
+	}
 
-  public String getSuccessViewName() {
-    return successViewName;
-  }
+	public ModelAndView getSuccess() {
+		model.setViewName(successViewName);
+		return model;
+	}
 
-  public void setSuccessViewName(String successViewName) {
-    this.successViewName = successViewName;
-  }
+	public ModelAndView getError() {
+		model.setViewName(errorViewName);
+		return model;
+	}
 
-  public String getErrorViewName() {
-    return errorViewName;
-  }
+	public ModelAndView getException() {
+		model.setViewName(exceptionViewName);
+		return model;
+	}
 
-  public void setErrorViewName(String errorViewName) {
-    this.errorViewName = errorViewName;
-  }
+	public ModelAndView getAccessException() {
+		model.setViewName(accessExceptionViewName);
+		return model;
+	}
 
-  public String getAccessExceptionViewName() {
-    return accessExceptionViewName;
-  }
+	public ModelAndView getTimeout() {
+		model.setViewName(timeoutViewName);
+		return model;
+	}
 
-  public void setAccessExceptionViewName(String accessExceptionViewName) {
-    this.accessExceptionViewName = accessExceptionViewName;
-  }
+	public ModelAndView getAccessDenied() {
+		model.setViewName(accessDeniedViewName);
+		return model;
+	}
 
-  public String getAccessDeniedViewName() {
-    return accessDeniedViewName;
-  }
+	/* ****************************************************************************************************
+	 * Getters/Setters
+	 * ****************************************************************************************************
+	 */
 
-  public void setAccessDeniedViewName(String accessDeniedViewName) {
-    this.accessDeniedViewName = accessDeniedViewName;
-  }
+	public String getSuccessViewName() {
+		return successViewName;
+	}
 
-  public String getExceptionViewName() {
-    return exceptionViewName;
-  }
+	public void setSuccessViewName(
+			String successViewName) {
+		this.successViewName = successViewName;
+	}
 
-  public void setExceptionViewName(String exceptionViewName) {
-    this.exceptionViewName = exceptionViewName;
-  }
+	public String getErrorViewName() {
+		return errorViewName;
+	}
 
-  public String getTimeoutViewName() {
-    return timeoutViewName;
-  }
+	public void setErrorViewName(
+			String errorViewName) {
+		this.errorViewName = errorViewName;
+	}
 
-  public void setTimeoutViewName(String timeoutViewName) {
-    this.timeoutViewName = timeoutViewName;
-  }
+	public String getAccessExceptionViewName() {
+		return accessExceptionViewName;
+	}
 
-  public ModelAndView getSuccess() {
-    setViewName(getSuccessViewName());
-    return model;
-  }
+	public void setAccessExceptionViewName(
+			String accessExceptionViewName) {
+		this.accessExceptionViewName = accessExceptionViewName;
+	}
 
-  public ModelAndView getError() {
-    setViewName(getErrorViewName());
-    return model;
-  }
+	public String getAccessDeniedViewName() {
+		return accessDeniedViewName;
+	}
 
-  public ModelAndView getException() {
-    setViewName(getExceptionViewName());
-    return model;
-  }
+	public void setAccessDeniedViewName(
+			String accessDeniedViewName) {
+		this.accessDeniedViewName = accessDeniedViewName;
+	}
 
-  public ModelAndView getAccessException() {
-    setViewName(getAccessExceptionViewName());
-    return model;
-  }
+	public String getExceptionViewName() {
+		return exceptionViewName;
+	}
 
-  public ModelAndView getTimeout() {
-    setViewName(getTimeoutViewName());
-    return model;
-  }
+	public void setExceptionViewName(
+			String exceptionViewName) {
+		this.exceptionViewName = exceptionViewName;
+	}
 
-  public ModelAndView getAccessDenied() {
-    setViewName(getAccessDeniedViewName());
-    return model;
-  }
+	public String getTimeoutViewName() {
+		return timeoutViewName;
+	}
+
+	public void setTimeoutViewName(
+			String timeoutViewName) {
+		this.timeoutViewName = timeoutViewName;
+	}
 
 }

@@ -7,50 +7,61 @@ import com.trc.user.User;
 
 public interface UserManagerModel {
 
-  public Collection<User> getAllUsers();
+	public Collection<User> getAllUsers();
 
-  public User getUserByEmail(String email);
+	public User getUserByEmail(
+			String email);
 
-  public User getUserByUsername(String username);
+	public User getUserByUsername(
+			String username);
 
-  public User getUserById(int id);
+	public User getUserById(
+			int id);
 
-  public Collection<User> getAllAdmins();
+	public User searchByAccountNo(
+			int accountNo);
 
-  public Collection<User> getAllManagers();
+	public Collection<User> searchById(
+			int id);
 
-  public Collection<User> getAllServiceReps();
+	public Collection<User> searchByEmail(
+			String email);
 
-  public User searchByAccountNo(int accountNo);
+	public Collection<User> searchByUsername(
+			String username);
 
-  public Collection<User> searchById(int id);
+	public Collection<User> search(
+			String param);
 
-  public Collection<User> searchByEmail(String email);
+	public User getLoggedInUser();
 
-  public Collection<User> searchByUsername(String username);
+	public User getCurrentUser();
 
-  public Collection<User> search(String param);
+	public Serializable saveUser(
+			User user);
 
-  public User getLoggedInUser();
+	public void saveOrUpdateUser(
+			User user);
 
-  public User getCurrentUser();
+	public void persistUser(
+			User user);
 
-  public Serializable saveUser(User user);
+	public void deleteUser(
+			User user);
 
-  public void saveOrUpdateUser(User user);
+	public void updateUser(
+			User user);
 
-  public void persistUser(User user);
+	public void enableUser(
+			User user);
 
-  public void deleteUser(User user);
+	public void disableUser(
+			User user);
 
-  public void updateUser(User user);
+	public boolean isUsernameAvailable(
+			String username);
 
-  public void enableUser(User user);
-
-  public void disableUser(User user);
-
-  public boolean isUsernameAvailable(String username);
-
-  public boolean isEmailAvailable(String email);
+	public boolean isEmailAvailable(
+			String email);
 
 }

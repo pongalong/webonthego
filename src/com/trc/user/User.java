@@ -188,38 +188,24 @@ public class User implements UserModel, UserDetails {
 	}
 
 	@Transient
+	public Authority getGreatestRole() {
+		Authority greatestRole = new Authority(ROLE.ROLE_ANONYMOUS);
+		for (Authority auth : getRoles())
+			if (greatestRole.compare(auth) < 0)
+				greatestRole = auth;
+		return greatestRole;
+	}
+
+	@Transient
 	public boolean isInternalUser() {
-		return isSuperUser() || isAdmin() || isManager() || isServiceRep();
-	}
-
-	@Transient
-	public boolean isSuperUser() {
-		return getRoles().contains(new Authority(ROLE.ROLE_SUPERUSER));
-	}
-
-	@Transient
-	public boolean isAdmin() {
-		return getRoles().contains(new Authority(ROLE.ROLE_ADMIN));
-	}
-
-	@Transient
-	public boolean isManager() {
-		return getRoles().contains(new Authority(ROLE.ROLE_MANAGER));
-	}
-
-	@Transient
-	public boolean isServiceRep() {
-		return getRoles().contains(new Authority(ROLE.ROLE_SERVICEREP));
+		return getRoles().contains(new Authority(ROLE.ROLE_SU)) || getRoles().contains(new Authority(ROLE.ROLE_ADMIN))
+				|| getRoles().contains(new Authority(ROLE.ROLE_MANAGER)) || getRoles().contains(new Authority(ROLE.ROLE_AGENT))
+				|| getRoles().contains(new Authority(ROLE.ROLE_SALES));
 	}
 
 	@Transient
 	public boolean isUser() {
 		return getRoles().contains(new Authority(ROLE.ROLE_USER));
-	}
-
-	@Transient
-	public boolean isAnon() {
-		return getRoles().contains(new Authority(ROLE.ROLE_ANONYMOUS));
 	}
 
 	@Transient

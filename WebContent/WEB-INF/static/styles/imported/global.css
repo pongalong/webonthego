@@ -1114,7 +1114,7 @@ div.address div:first-child {
 #jsCheckCurtain {
 	background-color: #111;
 	opacity: 0.45;
-	filter: alpha(opacity =     0.45);
+	filter: alpha(opacity =           0.45);
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -1135,4 +1135,18 @@ div.address div:first-child {
 	margin-bottom: 10px;
 	padding-bottom: 10px;
 	border-bottom: 1px #ccc dotted;
+}
+
+.tableContainer table {
+	border: 1px #ccc solid;
+	border-radius: 4px;
+}
+
+.tableContainer table td {
+	font-weight: bold;
+}
+
+.tableContainer table td.value {
+	font-weight: normal;
+	width: 70%;
 }

@@ -1,13 +1,13 @@
 package com.trc.manager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,12 +23,13 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.trc.dao.UserDao;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.service.gateway.WebserviceGateway;
-import com.trc.user.AnonymousUser;
+import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.trc.web.context.SecurityContextFacade;
-import com.trc.web.session.SessionManager;
+import com.trc.web.session.SessionKey;
+import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CustInfo;
 import com.tscp.mvne.TSCPMVNA;
@@ -37,8 +38,6 @@ import com.tscp.util.logger.aspect.Loggable;
 
 @Service
 public class UserManager implements UserManagerModel {
-	public static final String USER_KEY = "user";
-	public static final String CONTROLLING_USER_KEY = "controlling_user";
 	public static SecurityContextFacade securityContext;
 	private UserDao userDao;
 	private AccountManager accountManager;
@@ -63,29 +62,23 @@ public class UserManager implements UserManagerModel {
 	}
 
 	@Transactional(readOnly = true)
-	public List<String> getAllUserNames() {
-		return userDao.getAllUserNames();
+	public List<User> getAllUsersWithRole(
+			ROLE role) {
+		return userDao.getAllUsersWithRole(role);
+	}
+
+	@Transactional(readOnly = true)
+	public List<User> getAllInternalUsers() {
+		List<ROLE> roles = new ArrayList<ROLE>();
+		roles.add(ROLE.ROLE_ADMIN);
+		roles.add(ROLE.ROLE_MANAGER);
+		roles.add(ROLE.ROLE_AGENT);
+		roles.add(ROLE.ROLE_SU);
+		return userDao.getAllUsersWithRole(roles);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<User> getAllAdmins() {
-		return userDao.getAllUsersWithRole(ROLE.ROLE_ADMIN.toString());
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<User> getAllManagers() {
-		return userDao.getAllUsersWithRole(ROLE.ROLE_MANAGER.toString());
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public List<User> getAllServiceReps() {
-		return userDao.getAllUsersWithRole(ROLE.ROLE_SERVICEREP.toString());
-	}
-
-	@Override
 	public User getUserByEmail(
 			String email) {
 		return userDao.getUserByEmail(email);
@@ -136,6 +129,7 @@ public class UserManager implements UserManagerModel {
 		return userDao.searchByEmailAndDate(email, startDate, endDate);
 	}
 
+	@Deprecated
 	@Transactional(readOnly = true)
 	public List<User> searchByNotEmailAndDate(
 			String email,
@@ -162,22 +156,7 @@ public class UserManager implements UserManagerModel {
 	public User getLoggedInUser() {
 		Authentication authentication = securityContext.getContext().getAuthentication();
 		boolean isAnon1 = authentication == null || !(authentication.getPrincipal() instanceof UserDetails);
-		boolean isAnon2 = authentication == null || isAnonymousUser(authentication);
-		if (isAnon2) {
-			return new AnonymousUser();
-		} else {
-			return (User) authentication.getPrincipal();
-		}
-	}
-
-	private boolean isAnonymousUser(
-			Authentication authentication) {
-		return authentication.getName().equals("anonymousUser");
-	}
-
-	@Override
-	public User getCurrentUser() {
-		return getSessionUser();
+		return isAnon1 ? new EmptyUser() : (User) authentication.getPrincipal();
 	}
 
 	@Override
@@ -245,34 +224,13 @@ public class UserManager implements UserManagerModel {
 		return getUserByEmail(email) == null;
 	}
 
-	public User getSessionUser() {
-		User user = (User) SessionManager.get(USER_KEY);
-		return user == null ? new AnonymousUser() : user;
-	}
-
-	public void setSessionUser(
-			User user) {
-		SessionManager.set(USER_KEY, user);
-	}
-
-	public void setSessionControllingUser(
-			User user) {
-		SessionManager.set(CONTROLLING_USER_KEY, user);
-	}
-
-	public User getSessionControllingUser() {
-		return (User) SessionManager.get(CONTROLLING_USER_KEY);
-	}
-
 	@Loggable(value = LogLevel.TRACE)
 	public void getUserRealName(
 			User user) {
-		if (user.isAdmin()) {
+
+		if (user.isInternalUser()) {
 			user.getContactInfo().setFirstName(user.getUsername());
-			user.getContactInfo().setLastName("Administrator");
-		} else if (user.isManager()) {
-			user.getContactInfo().setFirstName(user.getUsername());
-			user.getContactInfo().setLastName("Manager");
+			user.getContactInfo().setLastName(user.getGreatestRole().getRole().toString());
 		} else if (user.isUser()) {
 			try {
 				CustInfo custInfo = accountManager.getCustInfo(user);
@@ -289,6 +247,36 @@ public class UserManager implements UserManagerModel {
 			user.getContactInfo().setFirstName(user.getUsername());
 		}
 	}
+
+	/* ************************************************************************************************
+	 * Session Helper Methods
+	 * ************************************************************************************************
+	 */
+
+	@Override
+	public User getCurrentUser() {
+		User user = (User) CacheManager.get(SessionKey.USER);
+		return user == null ? new EmptyUser() : user;
+	}
+
+	public void setCurrentUser(
+			User user) {
+		CacheManager.set(SessionKey.USER, user);
+	}
+
+	public User getControllingUser() {
+		return (User) CacheManager.get(SessionKey.CONTROLLING_USER);
+	}
+
+	public void setControllingUser(
+			User user) {
+		CacheManager.set(SessionKey.CONTROLLING_USER, user);
+	}
+
+	/* ************************************************************************************************
+	 * Login Helper Methods
+	 * ************************************************************************************************
+	 */
 
 	public void autoLogin(
 			User user,

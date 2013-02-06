@@ -4,9 +4,9 @@
  */
 $(function() {
 	$("#cvvInfo").hover(function() {
-		$(this).next(".tooltip").show();
+		$(this).next("span.tooltip").show();
 	}, function() {
-		$(this).next(".tooltip").hide();
+		$(this).next("span.tooltip").hide();
 	});
 });
 

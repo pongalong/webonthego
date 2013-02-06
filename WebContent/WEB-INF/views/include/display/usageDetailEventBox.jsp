@@ -1,5 +1,5 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<div class="tooltip" id="eventbox_${status.index}"
+<div class="info_tooltip" id="eventbox_${status.index}"
   style="position: absolute; border: 4px solid #cccccc; padding: 10px; display: none; background: white; width: 300px; height: 100px;">
   <h4>Event Detail - ${usageDetail.usageType}</h4>
   <c:choose>

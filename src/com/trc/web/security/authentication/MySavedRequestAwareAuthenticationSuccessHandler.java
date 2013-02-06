@@ -12,17 +12,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.trc.config.Config;
-import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.SessionEncrypter;
-import com.trc.security.encryption.StringEncrypter;
-import com.trc.user.NoControllingUser;
+import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.user.account.PaymentHistory;
+import com.trc.user.authority.ROLE;
 import com.trc.web.session.SessionKey;
-import com.trc.web.session.SessionManager;
+import com.trc.web.session.cache.CacheKey;
+import com.trc.web.session.cache.CacheManager;
 import com.tscp.util.logger.DevLogger;
 
 public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -30,6 +28,8 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 	private UserManager userManager;
 	@Autowired
 	private AccountManager accountManager;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@Override
 	public void onAuthenticationSuccess(
@@ -39,16 +39,17 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 
 		User user = userManager.getLoggedInUser();
 
+		DevLogger.trace("Authentication successful, " + user.getUsername() + " is logged in.");
+
 		if (!user.isInternalUser())
 			userManager.getUserRealName(user);
 
 		setSessionAttributes(user);
 
-		if (Config.ADMIN && user.isInternalUser()) {
+		if (Config.ADMIN && user.isInternalUser())
 			setAdminDefaultTargetUrl(user);
-		} else {
+		else
 			setUserDefaultTargetUrl(user);
-		}
 
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
@@ -56,35 +57,15 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 	private void setSessionAttributes(
 			User user) {
 
-		StringEncrypter encrypter = new StringEncrypter(SessionManager.getCurrentSessionId());
-
-		SessionManager.set(SessionKey.ENCRYPTER, encrypter);
-
 		if (Config.ADMIN && user.isInternalUser()) {
-			SessionManager.set("controlling_user", user);
-			SessionManager.set("user", null);
+			CacheManager.set(SessionKey.CONTROLLING_USER, user);
+			CacheManager.set(SessionKey.USER, new EmptyUser());
 		} else {
-			SessionManager.set("controlling_user", new NoControllingUser());
-			SessionManager.set("user", user);
+			CacheManager.set(SessionKey.CONTROLLING_USER, new EmptyUser());
+			CacheManager.set(SessionKey.USER, user);
 		}
 
-		try {
-			List<AccountDetail> accountDetails = accountManager.getAllAccountDetails(user);
-			for (AccountDetail ad : accountDetails) {
-				ad.setEncodedAccountNum(SessionEncrypter.encryptId(ad.getAccount().getAccountNo()));
-				ad.setEncodedDeviceId(SessionEncrypter.encryptId(ad.getDeviceInfo().getId()));
-			}
-			SessionManager.set("accountDetails", accountDetails);
-		} catch (AccountManagementException e) {
-			DevLogger.debug("Exception fetching account details at login", e);
-		}
-
-		try {
-			PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
-			SessionManager.set("paymentHistory", paymentHistory);
-		} catch (AccountManagementException e) {
-			DevLogger.debug("Exception fetching paymentHistory at login", e);
-		}
+		cacheManager.refreshCache(user);
 	}
 
 	private void setAdminDefaultTargetUrl(
@@ -92,14 +73,24 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 
 		setAlwaysUseDefaultTargetUrl(true);
 
-		if (user.isAdmin()) {
-			setDefaultTargetUrl("/admin/home");
-		} else if (user.isManager()) {
-			setDefaultTargetUrl("/manager/home");
-		} else if (user.isServiceRep()) {
-			setDefaultTargetUrl("/servicerep/home");
-		} else if (user.isSuperUser()) {
-			setDefaultTargetUrl("/it/home");
+		ROLE role = user.getGreatestRole().getRole();
+
+		switch (role) {
+			case ROLE_SU:
+				setDefaultTargetUrl("/it/home");
+				break;
+			case ROLE_ADMIN:
+				setDefaultTargetUrl("/admin/home");
+				break;
+			case ROLE_MANAGER:
+				setDefaultTargetUrl("/manager/home");
+				break;
+			case ROLE_AGENT:
+				setDefaultTargetUrl("/servicerep/home");
+				break;
+			case ROLE_SALES:
+				setDefaultTargetUrl("/sales/home");
+				break;
 		}
 	}
 
@@ -109,7 +100,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		String targetUrl = "/";
 		boolean hasDevice = false;
 
-		List<AccountDetail> accountDetails = (List<AccountDetail>) SessionManager.get("accountDetails");
+		List<AccountDetail> accountDetails = (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
 		hasDevice = accountDetails != null && !accountDetails.isEmpty();
 		targetUrl = hasDevice ? "/account" : "/start";
 

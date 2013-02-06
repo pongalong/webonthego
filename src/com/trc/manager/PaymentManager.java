@@ -23,6 +23,8 @@ import com.tscp.util.logger.aspect.Loggable;
 public class PaymentManager implements PaymentManagerModel {
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@Override
 	@Loggable(value = LogLevel.TRACE)
@@ -86,7 +88,7 @@ public class PaymentManager implements PaymentManagerModel {
 			User user,
 			CreditCard creditCard) throws PaymentManagementException {
 		try {
-			CacheManager.clear(CacheKey.CREDIT_CARDS);
+			cacheManager.clear(CacheKey.PAYMENT_METHODS);
 			return paymentService.addCreditCard(user, creditCard);
 		} catch (PaymentServiceException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -111,7 +113,7 @@ public class PaymentManager implements PaymentManagerModel {
 		try {
 			List<CustPmtMap> paymentMethods = paymentService.getPaymentMap(user);
 			if (paymentMethods.size() > 1) {
-				CacheManager.clear(CacheKey.CREDIT_CARDS);
+				cacheManager.clear(CacheKey.PAYMENT_METHODS);
 				return paymentService.removeCreditCard(user, paymentId);
 			} else {
 				return paymentMethods;
@@ -127,7 +129,7 @@ public class PaymentManager implements PaymentManagerModel {
 			User user,
 			CreditCard creditCard) throws PaymentManagementException {
 		try {
-			CacheManager.clear(CacheKey.CREDIT_CARDS);
+			cacheManager.clear(CacheKey.PAYMENT_METHODS);
 			return paymentService.updateCreditCard(user, creditCard);
 		} catch (PaymentServiceException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -191,7 +193,7 @@ public class PaymentManager implements PaymentManagerModel {
 				for (CustPmtMap paymentMethod : paymentMap) {
 					creditCardList.add(getCreditCard(paymentMethod.getPaymentid()));
 				}
-				CacheManager.set(CacheKey.CREDIT_CARDS, creditCardList);
+				cacheManager.set(CacheKey.PAYMENT_METHODS, creditCardList);
 				return creditCardList;
 			} catch (PaymentManagementException e) {
 				throw e;
@@ -216,7 +218,7 @@ public class PaymentManager implements PaymentManagerModel {
 
 	@SuppressWarnings("unchecked")
 	private List<CreditCard> getCreditCardListFromCache() {
-		return (List<CreditCard>) CacheManager.get(CacheKey.CREDIT_CARDS);
+		return (List<CreditCard>) cacheManager.get(CacheKey.PAYMENT_METHODS);
 	}
 
 	private CreditCard getCreditCardFromCache(

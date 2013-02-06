@@ -2,15 +2,15 @@
     <wb-module deploy-name="WebOnTheGo">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_report"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_security"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_support"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_ticketing"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/WEB-INF/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/config"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/logging"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/service"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/admin"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/support"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/ticket"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/security"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/report"/>
         <property name="java-output-path" value="/WebOnTheGo/build/classes"/>
         <property name="context-root" value="WebOnTheGo"/>
     </wb-module>

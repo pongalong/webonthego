@@ -31,13 +31,14 @@
           <div style="border: 1px solid lightgrey; background-color: azure; padding: 5px; margin: 20px 0 20px 0;">
             <h3>
               <c:choose>
-                <c:when test="${(not empty sessionScope.user && sessionScope.user.userId != 0) || (not empty sessionScope.controlling_user) }">
-                  <a href="<spring:url value="/support/ticket"/>">Ticket and Solution Center</a>
+                <c:when test="${user.userId > 0}">
+                  <a href="<spring:url value="/support/ticket/create"/>">Contact Us</a>
                 </c:when>
                 <c:otherwise>
                   <a href="<spring:url value="/support/inquire"/>">Contact Us</a>
                 </c:otherwise>
               </c:choose>
+
             </h3>
           </div>
 

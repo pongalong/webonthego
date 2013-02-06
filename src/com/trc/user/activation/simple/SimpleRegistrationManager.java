@@ -47,7 +47,7 @@ public class SimpleRegistrationManager {
 		user.setEnabled(true);
 
 		userManager.saveUser(user);
-		userManager.setSessionUser(user);
+		userManager.setCurrentUser(user);
 
 		user.getContactInfo().setFirstName(user.getEmail());
 

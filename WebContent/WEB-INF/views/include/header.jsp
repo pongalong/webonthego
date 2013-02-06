@@ -1,4 +1,4 @@
-<c:if test="${not empty sessionScope.controlling_user}">
+<c:if test="${not empty sessionScope.CONTROLLING_USER}">
   <sec:authorize ifAnyGranted="ROLE_ADMIN, ROLE_MANAGER">
     <%@ include file="/WEB-INF/views/include/admin/control_bar.jsp"%>
   </sec:authorize>
@@ -9,17 +9,17 @@
 
     <!-- Begin Logo -->
     <div class="logo">
-      <a href="http://account.webonthego.com/"> <img src="<spring:url value='/static/images/logo/logo_s1.png' />" alt="WebOnTheGo Logo" />
+      <a href="https://account.webonthego.com/"> <img src="<spring:url value='/static/images/logo/logo_s1.png' />" alt="WebOnTheGo Logo" />
       </a>
     </div>
     <!-- End Logo -->
 
     <!-- Begin Login/Logout -->
-    <c:if test="${sessionScope.controlling_user.userId == -1}">
+    <c:if test="${sessionScope.CONTROLLING_USER.userId == -1}">
       <div class="secondary-navigation">
         <ul>
           <sec:authorize ifNotGranted="ROLE_ANONYMOUS">
-            <li>Welcome ${user.contactInfo.firstName} ${user.contactInfo.lastName}</li>
+            <li>Welcome ${USER.contactInfo.firstName} ${USER.contactInfo.lastName}</li>
           </sec:authorize>
           <c:if test="${empty param.login_error}">
             <sec:authorize ifNotGranted="ROLE_ANONYMOUS">
@@ -34,7 +34,7 @@
     <!-- Begin Navigation -->
     <div class="navigation">
       <ul>
-        <li><a href="http://account.webonthego.com/">Home</a></li>
+        <li><a href="https://account.webonthego.com/">Home</a></li>
         <li><a href="https://store.webonthego.com/">Store</a></li>
         <li><a href="<spring:url value="/support"/>">Support</a></li>
       </ul>

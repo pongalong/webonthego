@@ -30,16 +30,23 @@
             </c:otherwise>
           </c:choose>
 
+          <c:if test="${not empty param.login_error}">
+            <div class="alert error" style="width: 90%;">
+              <h1>There was a problem logging in</h1>
+              <span style="color: #666;">&#8226; Username or Password was incorrect.</span>
+            </div>
+          </c:if>
+
           <div class="span-9">
             <div style="height: 80px;">
-              <input class="span-9" style="line-height: 22px;" id="j_username" type="text" name="j_username" placeholder="Email Address" value="${last_username}" />
-              <input class="span-9" style="line-height: 22px; display: none;" id="j_password" type="password" name="j_password" />
-              <input class="span-9" style="line-height: 22px;" id="j_password_holder" type="text" name="j_password_holder" placeholder="Password" value="Password" />
+              <input class="span-9" style="line-height: 22px;" id="j_username" type="text" name="j_username" placeholder="Email Address"
+                value="${last_username}" /> <input class="span-9" style="line-height: 22px; display: none;" id="j_password" type="password" name="j_password" />
+              <input class="span-9" style="line-height: 22px;" id="j_password_holder" type="text" name="j_password_holder" placeholder="Password"
+                value="Password" />
             </div>
 
-            <a id="login_button_submit" href="#" class="button action-m" style="float: right;"><span>Sign In</span> </a>
-            <a href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> 
-            <input id="login_submit" type="submit" class="hidden" />
+            <a id="login_button_submit" href="#" class="button action-m" style="float: right;"><span>Sign In</span> </a> <a
+              href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> <input id="login_submit" type="submit" class="hidden" />
           </div>
 
         </form>

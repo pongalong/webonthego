@@ -5,10 +5,10 @@
 	<classpathentry kind="src" path="config"/>
 	<classpathentry kind="src" path="logging"/>
 	<classpathentry kind="src" path="admin"/>
-	<classpathentry kind="src" path="src_report"/>
-	<classpathentry kind="src" path="src_security"/>
-	<classpathentry kind="src" path="src_support"/>
-	<classpathentry kind="src" path="src_ticketing"/>
+	<classpathentry kind="src" path="report"/>
+	<classpathentry kind="src" path="security"/>
+	<classpathentry kind="src" path="support"/>
+	<classpathentry kind="src" path="ticket"/>
 	<classpathentry kind="src" path="WebContent/WEB-INF/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>

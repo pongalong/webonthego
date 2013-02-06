@@ -29,6 +29,8 @@ import com.tscp.util.logger.aspect.Loggable;
 public class DeviceManager implements DeviceManagerModel {
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@Loggable(value = LogLevel.TRACE)
 	public void setDefaultDeviceLabel(
@@ -69,7 +71,6 @@ public class DeviceManager implements DeviceManagerModel {
 		} else {
 			try {
 				deviceInfoList = deviceService.getDeviceInfoList(user);
-				// saveDevicesToCache(deviceInfoList);
 				return deviceInfoList;
 			} catch (DeviceServiceException e) {
 				throw new DeviceManagementException(e.getMessage(), e.getCause());
@@ -332,19 +333,21 @@ public class DeviceManager implements DeviceManagerModel {
 
 	@SuppressWarnings("unchecked")
 	private List<Device> getDevicesFromCache() {
-		List<AccountDetail> accountDetails = (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
+		List<AccountDetail> accountDetails = (List<AccountDetail>) cacheManager.get(CacheKey.ACCOUNT_DETAILS);
 		if (accountDetails != null) {
+			DevLogger.debug("found " + accountDetails.size() + " accountDetails in cache");
 			List<Device> devices = new ArrayList<Device>();
 			for (AccountDetail ad : accountDetails)
 				devices.add(ad.getDeviceInfo());
 			return devices;
 		}
+		DevLogger.debug("no accountDetails in cache");
 		return null;
 	}
 
 	private void clearDevicesFromCache() {
 		// CacheManager.clear(CacheKey.DEVICES);
-		CacheManager.clear(CacheKey.ACCOUNT_DETAILS);
+		cacheManager.clear(CacheKey.ACCOUNT_DETAILS);
 	}
 
 	// private void saveDevicesToCache(

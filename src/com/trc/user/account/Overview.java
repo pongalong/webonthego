@@ -1,12 +1,13 @@
 package com.trc.user.account;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
-import com.trc.security.encryption.SessionEncrypter;
 import com.trc.user.User;
+import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvne.Device;
 import com.tscp.util.logger.DevLogger;
 
@@ -33,11 +34,13 @@ public class Overview {
 		for (Device device : devices) {
 			try {
 				accountDetail = accountManager.getAccountDetail(user, device);
-				accountDetail.setEncodedAccountNum(SessionEncrypter.encryptId(accountDetail.getAccount().getAccountNo()));
-				accountDetail.setEncodedDeviceId(SessionEncrypter.encryptId(accountDetail.getDeviceInfo().getId()));
+				accountDetail.setEncodedAccountNum(CacheManager.getEncryptor().encryptIntUrlSafe(accountDetail.getAccount().getAccountNo()));
+				accountDetail.setEncodedDeviceId(CacheManager.getEncryptor().encryptIntUrlSafe(accountDetail.getDeviceInfo().getId()));
 				this.accountDetails.add(accountDetail);
 			} catch (AccountManagementException e) {
 				DevLogger.error("Could not fetch accountDetail for account " + device.getAccountNo(), e);
+			} catch (UnsupportedEncodingException e) {
+				DevLogger.error("Exception encoding IDs while creating Overview", e);
 			}
 		}
 	}

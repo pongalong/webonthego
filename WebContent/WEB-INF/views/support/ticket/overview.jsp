@@ -14,19 +14,45 @@
     <div id="main-content">
       <div class="span-18 colborder" style="min-height: 200px;">
 
-        <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Tickets</h3>
+        <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Quick Links</h3>
         <p>
-          <a href="<spring:url value="/support/ticket/view/creator/me" />" class="button semi-s multi"><span>Tickets I Created</span></a> 
-          <a href="<spring:url value="/support/ticket/view/assignee/me" />" class="button semi-s multi"><span>Tickets Assigned to Me</span></a>
-          <a href="<spring:url value="/support/ticket/view/inquiry" />" class="button semi-s"><span>Inquiries</span></a>
+          <a href="<spring:url value="/support/ticket/view/creator/me" />" class="button semi-s multi"><span>Tickets I Created</span></a> <a
+            href="<spring:url value="/support/ticket/view/assignee/me" />" class="button semi-s multi"><span>Tickets Assigned to Me</span></a> <a
+            href="<spring:url value="/support/ticket/view/inquiry" />" class="button semi-s"><span>Inquiries</span></a>
         </p>
         <div class="clear"></div>
 
         <h3 style="margin: 20px 0 10px 0; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">
-          Search Tickets
+          Create Tickets
           <c:choose>
-            <c:when test="${not empty sessionScope.user && sessionScope.user.userId != 0}">
-            for ${sessionScope.user.username}
+            <c:when test="${sessionScope.USER.userId > 0}">
+            for ${sessionScope.USER.username} ${sessionScope.USER.userId }
+          </c:when>
+            <c:otherwise>
+            for All Users
+            </c:otherwise>
+          </c:choose>
+        </h3>
+        <p>
+          <c:choose>
+            <c:when test="${sessionScope.USER.userId > 0}">
+              <a href="<spring:url value="/support/ticket/create" />" class="button semi-s multi"><span>Create</span></a>
+            </c:when>
+            <c:otherwise>
+              <a href="<spring:url value="/support/inquire/create" />" class="button semi-s"><span>Inquire</span></a>
+            </c:otherwise>
+          </c:choose>
+        </p>
+        <div class="clear"></div>
+
+
+
+
+        <h3 style="margin: 20px 0 10px 0; padding-bottom: 0px;" onClick="$(this).next('form').slideToggle();">
+          <img src="<spring:url value="/static/images/buttons/icons/add.png" />" style="vertical-align: middle;" /> Search Tickets
+          <c:choose>
+            <c:when test="${sessionScope.USER.userId > 0}">
+            for ${sessionScope.USER.username} ${sessionScope.USER.userId }
           </c:when>
             <c:otherwise>
             for All Users
@@ -34,17 +60,17 @@
           </c:choose>
         </h3>
 
-        <form:form id="searchTicket" cssClass="validatedForm" method="post" commandName="ticket">
+        <form:form id="searchTicket" cssClass="validatedForm" method="post" commandName="ticket" style="border-top: 1px #ccc dotted;">
 
-          <div class="row">
+          <div class="row" style="margin-top: 10px;">
             <form:label path="creatorId">By Me</form:label>
-            <input id="creatorIdCheckbox" type="checkbox" value="${sessionScope.controlling_user.userId}"></input>
+            <input id="creatorIdCheckbox" type="checkbox" value="${sessionScope.CONTROLLING_USER.userId}"></input>
             <form:input path="creatorId" value="0" type="hidden" />
           </div>
 
           <div class="row">
             <form:label path="assigneeId">Assigned to me</form:label>
-            <input id="assigneeIdCheckbox" type="checkbox" value="${sessionScope.controlling_user.userId}"></input>
+            <input id="assigneeIdCheckbox" type="checkbox" value="${sessionScope.CONTROLLING_USER.userId}"></input>
             <form:input path="assigneeId" value="0" type="hidden" />
           </div>
 

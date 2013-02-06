@@ -28,7 +28,7 @@
           </c:if>
           <!--End Error Display -->
 
-          <c:if test="${sessionScope.controlling_user.userId == -1}">
+          <c:if test="${sessionScope.CONTROLLING_USER.userId == -1}">
             <div class="row">
               <form:label path="oldPassword" cssClass="required">Password</form:label>
               <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />

@@ -1,14 +1,23 @@
+<script type="text/javascript">
+	$(function() {
+		$(".device_esn").click(function() {
+			var deviceDetails = $(this).parent().parent().parent(".device_name").parent(".device").children(".device_detail");
+			$(deviceDetails).slideToggle();
+		});
+	});
+</script>
+
 <div class="clear"></div>
 <div class="admin_tooltip device_detail hidden">
   <div>
-    <li class="header">Device Information</li>
-    <li>Account Number: ${device.deviceInfo.accountNo}</li>
-    <li>Device ID: ${device.deviceInfo.id}</li>
-    <li>Status: ${device.deviceInfo.status}</li>
-    <li>Status ID: ${device.deviceInfo.statusId}</li>
+    <li class="header">Device Information <a href="#" style="float: right;" onclick="$(this).parent().parent().parent('.device_detail').slideToggle();">close</a></li>
+    <li>Account Number: ${accountDetail.deviceInfo.accountNo}</li>
+    <li>Device ID: ${accountDetail.deviceInfo.id}</li>
+    <li>Status: ${accountDetail.deviceInfo.status}</li>
+    <li>Status ID: ${accountDetail.deviceInfo.statusId}</li>
   </div>
   <div>
-    <c:forEach var="package" items="${device.account.packageList}">
+    <c:forEach var="package" items="${accountDetail.account.packageList}">
       <li class="header">Package Information</li>
       <li>Package ID: ${package.id}</li>
       <li>Package Name: ${package.name}</li>
@@ -23,7 +32,7 @@
   </div>
   <div>
     <li class="header">Service Information</li>
-    <c:forEach var="service" items="${device.account.serviceinstancelist}">
+    <c:forEach var="service" items="${accountDetail.account.serviceinstancelist}">
       <li>Subscriber Number: ${service.subscriberNumber}</li>
       <li>External ID: ${service.externalId}</li>
       <li>External ID Type: ${service.externalIdType}</li>

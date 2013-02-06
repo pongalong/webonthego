@@ -13,14 +13,16 @@
     <div id="main-content">
       <div class="span-18 colborder" style="min-height: 200px;">
         <form:form id="customerCreateTicket" cssClass="validatedForm" method="post" commandName="ticket">
-          <h3>Create a Ticket</h3>
+          <h3>Send an Inquiry</h3>
           <p>Please provide as much information that is relevant to the issue as possible.</p>
+
           <!-- Error Alert -->
           <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
             <div class="row">
               <div class="alert error">
                 <h1>Please correct the following problems</h1>
                 <form:errors path="category" />
+                <form:errors path="contactEmail" />
                 <form:errors path="description" />
                 <!-- Global Errors -->
                 <spring:bind path="ticket">
@@ -38,7 +40,7 @@
           </div>
 
           <div class="row">
-            <form:label path="contactPhone" cssClass="required">Phone</form:label>
+            <form:label path="contactPhone">Phone</form:label>
             <form:input path="contactPhone" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
@@ -51,9 +53,9 @@
             </form:select>
           </div>
 
-          <div class="row">
+          <div class="row" style="height: 250px;">
             <form:label path="description" cssClass="required">Description</form:label>
-            <form:textarea path="description" cssStyle="width:300px;" cssErrorClass="validationFailed" />
+            <form:textarea path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
           </div>
 
           <div class="buttons">

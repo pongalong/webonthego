@@ -130,12 +130,12 @@ $.fn.toggleConfirmationField = function(display, speed, focus, validate) {
 	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
 	if (display == "show") {
 		// confirmationField.parent().fadeIn(speed);
-		confirmationField.removeAttr("readOnly");
-		confirmationField.parent().fadeTo(speed, 1);
+		// confirmationField.removeAttr("readOnly");
+		// confirmationField.parent().fadeTo(speed, 1);
 	} else if (display == "hide") {
-		confirmationField.val("");
+		//confirmationField.val("");
 		// confirmationField.parent().fadeOut(speed);
-		confirmationField.parent().fadeTo(speed, 0.25);
+		//confirmationField.parent().fadeTo(speed, 0.25);
 	}
 	if (focus)
 		confirmationField.focus();

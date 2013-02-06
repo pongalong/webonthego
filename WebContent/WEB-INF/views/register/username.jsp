@@ -49,11 +49,11 @@
             <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Not a valid email</span>
             </span>
           </div>
-          <div class="row" style="opacity: 0.2;">
+          <div class="row">
             <form:label path="email.confirmValue" cssClass="required">
               <spring:message code="label.confirmEmail" />
             </form:label>
-            <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="email.confirmValue" readOnly="readOnly" />
+            <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="email.confirmValue" />
             <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Emails do not match</span>
             </span>
           </div>
@@ -68,11 +68,11 @@
                 letters</span>
             </span>
           </div>
-          <div class="row" style="opacity: 0.2;">
+          <div class="row">
             <form:label path="password.confirmValue" cssClass="required">
               <spring:message code="label.confirmPassword" />
             </form:label>
-            <form:password cssClass="span-8" cssErrorClass="span-8 validationFailed" path="password.confirmValue" readOnly="readOnly" />
+            <form:password cssClass="span-8" cssErrorClass="span-8 validationFailed" path="password.confirmValue" />
             <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Passwords do not match</span>
             </span>
           </div>

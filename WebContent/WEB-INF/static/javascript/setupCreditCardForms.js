@@ -1,13 +1,12 @@
 //TODO generalize this to work with CreditCardPayment and CreditCard class
-
 /**
  * Adds a tool-tip to the cvv info link
  */
 $(function() {
 	$("#cvvInfo").hover(function() {
-		$(this).next(".tooltip").show();
+		$(this).next("span.hover_tooltip").show();
 	}, function() {
-		$(this).next(".tooltip").hide();
+		$(this).next("span.hover_tooltip").hide();
 	});
 });
 
@@ -40,11 +39,9 @@ $(function() {
 
 $.fn.setupCreditCardForm = function() {
 	var formName = $(this).attr("id");
-	$("#" + formName).submit(
-			function() {
-				$("#expirationDate").val(
-						$("#monthSelect").val() + $("#yearSelect").val());
-			});
+	$("#" + formName).submit(function() {
+		$("#expirationDate").val($("#monthSelect").val() + $("#yearSelect").val());
+	});
 };
 
 function setupCreditCardForms() {

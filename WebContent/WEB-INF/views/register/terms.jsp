@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title>Web on the Go &#8480; Account Management</title>
-<%@ include file="/WEB-INF/views/include/headTags.jsp"%>/>">
+<%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 </script>
 <script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
 

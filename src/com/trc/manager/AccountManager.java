@@ -35,6 +35,8 @@ public class AccountManager {
 	private AccountService accountService;
 	@Autowired
 	private DeviceManager deviceManager;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@Loggable(value = LogLevel.INFO)
 	public Account createShellAccount(
@@ -135,12 +137,12 @@ public class AccountManager {
 	@Loggable(value = LogLevel.TRACE)
 	private void saveToCache(
 			List<AccountDetail> accountDetails) {
-		CacheManager.set(CacheKey.ACCOUNT_DETAILS, accountDetails);
+		cacheManager.set(CacheKey.ACCOUNT_DETAILS, accountDetails);
 	}
 
 	@Loggable(value = LogLevel.TRACE)
 	private List<AccountDetail> getFromCache() {
-		return (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
+		return (List<AccountDetail>) cacheManager.get(CacheKey.ACCOUNT_DETAILS);
 	}
 
 	@Loggable(value = LogLevel.DEBUG)

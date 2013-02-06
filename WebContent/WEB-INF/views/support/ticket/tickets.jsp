@@ -18,8 +18,8 @@
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">
           Tickets
           <c:choose>
-            <c:when test="${not empty sessionScope.user && sessionScope.user.userId != 0}">
-            for ${sessionScope.user.username}
+            <c:when test="${not empty sessionScope.USER && sessionScope.USER.userId != -1}">
+            for ${sessionScope.USER.username}
           </c:when>
             <c:otherwise>
             for All Users

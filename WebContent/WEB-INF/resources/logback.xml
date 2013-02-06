@@ -50,6 +50,28 @@
     </encoder>
   </appender>
 
+  <appender name="HIBERNATE_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>../logs/webonthego_hibernate.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>../logs/webonthego/webonthego_hibernate.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>5MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level: %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <logger name="org.hibernate.SQL" level="debug">
+    <appender-ref ref="HIBERNATE_ROLLINGFILE" />
+  </logger>
+
+  <logger name="org.hibernate.type" level="trace">
+    <appender-ref ref="HIBERNATE_ROLLINGFILE" />
+  </logger>
+
   <logger name="aspect" level="ALL">
     <appender-ref ref="ROLLINGFILE" />
   </logger>

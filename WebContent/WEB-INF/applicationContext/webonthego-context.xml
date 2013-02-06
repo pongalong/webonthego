@@ -20,7 +20,7 @@
   <!-- Begin ProductionMail Sender -->
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
     <property name="host">
-      <value>209.127.161.5</value>
+      <value>209.127.162.26</value>
     </property>
   </bean>
 

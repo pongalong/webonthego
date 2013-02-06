@@ -11,9 +11,9 @@
   <!-- LOGOUT/ID -->
   <div class="logout">
     <c:choose>
-      <c:when test="${!empty sessionScope.controlling_user}">
+      <c:when test="${sessionScope.CONTROLLING_USER.userId != -1}">
         <b>Internal:</b>
-        <c:out value="${sessionScope.controlling_user.username}" />
+        <c:out value="${sessionScope.CONTROLLING_USER.username}" />
       </c:when>
       <c:otherwise>
         <sec:authentication property="principal.authorities" />
@@ -25,8 +25,8 @@
 
   <!-- SET CURRENTLY VIEWED USER -->
   <c:choose>
-    <c:when test="${!empty sessionScope.user.email}">
-      <c:set var="currentUser" value="${sessionScope.user.userId} ${sessionScope.user.email}" />
+    <c:when test="${sessionScope.USER.userId > 0}">
+      <c:set var="currentUser" value="${sessionScope.USER.userId} ${sessionScope.USER.email}" />
     </c:when>
     <c:otherwise>
       <c:set var="currentUser" value="Search by Email or ID" />
@@ -40,7 +40,7 @@
   <form id="adminControl" method="post" action="<spring:url value="/search" />">
     <div style="float: left; padding-right: 5px;">
       <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" /> <input autocomplete="off" name="admin_search_param"
-        id="admin_search_param" type="text" title="${currentUser}" />
+        id="admin_search_param" type="text" placeholder="${currentUser}" />
       <div id="admin_search_results" class="search_results_box"></div>
     </div>
     <div style="float: left;">

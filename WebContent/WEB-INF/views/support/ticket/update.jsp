@@ -16,81 +16,128 @@
 
         <form:form id="updateTicket" cssClass="validatedForm" method="post" commandName="ticket">
 
-          <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Edit Ticket Details</h3>
+          <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Edit Ticket ${ticket.id} Details</h3>
 
-          <div class="row">
-            <form:label path="title">Ticket Id</form:label>
-            ${ticket.id}
+          <div class="tableContainer">
+
+            <table>
+
+              <tr>
+                <c:if test="${ticket.type != 'CUSTOMER' && ticket.type != 'INQUIRY'}">
+                  <td><form:label path="creatorId">
+                      <b>Creator</b>
+                    </form:label></td>
+                  <td><form:input path="creatorId" cssClass="span-8" cssErrorClass="span-8 validationFailed" /></td>
+                </c:if>
+              </tr>
+
+              <c:if test="${ticket.type != 'INQUIRY'}">
+                <tr>
+                  <td><form:label path="customerId">
+                      <b>Customer</b>
+                    </form:label></td>
+
+                  <td><input type="text" value="${customer.email}" class="span-8" readOnly /> <form:input path="customerId" cssClass="span-8 hidden"
+                      cssErrorClass="span-8 validationFailed hidden" /></td>
+                </tr>
+              </c:if>
+
+              <c:if test="${ticket.type != 'INQUIRY'}">
+                <tr>
+                  <td><form:label path="assigneeId">
+                      <b>Assigned To</b>
+                    </form:label></td>
+
+                  <td><form:select path="assigneeId" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
+                      <form:option value="0">Select one</form:option>
+                      <c:forEach var="internalUser" items="${internalUsers}">
+                        <form:option value="${internalUser.userId}">${internalUser.username}</form:option>
+                      </c:forEach>
+                    </form:select></td>
+                </tr>
+              </c:if>
+
+              <tr>
+                <td><form:label path="priority">
+                    <b>Priority</b>
+                  </form:label></td>
+
+                <td><form:select path="priority" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
+                    <c:forEach var="priority" items="${priorityList}" varStatus="status">
+                      <form:option value="${priority}">${priority.description}</form:option>
+                    </c:forEach>
+                  </form:select></td>
+              </tr>
+
+              <tr>
+                <td><form:label path="category">
+                    <b>Category</b>
+                  </form:label></td>
+
+                <td><form:select path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
+                    <c:forEach var="category" items="${categoryList}" varStatus="status">
+                      <form:option value="${category}">${category.description}</form:option>
+                    </c:forEach>
+                  </form:select></td>
+              </tr>
+            </table>
+
+
+            <table>
+
+              <tr>
+                <td><form:label path="title">
+                    <b>Title</b>
+                  </form:label></td>
+
+                <td><form:input path="title" cssClass="span-8" cssErrorClass="span-8 validationFailed" /></td>
+              </tr>
+
+              <tr>
+                <td><form:label path="status">
+                    <b>Status</b>
+                  </form:label></td>
+
+                <td><form:select path="status" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
+                    <c:forEach var="status" items="${statusList}">
+                      <form:option value="${status}">${status.description}</form:option>
+                    </c:forEach>
+                  </form:select></td>
+              </tr>
+
+              <tr>
+                <td><form:label path="description">
+                    <b>Description</b>
+                  </form:label></td>
+
+                <td><form:input path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" /></td>
+              </tr>
+
+            </table>
+
+            <table>
+              <tr>
+                <td><form:label path="createdDate">
+                    <b>Creation Date</b>
+                  </form:label></td>
+
+                <td><input type="text" value="${ticket.createdDate}" class="span-8" readOnly /></td>
+              </tr>
+              <tr>
+                <td><form:label path="lastModifiedDate">
+                    <b>Last Modified Date</b>
+                  </form:label></td>
+
+                <td><input type="text" value="${ticket.lastModifiedDate}" class="span-8" readOnly /></td>
+              </tr>
+            </table>
+
           </div>
-          
-          <c:if test="${ticket.type != 'CUSTOMER'}">
-            <div class="row">
-              <form:label path="creatorId">Creator</form:label>
-              ${ticket.creatorId}
-            </div>
-          </c:if>
-
-          <div class="row">
-            <form:label path="customerId">Customer</form:label>
-            ${ticket.customerId}
-          </div>
-
-          <div class="row">
-            <form:label path="createdDate">Creation Date</form:label>
-            ${ticket.createdDate}
-          </div>
-
-          <div class="row">
-            <form:label path="lastModifiedDate">Last Modified Date</form:label>
-            ${ticket.lastModifiedDate}
-          </div>
-
-          <div class="row">
-            <form:label path="title">Title</form:label>
-            <form:input path="title" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-          </div>
-
-          <div class="row">
-            <form:label path="status">Status</form:label>
-            <form:select path="status" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-              <c:forEach var="status" items="${statusList}">
-                <form:option value="${status}">${status.description}</form:option>
-              </c:forEach>
-            </form:select>
-          </div>
-
-          <div class="row">
-            <form:label path="category">Category</form:label>
-            <form:select path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-              <c:forEach var="category" items="${categoryList}" varStatus="status">
-                <form:option value="${category}">${category.description}</form:option>
-              </c:forEach>
-            </form:select>
-          </div>
-
-          <div class="row">
-            <form:label path="priority">Priority</form:label>
-            <form:select path="priority" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-              <c:forEach var="priority" items="${priorityList}" varStatus="status">
-                <form:option value="${priority}">${priority.description}</form:option>
-              </c:forEach>
-            </form:select>
-          </div>
-
-          <div class="row">
-            <form:label path="description">Description</form:label>
-            <form:input path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-          </div>
-
-          <div class="row">
-            <form:label path="assigneeId">Assigned To</form:label>
-            <form:input path="assigneeId" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-          </div>
-
 
           <div class="buttons">
-            <a id="updateTicket_button_submit" href="#" class="button action-m"><span>Update</span></a> <input id="updateTicket_submit" type="submit"
-              name="_eventId_submit" value="Submit" class="hidden" />
+            <a id="updateTicket_button_submit" href="#" class="button action-m"><span>Update</span></a> <a
+              href="<spring:url value="/support/ticket/view/ticket/${ticket.id}" />" class="button action-m multi"><span>Cancel</span></a> <input
+              id="updateTicket_submit" type="submit" name="_eventId_submit" value="Submit" class="hidden" />
           </div>
 
         </form:form>

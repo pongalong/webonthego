@@ -77,20 +77,24 @@
             </c:if>
 
             <div id="billingAddress" style="margin-top: 12px; padding-top: 12px;">
+
               <div class="row">
                 <form:label path="creditCard.address1" cssClass="required">Address 1</form:label>
                 <form:input path="creditCard.address1" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
               </div>
+
               <div class="row">
                 <form:label path="creditCard.address2">Address 2</form:label>
                 <form:input path="creditCard.address2" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
               </div>
+
               <div class="row">
                 <form:label path="creditCard.city" cssClass="required">City</form:label>
                 <form:input path="creditCard.city" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
               </div>
+
               <div class="row">
                 <form:label path="creditCard.state" cssClass="required">State</form:label>
                 <form:select cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;" path="creditCard.state">
@@ -101,23 +105,23 @@
                     <form:option value="${state.value}">${state.key}</form:option>
                   </c:forEach>
                 </form:select>
-
-                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
               </div>
+
               <div class="row">
                 <form:label path="creditCard.zip" cssClass="required">Billing Zip Code</form:label>
                 <form:input path="creditCard.zip" maxLength="5" cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" />
-                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
               </div>
+
               <div class="row">
                 <form:label path="phoneNumber" cssClass="required">Phone Number</form:label>
                 <form:input path="phoneNumber" maxLength="10" cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" />
-                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Digits Only Please</span>
+                <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Digits Only Please</span></span>
               </div>
+
             </div>
           </div>
-
-
 
           <h3 title="Credit Card Information" style="margin: 10px 0 10px 0; padding: 10px 0 0 0; border-top: 1px #ccc solid;">Credit Card</h3>
           <div>
@@ -129,7 +133,7 @@
             <div class="row">
               <form:label path="creditCard.nameOnCreditCard" cssClass="required">Name on Card</form:label>
               <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="creditCard.nameOnCreditCard" />
-              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
             </div>
 
             <div class="row">
@@ -137,19 +141,19 @@
                 <spring:message code="label.payment.cardNumber" />
               </form:label>
               <form:input cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" maxLength="16" path="creditCard.creditCardNumber" />
-              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
             </div>
 
             <div class="row">
               <form:label path="creditCard.verificationcode" cssClass="required">Security Code</form:label>
               <form:input cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" maxLength="4" path="creditCard.verificationcode"
                 cssStyle="width:60px;" />
-              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span> <a id="cvvInfo" href="#"
+              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span> <a id="cvvInfo" href="#"
                 style="margin-left: 10px;" tabindex="-1">What is this?</a> <span class="tooltip">
-                  <p>This is the 3 digit code on the back of the card for Visa and Mastercard, or the 4 digit number on the front for American Express.</p>
-                  <p>
-                    <img src="<spring:url value="/static/images/creditCard/securityExample.png" />" />
-                  </p>
+                <p>This is the 3 digit code on the back of the card for Visa and Mastercard, or the 4 digit number on the front for American Express.</p>
+                <p>
+                  <img src="<spring:url value="/static/images/creditCard/securityExample.png" />" />
+                </p>
               </span>
             </div>
 
@@ -165,7 +169,7 @@
                 </c:forEach>
               </select>
               <form:input cssStyle="display: none;" cssClass="numOnly" maxLength="4" cssErrorClass="numOnly verificationFailed" path="creditCard.expirationDate" />
-              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span>
+              <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject"></span></span>
             </div>
 
             <div id="creditCardImages" class="row pushed" style="height: 40px; line-height: 40px;">

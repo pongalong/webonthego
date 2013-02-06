@@ -17,8 +17,9 @@ input:focus,select:focus,checkbox:focus {
 	height: 20px;
 }
 
-input.displayOnly {
+input[readOnly="readOnly"],input[readOnly="true"],input[readOnly] {
 	border: none;
+	background: transparent;
 }
 
 form label::after {
@@ -100,7 +101,7 @@ Generic Validated Form -
 formatted to allow for error messages and tooltips
 to appear on the right.
 ***********************************************/
-input.validationFailed,select.validationFailed {
+input.validationFailed,select.validationFailed,textarea.validationFailed {
 	background: #FAEBE7 !important;
 }
 
@@ -109,6 +110,10 @@ input.validationFailed:focus,select.validationFailed:focus {
 	box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
 	-webkit-box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
 	-moz-box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
+}
+
+form.validatedForm textarea {
+	width: 300px;
 }
 
 form.validatedForm input[type="text"],form.validatedForm input[type="password"]
@@ -174,7 +179,7 @@ ToolTips
 these appear to the right of an input box as a 
 span
 ***********************************************/
-form.validatedForm .tooltip {
+form.validatedForm .hover_tooltip {
 	position: absolute;
 	z-index: 10;
 	display: none;
@@ -188,7 +193,7 @@ form.validatedForm .tooltip {
 	border: 1px gray dotted;
 }
 
-#main-content form.validatedForm span.tooltip p {
+#main-content form.validatedForm span.hover_tooltip p {
 	line-height: 14px;
 	font-size: 12px;
 	color: #333;
@@ -196,7 +201,7 @@ form.validatedForm .tooltip {
 }
 
 /** adds a left arrow to the div. left should be set to -border-width x 2 */
-form.validatedForm span.tooltip_bak:after {
+form.validatedForm span.hover_tooltip_bak:after {
 	content: '';
 	display: block;
 	position: absolute;
@@ -210,7 +215,7 @@ form.validatedForm span.tooltip_bak:after {
 	z-index: 10;
 }
 
-form.validatedForm span.tooltip .ttExample {
+form.validatedForm span.hover_tooltip .ttExample {
 	border-top: 1px #333 dashed;
 	padding-top: 4px;
 	margin-top: 4px;
@@ -264,4 +269,8 @@ form.validatedForm div.registrationTerms {
 	background-image: linear-gradient(#FFF9BF, #EBC98F);
 	background-position: 0 0;
 	border-color: #E8C284;*/
+}
+
+.hover_tooltip {
+	display: none;
 }

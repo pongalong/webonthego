@@ -40,21 +40,21 @@
             <p style="line-height: 36px;">
               <span class="span-6">Status:</span>
               <c:choose>
-                <c:when test="${user.enabled}">
+                <c:when test="${USER.enabled}">
                   <span class="span-8"> Enabled </span>
                   <a href="<spring:url value="/profile/user/disable"/>" class="button escape-s" style="float: right;"
-                    onclick="return confirm('Do you want to disable ${user.email}?')"><span>Disable</span> </a>
+                    onclick="return confirm('Do you want to disable ${USER.email}?')"><span>Disable</span> </a>
                 </c:when>
                 <c:otherwise>
                   <span class="span-8">Disabled</span>
                   <a href="<spring:url value="/profile/user/enable"/>" class="button escape-s" style="float: right;"
-                    onclick="return confirm('Do you want to enable ${user.email}?')"><span>Enable</span> </a>
+                    onclick="return confirm('Do you want to enable ${USER.email}?')"><span>Enable</span> </a>
                 </c:otherwise>
               </c:choose>
             </p>
           </sec:authorize>
           <p style="line-height: 36px; position: relative;">
-            <span class="span-6">E-Mail Address:</span> <span class="span-8">${user.email}</span> <a href="<spring:url value="/profile/update/email"/>"
+            <span class="span-6">E-Mail Address:</span> <span class="span-8">${USER.email}</span> <a href="<spring:url value="/profile/update/email"/>"
               class="button semi-s" style="float: right;"><span>Change</span> </a>
           </p>
           <p style="line-height: 36px;">
@@ -69,8 +69,8 @@
         <h3 style="margin: 10px 0 10px 0; border-bottom: 1px #ccc dotted;">Credit Cards</h3>
 
         <c:choose>
-          <c:when test="${not empty paymentMethods}">
-            <c:forEach var="creditCard" items="${paymentMethods}" varStatus="status">
+          <c:when test="${not empty PAYMENT_METHODS}">
+            <c:forEach var="creditCard" items="${PAYMENT_METHODS}" varStatus="status">
               <div class="address dontsplit">
                 <div class="btn-group">
                   <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
@@ -106,7 +106,7 @@
 
 
         <div class="clear"></div>
-        <c:if test="${not empty sessionScope.controlling_user}">
+        <c:if test="${sessionScope.CONTROLLING_USER.userId != -1}">
           <div class="buttons" style="margin-top: 10px 0 10px 0; padding: 10px 0 10px 0;">
             <a href="<spring:url value="/account/payment/methods/add" />" class="button action-m" style="float: right;"><span>Add New Card</span> </a>
           </div>

@@ -19,7 +19,7 @@
 
         <div style="position: relative; margin-bottom: 30px;">
           <select id="deviceSelect" style="border-radius: 3px; border-color: #aaa;">
-            <c:forEach var="acc" items="${accountDetails}">
+            <c:forEach var="acc" items="${ACCOUNT_DETAILS}">
               <option value="${acc.encodedAccountNum}">${acc.deviceInfo.label}</option>
             </c:forEach>
           </select>
@@ -48,7 +48,6 @@
                 <th>Type</th>
                 <th style="text-align: right;">Usage</th>
                 <th style="text-align: right;">Amount</th>
-                <th style="text-align: right;">Balance</th>
                 <th style="width: 16px;"></th>
               </tr>
               <c:forEach var="usageDetail" items="${accountDetail.usageHistory.currentPage}">

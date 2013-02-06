@@ -16,9 +16,9 @@
 
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Account Activity</h3>
         <c:choose>
-          <c:when test="${not empty accountDetails}">
-            <c:forEach var="accountDetail" items="${accountDetails}">
-              <h4 style="float: left; display: inline-block">${accountDetail.deviceInfo.label} ${accountDetail.account.balance}</h4>
+          <c:when test="${not empty ACCOUNT_DETAILS}">
+            <c:forEach var="accountDetail" items="${ACCOUNT_DETAILS}">
+              <h4 style="float: left; display: inline-block">${accountDetail.deviceInfo.label}</h4>
               <c:choose>
                 <c:when test="${not empty accountDetail.account.inactiveDate}">
                   <div class="badge" style="float: right;">Current Balance: Disconnected</div>
@@ -71,7 +71,7 @@
 
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Payments</h3>
         <c:choose>
-          <c:when test="${not empty paymentHistory.newestRecord}">
+          <c:when test="${not empty PAYMENT_HISTORY.newestRecord}">
             <table>
               <tr>
                 <th>Date and Time</th>
@@ -80,7 +80,7 @@
                 <th style="text-align: right;">Amount</th>
                 <th style="text-align: right;">Invoice</th>
               </tr>
-              <c:forEach var="paymentRecord" items="${paymentHistory.newestRecord}">
+              <c:forEach var="paymentRecord" items="${PAYMENT_HISTORY.newestRecord}">
                 <%@ include file="/WEB-INF/views/include/display/paymentRecord.jsp"%>
               </c:forEach>
             </table>
