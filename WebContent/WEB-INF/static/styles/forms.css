@@ -34,10 +34,6 @@ form label.required::after {
 /***********************************************
 Button styles
 ************************************************/
-input[type="submit"],input[type="button"],input[type="reset"] {
-	padding: 2px 25px 2px 25px;
-}
-
 form.validatedForm .buttons {
 	text-align: right;
 	clear: both;
@@ -46,6 +42,7 @@ form.validatedForm .buttons {
 	position: absolute;
 	bottom: 0px;
 	float: right;
+	margin: 10px 0;
 }
 
 form.validatedForm .buttons a.button {
@@ -116,8 +113,7 @@ form.validatedForm textarea {
 	width: 300px;
 }
 
-form.validatedForm input[type="text"],form.validatedForm input[type="password"]
-	{
+form.validatedForm input[type="text"],form.validatedForm input[type="password"] {
 	width: 300px;
 	margin: 0px;
 	float: left;
@@ -132,13 +128,14 @@ form.validatedForm select {
 
 form.validatedForm label {
 	float: left;
-	width: 160px;
+	width: 180px;
 	line-height: 25px;
 	font-weight: normal;
+	font-size: 14px;
 }
 
 form.validatedForm .pushed {
-	margin: 0px 0px 0px 160px;
+	margin: 0px 0px 0px 180px;
 }
 
 form.validatedForm span[id*="errors"] {
@@ -165,13 +162,11 @@ form.validatedForm .padded {
 }
 
 .validation span.accept {
-	background: url('../../static/images/buttons/icons/accept.png')
-		no-repeat center left;
+	background: url('../../static/images/buttons/icons/accept.png') no-repeat center left;
 }
 
 .validation span.reject {
-	background: url('../../static/images/buttons/icons/error.png') no-repeat
-		center left;
+	background: url('../../static/images/buttons/icons/error.png') no-repeat center left;
 }
 
 /***********************************************

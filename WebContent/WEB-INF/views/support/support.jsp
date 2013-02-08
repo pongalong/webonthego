@@ -16,7 +16,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3 style="border-bottom: 1px #ccc dotted; margin-bottom: 10px;">Support</h3>
 
@@ -45,25 +45,29 @@
           <form:form id="search" cssClass="search validatedForm" method="post" commandName="article">
             <h3 style="border-bottom: 1px #ccc dotted; margin-bottom: 10px;">Search</h3>
             <input id="search_support_input" type="text" name="keyword" title="Enter your query here" style="width: 100%;"></input>
-            <div class="buttons"">
-              <a id="search_button_submit" href="#" class="button action-m"><span>Search</span></a> <input id="search_submit" type="submit"
-                name="_eventId_submit" class="hidden"></input>
+
+            <div class="buttons" style="margin-top: 35px;">
+              <input type="submit" name="_eventId_submit"></input>
             </div>
+
           </form:form>
 
         </div>
 
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
+
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

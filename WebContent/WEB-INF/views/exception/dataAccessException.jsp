@@ -9,25 +9,27 @@
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
 
   <div class="container">
-    <%@ include file="/WEB-INF/views/include/header_exception.jsp"%>
+    <%@ include file="/WEB-INF/views/include/header.jsp"%>
   </div>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Information Currently Unavailable</h3>
         <p style="font-size: 1.3em;">An error has occured while handling your request. No changes were made. Please try your request again.</p>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
+
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
-
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

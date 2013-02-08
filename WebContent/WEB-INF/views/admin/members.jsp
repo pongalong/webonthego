@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
         <h4>${memberType}</h4>
         <div>
@@ -28,16 +28,19 @@
       </div>
 
       <sec:authorize ifAnyGranted="ROLE_ADMIN">
-        <div class="span-6 last sub-navigation">
+        <div class="span-6 last accountNav">
           <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
         </div>
       </sec:authorize>
+
+      <div class="clear"></div>
     </div>
 
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
   <!-- Close container -->
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

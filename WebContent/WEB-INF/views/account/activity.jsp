@@ -13,9 +13,10 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
-      <div class="span-18 colborder">
+    <div class="mainbody">
+      <div class="span-18 colborder" style="min-height: 200px;">
         <h3>Account Activity</h3>
+
 
         <div style="position: relative; margin-bottom: 30px;">
           <select id="deviceSelect" style="border-radius: 3px; border-color: #aaa;">
@@ -76,18 +77,20 @@
             </table>
           </c:otherwise>
         </c:choose>
-
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
+
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

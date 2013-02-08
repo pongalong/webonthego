@@ -12,10 +12,10 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
 
       <!--  Begin left column -->
-      <div class="span-15">
+      <div class="span-15 colborder">
 
         <form id="login" class="login" action="<spring:url value='/j_spring_security_check' />" method="post">
           <h3>Login to Web on the Go &#8480;</h3>
@@ -31,8 +31,7 @@
           </c:choose>
 
           <c:if test="${not empty param.login_error}">
-            <div class="alert error" style="width: 90%;">
-              <h1>There was a problem logging in</h1>
+            <div class="alert error" style="width:335px; margin-top: 10px; padding-right:0;">
               <span style="color: #666;">&#8226; Username or Password was incorrect.</span>
             </div>
           </c:if>
@@ -45,8 +44,7 @@
                 value="Password" />
             </div>
 
-            <a id="login_button_submit" href="#" class="button action-m" style="float: right;"><span>Sign In</span> </a> <a
-              href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> <input id="login_submit" type="submit" class="hidden" />
+            <a href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> <input type="submit" value="Login" style="float: right;" />
           </div>
 
         </form>
@@ -55,7 +53,7 @@
       <!--  End left column -->
 
       <!--  Begin right column -->
-      <div class="span-8 colborderleft last">
+      <div class="span-8 last">
         <h3>Sign up for Web on the Go &#8480;</h3>
         <p>Don't have an account?</p>
         <ul style="height: 80px;">
@@ -63,15 +61,18 @@
           <li>Manage devices</li>
           <li>Get support</li>
         </ul>
-        <a class="button action-m" href="<spring:url value="/register" />" style="float: right;"><span>Create an Account</span></a>
+        <a class="mBtn" href="<spring:url value="/register" />" style="float: right;"><span>Create an Account</span></a>
       </div>
       <!--  End right column -->
 
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
   <!-- Close container -->
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

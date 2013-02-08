@@ -13,7 +13,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
 
       <h3>Terms and Conditionas</h3>
       <div class="span-18">
@@ -50,16 +50,15 @@
           <div class="clear"></div>
 
           <div class="buttons">
-            <a id="registration_terms_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="registration_terms_submit"
-              type="submit" name="_eventId_submit" value="Continue" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Continue" />
           </div>
 
         </form:form>
-
+        <div class="clear"></div>
       </div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-  </div>
 
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

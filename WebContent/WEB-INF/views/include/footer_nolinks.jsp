@@ -1,16 +1,12 @@
 <!-- Begin Footer -->
 <div class="clear"></div>
-<div id="footer">
-
-  <!-- Begin Footer Navigtion -->
-  <div class="footer-navigation">
-    <div class="span-12">
-      <p>Web on the Go &#8480;</p>
-    </div>
-  </div>
-  <!-- End Footer Navigation -->
-
-</div>
-<!-- End Footer -->
-
+<!-- Javascript check -->
 <%@ include file="/WEB-INF/views/include/jsCheck.jsp"%>
+
+
+
+
+  <div id="bottom">&nbsp;</div>
+  <div id="footer">&nbsp;</div>
+
+<!--  End Footer -->

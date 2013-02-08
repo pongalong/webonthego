@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
         <c:if test="${!empty category}">
           <h1 style="border-bottom: 1px #ccc dotted;">Frequently Asked Questions : ${category.title}</h1>
@@ -41,14 +41,16 @@
 
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
 
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

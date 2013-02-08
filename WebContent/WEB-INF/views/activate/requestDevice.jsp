@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18">
 
         <form:form id="device_form" cssClass="validatedForm" method="post" commandName="device">
@@ -49,15 +49,18 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="device_form_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="device_form_submit" type="submit"
-              name="_eventId_submit" value="Continue" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Continue" />
           </div>
         </form:form>
 
       </div>
+
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

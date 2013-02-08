@@ -13,7 +13,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18">
 
         <form:form id="payment_form" cssClass="validatedForm" method="post" commandName="creditCardPayment">
@@ -198,16 +198,17 @@
           <div class="clear"></div>
           <!-- Buttons -->
           <div class="buttons">
-            <a id="payment_form_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="payment_form_submit" type="submit"
-              name="_eventId_submit" value="Continue" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Continue" />
           </div>
 
         </form:form>
 
       </div>
-    </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-  </div>
 
+      <div class="clear"></div>
+    </div>
+
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

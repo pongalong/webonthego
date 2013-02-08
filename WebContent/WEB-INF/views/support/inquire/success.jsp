@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3>Ticket Submitted</h3>
         <p>We will investigate the issue and get back to you as soon as possible. Thank You!</p>
@@ -18,12 +18,15 @@
         <a id="account" href="<spring:url value="/" />" class="button action-m"><span>Done</span></a>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3>Please Enter Article Information</h3>
 
@@ -42,24 +42,25 @@
           </div>
 
           <div class="buttons">
-            <a id="insertArticle_button_submit" href="#" class="button action-m"><span>Submit</span></a> <input id="insertArticle_submit" type="submit"
-              name="_eventId_submit" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Submit" />
           </div>
 
         </form:form>
       </div>
       <!-- border -->
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
     <!-- content -->
 
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
   <!-- container -->
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

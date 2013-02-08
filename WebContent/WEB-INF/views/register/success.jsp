@@ -11,17 +11,18 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <h3>Your account has been created!</h3>
       <p>You can activate your device now, or the next time you login.</p>
 
       <div class="buttons">
-        <a href="<spring:url value='/activate' />" class="button action-m multi"><span>Activate Now</span> </a> <a href="<spring:url value='/' />"
-          class="button action-m multi"><span>Later</span> </a>
+        <a href="<spring:url value='/activate' />" class="mBtn">Activate Now </a> <a href="<spring:url value='/' />" class="mBtn">Later </a>
       </div>
-    </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-  </div>
 
+      <div class="clear"></div>
+    </div>
+
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

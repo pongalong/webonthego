@@ -8,17 +8,17 @@
 <body>
   <%@ include file="/WEB-INF/views/include/popups.jsp"%>
 
-  <div class="container">
-    <%@ include file="/WEB-INF/views/include/header_exception.jsp"%>
-  </div>
+
+  <%@ include file="/WEB-INF/views/include/header.jsp"%>
+
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Our Apologies, There was a problem</h3>
         <p style="font-size: 1.3em;">
           Your request could not be completed at this time and no changes were made to your account. Please try again later or contact Web on the Go &#8480;
-          Customer Support <a href="http://account.webonthego.com/support">http://account.webonthego.com/support</a>.
+          Customer Support <a href="https://account.webonthego.com/support">http://account.webonthego.com/support</a>.
         </p>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
           <hr />
@@ -57,15 +57,16 @@
         </sec:authorize>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
-
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

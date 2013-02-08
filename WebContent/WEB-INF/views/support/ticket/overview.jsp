@@ -11,7 +11,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
 
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Quick Links</h3>
@@ -112,22 +112,24 @@
           </div>
 
           <div class="buttons">
-            <a id="searchTicket_button_submit" href="#" class="button action-m"><span>Search</span></a> <input id="searchTicket_submit" type="submit"
-              name="_eventId_submit" class="hidden" />
+            <input type="submit" name="_eventId_submit" />
           </div>
 
         </form:form>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

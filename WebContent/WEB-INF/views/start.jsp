@@ -10,23 +10,22 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <h3>Let's Setup Your Account</h3>
-      <div class="span-18">
 
+      <div class="span-18">
         <p>Before you can begin using your device, you'll have to provide us with some more information to activate it on the network.</p>
 
         <!-- Buttons -->
         <div class="buttons" style="float: right;">
-          <a href="<spring:url value="/activate" />" class="button action-m"><span>Start</span> </a>
+          <a href="<spring:url value="/activate" />" class="mBtn">Start </a>
         </div>
-
-
       </div>
+
+      <div class="clear"></div>
     </div>
 
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
   </div>
-
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18">
 
         <form:form id="prompt_complete_account" cssClass="validatedForm" method="post" commandName="creditCardPayment">
@@ -20,15 +20,17 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="prompt_complete_account_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="prompt_complete_account_submit"
-              type="submit" name="_eventId_submit" value="Continue" class="hidden"></input>
+            <input type="submit" name="_eventId_submit" value="Continue"></input>
           </div>
         </form:form>
 
       </div>
+
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

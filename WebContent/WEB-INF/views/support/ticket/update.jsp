@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
 
 
@@ -135,24 +135,25 @@
           </div>
 
           <div class="buttons">
-            <a id="updateTicket_button_submit" href="#" class="button action-m"><span>Update</span></a> <a
-              href="<spring:url value="/support/ticket/view/ticket/${ticket.id}" />" class="button action-m multi"><span>Cancel</span></a> <input
-              id="updateTicket_submit" type="submit" name="_eventId_submit" value="Submit" class="hidden" />
+            <a href="<spring:url value="/support/ticket/view/ticket/${ticket.id}" />" class="mBtn">Cancel</a> <input type="submit" name="_eventId_submit"
+              value="Submit" />
           </div>
 
         </form:form>
 
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

@@ -11,9 +11,8 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
-
 
         <c:if test="${not empty param.notification_sent}">
           <div class="info">
@@ -63,7 +62,7 @@
           </p>
         </div>
 
-        <div class="clear hr"></div>
+        <div class="clear"></div>
 
 
         <h3 style="margin: 10px 0 10px 0; border-bottom: 1px #ccc dotted;">Credit Cards</h3>
@@ -74,8 +73,7 @@
               <div class="address dontsplit">
                 <div class="btn-group">
                   <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
-                    style="background: white; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
-
+                    style="border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
                     <c:choose>
                       <c:when test="${creditCard.isDefault == 'Y'}">
                         <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>
@@ -112,16 +110,21 @@
           </div>
         </c:if>
 
+
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
 </body>
 </html>

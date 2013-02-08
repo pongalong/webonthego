@@ -11,7 +11,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18">
 
         <h3>Choose a Payment Method</h3>
@@ -83,18 +83,19 @@
 
 
           <div class="buttons">
-            <a id="choose_payment_button_submit" href="#" class="button action-m"><span>Continue</span> </a> <input id="choose_payment_submit" class="hidden"
-              type="submit" name="_eventId_select" value="Select" /> <input id="addNewMethod_submit" class="hidden" type="submit" name="_eventId_new"
-              value="Create New" />
+            <input type="submit" name="_eventId_select" value="Select" /> <input id="addNewMethod_submit" type="submit" name="_eventId_new" value="Add New" />
           </div>
 
 
         </form:form>
 
       </div>
+
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

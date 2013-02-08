@@ -11,9 +11,9 @@
   <!-- LOGOUT/ID -->
   <div class="logout">
     <c:choose>
-      <c:when test="${sessionScope.CONTROLLING_USER.userId != -1}">
+      <c:when test="${CONTROLLING_USER.userId != -1}">
         <b>Internal:</b>
-        <c:out value="${sessionScope.CONTROLLING_USER.username}" />
+        <c:out value="${CONTROLLING_USER.username}" />
       </c:when>
       <c:otherwise>
         <sec:authentication property="principal.authorities" />
@@ -25,7 +25,7 @@
 
   <!-- SET CURRENTLY VIEWED USER -->
   <c:choose>
-    <c:when test="${sessionScope.USER.userId > 0}">
+    <c:when test="${USER.userId > 0}">
       <c:set var="currentUser" value="${sessionScope.USER.userId} ${sessionScope.USER.email}" />
     </c:when>
     <c:otherwise>
@@ -38,17 +38,19 @@
 
   <!-- SEARCH FORM -->
   <form id="adminControl" method="post" action="<spring:url value="/search" />">
+  
     <div style="float: left; padding-right: 5px;">
-      <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" /> <input autocomplete="off" name="admin_search_param"
-        id="admin_search_param" type="text" placeholder="${currentUser}" />
+      <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" />
+      <input autocomplete="off" name="admin_search_param"  id="admin_search_param" type="text" placeholder="${currentUser}" />
       <div id="admin_search_results" class="search_results_box"></div>
     </div>
-    <div style="float: left;">
-      <a id="adminControl_button_submit" href="#" class="button multi semi-s"><span>Go</span> </a> <a id="adminControl_button_reset" href="#"
-        class="button semi-s multi"><span>Reset</span> </a><input id="adminControl_submit" class="hidden" type="submit" value="Go" /> <input
-        id="adminControl_reset" type="reset" class="hidden" /> <a id="admin_ticket_link" href="<spring:url value="/support/ticket" />" class="button semi-s"><span>Tickets</span>
-      </a>
+
+    <div style="text-align: left;">
+      <input id="adminControl_button_submit" type="submit" value="Go" class="mBtn"/>
+      <input id="adminControl_button_reset" type="reset" class="mBtn" />
+      <a href="<spring:url value="/support/ticket" />" class="mBtn">Tickets</a>
     </div>
+    
   </form>
 
 </div>

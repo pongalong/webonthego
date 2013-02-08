@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <form:form id="customerCreateTicket" cssClass="validatedForm" method="post" commandName="ticket">
           <h3>Send an Inquiry</h3>
@@ -59,19 +59,21 @@
           </div>
 
           <div class="buttons">
-            <a id="customerCreateTicket_button_submit" href="#" class="button action-m"><span>Submit</span></a> <input id="customerCreateTicket_submit"
-              type="submit" name="_eventId_submit" value="Continue" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Submit" />
           </div>
 
         </form:form>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

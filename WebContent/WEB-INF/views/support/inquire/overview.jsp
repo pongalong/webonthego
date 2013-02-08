@@ -12,7 +12,7 @@
   <c:set var="loggedinUserTicketsCount" value="0" scope="page" />
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
 
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3>Have A Question?</h3>
@@ -22,14 +22,18 @@
 
       </div>
       <!-- span-18 -->
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
+
+      <div class="clear"></div>
     </div>
 
     <!-- close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

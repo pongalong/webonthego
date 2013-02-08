@@ -19,7 +19,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <h3>Setup ID Verification</h3>
 
       <div class="span-18">
@@ -69,7 +69,7 @@
           <!-- Jcaptcha -->
           <div class="row" style="margin-bottom: 0px; padding-bottom: 0px;">
             <form:label path="captcha.value" cssClass="required">Word Verification </form:label>
-            <div style="border: 1px #bbb solid; width: 310px; text-align: center; float: left;">
+            <div style="border: 1px #bbb solid; width: 310px; text-align: center; float: left; background:white;">
               <span style="color: #666; float: left; margin-left: 5px;">Enter the text in the image below</span> <img id="jCaptchaImage"
                 src="<spring:url value='/static/images/jcaptcha.jpg' htmlEscape='true' />" alt="Security image" />
             </div>
@@ -85,17 +85,16 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="registration_security_button_submit" href="#" class="button action-m multi"><span>Continue</span> </a> <input
-              id="registration_security_submit" type="submit" name="_eventId_submit" value="Continue" class="hidden" />
+            <input type="submit" name="_eventId_submit" value="Continue" />
           </div>
 
         </form:form>
 
       </div>
-
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-  </div>
 
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

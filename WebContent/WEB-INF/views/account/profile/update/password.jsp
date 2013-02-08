@@ -11,7 +11,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Change Password</h3>
 
@@ -29,7 +29,7 @@
           </c:if>
           <!--End Error Display -->
 
-          <c:if test="${sessionScope.CONTROLLING_USER.userId == -1}">
+          <c:if test="${CONTROLLING_USER.userId <= 0}">
             <div class="row">
               <form:label path="oldPassword" cssClass="required">Old Password</form:label>
               <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
@@ -48,21 +48,21 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="updatePassword_button_submit" href="#" class="button action-m"><span>Update Password</span> </a> <a href="<spring:url value="/profile" />"
-              class="button escape-m multi"><span>Cancel</span> </a> <input id="updatePassword_submit" type="submit" value="Update Password" class="hidden"></input>
+            <a href="<spring:url value="/profile" />" class="mBtn"><span>Cancel</span> </a> <input type="submit" value="Update Password"></input>
           </div>
 
         </form:form>
 
       </div>
 
-      <div class="span-6 last sub-navigation formProgress">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
-  </div>
 
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

@@ -11,17 +11,21 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <h3>Your device has been activated!</h3>
       <p>You can now use your device.</p>
 
       <div class="buttons">
-        <a href="<spring:url value='/' />" class="button action-m multi"><span>Home</span> </a>
+        <a href="<spring:url value='/' />" class="mBtn">Home </a>
       </div>
 
+
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

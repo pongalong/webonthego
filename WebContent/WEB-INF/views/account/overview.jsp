@@ -11,14 +11,15 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
+
       <div class="span-18 colborder" style="min-height: 200px;">
 
         <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Account Activity</h3>
         <c:choose>
           <c:when test="${not empty ACCOUNT_DETAILS}">
             <c:forEach var="accountDetail" items="${ACCOUNT_DETAILS}">
-              <h4 style="float: left; display: inline-block">${accountDetail.deviceInfo.label}</h4>
+              <h4 style="float: left; display: inline-block; badding-bottom: 10px;">${accountDetail.deviceInfo.label}</h4>
               <c:choose>
                 <c:when test="${not empty accountDetail.account.inactiveDate}">
                   <div class="badge" style="float: right;">Current Balance: Disconnected</div>
@@ -37,7 +38,7 @@
                     <tr>
                       <th>Date and Time</th>
                       <th>Type</th>
-                      <th style="text-align: right;">Usage</th>
+                      <th>Usage</th>
                       <th style="text-align: right;">Amount</th>
                       <th style="width: 16px;"></th>
                     </tr>
@@ -78,7 +79,6 @@
                 <th>Type</th>
                 <th>Account</th>
                 <th style="text-align: right;">Amount</th>
-                <th style="text-align: right;">Invoice</th>
               </tr>
               <c:forEach var="paymentRecord" items="${PAYMENT_HISTORY.newestRecord}">
                 <%@ include file="/WEB-INF/views/include/display/paymentRecord.jsp"%>
@@ -95,15 +95,19 @@
         <div class="clear"></div>
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
+
     </div>
-    <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+    <!-- Close mainbody -->
+
   </div>
   <!-- Close container -->
+
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 
 </body>
 </html>

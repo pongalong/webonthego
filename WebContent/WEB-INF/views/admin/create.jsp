@@ -11,7 +11,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder">
         <h4>Create Administrative User</h4>
         <form:form id="createRep" cssClass="validatedForm" commandName="user" method="post">
@@ -58,18 +58,19 @@
       </div>
 
       <sec:authorize ifAnyGranted="ROLE_ADMIN">
-        <div class="span-6 last sub-navigation">
+        <div class="span-6 last accountNav">
           <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
         </div>
       </sec:authorize>
+      <div class="clear"></div>
     </div>
 
 
 
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+
   </div>
   <!-- Close container -->
-
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

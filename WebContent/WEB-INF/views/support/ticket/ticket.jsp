@@ -10,7 +10,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <div class="span-18 colborder" style="min-height: 200px;">
         <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Ticket ${ticket.id} Detail</h3>
 
@@ -121,24 +121,25 @@
           </c:otherwise>
         </c:choose>
 
-        <div class="buttons">
-          <a href="<spring:url value="/support/ticket" />" class="button action-m" style="float: right;"><span>Back to Tickets</span></a><a
-            href="<spring:url value="/support/ticket/update/${ticket.id}" />" class="button action-m multi" style="float: right;"><span>Update Ticket</span></a>
-          <a href="<spring:url value="/support/ticket/note/add/${ticket.id}" />" class="button action-m multi" style="float: right;"><span>Add a Note</span></a>
-          <a href="<spring:url value="/support/ticket/reply/${ticket.id}" />" class="button action-m multi" style="float: right;"><span>Reply</span></a>
+        <div class="buttons" style="text-align: right;">
+          <a href="<spring:url value="/support/ticket" />" class="mBtn">Back</a> <a href="<spring:url value="/support/ticket/update/${ticket.id}" />"
+            class="mBtn">Update</a> <a href="<spring:url value="/support/ticket/note/add/${ticket.id}" />" class="mBtn">Add a Note</a> <a
+            href="<spring:url value="/support/ticket/reply/${ticket.id}" />" class="mBtn">Reply</a>
         </div>
 
       </div>
 
-      <div class="span-6 last sub-navigation">
+      <div class="span-6 last accountNav">
         <%@ include file="/WEB-INF/views/include/admin/navigation/adminNav.jsp"%>
       </div>
 
+      <div class="clear"></div>
     </div>
     <!-- Close main-content -->
-    <%@ include file="/WEB-INF/views/include/footer_links.jsp"%>
+
   </div>
   <!-- Close container -->
 
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>

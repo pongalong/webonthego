@@ -18,7 +18,7 @@
   <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
   <div class="container">
-    <div id="main-content">
+    <div class="mainbody">
       <h3>Sign up for an account</h3>
       <span class="span-18"> <form:form id="registration_username" cssClass="validatedForm" method="post" commandName="simpleRegistrationLogin">
           <!-- Errors -->
@@ -79,16 +79,16 @@
 
           <!-- Buttons -->
           <div class="buttons">
-            <a id="registration_username_button_submit" href="#" class="button action-m multi"><span>Next</span> </a> <input id="registration_username_submit"
-              type="submit" name="_eventId_submit" value="Continue" class="hidden"></input>
+            <input id="registration_username_submit" type="submit" name="_eventId_submit" value="Continue"></input>
           </div>
         </form:form>
 
       </span>
 
+      <div class="clear"></div>
     </div>
-    <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-  </div>
 
+  </div>
+  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
 </body>
 </html>
