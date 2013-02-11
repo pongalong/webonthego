@@ -7,7 +7,7 @@
       <li id="nav_devices"><a href="<spring:url value="/devices"/>">Devices</a></li>
       <li id="nav_activity"><a href="<spring:url value="/account/activity"/>">Activity</a></li>
       <li id="nav_paymentHistory"><a href="<spring:url value="/account/payment/history"/>">Payments</a></li>
-      <li id="nav_coupons"><a href="<spring:url value="/coupons"/>">Coupons</a></li>
+      <li id="nav_coupons"><a href="<spring:url value="/coupons"/>">Promotions</a></li>
     </ul>
   </c:when>
   <c:when test="${CONTROLLING_USER.userId > 0 && USER.userId <= 0}">

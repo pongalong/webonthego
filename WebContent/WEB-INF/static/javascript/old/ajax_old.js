@@ -1,11 +1,11 @@
 $(document).ready(function() {
 	$("#loading").ajaxStart(function() {
 		$(this).show();
-		$("#curtain").css("z-index", 202);
+		$("#curtain").css("z-index", 502);
 	});
 	$("#loading").ajaxStop(function() {
 		$(this).hide();
-		$("#curtain").css("z-index", 200);
+		$("#curtain").css("z-index", 500);
 	});
 });
 

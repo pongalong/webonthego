@@ -1,64 +1,45 @@
-<%@ include file="/WEB-INF/views/include/taglibs.jsp"%>
-<%@ include file="/WEB-INF/views/include/doctype.jsp"%>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Web on the Go &#8480; Account Management</title>
-<%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-</script>
-<script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
+<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-</head>
-<body>
-  <%@ include file="/WEB-INF/views/include/popups.jsp"%>
-  <%@ include file="/WEB-INF/views/include/header.jsp"%>
+<div class="span-18">
+  <h3>Terms and Conditions</h3>
+  <form:form id="registration_terms" cssClass="validatedForm" method="post" commandName="simpleRegistrationTerms">
 
-  <div class="container">
-    <div class="mainbody">
-
-      <h3>Terms and Conditionas</h3>
-      <div class="span-18">
-
-        <form:form id="registration_terms" cssClass="validatedForm" method="post" commandName="simpleRegistrationTerms">
-
-          <!-- Begin Errors -->
-          <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationTerms'].allErrors}">
-            <div class="row">
-              <div class="alert error">
-                <h1>Please correct the following problems</h1>
-                <form:errors path="acceptTerms" />
-                <!-- Global Errors -->
-                <spring:bind path="simpleRegistrationTerms">
-                  <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-                    <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-                  </c:forEach>
-                </spring:bind>
-              </div>
-            </div>
-          </c:if>
-
-          <!-- Display Plans -->
-          <div class="row">
-            <div class="registrationTerms"><%@ include file="/WEB-INF/views/terms/registrationTos.jsp"%></div>
-          </div>
-
-          <!-- Term Acceptance -->
-          <div class="row">
-            <form:checkbox path="acceptTerms" cssErrorClass="validationFailed" cssStyle="vertical-align: middle;" />
-            <span style="vertical-align: middle;" onclick="$('#acceptTerms1').click()">I have read and understand the terms and conditions.</span>
-          </div>
-
-          <div class="clear"></div>
-
-          <div class="buttons">
-            <input type="submit" name="_eventId_submit" value="Continue" />
-          </div>
-
-        </form:form>
-        <div class="clear"></div>
+    <!-- Begin Errors -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationTerms'].allErrors}">
+      <div class="row">
+        <div class="alert error">
+          <h1>Please correct the following problems</h1>
+          <form:errors path="acceptTerms" />
+          <!-- Global Errors -->
+          <spring:bind path="simpleRegistrationTerms">
+            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+            </c:forEach>
+          </spring:bind>
+        </div>
       </div>
+    </c:if>
+
+    <!-- Display Plans -->
+    <div class="row">
+      <div class="registrationTerms"><%@ include file="/WEB-INF/views/terms/activation_tos.jsp"%></div>
     </div>
 
-  </div>
-  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-</body>
-</html>
+    <!-- Term Acceptance -->
+    <div class="row">
+      <form:checkbox path="acceptTerms" cssErrorClass="validationFailed" cssStyle="vertical-align: middle;" />
+      <span style="vertical-align: middle;" onclick="$('#acceptTerms1').click()">I have read and understand the terms and conditions.</span>
+    </div>
+
+    <div class="clear"></div>
+
+    <div class="buttons">
+      <input type="submit" name="_eventId_submit" value="Continue" />
+    </div>
+
+  </form:form>
+</div>
+
+<script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp"%>

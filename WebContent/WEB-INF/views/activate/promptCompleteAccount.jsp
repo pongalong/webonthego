@@ -1,36 +1,21 @@
-<%@ include file="/WEB-INF/views/include/taglibs.jsp"%>
-<%@ include file="/WEB-INF/views/include/doctype.jsp"%>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Web on the Go &#8480; Account Management</title>
-<%@ include file="/WEB-INF/views/include/headTags.jsp"%>
-</head>
-<body onload="setExpirationDate('${creditCard.expirationDate}')">
-  <%@ include file="/WEB-INF/views/include/popups.jsp"%>
-  <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="container">
-    <div class="mainbody">
-      <div class="span-18">
+<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-        <form:form id="prompt_complete_account" cssClass="validatedForm" method="post" commandName="creditCardPayment">
-          <h3>Complete Your Account</h3>
+<div class="span-18">
 
-          <p>We'll need some additional information to complete your account before you can activate your device.</p>
+  <form:form id="prompt_complete_account" cssClass="validatedForm" method="post" commandName="creditCardPayment">
 
-          <!-- Buttons -->
-          <div class="buttons">
-            <input type="submit" name="_eventId_submit" value="Continue"></input>
-          </div>
-        </form:form>
+    <h3>Complete Your Account</h3>
 
-      </div>
+    <p>We'll need some additional information to complete your account before you can activate your device.</p>
 
-      <div class="clear"></div>
+    <!-- Buttons -->
+    <div class="buttons">
+      <input type="submit" name="_eventId_submit" value="Continue"></input>
     </div>
 
-  </div>
+  </form:form>
 
-  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
-</body>
-</html>
+</div>
+
+<%@ include file="/WEB-INF/views/include/footer.jsp"%>

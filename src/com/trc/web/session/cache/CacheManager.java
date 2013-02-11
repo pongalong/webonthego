@@ -12,7 +12,10 @@ import com.trc.security.encryption.StringEncryptor;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.account.PaymentHistory;
+import com.trc.user.account.UsageHistory;
+import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
+import com.tscp.mvne.UsageDetail;
 import com.tscp.util.logger.DevLogger;
 
 @Component
@@ -42,11 +45,7 @@ public final class CacheManager extends SessionManager {
 	}
 
 	public static final StringEncryptor getEncryptor() {
-		StringEncryptor encryptor = (StringEncryptor) get(CacheKey.ENCRYPTOR);
-		if (encryptor == null) {
-			encryptor = new StringEncryptor(SessionManager.getCurrentSession().getId());
-			set(CacheKey.ENCRYPTOR, encryptor);
-		}
+		StringEncryptor encryptor = (StringEncryptor) get(SessionKey.ENCRYPTOR);
 		return encryptor;
 	}
 
@@ -55,33 +54,46 @@ public final class CacheManager extends SessionManager {
 
 		clearCache();
 
-		if (user.getUserId() > 0) {
-			DevLogger.debug("Refreshing cache for user " + user.getUsername());
+		if (user.getUserId() <= 0)
+			return;
 
-			try {
-				List<AccountDetail> accountDetails = accountManager.getAllAccountDetails(user);
-				DevLogger.trace("found " + accountDetails.size() + " account details");
+		DevLogger.debug("Refreshing cache for user " + user.getUsername());
 
-				for (AccountDetail ad : accountDetails) {
-					try {
-						ad.setEncodedAccountNum(getEncryptor().encryptIntUrlSafe(ad.getAccount().getAccountNo()));
-						ad.setEncodedDeviceId(getEncryptor().encryptIntUrlSafe(ad.getDeviceInfo().getId()));
-					} catch (UnsupportedEncodingException e) {
-						DevLogger.error("Exception encrypting IDs", e);
-					}
+		try {
+			List<AccountDetail> accountDetails = accountManager.getAllAccountDetails(user);
+			DevLogger.trace("... found " + accountDetails.size() + " account details");
+
+			for (AccountDetail ad : accountDetails) {
+				try {
+					DevLogger.trace("... encoding identifiers");
+					ad.setEncodedAccountNum(getEncryptor().encryptIntUrlSafe(ad.getAccount().getAccountNo()));
+					ad.setEncodedDeviceId(getEncryptor().encryptIntUrlSafe(ad.getDeviceInfo().getId()));
+				} catch (UnsupportedEncodingException e) {
+					DevLogger.error("Exception encrypting IDs for user " + user.getUserId(), e);
 				}
-				set(CacheKey.ACCOUNT_DETAILS, accountDetails);
-			} catch (AccountManagementException e) {
-				DevLogger.error("Exception refreshing account details for user " + user.getUserId(), e);
-			}
 
-			try {
-				PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
-				set(CacheKey.PAYMENT_HISTORY, paymentHistory);
-			} catch (AccountManagementException e) {
-				DevLogger.error("Exception refreshing paymentHistory for user " + user.getUserId(), e);
+				try {
+					DevLogger.trace("... fetching usage history");
+					List<UsageDetail> usageDetails = accountManager.getChargeHistory(user, ad.getAccount().getAccountNo());
+					ad.setUsageHistory(new UsageHistory(usageDetails, user, ad.getAccount().getAccountNo()));
+				} catch (AccountManagementException e) {
+					DevLogger.error("Exception refreshing usage history for user " + user.getUserId(), e);
+				}
+
 			}
+			set(CacheKey.ACCOUNT_DETAILS, accountDetails);
+		} catch (AccountManagementException e) {
+			DevLogger.error("Exception refreshing account details for user " + user.getUserId(), e);
 		}
+
+		try {
+			DevLogger.trace("... fetching payment history");
+			PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
+			set(CacheKey.PAYMENT_HISTORY, paymentHistory);
+		} catch (AccountManagementException e) {
+			DevLogger.error("Exception refreshing paymentHistory for user " + user.getUserId(), e);
+		}
+
 	}
 
 }

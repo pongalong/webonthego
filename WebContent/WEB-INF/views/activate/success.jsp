@@ -1,31 +1,21 @@
-<%@ include file="/WEB-INF/views/include/taglibs.jsp"%>
-<%@ include file="/WEB-INF/views/include/doctype.jsp"%>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>Web on the Go &#8480; Account Management</title>
-<%@ include file="/WEB-INF/views/include/headTags.jsp"%>
 
-</head>
-<body>
-  <%@ include file="/WEB-INF/views/include/popups.jsp"%>
-  <%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-  <div class="container">
-    <div class="mainbody">
-      <h3>Your device has been activated!</h3>
-      <p>You can now use your device.</p>
+<div>
+  <h3>Your device has been activated!</h3>
+  <p>You can now connect to the internet!</p>
+  <p>Please follow the instructions that came in the box with your device to connect. Or try one of our set up guides.</p>
 
-      <div class="buttons">
-        <a href="<spring:url value='/' />" class="mBtn">Home </a>
-      </div>
-
-
-      <div class="clear"></div>
-    </div>
-
+  <div>
+    <ul>
+      <li><a href="http://209.127.228.64/docs/USB-Quick-Start-Guide.pdf">USB Quick Start Guide</a></li>
+      <li><a href="http://209.127.228.64/docs/MiFi-Quick-Start-Guide.pdf">MiFi Quick Start Guide</a></li>
+    </ul>
   </div>
 
-  <%@ include file="/WEB-INF/views/include/footer_nolinks.jsp"%>
+  <div class="buttons">
+    <a href="<spring:url value='/' />" class="mBtn">Home </a>
+  </div>
+</div>
 
-</body>
-</html>
+<%@ include file="/WEB-INF/views/include/footer.jsp"%>

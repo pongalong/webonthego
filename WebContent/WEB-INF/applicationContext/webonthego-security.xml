@@ -55,7 +55,7 @@
     <intercept-url pattern="/**" access="isAuthenticated()" />
 
     <access-denied-handler error-page="/WEB-INF/views/exception/accessDenied.jsp" />
-    <logout invalidate-session="true" logout-success-url="http://www.webonthego.com/" />
+    <logout invalidate-session="true" logout-success-url="/" />
   </http>
 
   <!-- Begin Concurrency Filters -->

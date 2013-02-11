@@ -32,7 +32,7 @@
     </transition>
   </action-state>
 
-  <subflow-state id="addNewPaymentMethod" subflow="requestPaymentInfo">
+  <subflow-state id="addNewPaymentMethod" subflow="requestPaymentMethod">
     <transition on="success" to="success">
       <set name="creditCardPayment" value="currentEvent.attributes.creditCardPayment" />
     </transition>

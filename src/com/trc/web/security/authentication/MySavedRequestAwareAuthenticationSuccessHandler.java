@@ -14,11 +14,13 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import com.trc.config.Config;
 import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
+import com.trc.security.encryption.StringEncryptor;
 import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.authority.ROLE;
 import com.trc.web.session.SessionKey;
+import com.trc.web.session.SessionManager;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
 import com.tscp.util.logger.DevLogger;
@@ -39,7 +41,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 
 		User user = userManager.getLoggedInUser();
 
-		DevLogger.trace("Authentication successful, " + user.getUsername() + " is logged in.");
+		DevLogger.trace("Authentication successful, " + user.getUsername() + " is now logged in.");
 
 		if (!user.isInternalUser())
 			userManager.getUserRealName(user);
@@ -64,6 +66,8 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 			CacheManager.set(SessionKey.CONTROLLING_USER, new EmptyUser());
 			CacheManager.set(SessionKey.USER, user);
 		}
+
+		CacheManager.set(SessionKey.ENCRYPTOR, new StringEncryptor(SessionManager.getCurrentSession().getId()));
 
 		cacheManager.refreshCache(user);
 	}
@@ -91,6 +95,8 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 			case ROLE_SALES:
 				setDefaultTargetUrl("/sales/home");
 				break;
+			default:
+				setDefaultTargetUrl("/home");
 		}
 	}
 
