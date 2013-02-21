@@ -27,8 +27,12 @@
       </tr>
     </c:forEach>
   </table>
-
+  <div class="buttons" style="text-align: center;">
+    <a href="<spring:url value="/support/faq" />" class="mBtn">Back to FAQ</a>
+  </div>
 </div>
+
+
 
 <div class="span-6 last accountNav">
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
