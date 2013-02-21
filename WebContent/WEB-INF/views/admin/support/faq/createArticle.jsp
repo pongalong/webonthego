@@ -5,22 +5,22 @@
 
   <form:form id="insertArticle" cssClass="validatedForm" method="post" commandName="article">
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="subject" cssClass="required">Subject</form:label>
       <form:input path="subject" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="articleData.contents" cssClass="required">Contents</form:label>
       <form:input path="articleData.contents" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="articleData.contentsText">ContentsText</form:label>
       <form:input path="articleData.contentsText" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="categories[0].id" cssClass="required">Category</form:label>
       <form:select path="categories[0].id" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
         <option value="0" selected="selected">Select one</option>

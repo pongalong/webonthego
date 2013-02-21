@@ -8,7 +8,7 @@
 
     <!-- Errors -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationLogin'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="email.value" />
@@ -29,7 +29,7 @@
     <p>Choose a password of at least 5 characters containing letters and numbers.</p>
 
     <!-- Email -->
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="email.value" cssClass="required">
         <spring:message code="label.email" />
       </form:label>
@@ -37,7 +37,7 @@
       <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Not a valid email</span>
       </span>
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="email.confirmValue" cssClass="required">
         <spring:message code="label.confirmEmail" />
       </form:label>
@@ -47,7 +47,7 @@
     </div>
 
     <!-- Password -->
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="password.value" cssClass="required">
         <spring:message code="label.password" />
       </form:label>
@@ -56,7 +56,7 @@
           letters</span>
       </span>
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="password.confirmValue" cssClass="required">
         <spring:message code="label.confirmPassword" />
       </form:label>

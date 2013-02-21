@@ -69,6 +69,6 @@
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/accountActivity.js" />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/pages/accountActivity.js' />"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

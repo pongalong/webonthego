@@ -1,3 +1,7 @@
+$.fn.exists = function() {
+	return this.length > 0;
+};
+
 function validateSelected(value) {
 	return value != 0;
 }
@@ -133,9 +137,9 @@ $.fn.toggleConfirmationField = function(display, speed, focus, validate) {
 		// confirmationField.removeAttr("readOnly");
 		// confirmationField.parent().fadeTo(speed, 1);
 	} else if (display == "hide") {
-		//confirmationField.val("");
+		// confirmationField.val("");
 		// confirmationField.parent().fadeOut(speed);
-		//confirmationField.parent().fadeTo(speed, 0.25);
+		// confirmationField.parent().fadeTo(speed, 0.25);
 	}
 	if (focus)
 		confirmationField.focus();

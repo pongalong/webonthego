@@ -19,12 +19,15 @@ public class CreditCardValidator extends AddressValidator {
 	public static final int discover = 6;
 
 	@Override
-	public boolean supports(Class<?> myClass) {
+	public boolean supports(
+			Class<?> myClass) {
 		return CreditCard.class.isAssignableFrom(myClass);
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(
+			Object target,
+			Errors errors) {
 		CreditCard creditCard = (CreditCard) target;
 		checkName(creditCard.getNameOnCreditCard(), errors);
 		checkCreditCardNumber(creditCard.getCreditCardNumber(), errors);
@@ -42,7 +45,9 @@ public class CreditCardValidator extends AddressValidator {
 	// }
 	// }
 
-	public static void checkName(String name, Errors errors) {
+	public static void checkName(
+			String name,
+			Errors errors) {
 		if (ValidationUtil.isEmpty(name)) {
 			errors.rejectValue("nameOnCreditCard", "creditCard.name.required", "You must enter the name on the card");
 		} else if (!ValidationUtil.isBetween(name, 3, 100)) {
@@ -52,9 +57,11 @@ public class CreditCardValidator extends AddressValidator {
 		}
 	}
 
-	public void checkCreditCardNumber(String cardNumber, Errors errors) {
-		if (cardNumber.toLowerCase().contains("x")) {
-			return;
+	public void checkCreditCardNumber(
+			String cardNumber,
+			Errors errors) {
+		if (cardNumber.contains("*")) {
+			errors.rejectValue("creditCardNumber", "creditCard.number.invalid", "Please enter the full credit card number");
 		} else if (ValidationUtil.isEmpty(cardNumber)) {
 			errors.rejectValue("creditCardNumber", "creditCard.number.required", "You must enter a credit card number");
 		} else if (!ValidationUtil.isBetween(cardNumber, 15, 16)) {
@@ -64,13 +71,19 @@ public class CreditCardValidator extends AddressValidator {
 		}
 	}
 
-	public void checkCvv(String cvv, Errors errors) {
-		if (ValidationUtil.isEmpty(cvv)) {
+	public void checkCvv(
+			String cvv,
+			Errors errors) {
+		if (cvv.contains("*")) {
+			errors.rejectValue("verificationcode", "creditCard.verificationCode.invalid", "Please enter the full CVV number");
+		} else if (ValidationUtil.isEmpty(cvv)) {
 			errors.rejectValue("verificationcode", "creditCard.verificationCode.required", "You must enter a CVV number");
 		}
 	}
 
-	private void checkExpirationDate(String date, Errors errors) {
+	private void checkExpirationDate(
+			String date,
+			Errors errors) {
 		if (!date.matches("\\d{4}")) {
 			errors.rejectValue("expirationDate", "creditCard.expiration.invalid", "Invalid date");
 		} else {
@@ -116,7 +129,8 @@ public class CreditCardValidator extends AddressValidator {
 	// return true;
 	// }
 
-	private static String padString(String value) {
+	private static String padString(
+			String value) {
 		while (value.length() < 2) {
 			value = "0" + value;
 		}
@@ -134,7 +148,9 @@ public class CreditCardValidator extends AddressValidator {
 	// }
 	// }
 
-	private void checkAddress(CreditCard creditCard, Errors errors) {
+	private void checkAddress(
+			CreditCard creditCard,
+			Errors errors) {
 		Address address = WebserviceAdapter.getAddress(creditCard);
 		super.validate(address, errors);
 		// if (creditCard.getAddress1() == null ||
@@ -167,7 +183,8 @@ public class CreditCardValidator extends AddressValidator {
 		// }
 	}
 
-	private boolean mod10(String cardNumber) {
+	private boolean mod10(
+			String cardNumber) {
 		int[] ar = new int[cardNumber.length()];
 		String ccChar;
 		int sum = 0;

@@ -7,7 +7,7 @@
 
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="category" />
@@ -23,17 +23,17 @@
       </div>
     </c:if>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="contactEmail" cssClass="required">Email</form:label>
       <form:input path="contactEmail" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="contactPhone">Phone</form:label>
       <form:input path="contactPhone" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="category">Category</form:label>
       <form:select path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
         <c:forEach var="category" items="${categoryList}" varStatus="status">
@@ -42,7 +42,7 @@
       </form:select>
     </div>
 
-    <div class="row" style="height: 250px;">
+    <div class="row clearfix" style="height: 250px;">
       <form:label path="description" cssClass="required">Description</form:label>
       <form:textarea path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>

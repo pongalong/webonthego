@@ -1,0 +1,22 @@
+<html>
+	<body>
+		<div>
+			<div style="border-bottom:1px solid #999; margin-bottom:15px; font-size:15px;">
+				<img src="https://account.webonthego.com/static/images/logo/logo_s1.png">
+			</div>
+			
+			<div style="width: 95%; margin:0px auto;">
+				<h3 style="color:gray;">A response to your ticket ${ticketNote.ticket.id}</h3>
+				<p>
+					Category: ${ticketNote.ticket.category}<br/>
+					Description: ${ticketNote.ticket.description}
+				</p>
+				<p>${ticketNote.note}</p>
+				<p>
+					If you did not make this request then please ignore this email. If you have questions please contact our Customer Support team. 
+					Please do not reply to this e-mail. You can send us a response in a new Inquiry/Ticket and reference to your current ticket number.				
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

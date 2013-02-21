@@ -38,6 +38,15 @@ public class AccountManager {
 	@Autowired
 	private CacheManager cacheManager;
 
+	public Account getUnlinkedAccount(
+			User user) throws AccountManagementException {
+		try {
+			return accountService.getUnlinkedAccount(user);
+		} catch (AccountServiceException e) {
+			throw new AccountManagementException(e);
+		}
+	}
+
 	@Loggable(value = LogLevel.INFO)
 	public Account createShellAccount(
 			User user) throws AccountCreationException {

@@ -61,7 +61,7 @@
         <div class="address dontsplit">
           <div class="btn-group">
             <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
-              style="border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
+              style="background: transparent; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
               <c:choose>
                 <c:when test="${creditCard.isDefault == 'Y'}">
                   <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>

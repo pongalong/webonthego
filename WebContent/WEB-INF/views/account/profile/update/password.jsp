@@ -9,7 +9,7 @@
   <form:form id="updatePassword" method="POST" commandName="updatePassword" cssClass="validatedForm">
     <!--Begin Error Display -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.updatePassword'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="oldPassword" />
@@ -21,25 +21,25 @@
     <!--End Error Display -->
 
     <c:if test="${CONTROLLING_USER.userId <= 0}">
-      <div class="row">
+      <div class="row clearfix">
         <form:label path="oldPassword" cssClass="required">Old Password</form:label>
         <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
       </div>
     </c:if>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="newPassword" cssClass="required">New Password</form:label>
       <form:password path="newPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="confirmNewPassword" cssClass="required">Confirm Password</form:label>
       <form:password path="confirmNewPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
     <!-- Buttons -->
     <div class="buttons">
-      <a href="<spring:url value="/profile" />" class="mBtn"><span>Cancel</span> </a> <input type="submit" value="Update Password"></input>
+      <a href="<spring:url value="/profile" />" class="mBtn">Cancel </a> <input type="submit" value="Update Password"></input>
     </div>
 
   </form:form>

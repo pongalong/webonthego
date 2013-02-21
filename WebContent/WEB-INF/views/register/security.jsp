@@ -8,11 +8,9 @@
 
     <h3>Setup ID Verification</h3>
 
-    <p>If you lose your password you can confirm your identity with your security question to rest your password.</p>
-
     <!-- Errors -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationSecurity'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="securityQuestionAnswer.id" />
@@ -28,8 +26,10 @@
       </div>
     </c:if>
 
+    <p>If you lose your password you can confirm your identity with your security question to reset your password.</p>
+
     <!-- Security question -->
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="securityQuestionAnswer.id" cssClass="required">Security Question </form:label>
       <form:select cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;" path="securityQuestionAnswer.id">
         <form:option value="0">
@@ -43,7 +43,7 @@
       </form:select>
       <span class="validation"><span class="message"></span><span class="accept"></span><span class="reject"></span></span>
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="securityQuestionAnswer.answer" cssClass="required">
         <spring:message code="label.hintAnswer" />
       </form:label>
@@ -52,19 +52,19 @@
     </div>
 
     <!-- Jcaptcha -->
-    <div class="row" style="margin-bottom: 0px; padding-bottom: 0px;">
+    <div class="row clearfix" style="margin-bottom: 0px; padding-bottom: 0px;">
       <form:label path="captcha.value" cssClass="required">Security Verification </form:label>
       <div style="border: 1px #bbb solid; width: 310px; text-align: center; float: left; background: white;">
         <span style="color: #666; float: left; margin-left: 5px;">Enter the text in the image below</span> <img id="jCaptchaImage"
           src="<spring:url value='/static/images/jcaptcha.jpg' htmlEscape='true' />" alt="Security image" />
       </div>
     </div>
-    <div class="row pushed" style="margin-top: -5px; padding-top: 0px;">
+    <div class="row clearfix pushed" style="margin-top: -5px; padding-top: 0px;">
       <div style="width: 300px; text-align: right;">
         <a href="#" onclick="reloadJCaptchaImage('<spring:url value="/static/images/jcaptcha.jpg" />')" tabindex="-1">request another image</a>
       </div>
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="captcha.value" cssClass="required">Image Text </form:label>
       <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" autocomplete="off" path="captcha.value" />
     </div>
@@ -79,7 +79,7 @@
 </div>
 
 
-<script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/jCaptcha.js' />"></script>
 
 <script type="text/javascript">
 	$(function() {

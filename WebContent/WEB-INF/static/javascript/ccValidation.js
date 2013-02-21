@@ -44,12 +44,3 @@ function isOtherFormat(cc_no, cc_type) {
 		return false;
 	}
 }
-
-function setExpirationDate(date) {
-	if (date != null && date.length == 4) {
-		var month = date.substring(0, 2);
-		var year = date.substring(2);
-		$("#monthSelect").val(month);
-		$("#yearSelect").val(year);
-	}
-}

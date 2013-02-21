@@ -27,6 +27,7 @@
           <th>Category</th>
           <th>Priority</th>
           <th>Created Date</th>
+          <th>Inquiry</th>
         </tr>
         <c:forEach var="ticket" items="${ticketList}">
           <tr>
@@ -43,6 +44,9 @@
               </c:otherwise>
             </c:choose>
             <td><fmt:formatDate type="date" value="${ticket.createdDate}" /></td>
+            <td>
+              <c:if test="${ticket.type == 'INQUIRY'}">&#x2713;</c:if>
+            </td>
           </tr>
         </c:forEach>
       </table>

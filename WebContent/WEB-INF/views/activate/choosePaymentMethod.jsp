@@ -4,12 +4,10 @@
 
   <h3>Choose a Payment Method</h3>
 
-  <p>The payment method you choose will be used to keep your device topped-up.</p>
-
   <form:form id="choose_payment" cssClass="validatedForm" method="post" commandName="creditCardPayment">
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCardPayment'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="creditCard.nameOnCreditCard" />
@@ -34,6 +32,8 @@
       </div>
     </c:if>
 
+    <p>The payment method you choose will be used to keep your device topped-up.</p>
+
     <!-- List Payment Methods -->
     <c:forEach var="creditCard" items="${existingPaymentMethods}" varStatus="status">
       <div id="${creditCard.paymentid}" class="objectSelect yellowSelect unselected">
@@ -52,15 +52,15 @@
 
     <!-- Coupon -->
     <h3 style="margin: 10px 0 10px 0; padding: 10px 0 0 0; border-top: 1px #ccc solid;" onClick="$(this).next('div').slideToggle();">
-      <img src="<spring:url value="/static/images/buttons/icons/add.png" />" style="vertical-align: middle;" /> Click Here If You Have a Coupon
+      <img src="<spring:url value='/static/images/buttons/icons/add.png' />" style="vertical-align: middle;" /> Click Here If You Have a Coupon
     </h3>
 
     <div style="display: none;">
-      <div class="row">
+      <div class="row clearfix">
         <form:label cssClass="required" path="coupon.couponCode">Enter Coupon Code</form:label>
         <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="coupon.couponCode" />
       </div>
-      <div class="row pushed">
+      <div class="row clearfix pushed">
         <span id="couponMessage"></span>
       </div>
     </div>
@@ -76,6 +76,6 @@
 
 </div>
 
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/selectPaymentMethod.js" />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/pages/selectPaymentMethod.js' />"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

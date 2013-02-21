@@ -41,7 +41,7 @@
     <h3>Note</h3>
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticketNote'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="note" />
@@ -55,7 +55,7 @@
       </div>
     </c:if>
 
-    <div class="row" style="text-align: center;">
+    <div class="row clearfix" style="text-align: center;">
       <form:textarea rows="5" cols="30" path="note" cssErrorClass="validationFailed" cssStyle="resize: vertical; width:97%; height: 150px; margin: auto;" />
     </div>
 

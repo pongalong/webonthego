@@ -82,8 +82,8 @@ $(function() {
 $(function() {
 	$("div.slider a.continue").click(function(e) {
 		e.preventDefault();
-		var slider = $(this).parent().parent();
-		var nextSlider = $(this).parent().parent().next();
+		var slider = $(this).parents(".slider");
+		var nextSlider = $(slider).next(".slider");
 		$(slider).hide();
 		$(nextSlider).show();
 		// $(slider).animate({
@@ -101,8 +101,8 @@ $(function() {
 $(function() {
 	$("div.slider a.back").click(function(e) {
 		e.preventDefault();
-		var slider = $(this).parent().parent();
-		var prevSlider = $(this).parent().parent().prev();
+		var slider = $(this).parents(".slider");
+		var prevSlider = $(slider).prev(".slider");
 		$(slider).hide();
 		$(prevSlider).show();
 		// $(slider).animate({

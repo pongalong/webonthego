@@ -10,7 +10,7 @@
 
       <c:forEach var="ad" items="${ACCOUNT_DETAILS}">
 
-        <div class="overviewLabel">
+        <div class="overviewLabel clearfix">
           <!-- Device Label -->
           <h4>${ad.deviceInfo.label}</h4>
 
@@ -27,7 +27,6 @@
             </c:choose>
           </div>
         </div>
-        <div class="clear"></div>
 
         <!-- Usage Summary -->
         <c:choose>
@@ -45,6 +44,7 @@
               </c:forEach>
             </table>
             <a class="next" href="<spring:url value="/account/activity/${ad.encodedAccountNum}" />">View More</a>
+            <div class="clear"></div>
           </c:when>
           <c:otherwise>
             <table>
@@ -57,8 +57,9 @@
             </table>
           </c:otherwise>
         </c:choose>
-        <div class="clear"></div>
       </c:forEach>
+
+      <div class="clear"></div>
 
     </c:when>
 
@@ -95,7 +96,7 @@
 
   </c:choose>
 
-  <div class="clear"></div>
+
 </div>
 
 <div class="span-6 last accountNav">

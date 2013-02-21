@@ -5,13 +5,13 @@
   <p>You can activate your device now, or the next time you login.</p>
 
   <div class="buttons">
-    <a href="<spring:url value='/' />" class="mBtn" onClick="openPrompt('confirmActivate')">Later </a> <a href="<spring:url value='/activate' />" class="mBtn">Activate
-      Now </a>
+    <a href="#" class="mBtn" onClick="openPrompt('confirmActivate')">Later</a> <a href="<spring:url value='/activate' />" class="mBtn">Activate Now</a>
   </div>
+
 </div>
 
 <div id="confirmActivate" class="prompt">
-  <img src="<spring:url value="/static/images/buttons/icons/error.png" />" class="closePrompt" />
+  <img src="<spring:url value='/static/images/buttons/icons/error.png' />" class="closePrompt" onClick="closePrompt(this)" />
   <p>Are you sure?</p>
   <p>You won't be able to use your device until you activate.</p>
   <div class="buttons" style="margin-top: 40px;">

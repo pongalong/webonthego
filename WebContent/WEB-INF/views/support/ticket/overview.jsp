@@ -4,13 +4,13 @@
 
   <h3>Quick Links</h3>
   <p>
-    <a href="<spring:url value="/support/ticket/view/creator/me" />" class="button semi-s multi"><span>Tickets I Created</span></a> <a
-      href="<spring:url value="/support/ticket/view/assignee/me" />" class="button semi-s multi"><span>Tickets Assigned to Me</span></a> <a
-      href="<spring:url value="/support/ticket/view/inquiry" />" class="button semi-s"><span>Inquiries</span></a>
+    <a href="<spring:url value="/support/ticket/view/creator/me" />" class="mBtn">Tickets I Created</a> <a
+      href="<spring:url value="/support/ticket/view/assignee/me" />" class="mBtn">Tickets Assigned to Me</a> <a
+      href="<spring:url value="/support/ticket/view/inquiry" />" class="mBtn">Inquiries</a>
   </p>
   <div class="clear"></div>
 
-  <h3 style="margin: 20px 0 10px 0; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">
+  <h3>
     Create Tickets
     <c:choose>
       <c:when test="${sessionScope.USER.userId > 0}">
@@ -24,20 +24,18 @@
   <p>
     <c:choose>
       <c:when test="${sessionScope.USER.userId > 0}">
-        <a href="<spring:url value="/support/ticket/create" />" class="button semi-s multi"><span>Create</span></a>
+        <a href="<spring:url value="/support/ticket/create" />" class="mBtn"><span>Create</span></a>
       </c:when>
       <c:otherwise>
-        <a href="<spring:url value="/support/inquire/create" />" class="button semi-s"><span>Inquire</span></a>
+        <a href="<spring:url value="/support/inquire/create" />" class="mBtn"><span>Inquire</span></a>
       </c:otherwise>
     </c:choose>
   </p>
   <div class="clear"></div>
 
 
-
-
-  <h3 style="margin: 20px 0 10px 0; padding-bottom: 0px;" onClick="$(this).next('form').slideToggle();">
-    <img src="<spring:url value="/static/images/buttons/icons/add.png" />" style="vertical-align: middle;" /> Search Tickets
+  <h3 onClick="$(this).next('form').slideToggle();">
+    <img src="<spring:url value='/static/images/buttons/icons/add.png' />" style="vertical-align: middle;" /> Search Tickets
     <c:choose>
       <c:when test="${sessionScope.USER.userId > 0}">
             for ${sessionScope.USER.username} ${sessionScope.USER.userId }
@@ -48,21 +46,21 @@
     </c:choose>
   </h3>
 
-  <form:form id="searchTicket" cssClass="validatedForm" method="post" commandName="ticket" style="border-top: 1px #ccc dotted;">
+  <form:form id="searchTicket" cssClass="validatedForm" method="post" commandName="ticket">
 
-    <div class="row" style="margin-top: 10px;">
+    <div class="row clearfix" style="margin-top: 10px;">
       <form:label path="creatorId">By Me</form:label>
       <input id="creatorIdCheckbox" type="checkbox" value="${sessionScope.CONTROLLING_USER.userId}"></input>
       <form:input path="creatorId" value="0" type="hidden" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="assigneeId">Assigned to me</form:label>
       <input id="assigneeIdCheckbox" type="checkbox" value="${sessionScope.CONTROLLING_USER.userId}"></input>
       <form:input path="assigneeId" value="0" type="hidden" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="status">With Status</form:label>
       <form:select path="status" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width: 312px;">
         <c:forEach var="status" items="${statusList}">
@@ -71,7 +69,7 @@
       </form:select>
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="priority">With Priority</form:label>
       <form:select path="priority" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width: 312px;">
         <c:forEach var="priority" items="${priorityList}">
@@ -80,7 +78,7 @@
       </form:select>
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="category">With Category</form:label>
       <form:select path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width: 312px;">
         <c:forEach var="category" items="${categoryList}">
@@ -89,12 +87,12 @@
       </form:select>
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="title">Title</form:label>
       <form:input path="title" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="description">Description</form:label>
       <form:input path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
@@ -110,6 +108,6 @@
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/ticketSearch.js" />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/pages/ticketSearch.js' />"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

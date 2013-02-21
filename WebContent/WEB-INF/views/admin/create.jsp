@@ -6,7 +6,7 @@
 
     <!-- Errors -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.user'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="email" />
@@ -21,11 +21,11 @@
       </div>
     </c:if>
 
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="email" cssClass="required">Email</form:label>
       <form:input path="email" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <label class="required">Role</label> <select name="user_role" class="span-8" style="width: 312px;">
         <option value="ROLE_SERVICEREP">Service Agent</option>
         <sec:authorize ifAnyGranted="ROLE_ADMIN">
@@ -34,7 +34,7 @@
         </sec:authorize>
       </select>
     </div>
-    <div class="row">
+    <div class="row clearfix">
       <form:label path="password" cssClass="required">Password</form:label>
       <form:input path="password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
@@ -50,6 +50,6 @@
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
-<script type="text/javascript" src="<spring:url value="/static/javascript/pages/admin/adminCreateUser.js" />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/pages/admin/adminCreateUser.js' />"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

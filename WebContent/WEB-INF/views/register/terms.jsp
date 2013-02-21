@@ -6,7 +6,7 @@
 
     <!-- Begin Errors -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationTerms'].allErrors}">
-      <div class="row">
+      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="acceptTerms" />
@@ -21,12 +21,12 @@
     </c:if>
 
     <!-- Display Plans -->
-    <div class="row">
-      <div class="registrationTerms"><%@ include file="/WEB-INF/views/terms/activation_tos.jsp"%></div>
+    <div class="row clearfix">
+      <div class="registrationTerms"><%@ include file="/WEB-INF/views/terms/registration_tos.jsp"%></div>
     </div>
 
     <!-- Term Acceptance -->
-    <div class="row">
+    <div class="row clearfix">
       <form:checkbox path="acceptTerms" cssErrorClass="validationFailed" cssStyle="vertical-align: middle;" />
       <span style="vertical-align: middle;" onclick="$('#acceptTerms1').click()">I have read and understand the terms and conditions.</span>
     </div>
@@ -39,7 +39,5 @@
 
   </form:form>
 </div>
-
-<script type="text/javascript" src="<spring:url value="/static/javascript/jCaptcha.js" />"></script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

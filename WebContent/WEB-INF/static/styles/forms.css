@@ -77,10 +77,6 @@ form.login fieldset legend {
 	font-family: "myriad-pro-1", "myriad-pro-2", sans-serif;
 }
 
-form.login input {
-	line-height: 25px;
-}
-
 /***********************************************
 Form definition
 ***********************************************/
@@ -96,7 +92,6 @@ form.validatedForm div.buttons::before {
 }
 
 form div.row {
-	clear: both;
 	min-height: 25px;
 	line-height: 25px;
 	padding: 4px;

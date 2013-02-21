@@ -1,0 +1,16 @@
+<html>
+<body >
+<div>
+	<div style="border-bottom:1px solid #999; margin-bottom:15px; font-size:15px;">
+		<img src="https://account.webonthego.com/static/images/logo/logo_s1.png">
+	</div>
+	<div style="width: 95%; margin:0px auto;">
+		<h3 style="color:gray;">Your Have Requested To Change Your Email</h3>
+		<p>
+			In order to ensure security, please verify that this is a valid email address by following this 
+			<a href="https://account.webonthego.com/profile/update/email/verify/${sessionId}">link.</a>
+		</p>
+	</div>
+</div>
+</body>
+</html>

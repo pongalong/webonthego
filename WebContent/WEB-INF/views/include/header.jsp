@@ -4,18 +4,59 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
 
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
 <head>
-  <title>Web on the Go &#8480; Account Management</title>
-  <%@ include file="/WEB-INF/views/include/headTags/meta.jsp"%>
-  <%@ include file="/WEB-INF/views/include/headTags/styles.jsp"%>
-  <script type="text/javascript" src="<spring:url value="/static/javascript/jquery.min.js"/>"></script>
-  <script type="text/javascript" src="<spring:url value="/static/javascript/jqueryEasing.js"/>"></script>
+<title>Web on the Go &#8480; Account Management</title>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="language" content="ES" />
+<meta name="robots" content="INDEX,FOLLOW" />
+<meta name="revisit-after" content="1 days" />
+<meta name="document-class" content="Completed" />
+<meta name="document-classification" content="Communications" />
+<meta name="document-rights" content="Copyrighted Work" />
+<meta name="document-type" content="Public" />
+<meta name="document-rating" content="General" />
+<meta name="document-distribution" content="Global" />
+<meta name="document-state" content="Dynamic" />
+<meta http-equiv="Content-Language" content="en-us" />
+
+<link rel="shortcut icon" href="<spring:url value='/static/images/favicon.ico' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/h5bp/normalize.min.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/h5bp/main.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/bootstrap/bootstrap.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/grid.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/forms.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/grid-12.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/gantry.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/wotg.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/style.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/forms.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/curtain.css' />" />
+
+
+<!--[if IE 6]>
+    <link href="<spring:url value="/static/styles/imported/grid_ie.css" htmlEscape="true" />" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+<!--[if IE 7]>
+    <link href="<spring:url value="/static/styles/imported/grid_ie.css" htmlEscape="true" />" rel="stylesheet" type="text/css" />
+  <![endif]-->
+
+<script type="text/javascript" src="<spring:url value='/static/javascript/jquery/jquery.min.js' />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/jquery/jqueryEasing.js' />"></script>
 </head>
 
 <body>
@@ -32,8 +73,8 @@
       <div style="position: relative; width: 950px; margin: 0 auto;">
 
         <ul class="menutop">
-          <li class="mBtn" onclick="location.href='<spring:url value="/" />'">Home</li>
-          <li class="mBtn" onclick="location.href='https://store.webonthego.com/'">Store</li>
+          <li class="mBtn" onclick="location.href='http://www.webonthego.com/'">Home</li>
+          <li class="mBtn" onclick="location.href='https://store.webonthego.com/estore/index.html'">Store</li>
           <li class="mBtn" onclick="location.href='<spring:url value="/support" />'">Support</li>
         </ul>
 
@@ -44,11 +85,11 @@
         </c:if>
 
         <div id="logo">
-          <img src="<spring:url value="/static/images/logo.png" />" alt="Web on The Go" onClick="location.href='<spring:url value="/" />';" />
+          <img src="<spring:url value='/static/images/logo.png' />" alt="Web on The Go" onClick="location.href='<spring:url value="/" />'" />
         </div>
 
       </div>
     </div>
 
     <div id="container">
-      <div class="mainbody">
+      <div class="mainbody clearfix">
