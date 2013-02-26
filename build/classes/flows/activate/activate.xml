@@ -23,7 +23,7 @@
     <if test="unlinkedAccount == null" then="requestDeviceInfo" else="completePreviousActivation" />
   </decision-state>
 
-  <view-state id="completePreviousActivation" view="activate/completePerviousActivation">
+  <view-state id="completePreviousActivation" view="activate/completePreviousActivation">
     <transition on="submit" to="requestDeviceInfo_previousActivation" />
   </view-state>
 

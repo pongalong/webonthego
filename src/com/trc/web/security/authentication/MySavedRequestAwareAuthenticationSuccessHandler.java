@@ -24,6 +24,8 @@ import com.trc.web.session.SessionManager;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
 import com.tscp.util.logger.DevLogger;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	@Autowired
@@ -33,6 +35,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 	@Autowired
 	private CacheManager cacheManager;
 
+	@Loggable(value = LogLevel.INFO)
 	@Override
 	public void onAuthenticationSuccess(
 			HttpServletRequest request,

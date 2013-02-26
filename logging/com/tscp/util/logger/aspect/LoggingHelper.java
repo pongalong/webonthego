@@ -16,23 +16,25 @@ public class LoggingHelper {
 			User user) {
 		StringBuilder userStamp = new StringBuilder();
 		if (user != null) {
-			userStamp.append(user.getGreatestRole().getRole() + ":");
+			// userStamp.append(user.getGreatestRole().getRole() + ":");
 			userStamp.append(user.getUserId());
-			userStamp.append("(").append(user.getUsername()).append(") -");
+			userStamp.append("(").append(user.getUsername()).append(")|");
 		}
 		return userStamp.toString();
 	}
 
 	public String getUserStamp() {
-		StringBuilder userStamp = new StringBuilder();
-		User currentUser = userManager.getCurrentUser();
-		User controllingUser = userManager.getControllingUser();
+		User user = userManager.getCurrentUser();
+		User internalUser = userManager.getLoggedInUser();
 
-		if (controllingUser != null && controllingUser.getUserId() > 0)
-			userStamp.append(getUserStamp(controllingUser));
+		StringBuilder userStamp = new StringBuilder("[").append(SessionManager.getCurrentSession().getId()).append("] ");
 
-		userStamp.append("[").append(SessionManager.getCurrentSession().getId()).append("] ");
-		userStamp.append(getUserStamp(currentUser));
+		if (internalUser != null && internalUser.getUserId() > 0)
+			userStamp.append(getUserStamp(internalUser));
+
+		if (user.isAuthenticated() && user.getUserId() > 0)
+			userStamp.append(getUserStamp(user));
+
 		return userStamp.toString();
 	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Stack;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -14,11 +16,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.user.activation.Registration;
 import com.trc.user.contact.Address;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
@@ -32,17 +34,18 @@ import com.tscp.util.logger.Slf4jLogger;
 @Aspect
 @Component
 public class LoggingAspect {
-	private static final String BEFORE_STRING = "{0} <{1}>";
-	private static final String BEFORE_WITH_PARAMS_STRING = "{0} <{1}> params {2}";
-	private static final String AFTER_THROWING = "{0} <{1}> EXCEPTION \"{2}\" with params ({3})";
-	private static final String AFTER_THROWING_NO_PARAMS = "{0} <{1}> EXCEPTION \"{2}\"";
-	private static final String AFTER_RETURNING = "{0} <{1}> returned {2} in {3}ms";
-	private static final String AFTER_RETURNING_VOID = "{0} <{1}> returned in {2}ms";
+	private static final String BEFORE_STRING = "{0}<{1}>";
+	private static final String BEFORE_WITH_PARAMS_STRING = "{0}<{1}> params {2}";
+	private static final String AFTER_THROWING = "{0}<{1}> EXCEPTION \"{2}\" with params ({3})";
+	private static final String AFTER_THROWING_NO_PARAMS = "{0}<{1}> EXCEPTION \"{2}\"";
+	private static final String AFTER_RETURNING = "{0}<{1}> returned {2} in {3}ms";
+	private static final String AFTER_RETURNING_VOID = "{0}<{1}> returned in {2}ms";
 	private static final String ARG_PATTERN = "<{0}({1})>";
 	private static final String ARG_PATTERN_SINGLE = "<{0}>";
 	private static final String ARG_PATTERN_DOUBLE = "<{0}:{1}>";
 
 	private long start;
+
 	private long elapsedTime;
 	private StartTimeStack startTimeStack = new StartTimeStack();
 
@@ -215,11 +218,6 @@ public class LoggingAspect {
 			clazz = account.getClass().getSimpleName();
 			id = Integer.toString(account.getAccountNo());
 			descriptor = account.getFirstname() + " " + account.getLastname();
-		} else if (arg instanceof com.trc.user.activation.Registration) {
-			Registration registration = (Registration) arg;
-			clazz = registration.getClass().getSimpleName();
-			id = Integer.toString(registration.getUser().getUserId());
-			descriptor = registration.getUser().getUsername();
 		} else if (arg instanceof com.trc.user.account.AccountDetail) {
 			AccountDetail accountDetail = (AccountDetail) arg;
 			clazz = accountDetail.getClass().getSimpleName();
@@ -240,6 +238,13 @@ public class LoggingAspect {
 			clazz = serviceInstance.getClass().getSimpleName();
 			id = serviceInstance.getExternalId();
 			descriptor = serviceInstance.getSubscriberNumber();
+		} else if (arg instanceof Authentication) {
+			Authentication auth = (Authentication) arg;
+			clazz = auth.getClass().getSimpleName();
+			id = Integer.toString(((User) auth.getPrincipal()).getUserId());
+			descriptor = ((User) auth.getPrincipal()).getEmail();
+		} else if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
+			return buffer.toString();
 		} else {
 			clazz = arg.getClass().getSimpleName();
 			id = "unknown";

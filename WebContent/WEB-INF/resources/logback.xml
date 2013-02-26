@@ -91,11 +91,11 @@
     <appender-ref ref="ACTIVATION_ROLLINGFILE" />
   </logger>
 
-  <logger name="aspect" level="ALL">
+  <logger name="aspect" level="INFO">
     <appender-ref ref="ROLLINGFILE" />
   </logger>
 
-  <logger name="devLogger" level="ALL">
+  <logger name="devLogger" level="DEBUG">
     <appender-ref ref="DEV_ROLLINGFILE" />
   </logger>
 

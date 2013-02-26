@@ -197,7 +197,4 @@
 
 </div>
 
-<script type="text/javascript" src="<spring:url value='/static/javascript/ccValidation.js' />"></script>
-<script type="text/javascript" src="<spring:url value='/static/javascript/pages/addCreditCardPayment.js' />"></script>
-
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

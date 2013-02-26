@@ -17,9 +17,11 @@ import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
 import com.tscp.mvne.UsageDetail;
 import com.tscp.util.logger.DevLogger;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 @Component
-public final class CacheManager extends SessionManager {
+public class CacheManager extends SessionManager {
 	@Autowired
 	private AccountManager accountManager;
 
@@ -49,7 +51,8 @@ public final class CacheManager extends SessionManager {
 		return encryptor;
 	}
 
-	public final void refreshCache(
+	@Loggable(value = LogLevel.INFO)
+	public void refreshCache(
 			User user) {
 
 		clearCache();

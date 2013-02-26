@@ -1,7 +1,6 @@
-
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-<div class="span-18">
+<div>
 
   <form:form id="prompt_complete_account" cssClass="validatedForm" method="post">
 

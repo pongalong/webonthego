@@ -135,6 +135,4 @@
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
-<script type="text/javascript" src="<spring:url value='/static/javascript/ccValidation.js' />" ></script>
-
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

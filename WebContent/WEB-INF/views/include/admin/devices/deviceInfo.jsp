@@ -1,16 +1,16 @@
 <script type="text/javascript">
 	$(function() {
 		$(".device_esn").click(function() {
-			var deviceDetails = $(this).parent().parent().parent(".device_name").parent(".device").children(".device_detail");
+			var deviceDetails = $(this).parents(".device").children(".device_detail");
 			$(deviceDetails).slideToggle();
 		});
 	});
 </script>
 
 <div class="clear"></div>
-<div class="admin_tooltip device_detail hidden">
+<div class="admin_tooltip device_detail" style="display: none; font-size: .9em;">
   <div>
-    <li class="header">Device Information <a href="#" style="float: right;" onclick="$(this).parent().parent().parent('.device_detail').slideToggle();">close</a></li>
+    <li class="header">Device Information <a href="#" style="float: right;" onclick="$(this).parents('.device_detail').slideToggle();">close</a></li>
     <li>Account Number: ${accountDetail.deviceInfo.accountNo}</li>
     <li>Device ID: ${accountDetail.deviceInfo.id}</li>
     <li>Status: ${accountDetail.deviceInfo.status}</li>

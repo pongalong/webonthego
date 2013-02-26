@@ -38,6 +38,7 @@ public class AccountManager {
 	@Autowired
 	private CacheManager cacheManager;
 
+	@Loggable(value = LogLevel.TRACE)
 	public Account getUnlinkedAccount(
 			User user) throws AccountManagementException {
 		try {
@@ -67,19 +68,21 @@ public class AccountManager {
 		}
 	}
 
+	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetail(
 			User user,
 			Device device) throws AccountManagementException {
 		return getAccountDetail(user, device, false);
 	}
 
+	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetailAndUsage(
 			User user,
 			Device device) throws AccountManagementException {
 		return getAccountDetail(user, device, true);
 	}
 
-	@Loggable(value = LogLevel.INFO)
+	@Loggable(value = LogLevel.TRACE)
 	private AccountDetail getAccountDetail(
 			User user,
 			Device device,
@@ -109,6 +112,7 @@ public class AccountManager {
 		return accountDetail;
 	}
 
+	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetail(
 			User user,
 			int deviceId) throws AccountManagementException {
@@ -143,18 +147,18 @@ public class AccountManager {
 		return accountDetails;
 	}
 
-	@Loggable(value = LogLevel.TRACE)
+	@Loggable(value = LogLevel.DEBUG)
 	private void saveToCache(
 			List<AccountDetail> accountDetails) {
 		cacheManager.set(CacheKey.ACCOUNT_DETAILS, accountDetails);
 	}
 
-	@Loggable(value = LogLevel.TRACE)
+	@Loggable(value = LogLevel.DEBUG)
 	private List<AccountDetail> getFromCache() {
 		return (List<AccountDetail>) cacheManager.get(CacheKey.ACCOUNT_DETAILS);
 	}
 
-	@Loggable(value = LogLevel.DEBUG)
+	@Loggable(value = LogLevel.TRACE)
 	public Account getAccount(
 			int accountNumber) throws AccountManagementException {
 
@@ -194,7 +198,7 @@ public class AccountManager {
 	// }
 	// }
 
-	@Loggable(value = LogLevel.DEBUG)
+	@Loggable(value = LogLevel.TRACE)
 	public List<UsageDetail> getChargeHistory(
 			User user,
 			int accountNumber) throws AccountManagementException {
@@ -227,7 +231,7 @@ public class AccountManager {
 	// }
 	// }
 
-	@Loggable(value = LogLevel.DEBUG)
+	@Loggable(value = LogLevel.TRACE)
 	public XMLGregorianCalendar getLastAccessFeeDate(
 			User user,
 			Account account) {
@@ -269,7 +273,7 @@ public class AccountManager {
 		return new Overview(this, devices, user);
 	}
 
-	@Loggable(value = LogLevel.DEBUG)
+	@Loggable(value = LogLevel.INFO)
 	public List<PaymentRecord> getPaymentRecords(
 			User user) throws AccountManagementException {
 		try {
@@ -290,7 +294,7 @@ public class AccountManager {
 		}
 	}
 
-	@Loggable(value = LogLevel.DEBUG)
+	@Loggable(value = LogLevel.INFO)
 	public CustTopUp setTopup(
 			User user,
 			double amount,

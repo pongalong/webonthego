@@ -133,10 +133,14 @@ $.fn.enableConfirmField = function() {
 $.fn.toggleConfirmationField = function(display, speed, focus, validate) {
 	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
 	if (display == "show") {
+		// previously confirmation fields were faded out until the parent field was
+		// completed
 		// confirmationField.parent().fadeIn(speed);
 		// confirmationField.removeAttr("readOnly");
 		// confirmationField.parent().fadeTo(speed, 1);
 	} else if (display == "hide") {
+		// previously confirmation fields were faded out until the parent field was
+		// completed
 		// confirmationField.val("");
 		// confirmationField.parent().fadeOut(speed);
 		// confirmationField.parent().fadeTo(speed, 0.25);
@@ -217,13 +221,13 @@ $.fn.enableTooltip = function() {
 $.fn.enableCaption = function() {
 	var caption = $(this).attr("placeholder");
 	var val = $(this).val();
-	if (val.length == 0) {
+
+	if (val.length == 0)
 		val = caption;
-	}
+
 	$(this).css("color", "gray").val(val).focus(function() {
-		if ($(this).val() == caption) {
+		if ($(this).val() == caption)
 			$(this).css("color", "").val("");
-		}
 	}).blur(function() {
 		if ($(this).val() == "") {
 			$(this).css("color", "gray");
@@ -234,11 +238,10 @@ $.fn.enableCaption = function() {
 };
 
 $.fn.showCaption = function(caption) {
-	if (caption != null) {
+	if (caption != null)
 		type($(this), caption, 0);
-	} else {
+	else
 		type($(this), $(this).attr("placeholder"), 0);
-	}
 };
 
 /**
@@ -250,11 +253,10 @@ $.fn.showCaption = function(caption) {
  */
 function type(obj, caption, count) {
 	$(obj).val(caption.substr(0, count++));
-	if (count < caption.length + 1) {
+	if (count < caption.length + 1)
 		setTimeout(function() {
 			type(obj, caption, count);
 		}, 22);
-	}
 }
 
 /**

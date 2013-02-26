@@ -69,6 +69,18 @@
   <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
-<script type="text/javascript" src="<spring:url value='/static/javascript/pages/accountActivity.js' />"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#deviceSelect").change(function() {
+			$("#curtain").fadeIn("fast").center().height($(document).height());
+			$("#centerPopup").fadeIn("fast").center();
+			var location = '/account/activity/' + $("#deviceSelect option:selected").val();
+			window.location.href = location;
+		});
+		var deviceId = window.location.href.substring(0, window.location.href.lastIndexOf("/"));
+		deviceId = deviceId.substring(deviceId.lastIndexOf("/") + 1);
+		$("#deviceSelect").val(deviceId);
+	});
+</script>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>
