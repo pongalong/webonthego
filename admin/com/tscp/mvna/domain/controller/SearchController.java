@@ -21,7 +21,6 @@ import com.trc.user.User;
 import com.trc.web.model.ResultModel;
 import com.trc.web.session.SessionKey;
 import com.trc.web.session.cache.CacheManager;
-import com.tscp.util.logger.DevLogger;
 
 @Controller
 @PreAuthorize("hasAnyRole('ROLE_AGENT', 'ROLE_MANAGER','ROLE_ADMIN', 'ROLE_SU')")
@@ -48,7 +47,8 @@ public class SearchController {
 			searchResults.add(userManager.getUserById(numericSearch));
 			searchResults.add(userManager.searchByAccountNo(numericSearch));
 		} catch (NumberFormatException e) {
-			searchResults.addAll(userManager.searchByEmail(param));
+			// searchResults.addAll(userManager.searchByEmail(param));
+			searchResults.addAll(userManager.searchCustomersByEmail(param));
 		}
 
 		model.addAttribute("searchResults", searchResults);
@@ -87,19 +87,18 @@ public class SearchController {
 	public @ResponseBody
 	SearchResponse searchByEmailAjax(
 			@RequestParam String email) {
-		if (!Config.ADMIN) {
-			return new SearchResponse(false, new String[0]);
-		}
-		List<User> searchResults = userManager.searchByEmail(email);
-		String[] emails = new String[searchResults.size()];
-		for (int i = 0; i < searchResults.size(); i++) {
-			emails[i] = searchResults.get(i).getEmail();
-		}
-		if (searchResults.size() > 0) {
-			return new SearchResponse(true, emails);
-		} else {
-			return new SearchResponse(false, emails);
-		}
+
+		if (!Config.ADMIN)
+			return new SearchResponse(false, new UserSearchResult[0]);
+
+		List<User> searchResults = userManager.searchCustomersByEmail(email);
+
+		UserSearchResult[] users = new UserSearchResult[searchResults.size()];
+
+		for (int i = 0; i < searchResults.size(); i++)
+			users[i] = new UserSearchResult(searchResults.get(i));
+
+		return new SearchResponse(searchResults.size() > 0, users);
 	}
 
 	/**
@@ -109,10 +108,10 @@ public class SearchController {
 	 * 
 	 */
 	public static class SearchResponse {
-		private String[] users;
+		private UserSearchResult[] users;
 		private boolean success;
 
-		public String[] getUsers() {
+		public UserSearchResult[] getUsers() {
 			return users;
 		}
 
@@ -120,9 +119,38 @@ public class SearchController {
 			return success;
 		}
 
-		public SearchResponse(boolean success, String[] users) {
+		public SearchResponse(boolean success, UserSearchResult[] users) {
 			this.success = success;
 			this.users = users;
 		}
+	}
+
+	public static class UserSearchResult {
+		private int id;
+		private String username;
+
+		public UserSearchResult(User user) {
+			this.id = user.getUserId();
+			this.username = user.getUsername();
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(
+				int id) {
+			this.id = id;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(
+				String username) {
+			this.username = username;
+		}
+
 	}
 }

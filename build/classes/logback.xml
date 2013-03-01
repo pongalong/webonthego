@@ -11,7 +11,7 @@
     </encoder>
   </appender>
 
-  <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="AOP_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <File>../logs/webonthego.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <FileNamePattern>../logs/webonthego/webonthego.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
@@ -21,19 +21,6 @@
     </rollingPolicy>
     <encoder>
       <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level: %msg%n</pattern>
-    </encoder>
-  </appender>
-
-  <appender name="ERR_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego_errors.log</File>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego_errors.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>5MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-    </rollingPolicy>
-    <encoder>
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36}: %msg%n</pattern>
     </encoder>
   </appender>
 
@@ -92,19 +79,14 @@
   </logger>
 
   <logger name="aspect" level="INFO">
-    <appender-ref ref="ROLLINGFILE" />
+    <appender-ref ref="AOP_ROLLINGFILE" />
   </logger>
 
   <logger name="devLogger" level="DEBUG">
     <appender-ref ref="DEV_ROLLINGFILE" />
   </logger>
 
-  <logger name="com.trc" level="ERROR">
-    <appender-ref ref="DEV_ROLLINGFILE" />
-    <appender-ref ref="ERR_ROLLINGFILE" />
-  </logger>
-
-  <root>
+  <root level="OFF">
     <appender-ref ref="STDOUT" />
   </root>
 

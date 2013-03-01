@@ -103,6 +103,20 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 		return results;
 	}
 
+	public List<User> searchCustomersByEmail(
+			String email) {
+		DetachedCriteria authCriteria = DetachedCriteria.forClass(Authority.class);
+		authCriteria.add(Restrictions.in("role", ROLE.getInternalRoles()));
+		authCriteria.setProjection(Projections.property("user.userId"));
+
+		DetachedCriteria userCriteria = DetachedCriteria.forClass(User.class);
+		userCriteria.add(Property.forName("email").like(email, MatchMode.ANYWHERE));
+		userCriteria.add(Property.forName("userId").notIn(authCriteria));
+
+		List<User> results = getHibernateTemplate().findByCriteria(userCriteria);
+		return results;
+	}
+
 	@Override
 	public List<User> searchByEmail(
 			String email) {
@@ -140,26 +154,12 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 		return results;
 	}
 
-	public List<User> getUsersByDate(
+	public List<User> searchByDate(
 			Date startDate,
 			Date endDate) {
 		java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
 		java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
 		List<User> results = getHibernateTemplate().find("from User user where dateEnabled between ? and ?", sqlStartDate, sqlEndDate);
-		return results;
-	}
-
-	public List<User> searchByEmailCriteria(
-			String email) {
-		DetachedCriteria authCriteria = DetachedCriteria.forClass(Authority.class);
-		authCriteria.add(Restrictions.eq("role", ROLE.ROLE_USER));
-		authCriteria.setProjection(Projections.property("user.userId"));
-
-		DetachedCriteria userCriteria = DetachedCriteria.forClass(User.class);
-		userCriteria.add(Property.forName("email").like(email, MatchMode.ANYWHERE));
-		userCriteria.add(Property.forName("userId").in(authCriteria));
-
-		List<User> results = getHibernateTemplate().findByCriteria(userCriteria);
 		return results;
 	}
 

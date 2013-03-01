@@ -1,0 +1,2 @@
+$.fn.mousePopup=function(){$(this).mousemove(function(a){$(this).next(".info_tooltip").show().css({top:a.pageY+"px",left:a.pageX+"px"})});$(this).mouseout(function(){$(this).next(".info_tooltip").hide()})};$.fn.staticMousePopup=function(a,b){$(this).mousemove(function(){$(this).next(".info_tooltip").show().css({top:$(this).position().top+b+"px",left:$(this).position().left+a+"px"})});$(this).mouseout(function(){$(this).next(".info_tooltip").hide()})};
+$(function(){$("img.info").staticMousePopup(-355,10)});

@@ -96,7 +96,8 @@ public class SimpleActivationManager {
 			User user) {
 		try {
 			Account account = accountManager.getUnlinkedAccount(user);
-			logger.info("{} Found unlinked account {}", user.getEmail(), account.getAccountNo());
+			if (account != null)
+				logger.info("{} Found unlinked account {}", user.getEmail(), account.getAccountNo());
 			return account;
 		} catch (AccountManagementException e) {
 			return null;

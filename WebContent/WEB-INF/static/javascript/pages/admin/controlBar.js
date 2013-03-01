@@ -10,7 +10,8 @@ var search = {};
 
 function searchRequest(url) {
 	if (currentRequest == null) {
-		search.resultsCanvas.loadAjax(url, "param=" + search.param.val());
+		// search.resultsCanvas.loadAjax(url, "param=" + search.param.val());
+		loadUsers(search.param.val());
 		currentRequest = "complete";
 	} else {
 		search.resultsCanvas.html(htmlLoadingGraphic);
@@ -65,9 +66,31 @@ function loadUsers(email) {
 		email : email
 	}, function(searchResponse) {
 		if (searchResponse.success) {
-			var testResponse = "getJSON Results " + searchResponse.users;
-			search.resultsCanvas.html(testResponse);
+			var response = "<ul id='admin_search_results_list'>";
+
+			for ( var i = 0; i < searchResponse.users.length; i++)
+				response += "<li class='result'><span class='id'>" + searchResponse.users[i].id + "</span>: <span class='value'>"
+						+ searchResponse.users[i].username + "</span></li>";
+
+			response += "</ul>";
+
+			search.resultsCanvas.html(response);
+
+			search.results = $("#admin_search_results_list li.result");
+			search.results.mouseover(function() {
+				search.selectedIndex = $(this).index();
+				search.selected = $(this);
+				$(this).highlightSelected();
+				search.results.not($(this)).unhighlightSelected();
+			}).click(function() {
+				search.selected.select();
+				search.button.click();
+			});
+
+		} else {
+			search.resultsCanvas.html("No results");
 		}
+		currentRequest = null;
 	});
 }
 
@@ -78,14 +101,6 @@ $.fn.highlightSelected = function() {
 $.fn.unhighlightSelected = function() {
 	this.css("background", "");
 };
-
-function isNavigationKey(e) {
-	return (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode == 13;
-}
-
-function isDeleteKey(e) {
-	return e.keyCode == 8 || e.keyCode == 46;
-}
 
 function selectFirstResult() {
 	search.selectedIndex = 0;
@@ -179,6 +194,14 @@ $(function() {
 		search.param.focus();
 	});
 });
+
+function isNavigationKey(e) {
+	return (e.keyCode >= 37 && e.keyCode <= 40) || e.keyCode == 13;
+}
+
+function isDeleteKey(e) {
+	return e.keyCode == 8 || e.keyCode == 46;
+}
 
 /**
  * Initialize search on keyup behavior.

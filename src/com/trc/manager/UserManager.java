@@ -105,6 +105,12 @@ public class UserManager implements UserManagerModel {
 		return userDao.searchByEmail(email);
 	}
 
+	@Transactional(readOnly = true)
+	public List<User> searchCustomersByEmail(
+			String email) {
+		return userDao.searchCustomersByEmail(email);
+	}
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<User> searchById(
