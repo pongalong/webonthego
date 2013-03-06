@@ -48,23 +48,23 @@
 
                 <li class="divider"></li>
                 <c:if test="${CONTROLLING_USER.userId > 0}">
-                  <c:choose>
-                    <c:when test="${accountDetail.deviceInfo.statusId == 2}">
-                      <li><a href="<spring:url value="/devices/suspend/${accountDetail.encodedDeviceId}" />">Suspend</a></li>
-                      <li><a href="<spring:url value="/devices/disconnect/${accountDetail.encodedDeviceId}" />">Disconnect</a></li>
-                    </c:when>
-                    <c:when test="${accountDetail.deviceInfo.statusId == 3}">
-                      <li><a href="<spring:url value="/devices/reconnect/${accountDetail.encodedDeviceId}" />">Reconnect</a></li>
-                    </c:when>
-                    <c:when test="${accoutnDetail.deviceInfo.statusId == 5}">
-                      <li><a href="<spring:url value="/devices/restore/${accountDetail.encodedDeviceId}" />">Restore</a></li>
-                    </c:when>
-                    <c:otherwise>
-                      <li>Unknown Device Status</li>
-                    </c:otherwise>
-                  </c:choose>
-
-
+                  <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+                    <c:choose>
+                      <c:when test="${accountDetail.deviceInfo.statusId == 2}">
+                        <li><a href="<spring:url value="/devices/suspend/${accountDetail.encodedDeviceId}" />">Suspend</a></li>
+                        <li><a href="<spring:url value="/devices/disconnect/${accountDetail.encodedDeviceId}" />">Disconnect</a></li>
+                      </c:when>
+                      <c:when test="${accountDetail.deviceInfo.statusId == 3}">
+                        <li><a href="<spring:url value="/devices/reconnect/${accountDetail.encodedDeviceId}" />">Reconnect</a></li>
+                      </c:when>
+                      <c:when test="${accoutnDetail.deviceInfo.statusId == 5}">
+                        <li><a href="<spring:url value="/devices/restore/${accountDetail.encodedDeviceId}" />">Restore</a></li>
+                      </c:when>
+                      <c:otherwise>
+                        <li>Unknown Device Status</li>
+                      </c:otherwise>
+                    </c:choose>
+                  </sec:authorize>
                 </c:if>
                 <li><a href="<spring:url value="/devices/rename/${accountDetail.encodedDeviceId}" />">Rename</a></li>
                 <li style="margin-bottom: 10px;"><a href="<spring:url value="/devices/topup/${accountDetail.encodedDeviceId}" />">Change Top-Up</a></li>

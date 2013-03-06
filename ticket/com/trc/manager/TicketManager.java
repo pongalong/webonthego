@@ -33,7 +33,7 @@ public class TicketManager {
 			User user) {
 		Ticket ticket;
 
-		Authority authority = user.getGreatestRole();
+		Authority authority = user.getGreatestAuthority();
 
 		if (authority.getRole() == ROLE.ROLE_ADMIN)
 			ticket = new AdminTicket();

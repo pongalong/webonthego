@@ -13,8 +13,10 @@
 
   <c:forEach var="user" items="${activeUsers}" varStatus="status">
     <div>
-      <a href="#" onclick="$(this).parent().next().slideToggle();$(this).next().toggle();">${user.email}</a> <span style="display: none;"> - <a
-        href="<spring:url value="/admin/logout/${user.userId}" />">force logout</a>
+      <a href="#" onclick="$(this).parent().next().slideToggle();$(this).next().toggle();">${user.email}</a> <span style="display: none;"> - 
+        <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SU')">
+          <a href="<spring:url value="/admin/logout/${user.userId}" />">force logout</a>
+        </sec:authorize>
       </span>
     </div>
     <div style="display: none;">

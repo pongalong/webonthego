@@ -1,5 +1,9 @@
 package com.trc.security.permission;
 
+import java.util.Arrays;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.security.core.Authentication;
 
 import com.trc.user.User;
@@ -13,33 +17,26 @@ import com.trc.user.authority.ROLE;
  * @author Tachikoma
  * 
  */
-public class UpdatePermission extends Permission {
+public class UpdatePermission extends OwnerPermission {
 
+	@PostConstruct
 	public void init() {
-		roleRepository.add(ROLE.ROLE_SU);
-		roleRepository.add(ROLE.ROLE_ADMIN);
-		roleRepository.add(ROLE.ROLE_MANAGER);
+		roleRepository.addAll(Arrays.asList(ROLE.getInternalRoles()));
 	}
 
 	@Override
 	public boolean isAllowed(
 			Authentication authentication,
 			Object targetDomainObject) {
+
 		boolean hasPermission = false;
+
 		if (isAuthenticated(authentication)) {
 			User user = (User) authentication.getPrincipal();
-			if (isSelf(user, targetDomainObject)) {
-				hasPermission = true;
-			} else {
-				hasPermission = isRoleGrantedPermission(user);
-			}
+			hasPermission = super.isAllowed(authentication, targetDomainObject) ? true : isRoleGrantedPermission(user);
 		}
+
 		return hasPermission;
 	}
 
-	private boolean isSelf(
-			User user,
-			Object targetDomainObject) {
-		return targetDomainObject instanceof User && ((User) targetDomainObject).getUserId() == user.getUserId();
-	}
 }

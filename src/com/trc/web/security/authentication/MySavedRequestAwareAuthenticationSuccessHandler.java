@@ -18,6 +18,7 @@ import com.trc.security.encryption.StringEncryptor;
 import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
+import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
@@ -80,27 +81,16 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 
 		setAlwaysUseDefaultTargetUrl(true);
 
-		ROLE role = user.getGreatestRole().getRole();
+		Authority authority = user.getGreatestAuthority();
 
-		switch (role) {
-			case ROLE_SU:
-				setDefaultTargetUrl("/it/home");
-				break;
-			case ROLE_ADMIN:
-				setDefaultTargetUrl("/admin/home");
-				break;
-			case ROLE_MANAGER:
-				setDefaultTargetUrl("/manager/home");
-				break;
-			case ROLE_AGENT:
-				setDefaultTargetUrl("/servicerep/home");
-				break;
-			case ROLE_SALES:
-				setDefaultTargetUrl("/sales/home");
-				break;
-			default:
-				setDefaultTargetUrl("/home");
-		}
+		if (authority.compare(ROLE.ROLE_MANAGER) >= 0)
+			setDefaultTargetUrl("/admin/home");
+		else if (authority.compare(ROLE.ROLE_AGENT) == 0) {
+			setDefaultTargetUrl("/support/ticket");
+		} else if (authority.compare(ROLE.ROLE_SALES) == 0)
+			setDefaultTargetUrl("/sales/home");
+		else
+			setDefaultTargetUrl("/home");
 	}
 
 	private void setUserDefaultTargetUrl(

@@ -19,17 +19,17 @@ public abstract class Permission {
 			Authentication authentication,
 			Object targetDomainObject);
 
-	public String getLogin(
+	protected String getLogin(
 			Authentication authentication) {
 		return ((UserDetails) authentication.getPrincipal()).getUsername();
 	}
 
-	public Collection<GrantedAuthority> getAuthorities(
+	protected Collection<GrantedAuthority> getAuthorities(
 			Authentication authentication) {
 		return ((UserDetails) authentication.getPrincipal()).getAuthorities();
 	}
 
-	public boolean isAuthenticated(
+	protected boolean isAuthenticated(
 			Authentication authentication) {
 		return authentication != null && authentication.getPrincipal() instanceof UserDetails;
 	}

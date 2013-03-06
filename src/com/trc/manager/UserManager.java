@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -198,7 +201,7 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
-	// @PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
+	@PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
 	public void updateUser(
 			User user) {
 		userDao.updateUser(user);
@@ -236,7 +239,7 @@ public class UserManager implements UserManagerModel {
 
 		if (user.isInternalUser()) {
 			user.getContactInfo().setFirstName(user.getUsername());
-			user.getContactInfo().setLastName(user.getGreatestRole().getRole().toString());
+			user.getContactInfo().setLastName(user.getGreatestAuthority().getRole().toString());
 		} else if (user.isUser()) {
 			try {
 				CustInfo custInfo = accountManager.getCustInfo(user);
@@ -283,6 +286,22 @@ public class UserManager implements UserManagerModel {
 	 * Login Helper Methods
 	 * ************************************************************************************************
 	 */
+
+	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')")
+	public void forceLogout(
+			SessionRegistry sessionRegistry,
+			int userId) {
+
+		List<Object> activePrincipals = sessionRegistry.getAllPrincipals();
+
+		for (Object principal : activePrincipals)
+			if (((User) principal).getUserId() == userId) {
+				List<SessionInformation> sessionInfo = sessionRegistry.getAllSessions(((User) principal), false);
+				for (SessionInformation si : sessionInfo)
+					si.expireNow();
+				break;
+			}
+	}
 
 	public void autoLogin(
 			User user,

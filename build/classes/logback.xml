@@ -63,7 +63,6 @@
     </encoder>
   </appender>
 
-
   <!-- set to debug for more info -->
   <logger name="org.hibernate.SQL" level="off">
     <appender-ref ref="HIBERNATE_ROLLINGFILE" />

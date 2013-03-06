@@ -1,7 +1,6 @@
 package com.tscp.mvna.domain.controller;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +22,7 @@ import com.trc.web.session.SessionKey;
 import com.trc.web.session.cache.CacheManager;
 
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_AGENT', 'ROLE_MANAGER','ROLE_ADMIN', 'ROLE_SU')")
+@PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")
 @RequestMapping("/search")
 @SessionAttributes({ "USER" })
 public class SearchController {
@@ -31,29 +30,6 @@ public class SearchController {
 	protected UserManager userManager;
 	@Autowired
 	private CacheManager cacheManager;
-
-	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView search(
-			@RequestParam String param) {
-
-		ResultModel model = new ResultModel("admin/search/jquery_username");
-
-		if (!Config.ADMIN)
-			return model.getAccessDenied();
-
-		List<User> searchResults = new Vector<User>();
-		try {
-			int numericSearch = Integer.parseInt(param);
-			searchResults.add(userManager.getUserById(numericSearch));
-			searchResults.add(userManager.searchByAccountNo(numericSearch));
-		} catch (NumberFormatException e) {
-			// searchResults.addAll(userManager.searchByEmail(param));
-			searchResults.addAll(userManager.searchCustomersByEmail(param));
-		}
-
-		model.addAttribute("searchResults", searchResults);
-		return model.getSuccess();
-	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	protected ModelAndView showUser(
@@ -84,15 +60,10 @@ public class SearchController {
 	 * @return
 	 */
 	@RequestMapping(value = "getjson/email/ajax", method = RequestMethod.GET)
-	public @ResponseBody
-	SearchResponse searchByEmailAjax(
+	public @ResponseBody SearchResponse searchByEmailAjax(
 			@RequestParam String email) {
 
-		if (!Config.ADMIN)
-			return new SearchResponse(false, new UserSearchResult[0]);
-
 		List<User> searchResults = userManager.searchCustomersByEmail(email);
-
 		UserSearchResult[] users = new UserSearchResult[searchResults.size()];
 
 		for (int i = 0; i < searchResults.size(); i++)
@@ -102,7 +73,7 @@ public class SearchController {
 	}
 
 	/**
-	 * Return class for the getJson method to perform ajax searches.
+	 * Returns a list of UserSearchResults for the getJson method to perform ajax fetches.
 	 * 
 	 * @author Jonathan
 	 * 
@@ -125,6 +96,12 @@ public class SearchController {
 		}
 	}
 
+	/**
+	 * Return object representing a User in the getJson method to perform ajax fetches.
+	 * 
+	 * @author Jonathan
+	 * 
+	 */
 	public static class UserSearchResult {
 		private int id;
 		private String username;

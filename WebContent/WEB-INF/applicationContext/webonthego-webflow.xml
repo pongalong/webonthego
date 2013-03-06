@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/webflow-config" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<b:beans xmlns="http://www.springframework.org/schema/webflow-config" xmlns:b="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
   http://www.springframework.org/schema/beans/spring-beans.xsd
   http://www.springframework.org/schema/webflow-config  
   http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd">
-
-  <beans:bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
-
-  <beans:bean id="flowController" class="org.springframework.webflow.mvc.servlet.FlowController">
-    <beans:property name="flowExecutor" ref="flowExecutor" />
-  </beans:bean>
-
-  <beans:bean id="viewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
-    <beans:property name="viewResolvers">
-      <beans:list>
-        <beans:ref bean="viewResolver" />
-      </beans:list>
-    </beans:property>
-  </beans:bean>
-
-  <beans:bean id="flowUrlMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-    <beans:property name="mappings">
-      <beans:value>
-        /register=flowController
-        /activate=flowController
-      </beans:value>
-    </beans:property>
-    <beans:property name="alwaysUseFullPath" value="true" />
-  </beans:bean>
 
   <flow-builder-services id="flowBuilderServices" view-factory-creator="viewFactoryCreator" />
 
@@ -42,4 +18,28 @@
     <flow-location path="/WEB-INF/resources/flows/activate/script/activateDevice.xml" />
   </flow-registry>
 
-</beans:beans>
+  <b:bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+  <b:bean id="flowController" class="org.springframework.webflow.mvc.servlet.FlowController">
+    <b:property name="flowExecutor" ref="flowExecutor" />
+  </b:bean>
+
+  <b:bean id="viewFactoryCreator" class="org.springframework.webflow.mvc.builder.MvcViewFactoryCreator">
+    <b:property name="viewResolvers">
+      <b:list>
+        <b:ref bean="viewResolver" />
+      </b:list>
+    </b:property>
+  </b:bean>
+
+  <b:bean id="flowUrlMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <b:property name="mappings">
+      <b:value>
+        /register=flowController
+        /activate=flowController
+      </b:value>
+    </b:property>
+    <b:property name="alwaysUseFullPath" value="true" />
+  </b:bean>
+
+</b:beans>

@@ -76,6 +76,16 @@ public class Authority implements Serializable {
 		return 0;
 	}
 
+	@Transient
+	public int compare(
+			ROLE otherRole) {
+		if (role.ordinal() > otherRole.ordinal())
+			return -1;
+		if (role.ordinal() < otherRole.ordinal())
+			return 1;
+		return 0;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

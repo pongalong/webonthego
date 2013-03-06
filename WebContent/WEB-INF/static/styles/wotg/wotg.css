@@ -208,7 +208,11 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 }
 
 #footer {
+	/* height: 68px;
+	background: url(../../images/wotg-footer-texture.jpg) repeat-x; */
 	width: 100%;
-	height: 68px;
-	background: url(../../images/wotg-footer-texture.jpg) repeat-x;
+	background: #333333;
+    border-top: 10px solid #1C6866;
+    color: #FFFFFF;
+    padding: 12px 0;
 }

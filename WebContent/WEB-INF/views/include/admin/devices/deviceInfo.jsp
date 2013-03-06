@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(function() {
-		$(".device_esn").click(function() {
+		$(".device_esn").unbind('click').click(function() {
 			var deviceDetails = $(this).parents(".device").children(".device_detail");
 			$(deviceDetails).slideToggle();
 		});

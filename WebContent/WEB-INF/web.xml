@@ -59,6 +59,8 @@
       /WEB-INF/applicationContext/webonthego-webflow.xml
       /WEB-INF/applicationContext/webonthego-servlet.xml   
       /WEB-INF/applicationContext/webonthego-security.xml
+      /WEB-INF/applicationContext/webonthego-security-authentication.xml
+      /WEB-INF/applicationContext/webonthego-security-permission.xml
     </param-value>
   </context-param>
 

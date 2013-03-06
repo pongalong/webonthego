@@ -39,7 +39,7 @@
                 <li id="menu-item-58"><a href="https://account.webonthego.com/webonthego/support/faq">FAQ</a></li>
                 <li id="menu-item-59"><a href="http://webonthego.com/mobile-hotspot-quick-start-guide/">Mobile Hotspot Quick Start Guide</a></li>
                 <li id="menu-item-60"><a href="http://webonthego.com/mobile-usb-quick-start-guide/">Mobile USB Quick Start Guide</a></li>
-                <li id="menu-item-61"><a href="https://account.webonthego.com/webonthego/support/ticket/create">Contact Support</a></li>
+                <li id="menu-item-61"><a href="https://account.webonthego.com/support/ticket/create">Contact Support</a></li>
               </ul>
             </div>
           </div>
@@ -52,7 +52,7 @@
               <ul id="menu-our-company" class="menu">
                 <li id="menu-item-63"><a href="http://webonthego.com/sell-web-on-the-go/">Sell Web on the Go</a></li>
                 <li id="menu-item-62"><a href="http://webonthego.com/about">About Us</a></li>
-                <li id="menu-item-66"><a href="https://account.webonthego.com/webonthego/support/ticket/inquire">Contact Us</a></li>
+                <li id="menu-item-66"><a href="https://account.webonthego.com/support/ticket/inquire/create">Contact Us</a></li>
                 <li id="menu-item-64"><a href="http://webonthego.com/sitemap/">Sitemap</a></li>
               </ul>
             </div>

@@ -1,8 +1,10 @@
 package com.trc.user;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -188,7 +190,7 @@ public class User implements UserModel, UserDetails {
 	}
 
 	@Transient
-	public Authority getGreatestRole() {
+	public Authority getGreatestAuthority() {
 		Authority greatestRole = new Authority(ROLE.ROLE_ANONYMOUS);
 		for (Authority auth : getRoles())
 			if (greatestRole.compare(auth) < 0)
@@ -198,9 +200,13 @@ public class User implements UserModel, UserDetails {
 
 	@Transient
 	public boolean isInternalUser() {
-		return getRoles().contains(new Authority(ROLE.ROLE_SU)) || getRoles().contains(new Authority(ROLE.ROLE_ADMIN))
-				|| getRoles().contains(new Authority(ROLE.ROLE_MANAGER)) || getRoles().contains(new Authority(ROLE.ROLE_AGENT))
-				|| getRoles().contains(new Authority(ROLE.ROLE_SALES));
+		Set<ROLE> internalRoles = new HashSet<ROLE>(Arrays.asList(ROLE.getInternalRoles()));
+
+		for (Authority auth : getRoles())
+			if (internalRoles.contains(auth.getRole()))
+				return true;
+
+		return false;
 	}
 
 	@Transient

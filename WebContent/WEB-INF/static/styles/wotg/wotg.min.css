@@ -25,5 +25,5 @@ input[type=submit]:hover,input[type=reset]:hover,.mBtn:hover,.active{text-decora
 #rt-header{background:url(../../images/topStrip.jpg) repeat-x;height:93px;width:100%}
 #logo{margin:0 0 0 -110px}
 #bottom{width:100%;min-height:235px;background:url(../../images/bottom_bg.png);margin-top:40px}
-#footer{width:100%;height:68px;background:url(../../images/wotg-footer-texture.jpg) repeat-x}
+#footer{width: 100%;background: #333333;border-top: 10px solid #1C6866;color: #FFFFFF;padding: 12px 0;}
 a:link,a:visited{color:#2a9d98;text-decoration:none;font-size:12px}

@@ -9,6 +9,7 @@ import com.trc.config.Config;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
+import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 
 @Controller
@@ -64,23 +65,17 @@ public class HomeController {
 	private String getAdminHomePage(
 			User user) {
 
-		ROLE role = user.getGreatestRole().getRole();
+		Authority authority = user.getGreatestAuthority();
 
-		switch (role) {
-			case ROLE_SU:
-				return "redirect:/it/home";
-			case ROLE_ADMIN:
-				return "redirect:/admin/home";
-			case ROLE_MANAGER:
-				return "redirect:/manager/home";
-			case ROLE_AGENT:
-				return "redirect:/servicerep/home";
-			case ROLE_SALES:
-				return "redirect:/sales/home";
-			default:
-				return "redirect:/login";
+		if (authority.compare(ROLE.ROLE_MANAGER) >= 0) {
+			return "redirect:/admin/home";
+		} else if (authority.compare(ROLE.ROLE_AGENT) == 0) {
+			return "redirect:/support/ticket";
+		} else if (authority.compare(ROLE.ROLE_SALES) == 0) {
+			return "redirect:/sales/home";
+		} else {
+			return "redirect:/login";
 		}
-
 	}
 
 }
