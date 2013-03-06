@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+
+  <!-- Begin Concurrency Filters -->
+  <bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+    <property name="loginFormUrl" value="/login" />
+    <property name="forceHttps" value="false" />
+  </bean>
+
+  <bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+    <property name="sessionRegistry" ref="sessionRegistry" />
+    <property name="expiredUrl" value="/timeout" />
+  </bean>
+
+  <bean id="myAuthFilter" class="com.trc.web.security.authentication.MyAuthenticationProcessingFilter">
+    <property name="sessionAuthenticationStrategy" ref="sas" />
+    <property name="authenticationManager" ref="webonthegoAuthentication" />
+    <property name="authenticationFailureHandler" ref="failureHandler" />
+    <property name="authenticationSuccessHandler" ref="successHandler" />
+  </bean>
+
+  <bean id="successHandler" class="com.trc.web.security.authentication.MySavedRequestAwareAuthenticationSuccessHandler">
+    <property name="defaultTargetUrl" value="/manage" />
+  </bean>
+
+  <bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+    <property name="defaultFailureUrl" value="/login?login_error=1" />
+  </bean>
+
+  <bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+    <constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+    <property name="maximumSessions" value="1" />
+  </bean>
+
+  <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+  <!-- End Concurrency Filters -->
+
+  <!-- Begin Custom UserDetailsService -->
+  <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+    <property name="providers">
+      <list>
+        <ref local="daoAuthenticationProvider" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+    <property name="userDetailsService" ref="myUserDetailsService" />
+  </bean>
+
+  <bean id="myUserDetailsService" class="com.trc.web.security.authentication.MyUserDetailsService">
+    <property name="userManager" ref="userManager" />
+    <!-- <property name="assembler" ref="assembler" /> -->
+  </bean>
+
+  <sec:authentication-manager alias="webonthegoAuthentication">
+    <sec:authentication-provider user-service-ref="myUserDetailsService">
+      <sec:password-encoder hash="md5" />
+    </sec:authentication-provider>
+  </sec:authentication-manager>
+  <!-- End Custom UserDetailsService -->
+
+</beans>

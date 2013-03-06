@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/security
+  http://www.springframework.org/schema/security/spring-security.xsd">
+
+  <sec:global-method-security pre-post-annotations="enabled" secured-annotations="enabled">
+    <sec:expression-handler ref="expressionHandler" />
+  </sec:global-method-security>
+
+  <bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+    <property name="permissionEvaluator" ref="permissionEvaluator" />
+  </bean>
+
+  <bean id="permissionEvaluator" class="com.trc.security.permission.evaluator.InternalPermissionEvaluator">
+    <constructor-arg index="0">
+      <map key-type="java.lang.String" value-type="com.trc.security.permission.Permission">
+        <entry key="canUpdate" value-ref="updatePermission" />
+        <entry key="isOwner" value-ref="ownerPermission" />
+        <entry key="isInternalUser" value-ref="internalUserPermission" />
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <bean id="updatePermission" class="com.trc.security.permission.UpdatePermission" init-method="init" />
+
+  <bean id="ownerPermission" class="com.trc.security.permission.OwnerPermission" />
+
+  <bean id="internalUserPermission" class="com.trc.security.permission.InternalUserPermission" />
+
+  <!-- REQUIRES UPGRADING TO SPRING 3.1 -->
+  <!-- <bean id="webExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"> <beans:property name="permissionEvaluator" 
+    ref="permissionEvaluator" /> </bean> -->
+
+</beans>
