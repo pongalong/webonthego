@@ -13,21 +13,24 @@
     <property name="permissionEvaluator" ref="permissionEvaluator" />
   </bean>
 
-  <bean id="permissionEvaluator" class="com.trc.security.permission.evaluator.InternalPermissionEvaluator">
+  <bean id="permissionEvaluator" class="com.tscp.domain.security.permission.evaluator.InternalPermissionEvaluator">
     <constructor-arg index="0">
-      <map key-type="java.lang.String" value-type="com.trc.security.permission.Permission">
+      <map key-type="java.lang.String" value-type="com.tscp.domain.security.permission.Permission">
         <entry key="canUpdate" value-ref="updatePermission" />
         <entry key="isOwner" value-ref="ownerPermission" />
         <entry key="isInternalUser" value-ref="internalUserPermission" />
+        <entry key="isAtleast" value-ref="roleAtLeastPermission" />
       </map>
     </constructor-arg>
   </bean>
 
-  <bean id="updatePermission" class="com.trc.security.permission.UpdatePermission" init-method="init" />
+  <bean id="updatePermission" class="com.tscp.domain.security.permission.UpdatePermission" init-method="init" />
 
-  <bean id="ownerPermission" class="com.trc.security.permission.OwnerPermission" />
+  <bean id="ownerPermission" class="com.tscp.domain.security.permission.OwnerPermission" />
 
-  <bean id="internalUserPermission" class="com.trc.security.permission.InternalUserPermission" />
+  <bean id="internalUserPermission" class="com.tscp.domain.security.permission.InternalUserPermission" />
+
+  <bean id="roleAtLeastPermission" class="com.tscp.domain.security.permission.RoleAtLeastPermission" />
 
   <!-- REQUIRES UPGRADING TO SPRING 3.1 -->
   <!-- <bean id="webExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"> <beans:property name="permissionEvaluator" 

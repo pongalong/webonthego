@@ -72,7 +72,7 @@
 
         <ul class="menutop">
           <li class="mBtn" onclick="location.href='http://www.webonthego.com/'">Home</li>
-          <li class="mBtn" onclick="location.href='https://store.webonthego.com/estore/index.html'">Store</li>
+          <li class="mBtn" onclick="location.href='http://store.webonthego.com/'">Store</li>
           <li class="mBtn" onclick="location.href='<spring:url value="/support" />'">Support</li>
         </ul>
 

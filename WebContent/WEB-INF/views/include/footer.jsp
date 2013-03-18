@@ -39,7 +39,7 @@
                 <li id="menu-item-58"><a href="https://account.webonthego.com/webonthego/support/faq">FAQ</a></li>
                 <li id="menu-item-59"><a href="http://webonthego.com/mobile-hotspot-quick-start-guide/">Mobile Hotspot Quick Start Guide</a></li>
                 <li id="menu-item-60"><a href="http://webonthego.com/mobile-usb-quick-start-guide/">Mobile USB Quick Start Guide</a></li>
-                <li id="menu-item-61"><a href="https://account.webonthego.com/support/ticket/create">Contact Support</a></li>
+                <li id="menu-item-61"><a href="https://account.webonthego.com/support/inquire/create">Contact Support</a></li>
               </ul>
             </div>
           </div>

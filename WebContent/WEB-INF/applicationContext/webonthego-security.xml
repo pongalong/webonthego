@@ -22,7 +22,7 @@
     <intercept-url pattern="/activate/**" access="isAuthenticated()" />
 
     <intercept-url pattern="/support/ticket/create" access="isAuthenticated()" />
-    <intercept-url pattern="/support/ticket/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT', 'ROLE_SU')" />
+    <intercept-url pattern="/support/ticket/**" access="hasAnyRole('ROLE_AGENT', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_SU')" />
     <intercept-url pattern="/support/**" access="permitAll" />
 
     <intercept-url pattern="/reset/**" access="permitAll" />

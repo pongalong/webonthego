@@ -209,6 +209,7 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
 	public void enableUser(
 			User user) {
 		userDao.enableUser(user);
