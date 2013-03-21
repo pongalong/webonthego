@@ -52,7 +52,7 @@
               <ul id="menu-our-company" class="menu">
                 <li id="menu-item-63"><a href="http://webonthego.com/sell-web-on-the-go/">Sell Web on the Go</a></li>
                 <li id="menu-item-62"><a href="http://webonthego.com/about">About Us</a></li>
-                <li id="menu-item-66"><a href="https://account.webonthego.com/support/ticket/inquire/create">Contact Us</a></li>
+                <li id="menu-item-66"><a href="https://account.webonthego.com/support/inquire/create">Contact Us</a></li>
                 <li id="menu-item-64"><a href="http://webonthego.com/sitemap/">Sitemap</a></li>
               </ul>
             </div>
