@@ -54,7 +54,7 @@ public class RefundController {
     modelMap.addAttribute("refundCodes", Arrays.asList(RefundCode.values()));
   }
   
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  //@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_SU')")
   @RequestMapping(value = "{transId}", method = RequestMethod.GET)
   public ModelAndView showRefund(@PathVariable int transId) {
     ResultModel resultModel = new ResultModel("/admin/refund/confirm");
@@ -70,7 +70,7 @@ public class RefundController {
     }
   }
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  //@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SU')")
   @RequestMapping(value = "{transId}", method = RequestMethod.POST)
   public ModelAndView processRefund(HttpServletRequest request, @ModelAttribute RefundRequest refundRequest, BindingResult result, @PathVariable int transId) {
       ResultModel resultModel = new ResultModel("redirect:/account/payment/history", "/admin/refund/confirm");
@@ -83,10 +83,8 @@ public class RefundController {
       } 
       else {
          try {
-        	 if(isRefundable(refundRequest.getPaymentTransaction())) {
-                refundManager.refundPayment(user, refundRequest, transId);
-        	 }   
-             PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
+        	 refundManager.refundPayment(user, refundRequest, transId);
+        	 PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
              new CacheManager().set(CacheKey.PAYMENT_HISTORY, paymentHistory);  //need to refresh "PAYMENT_HISTORY" in cache              
          } catch (RefundManagementException e) {
         	 return resultModel.getAccessException();
