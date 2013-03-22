@@ -33,7 +33,7 @@
 
   <bean id="roleAtLeastPermission" class="com.tscp.domain.security.permission.RoleAtLeastPermission" />
   
-  <bean id="refundPermission" class="com.trc.security.permission.RefundPermission" init-method="init" />
+  <bean id="refundPermission" class="com.tscp.domain.security.permission.RefundPermission" init-method="init" />
 
   <!-- REQUIRES UPGRADING TO SPRING 3.1 -->
   <!-- <bean id="webExpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"> <beans:property name="permissionEvaluator" 
