@@ -164,13 +164,20 @@ public class StringEncryptor implements Encrypter {
 
 	// public static void main(
 	// String... args) throws IOException {
-	// StringEncryptor se = new StringEncryptor("asdfasfdfdfa");
-	// String ascii = "98110112901121077390745489375168374868374865";
-	// String firstPass = URLDecoder.decode(ascii, encoding);
-	// String encodedString = firstPass;
-	// BASE64Decoder base64Decoder = new BASE64Decoder();
-	// byte[] encodedBytes = base64Decoder.decodeBuffer(encodedString);
-	// String recoveredString = se.decrypt(encodedBytes);
-	// System.out.println(recoveredString);
+	// System.out.println("Running...");
+	// for (int i = 0; i < 999999999; i++) {
+	// StringEncryptor se = new StringEncryptor(Integer.toString(i));
+	// int original = 695482;
+	// try {
+	// String encodedString = se.encryptIntUrlSafe(original);
+	// String decodedString = se.decryptUrlSafe(encodedString);
+	// // System.out.println("encodedString: " + encodedString);
+	// // System.out.println("decodedString: " + decodedString);
+	// } catch (Exception e) {
+	// System.out.println(e.getMessage());
+	// System.out.println("on iteration " + i);
+	// }
+	// }
+	// System.out.println("finished, no exceptions");
 	// }
 }

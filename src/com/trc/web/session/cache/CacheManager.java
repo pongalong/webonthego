@@ -48,7 +48,8 @@ public class CacheManager extends SessionManager {
 
 	public static final StringEncryptor getEncryptor() {
 		StringEncryptor encryptor = (StringEncryptor) get(SessionKey.ENCRYPTOR);
-		return encryptor;
+		return encryptor == null ? new StringEncryptor(SessionManager.getCurrentSession().getId()) : encryptor;
+		// return encryptor;
 	}
 
 	@Loggable(value = LogLevel.INFO)
