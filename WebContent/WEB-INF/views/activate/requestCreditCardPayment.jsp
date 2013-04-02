@@ -35,7 +35,7 @@
 
     <p>Add your preferred payment information below. You can log back in to update this information at any time.</p>
     <p>Your credit card will be charged $10 today, which will give you a $10 credit in your Web on the Go account. Your monthly service fee and any usage
-      (at 3.9¢ per MB) will be deducted from this $10 balance.</p>
+      (at 3.5¢ per MB) will be deducted from this $10 balance.</p>
     <p>You will be enrolled in automatic top-ups with this credit card. Each time your account balance falls below $2, your credit card will be charged $10.
       You may change your top-up amount in your online account options.</p>
 
