@@ -41,15 +41,15 @@ public class CacheManager extends SessionManager {
 		SessionManager.clear(cacheKey.toString());
 	}
 
-	public final void clearCache() {
-		for (CacheKey cacheKey : CacheKey.values())
-			clear(cacheKey);
-	}
-
 	public static final StringEncryptor getEncryptor() {
 		StringEncryptor encryptor = (StringEncryptor) get(SessionKey.ENCRYPTOR);
 		return encryptor == null ? new StringEncryptor(SessionManager.getCurrentSession().getId()) : encryptor;
-		// return encryptor;
+	}
+
+	@Loggable(value = LogLevel.INFO)
+	public final void clearCache() {
+		for (CacheKey cacheKey : CacheKey.values())
+			clear(cacheKey);
 	}
 
 	@Loggable(value = LogLevel.INFO)

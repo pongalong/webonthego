@@ -23,10 +23,9 @@ public class SessionManager {
 	protected static final Object get(
 			String key) {
 		HttpSession session = getCurrentSession();
-		if (session != null) {
-			Object obj = session.getAttribute(key);
-			return obj;
-		} else
+		if (session != null)
+			return session.getAttribute(key);
+		else
 			return null;
 	}
 
