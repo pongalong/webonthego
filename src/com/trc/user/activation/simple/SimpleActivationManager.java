@@ -417,24 +417,25 @@ public class SimpleActivationManager {
 		User user = sa.getUser();
 		Account account = sa.getAccount();
 		CreditCard cc = sa.getCreditCardPayment().getCreditCard();
-		Coupon coupon = sa.getCreditCardPayment().getCoupon();
 
 		logger.trace("{} Making activation payment on account {} with payment ID {}", new Object[] { user.getEmail(), account.getAccountNo(), cc.getPaymentid() });
 
 		double amount = 10.00;
-		if (coupon != null && !coupon.isEmpty())
-			if (coupon.getCouponDetail().getContract().getContractType() == -1) {
-				amount = amount - coupon.getCouponDetail().getAmount();
-				logger.info("{} Coupon applied, remaining activaiton fee of {}", user.getEmail(), amount);
-			}
+		
+		// This calculates the remaining initial activation fee minus any amount they may have received by coupon code
+		// Coupon coupon = sa.getCreditCardPayment().getCoupon();
+		// if (coupon != null && !coupon.isEmpty())
+		// if (coupon.getCouponDetail().getContract().getContractType() == -1) {
+		// amount = amount - coupon.getCouponDetail().getAmount();
+		// logger.info("{} Coupon applied, remaining activaiton fee of {}", user.getEmail(), amount);
+		// }
 
 		if (amount > 0.0) {
 			NumberFormat formatter = NumberFormat.getCurrencyInstance();
 			String moneyString = formatter.format(amount);
 			logger.trace("{} Sending payment of {}", user.getEmail(), moneyString.substring(1));
 			PaymentUnitResponse response = paymentManager.makePayment(user, account, cc.getPaymentid(), moneyString.substring(1));
-			logger.trace("{} Made payment of {} on account {} with payment ID {}",
-					new Object[] { user.getEmail(), moneyString, account.getAccountNo(), cc.getPaymentid() });
+			logger.trace("{} Made payment of {} on account {} with payment ID {}",	new Object[] { user.getEmail(), moneyString, account.getAccountNo(), cc.getPaymentid() });
 			return response;
 		} else {
 			return new PaymentUnitResponse();

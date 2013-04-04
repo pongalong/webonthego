@@ -76,11 +76,24 @@
           <li class="mBtn" onclick="location.href='<spring:url value="/support" />'">Support</li>
         </ul>
 
-        <c:if test="${USER.userId > 0 && CONTROLLING_USER.userId <= 0}">
-          <div style="position: absolute; right: 0; text-align: right;">
-            Welcome ${USER.contactInfo.firstName} ${USER.contactInfo.lastName}<br /> <a href="<spring:url value='/logout' />">Logout</a>
-          </div>
-        </c:if>
+        <div style="position: absolute; right: 0; text-align: right;">
+          <c:choose>
+            <c:when test="${USER.userId > 0 && CONTROLLING_USER.userId <= 0}">
+              <div>Welcome ${USER.contactInfo.firstName} ${USER.contactInfo.lastName}</div>
+              <div>
+                <span style="color: #ec7958;">TechSupport</span> 
+                <span style="color: black;">855-932-6646</span> | 
+                <a href="<spring:url value='/logout' />" style="font-weight: bold;">LOGOUT</a>
+              </div>
+            </c:when>
+            <c:otherwise>
+              <div>
+                <span style="color: #ec7958;">TechSupport</span> 
+                <span style="color: black;">855-932-6646</span>
+              </div>
+            </c:otherwise>
+          </c:choose>
+        </div>
 
         <div id="logo">
           <img src="<spring:url value='/static/images/logo.png' />" alt="Web on The Go" onClick="location.href='<spring:url value="/" />'" />
