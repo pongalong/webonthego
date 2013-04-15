@@ -32,7 +32,7 @@ import com.tscp.mvne.NetworkInfo;
 
 @Controller
 @RequestMapping("/devices")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "ACCOUNT_DETAILS", "label", "accessFeeDate", "accountDetail" })
+@SessionAttributes({ "USER", "CONTROLLING_USER", "ACCOUNT_DETAILS", "label", "accessFeeDate", "accountDetail", "newDevice" })
 public class DeviceController {
 	@Autowired
 	private UserManager userManager;
@@ -127,8 +127,8 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSwapDevice(
 			@ModelAttribute("USER") User user,
 			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
@@ -138,7 +138,11 @@ public class DeviceController {
 
 		try {
 			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
+
+			Device newDevice = new Device();
+
 			model.addAttribute("accountDetail", accountDetail);
+			model.addAttribute("newDevice", newDevice);
 			return model.getSuccess();
 		} catch (CachedAttributeNotFound e) {
 			return model.getAccessException();
@@ -146,19 +150,27 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSwapDevice(
 			@ModelAttribute("USER") User user,
 			@ModelAttribute("accountDetail") AccountDetail accountDetail,
+			@ModelAttribute("newDevice") Device newDevice,
 			Errors errors) {
 
 		ResultModel model = new ResultModel("account/device/swap/success", "account/device/swap/swap");
 
 		try {
-			Device oldDeviceInfo = deviceManager.getDeviceInfo(user, accountDetail.getDeviceInfo().getId());
-			Device newDeviceInfo = accountDetail.getDeviceInfo();
-			deviceManager.swapDevice(user, oldDeviceInfo, newDeviceInfo);
+			// the existing device is in the accountDetail object
+			Device oldDevice = accountDetail.getDeviceInfo();
+
+			// fetch the old device and give it the new values so all other properties will be filled
+			// TODO make a device wrapper class that implements cloneable
+			Device newDeviceCopy = deviceManager.getDeviceInfo(user, accountDetail.getDeviceInfo().getId());
+			newDeviceCopy.setLabel(newDevice.getLabel());
+			newDeviceCopy.setValue(newDevice.getValue());
+
+			deviceManager.swapDevice(user, oldDevice, newDeviceCopy);
 			return model.getSuccess();
 		} catch (DeviceManagementException e) {
 			errors.rejectValue("value", "device.swap.error");
