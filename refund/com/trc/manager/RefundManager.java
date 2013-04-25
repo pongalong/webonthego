@@ -24,7 +24,7 @@ public class RefundManager implements RefundManagerModel {
   @Autowired
   PaymentService paymentService;
         
-  @PreAuthorize("isAuthenticated() and hasPermission(#user, 'canRefund')")
+  //@PreAuthorize("isAuthenticated() and hasPermission(#user, 'canRefund')")
   public void refundPayment(User user, RefundRequest refundRequest, int transId) throws RefundManagementException {
 	 try{
 	    synchronized(refundRequest.getPaymentTransaction()) {
