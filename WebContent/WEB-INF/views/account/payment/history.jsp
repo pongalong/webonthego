@@ -12,9 +12,8 @@
           <th>Type</th>
           <th>Account</th>
           <th style="text-align: right;">Amount</th>
-          <th style="text-align: right;"></th>
           <c:if test="${!empty sessionScope.controlling_user}">
-              <th style="text-align: right;">Reverse</th>
+            <th style="text-align: right;">Refund</th>
           </c:if>
         </tr>
         <c:forEach var="paymentRecord" items="${PAYMENT_HISTORY.currentPage}">
