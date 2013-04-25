@@ -13,6 +13,9 @@
           <th>Account</th>
           <th style="text-align: right;">Amount</th>
           <th style="text-align: right;"></th>
+          <c:if test="${!empty sessionScope.controlling_user}">
+              <th style="text-align: right;">Reverse</th>
+          </c:if>
         </tr>
         <c:forEach var="paymentRecord" items="${PAYMENT_HISTORY.currentPage}">
           <%@ include file="/WEB-INF/views/include/display/paymentRecord_admin.jsp"%>
