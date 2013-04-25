@@ -54,7 +54,7 @@ public class RefundController {
     modelMap.addAttribute("refundCodes", Arrays.asList(RefundCode.values()));
   }
   
-  //@PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_SU')")
+  @PreAuthorize("hasRole('ROLE_ADMIN')or hasRole('ROLE_SU')")
   @RequestMapping(value = "{transId}", method = RequestMethod.GET)
   public ModelAndView showRefund(@PathVariable int transId) {
     ResultModel resultModel = new ResultModel("/admin/refund/confirm");
@@ -70,7 +70,7 @@ public class RefundController {
     }
   }
 
-  //@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SU')")
+  @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SU')")
   @RequestMapping(value = "{transId}", method = RequestMethod.POST)
   public ModelAndView processRefund(HttpServletRequest request, @ModelAttribute RefundRequest refundRequest, BindingResult result, @PathVariable int transId) {
       ResultModel resultModel = new ResultModel("redirect:/account/payment/history", "/admin/refund/confirm");
