@@ -36,7 +36,7 @@ import com.tscp.mvne.PaymentTransaction;
 import com.tscp.util.logger.DevLogger;
 
 @Controller
-@RequestMapping("/account/payment/refund")
+@RequestMapping("/admin/refund")
 public class RefundController {
   @Autowired
   private UserManager userManager;
@@ -57,7 +57,7 @@ public class RefundController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "{transId}", method = RequestMethod.GET)
   public ModelAndView showRefund(@PathVariable int transId) {
-    ResultModel resultModel = new ResultModel("/account/payment/refund/confirm");
+    ResultModel resultModel = new ResultModel("/admin/refund/confirm");
     User user = userManager.getCurrentUser();
     try {
       PaymentTransaction paymentTransaction = refundManager.getPaymentTransaction(user.getUserId(), transId);
@@ -73,7 +73,7 @@ public class RefundController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "{transId}", method = RequestMethod.POST)
   public ModelAndView processRefund(HttpServletRequest request, @ModelAttribute RefundRequest refundRequest, BindingResult result, @PathVariable int transId) {
-      ResultModel resultModel = new ResultModel("redirect:/account/payment/history", "/account/payment/refund/confirm");
+      ResultModel resultModel = new ResultModel("redirect:/account/payment/history", "/admin/refund/confirm");
       User user = userManager.getCurrentUser(); 
       JCaptchaValidator.validate(request, result);
       refundRequestValidator.validate(refundRequest, result);
