@@ -31,8 +31,7 @@
 
     <intercept-url pattern="/home" access="permitAll" />
 
-    <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_AGENT', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_SU')" />
-
+  
     <intercept-url pattern="/" access="permitAll" />
     <intercept-url pattern="/**" access="isAuthenticated()" />
 
