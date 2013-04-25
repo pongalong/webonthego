@@ -25,6 +25,8 @@
     <intercept-url pattern="/support/ticket/**" access="hasAnyRole('ROLE_AGENT', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_SU')" />
     <intercept-url pattern="/support/**" access="permitAll" />
 
+    <intercept-url pattern="/account/payment/refund/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_SU')" />
+   
     <intercept-url pattern="/reset/**" access="permitAll" />
 
     <intercept-url pattern="/home" access="permitAll" />
