@@ -41,7 +41,7 @@
   <!--  END CURRENTLY VIEWED USER -->
 
   <!-- SEARCH FORM -->
-  <form id="adminControl" method="post" action="<spring:url value="/search" />">
+  <form id="adminControl" method="post" action="<spring:url value="/admin/search" />">
 
     <div style="float: left; padding-right: 5px;">
       <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" value="${USER.userId}" /> <input autocomplete="off"
