@@ -32,7 +32,12 @@ import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/account/payment")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "PAYMENT_HISTORY", "PAYMENT_METHODS", "creditCard" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER",
+		"PAYMENT_HISTORY",
+		"PAYMENT_METHODS",
+		"creditCard" })
 public class PaymentController {
 	@Autowired
 	private UserManager userManager;
@@ -59,8 +64,7 @@ public class PaymentController {
 
 	@RequestMapping(value = "/history/{page}", method = RequestMethod.GET)
 	public ModelAndView showPaymentHistory(
-			@ModelAttribute("PAYMENT_HISTORY") PaymentHistory paymentHistory,
-			@PathVariable("page") int page) {
+			@ModelAttribute("PAYMENT_HISTORY") PaymentHistory paymentHistory, @PathVariable("page") int page) {
 
 		ResultModel model = new ResultModel("account/payment/history");
 
@@ -118,9 +122,7 @@ public class PaymentController {
 
 	@RequestMapping(value = "/methods/edit/{encodedPaymentId}", method = RequestMethod.POST)
 	public ModelAndView postUpdatePaymentMethod(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("creditCard") CreditCard creditCard,
-			BindingResult result) {
+			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard, BindingResult result) {
 
 		ResultModel model = new ResultModel("redirect:/profile", "account/payment/update/creditcard");
 
@@ -163,8 +165,7 @@ public class PaymentController {
 
 	@RequestMapping(value = "/methods/remove/{encodedPaymentId}", method = RequestMethod.POST)
 	public ModelAndView postDeletePaymentMethod(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("creditCard") CreditCard creditCard) {
+			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard) {
 
 		ResultModel model = new ResultModel("redirect:/profile");
 
@@ -187,9 +188,7 @@ public class PaymentController {
 
 	@RequestMapping(value = "/methods/add", method = RequestMethod.POST)
 	public ModelAndView postAddPaymentMethod(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("creditCard") CreditCard creditCard,
-			BindingResult result) {
+			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard, BindingResult result) {
 
 		ResultModel model = new ResultModel("redirect:/profile", "account/payment/add/creditcard");
 

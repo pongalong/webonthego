@@ -1,35 +1,5 @@
-$.fn.exists = function() {
-	return this.length > 0;
-};
-
-function validateSelected(value) {
-	return value != 0;
-}
-
-function validateNotEmpty(value) {
-	return value != null && $.trim(value) != "";
-}
-
-function validateMatches(value1, value2) {
-	return value1 != "" && value1 == value2;
-}
-
-function validateAlphaNumeric(value) {
-	var alphaNumRegex = /^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i;
-	return alphaNumRegex.test(value);
-}
-
-function validatePassword(value) {
-	return validateAlphaNumeric(value);
-}
-
-function validateEmail(email) {
-	var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA	-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return emailRegex.test(email);
-}
-
 /*******************************************************************************
- * Radio Button Effects
+ * Radio Button Effects to be removed - addCoupon.js still uses some of these
  ******************************************************************************/
 function highlightRadio(name, val) {
 	var radioButtons = $("input[name='" + name + "']:radio");
@@ -63,7 +33,7 @@ $.fn.selectRadioFromList = function(selected) {
 };
 
 /*******************************************************************************
- * Toggle Slide Effects
+ * Toggle Slide Effects: drop down and bounce effect for divs
  ******************************************************************************/
 $.fn.toggleSlideDownFullHeight = function() {
 	if (!$(this).is(":visible")) {
@@ -101,104 +71,6 @@ $.fn.toggleSlide = function() {
 		$(this).toggleSlideDown();
 		return false;
 	}
-};
-
-/*******************************************************************************
- * Confirm Form Value Effects
- ******************************************************************************/
-$.fn.enableConfirmField = function() {
-	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
-	confirmationField.enableValidation(validateMatches);
-	$(this).blur(function() {
-		if ($(this).val().length != 0) {
-			if ($(this).prop("requiresValidation")) {
-				if ($(this).prop("isValid")) {
-					$(this).toggleConfirmationField("show", "slow", true, true);
-				}
-			} else {
-				$(this).toggleConfirmationField("show", "slow", true, true);
-			}
-		} else {
-			$(this).toggleConfirmationField("hide", "fast", false, false);
-		}
-	});
-
-	$(this).change(function() {
-		confirmationField.toggleValidationFields(confirmationField.validate(validateMatches));
-	});
-
-	return $(this);
-};
-
-$.fn.toggleConfirmationField = function(display, speed, focus, validate) {
-	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
-	if (display == "show") {
-		// previously confirmation fields were faded out until the parent field was
-		// completed
-		// confirmationField.parent().fadeIn(speed);
-		// confirmationField.removeAttr("readOnly");
-		// confirmationField.parent().fadeTo(speed, 1);
-	} else if (display == "hide") {
-		// previously confirmation fields were faded out until the parent field was
-		// completed
-		// confirmationField.val("");
-		// confirmationField.parent().fadeOut(speed);
-		// confirmationField.parent().fadeTo(speed, 0.25);
-	}
-	if (focus)
-		confirmationField.focus();
-	if (validate)
-		confirmationField.toggleValidationFields(confirmationField.validate(validateMatches));
-	return $(this);
-};
-
-/*******************************************************************************
- * Validation Effects
- ******************************************************************************/
-
-$.fn.toggleValidationFields = function(isValid) {
-	var container = $(this).next(".validation");
-	var accept = container.children(".accept");
-	var reject = container.children(".reject");
-	if ($(this).val() != "") {
-		if (isValid) {
-			accept.fadeIn();
-			reject.hide();
-		} else {
-			reject.fadeIn();
-			accept.hide();
-		}
-	} else {
-		accept.hide();
-		reject.hide();
-	}
-	container.fadeIn();
-};
-
-$.fn.validate = function(func) {
-	var isValid;
-	if (func == validateMatches) {
-		var parent = $("#" + $(this).attr("id").replace(".confirmValue", "\\.value"));
-		isValid = func($(this).val(), parent.val());
-	} else {
-		isValid = func($(this).val());
-	}
-	return isValid;
-};
-
-$.fn.enableValidation = function(func) {
-	$(this).prop("validationFunction", func);
-	$(this).prop("requiresValidation", true);
-	$(this).blur(function() {
-		var isValid = $(this).validate(func);
-		$(this).toggleValidationFields(isValid);
-		if (isValid) {
-			$(this).prop("isValid", true);
-		} else {
-			$(this).prop("isValid", false);
-		}
-	});
-	return $(this);
 };
 
 /*******************************************************************************
@@ -259,22 +131,198 @@ function type(obj, caption, count) {
 		}, 22);
 }
 
+/*******************************************************************************
+ * Credit Card Forms
+ ******************************************************************************/
+
+/**
+ * Highlights the image for the type of credit card entered by calling
+ * blurAllExcpet
+ * 
+ * @returns {Boolean}
+ */
+function highlightCard(cardNumber) {
+	if (cardNumber.length > 0) {
+		var cardType = cardNumber.substring(0, 1);
+		var cvv = document.getElementById("verificationcode");
+		if (mod10(cardNumber)) {
+			if (cardType == 4) {
+				cvv.maxLength = 3;
+				blurAllExcept($("#ImgVisa"));
+			} else if (cardType == "5") {
+				cvv.maxLength = 3;
+				blurAllExcept($("#ImgMastercard"));
+			} else if (cardType == "3") {
+				cvv.maxLength = 4;
+				blurAllExcept($("#ImgAmex"));
+			} else if (cardType == "6") {
+				cvv.maxLength = 3;
+				blurAllExcept($("#ImgDiscover"));
+			} else {
+				blurAllExcept("unknown");
+			}
+		} else {
+			$("#creditCardImages").find("img").fadeTo("slow", 1);
+		}
+	}
+	return false;
+}
+
+/**
+ * Blurs all the credit card images except for the given one by lowering opacity
+ * 
+ * @param cardImgObj
+ */
+function blurAllExcept(cardImgObj) {
+	$("#creditCardImages").find("img").fadeTo("fast", 0.3);
+	if (cardImgObj != "unknown") {
+		$(cardImgObj).fadeTo("fast", 1).css("border", "1px solid blue");
+	}
+}
+
+/*******************************************************************************
+ * Input Restrictions
+ ******************************************************************************/
+
 /**
  * Only allows numerics to be entered into the field
  */
 $(function() {
-	$(".numOnly").keydown(
-			function(event) {
-				// 0-9 or numpad 0-9, disallow shift/ctrl/alt
-				if ((!event.shiftKey && !event.ctrlKey && !event.altKey)
-						&& ((event.keyCode >= 48 && event.keyCode <= 57) || (event.keyCode >= 96 && event.keyCode <= 105))) {
-					// check textbox value and tab over if necessary
-				}
-				// not esc/del/left/right
-				else if (event.keyCode != 8 && event.keyCode != 9 && event.keyCode != 13 && event.keyCode != 46 && event.keyCode != 37
-						&& event.keyCode != 39) {
-					event.preventDefault();
-				}
-				// else the key should be handled normally
-			});
+	$(".numOnly").keydown(function(e) {
+		if ((!e.shiftKey && !e.ctrlKey && !e.altKey) && ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105))) {
+			// 0-9 or numpad 0-9, disallow shift/ctrl/alt
+			// check textbox value and tab over if necessary
+		} else if (e.keyCode != 8 && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 39) {
+			// not esc/del/left/right
+			e.preventDefault();
+		}
+		// else the key should be handled normally
+	});
 });
+
+
+
+
+
+/*******************************************************************************
+ * Confirm Form Value Effects
+ ******************************************************************************/
+$.fn.enableConfirmField = function() {
+	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
+	confirmationField.enableValidation(validateMatches);
+	$(this).blur(function() {
+		if ($(this).val().length != 0) {
+			if ($(this).prop("requiresValidation")) {
+				if ($(this).prop("isValid")) {
+					$(this).toggleConfirmationField(true, true);
+				}
+			} else {
+				$(this).toggleConfirmationField(true, true);
+			}
+		} else {
+			$(this).toggleConfirmationField(false, false);
+		}
+	});
+
+	$(this).change(function() {
+		confirmationField.toggleValidationFields(confirmationField.validate(validateMatches));
+	});
+
+	return $(this);
+};
+
+$.fn.toggleConfirmationField = function(focus, validate) {
+	var confirmationField = $("#" + $(this).attr("id").replace(".value", "\\.confirmValue"));
+	if (focus)
+		confirmationField.focus();
+	if (validate)
+		confirmationField.toggleValidationFields(confirmationField.validate(validateMatches));
+	return $(this);
+};
+
+/*******************************************************************************
+ * Validation Effects
+ ******************************************************************************/
+
+$.fn.toggleValidationFields = function(isValid) {
+	var container = $(this).next(".validation");
+	var accept = container.children(".accept");
+	var reject = container.children(".reject");
+	if ($(this).val() != "") {
+		if (isValid) {
+			accept.fadeIn();
+			reject.hide();
+		} else {
+			reject.fadeIn();
+			accept.hide();
+		}
+	} else {
+		accept.hide();
+		reject.hide();
+	}
+	container.fadeIn();
+};
+
+$.fn.validate = function(func) {
+	var isValid;
+	if (func == validateMatches) {
+		var parent = $("#" + $(this).attr("id").replace(".confirmValue", "\\.value"));
+		isValid = func($(this).val(), parent.val());
+	} else {
+		isValid = func($(this).val());
+	}
+	return isValid;
+};
+
+$.fn.enableValidation = function(func) {
+	$(this).prop("validationFunction", func);
+	$(this).prop("requiresValidation", true);
+	$(this).blur(function() {
+		var isValid = $(this).validate(func);
+		$(this).toggleValidationFields(isValid);
+		if (isValid) {
+			$(this).prop("isValid", true);
+		} else {
+			$(this).prop("isValid", false);
+		}
+	});
+	return $(this);
+};
+
+/*******************************************************************************
+ * Validation Methods
+ ******************************************************************************/
+
+$.fn.exists = function() {
+	return this.length > 0;
+};
+
+function validateChecked(value) {
+	return value == "true";
+}
+
+function validateSelected(value) {
+	return value != 0;
+}
+
+function validateNotEmpty(value) {
+	return value != null && $.trim(value) != "";
+}
+
+function validateMatches(value1, value2) {
+	return value1 != "" && value1 == value2;
+}
+
+function validateAlphaNumeric(value) {
+	var alphaNumRegex = /^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i;
+	return alphaNumRegex.test(value);
+}
+
+function validatePassword(value) {
+	return validateAlphaNumeric(value);
+}
+
+function validateEmail(email) {
+	var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA	-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return emailRegex.test(email);
+}

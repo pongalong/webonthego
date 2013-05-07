@@ -237,19 +237,19 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 		getHibernateTemplate().persist(user);
 	}
 
-	@Override
-	public void enableUser(
-			User user) {
-		user.setEnabled(true);
-		user.setDateEnabled(new DateTime().toDate());
-		updateUser(user);
-	}
-
-	@Override
-	public void disableUser(
-			User user) {
-		user.setEnabled(false);
-		user.setDateDisabled(new DateTime().toDate());
-		updateUser(user);
-	}
+//	@Override
+//	public void enableUser(
+//			User user) {
+//		user.setEnabled(true);
+//		user.setDateEnabled(new DateTime().toDate());
+//		updateUser(user);
+//	}
+//
+//	@Override
+//	public void disableUser(
+//			User user) {
+//		user.setEnabled(false);
+//		user.setDateDisabled(new DateTime().toDate());
+//		updateUser(user);
+//	}
 }

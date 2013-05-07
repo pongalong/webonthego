@@ -1,26 +1,44 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 <div class="span-18 colborder" style="min-height: 200px;">
-  <h3>Users</h3>
+  <h3>Users (${requestedRole.name})</h3>
 
   <c:choose>
     <c:when test="${not empty members}">
-      <ul>
+
+      <table>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Enabled</th>
+        </tr>
+
         <c:forEach var="member" items="${members}" varStatus="status">
-          <li style="margin-top: 10px;">${member.username} - <c:choose>
-              <c:when test="${member.enabled}">enabled (<a href="<spring:url value="/admin/toggle/${member.userId}?cmd=DISABLE" />">disable</a>)</c:when>
-              <c:when test="${!member.enabled}">disabled (
-                    <a href="<spring:url value="/admin/toggle/${member.userId}?cmd=ENABLE" />">enable</a>)</c:when>
-            </c:choose>
-          </li>
+          <tr>
+            <td>${member.userId}</td>
+            <td>${member.username}</td>
+            <td>${member.email}</td>
+            <td><c:choose>
+                <c:when test="${member.enabled}">
+                  <a href="<spring:url value="/admin/user/toggle/${member.userId}" />" onclick="return confirm('Do you want to disable ${member.username}?')">
+                    <img src="<spring:url value="/static/images/buttons/icons/accept.png" />" />
+                  </a>
+                </c:when>
+                <c:otherwise>
+                  <a href="<spring:url value="/admin/user/toggle/${member.userId}" />" onclick="return confirm('Do you want to enable ${member.username}?')">
+                    <img src="<spring:url value="/static/images/buttons/icons/error.png" />" />
+                  </a>
+                </c:otherwise>
+              </c:choose></td>
+          </tr>
         </c:forEach>
-      </ul>
+      </table>
     </c:when>
     <c:otherwise>
       No users.
     </c:otherwise>
   </c:choose>
-
 </div>
 
 <div class="span-6 last accountNav">

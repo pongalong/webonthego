@@ -70,23 +70,19 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetail(
-			User user,
-			Device device) throws AccountManagementException {
+			User user, Device device) throws AccountManagementException {
 		return getAccountDetail(user, device, false);
 	}
 
 	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetailAndUsage(
-			User user,
-			Device device) throws AccountManagementException {
+			User user, Device device) throws AccountManagementException {
 		return getAccountDetail(user, device, true);
 	}
 
 	@Loggable(value = LogLevel.TRACE)
 	private AccountDetail getAccountDetail(
-			User user,
-			Device device,
-			boolean getUsage) throws AccountManagementException {
+			User user, Device device, boolean getUsage) throws AccountManagementException {
 
 		Account account;
 		CustTopUp topup;
@@ -114,8 +110,7 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.TRACE)
 	public AccountDetail getAccountDetail(
-			User user,
-			int deviceId) throws AccountManagementException {
+			User user, int deviceId) throws AccountManagementException {
 		try {
 			return getAccountDetail(user, deviceManager.getDeviceInfo(user, deviceId));
 		} catch (DeviceManagementException e) {
@@ -200,8 +195,7 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.TRACE)
 	public List<UsageDetail> getChargeHistory(
-			User user,
-			int accountNumber) throws AccountManagementException {
+			User user, int accountNumber) throws AccountManagementException {
 		try {
 			return accountService.getChargeHistory(user, accountNumber);
 		} catch (AccountServiceException e) {
@@ -233,8 +227,7 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.TRACE)
 	public XMLGregorianCalendar getLastAccessFeeDate(
-			User user,
-			Account account) {
+			User user, Account account) {
 
 		List<UsageDetail> usageDetails;
 		try {
@@ -285,8 +278,7 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.DEBUG)
 	public CustTopUp getTopup(
-			User user,
-			Account account) throws AccountManagementException {
+			User user, Account account) throws AccountManagementException {
 		try {
 			return accountService.getTopUp(user, account);
 		} catch (AccountServiceException e) {
@@ -296,9 +288,7 @@ public class AccountManager {
 
 	@Loggable(value = LogLevel.INFO)
 	public CustTopUp setTopup(
-			User user,
-			double amount,
-			Account account) throws AccountManagementException {
+			User user, double amount, Account account) throws AccountManagementException {
 		try {
 			return accountService.setTopUp(user, amount, account);
 		} catch (AccountServiceException e) {

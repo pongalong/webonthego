@@ -32,7 +32,14 @@ import com.tscp.mvne.NetworkInfo;
 
 @Controller
 @RequestMapping("/devices")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "ACCOUNT_DETAILS", "label", "accessFeeDate", "accountDetail", "newDevice" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER",
+		"ACCOUNT_DETAILS",
+		"label",
+		"accessFeeDate",
+		"accountDetail",
+		"newDevice" })
 public class DeviceController {
 	@Autowired
 	private UserManager userManager;
@@ -50,8 +57,7 @@ public class DeviceController {
 
 	@RequestMapping(value = "/rename/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView renameDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/rename/prompt");
 
@@ -68,10 +74,7 @@ public class DeviceController {
 
 	@RequestMapping(value = "/rename/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postRenameDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("label") String oldLabel,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			BindingResult result) {
+			@ModelAttribute("USER") User user, @ModelAttribute("label") String oldLabel, @ModelAttribute("accountDetail") AccountDetail accountDetail, BindingResult result) {
 
 		ResultModel model = new ResultModel("account/device/rename/success", "account/device/rename/prompt");
 
@@ -96,8 +99,7 @@ public class DeviceController {
 
 	@RequestMapping(value = "/topup/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showChangeTopUp(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/topup/change/prompt");
 
@@ -108,10 +110,7 @@ public class DeviceController {
 
 	@RequestMapping(value = "/topup/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postChangeTopUp(
-			@PathVariable String encodedDeviceId,
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			Errors errors) {
+			@PathVariable String encodedDeviceId, @ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
 		ResultModel model = new ResultModel("account/device/topup/change/success", "account/device/topup/change/prompt");
 
@@ -127,12 +126,10 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	//@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
+	// @PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSwapDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/swap/swap");
 
@@ -150,13 +147,10 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
-	//@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
+	// @PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSwapDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			@ModelAttribute("newDevice") Device newDevice,
-			Errors errors) {
+			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("newDevice") Device newDevice, Errors errors) {
 
 		ResultModel model = new ResultModel("account/device/swap/success", "account/device/swap/swap");
 
@@ -182,9 +176,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSuspendDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/suspend/prompt");
 
@@ -202,9 +194,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView postSuspendDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/suspend/success");
 
@@ -219,8 +209,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showRestoreDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/restore/prompt");
 
@@ -236,9 +225,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView postRestoreDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("redirect:/devices", "account/device/restore/prompt");
 
@@ -253,9 +240,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showDisconnectDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/disconnect/prompt");
 
@@ -273,9 +258,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postDisconnectDevice(
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			@ModelAttribute("accessFeeDate") XMLGregorianCalendar accessFeeDate,
-			Errors errors) {
+			@ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("accessFeeDate") XMLGregorianCalendar accessFeeDate, Errors errors) {
 
 		ResultModel model = new ResultModel("account/device/disconnect/success", "account/device/disconnect/prompt");
 
@@ -297,8 +280,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showReinstallDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable String encodedDeviceId) {
+			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
 		ResultModel model = new ResultModel("account/device/reconnect/prompt");
 
@@ -313,9 +295,7 @@ public class DeviceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postReinstallDevice(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("accountDetail") AccountDetail accountDetail,
-			Errors errors) {
+			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
 		ResultModel model = new ResultModel("redirect:/devices", "account/device/reconnect/prompt");
 
@@ -334,8 +314,7 @@ public class DeviceController {
 	 */
 
 	private AccountDetail getAccountDetailFromSession(
-			List<AccountDetail> accountDetails,
-			String encodedDeviceId) throws CachedAttributeNotFound {
+			List<AccountDetail> accountDetails, String encodedDeviceId) throws CachedAttributeNotFound {
 
 		for (AccountDetail ad : accountDetails)
 			if (ad.getEncodedDeviceId().equals(encodedDeviceId))

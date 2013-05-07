@@ -97,8 +97,11 @@
 <script type="text/javascript" src="<spring:url value='/static/javascript/mousePositionPopup.closure.js' />"></script>
 <script type="text/javascript" src="<spring:url value='/static/javascript/popup.closure.js' />"></script>
 <script type="text/javascript" src="<spring:url value='/static/javascript/ccValidation.closure.js' />"></script>
-<script type="text/javascript" src="<spring:url value='/static/javascript/forms.closure.js' />"></script>
-<script type="text/javascript" src="<spring:url value='/static/javascript/setupForms.closure.js' />"></script>
+
+
+<script type="text/javascript" src="<spring:url value='/static/javascript/forms.js' />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/forms.setup.js' />"></script>
+
 <script type="text/javascript" src="<spring:url value='/static/javascript/tracking/googleanalytics.js' />"></script>
 
 <%@ include file="/WEB-INF/views/include/import/googleremarketing.jsp"%>

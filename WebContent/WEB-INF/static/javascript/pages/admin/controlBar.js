@@ -1,7 +1,7 @@
 var requestBufferTime;
 var currentRequest;
-var searchTargetURL = "/search";
-var getJsonTargetURL = "/search/getjson/email/ajax";
+var searchTargetURL = "/admin/search";
+var getJsonTargetURL = "/admin/search/getjson/email/ajax";
 var htmlLoadingGraphic = "<div class='searchGraphic'>Searching...<br/><img src='/static/images/util/ajax_working_bar.gif' /></div>";
 var upKey = 38;
 var downKey = 40;

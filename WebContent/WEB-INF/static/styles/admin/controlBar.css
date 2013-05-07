@@ -16,11 +16,11 @@
 }
 
 #admin_control_bar input[type="submit"],#admin_control_bar input[type="reset"],#admin_control_bar a.mBtn {
-	height: 25px;
-	line-height: 25px;
-	padding: 0;
-	margin: 0;
-	font-size: 11px;
+	height: 23px;
+	line-height: 24px;
+	padding: 0 5px;
+	margin: -10px 0 0 0 !important;
+	font-size: 12px;
 	font-weight: normal;
 	word-spacing: normal;
 	letter-spacing: normal;
@@ -30,6 +30,8 @@
 	display: inline-block;
 	-webkit-box-align: center;
 	box-sizing: border-box;
+	border-width: 1px !important;
+	box-shadow: none !important;
 }
 
 #admin_control_bar .logo {
@@ -89,7 +91,7 @@
 	border: #ccc solid;
 	border-width: 0px 1px 1px 1px;
 	margin-top: 0px;
-	width: 308px;
+	width: 408px;
 	-moz-box-shadow: 5px 5px 5px #ccc;
 	-webkit-box-shadow: 5px 5px 5px #ccc;
 	box-shadow: 0px 5px 5px #ccc;
@@ -97,7 +99,7 @@
 }
 
 #admin_control_bar #adminControl #admin_search_param {
-	width: 300px;
+	width: 400px;
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding-left: 3px;

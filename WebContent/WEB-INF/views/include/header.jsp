@@ -36,12 +36,18 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/h5bp/main.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/bootstrap/bootstrap.min.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/grid.min.css' />" />
-<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/forms.min.css' />" />
+
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/forms.css' />" />
+
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/grid-12.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/gantry.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/wotg.min.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/style.min.css' />" />
-<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/forms.min.css' />" />
+
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/dropdown.css' />" />
+
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/forms.css' />" />
+
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/curtain.min.css' />" />
 
 

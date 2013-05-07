@@ -26,13 +26,42 @@ public class PaymentManager implements PaymentManagerModel {
 	@Autowired
 	private CacheManager cacheManager;
 
+	@Loggable(value = LogLevel.INFO)
+	public void queueTopup(
+			User user) throws PaymentManagementException {
+		try {
+			paymentService.queueTopup(user);
+		} catch (PaymentServiceException e) {
+			throw new PaymentManagementException(e.getMessage(), e.getCause());
+		}
+	}
+
+	@Loggable(value = LogLevel.TRACE)
+	public String getTopupAmount(
+			User user, Account account) throws PaymentManagementException {
+		try {
+			return paymentService.getTopupAmount(user, account);
+		} catch (PaymentServiceException e) {
+			throw new PaymentManagementException(e.getMessage(), e.getCause());
+		}
+	}
+
+	@Loggable(value = LogLevel.INFO)
+	public PaymentUnitResponse makePayment(
+			User user, Account account) throws PaymentManagementException {
+		try {
+			int paymentId = paymentService.getDefaultPaymentMethodId(user);
+			String topupAmount = paymentService.getTopupAmount(user, account);
+			return paymentService.makePayment(user, account, paymentId, topupAmount);
+		} catch (PaymentServiceException e) {
+			throw new PaymentManagementException(e.getMessage(), e.getCause());
+		}
+	}
+
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makePayment(
-			User user,
-			Account account,
-			int paymentId,
-			String amount) throws PaymentManagementException {
+			User user, Account account, int paymentId, String amount) throws PaymentManagementException {
 		try {
 			return paymentService.makePayment(user, account, paymentId, amount);
 		} catch (PaymentServiceException e) {
@@ -43,10 +72,7 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makePayment(
-			User user,
-			Account account,
-			CreditCard creditCard,
-			String amount) throws PaymentManagementException {
+			User user, Account account, CreditCard creditCard, String amount) throws PaymentManagementException {
 		try {
 			return paymentService.makePayment(user, account, creditCard, amount);
 		} catch (PaymentServiceException e) {
@@ -56,9 +82,7 @@ public class PaymentManager implements PaymentManagerModel {
 
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makeActivationPayment(
-			User user,
-			Account account,
-			CreditCard creditCard) throws PaymentManagementException {
+			User user, Account account, CreditCard creditCard) throws PaymentManagementException {
 		try {
 			return makePayment(user, account, creditCard.getPaymentid(), "10.00");
 		} catch (PaymentManagementException e) {
@@ -85,8 +109,7 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public CreditCard addCreditCard(
-			User user,
-			CreditCard creditCard) throws PaymentManagementException {
+			User user, CreditCard creditCard) throws PaymentManagementException {
 		try {
 			cacheManager.clear(CacheKey.PAYMENT_METHODS);
 			return paymentService.addCreditCard(user, creditCard);
@@ -96,8 +119,7 @@ public class PaymentManager implements PaymentManagerModel {
 	}
 
 	public List<CustPmtMap> removeCreditCard(
-			User user,
-			CreditCard creditCard) throws PaymentManagementException {
+			User user, CreditCard creditCard) throws PaymentManagementException {
 		try {
 			return removeCreditCard(user, creditCard.getPaymentid());
 		} catch (PaymentManagementException e) {
@@ -108,8 +130,7 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public List<CustPmtMap> removeCreditCard(
-			User user,
-			int paymentId) throws PaymentManagementException {
+			User user, int paymentId) throws PaymentManagementException {
 		try {
 			List<CustPmtMap> paymentMethods = paymentService.getPaymentMap(user);
 			if (paymentMethods.size() > 1) {
@@ -126,8 +147,7 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public List<CustPmtMap> updateCreditCard(
-			User user,
-			CreditCard creditCard) throws PaymentManagementException {
+			User user, CreditCard creditCard) throws PaymentManagementException {
 		try {
 			cacheManager.clear(CacheKey.PAYMENT_METHODS);
 			return paymentService.updateCreditCard(user, creditCard);
@@ -150,8 +170,7 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public CustPmtMap getPaymentMap(
-			User user,
-			int paymentId) throws PaymentManagementException {
+			User user, int paymentId) throws PaymentManagementException {
 		try {
 			return paymentService.getPaymentMap(user, paymentId);
 		} catch (PaymentServiceException e) {

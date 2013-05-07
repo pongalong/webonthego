@@ -46,10 +46,4 @@ public interface UserDaoModel {
 	public void persistUser(
 			User user);
 
-	public void enableUser(
-			User user);
-
-	public void disableUser(
-			User user);
-
 }

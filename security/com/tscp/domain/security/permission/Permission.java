@@ -15,9 +15,12 @@ import com.trc.user.authority.ROLE;
 public abstract class Permission {
 	protected final Set<ROLE> roleRepository = new HashSet<ROLE>();
 
+	{
+		roleRepository.add(ROLE.ROLE_SU);
+	}
+
 	public abstract boolean isAllowed(
-			Authentication authentication,
-			Object targetDomainObject);
+			Authentication authentication, Object targetDomainObject);
 
 	protected String getLogin(
 			Authentication authentication) {

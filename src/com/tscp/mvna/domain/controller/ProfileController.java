@@ -2,7 +2,6 @@ package com.tscp.mvna.domain.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.trc.config.Config;
 import com.trc.exception.management.PaymentManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
@@ -30,7 +28,9 @@ import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/profile")
-@SessionAttributes({ "USER", "CONTROLLING_USER" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER" })
 public class ProfileController {
 	@Autowired
 	private UserManager userManager;
@@ -69,15 +69,19 @@ public class ProfileController {
 		return model.getSuccess();
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/user/disable", method = RequestMethod.GET)
 	public String disableUser(
 			@ModelAttribute("USER") User user) {
-		if (Config.ADMIN) {
-			user.setEnabled(false);
-			user.setDateDisabled(new Date());
-			userManager.updateUser(user);
-		}
+		userManager.disableUser(user);
+		return "redirect:/profile";
+	}
+
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
+	@RequestMapping(value = "/user/enable", method = RequestMethod.GET)
+	public String enableUser(
+			@ModelAttribute("USER") User user) {
+		userManager.enableUser(user);
 		return "redirect:/profile";
 	}
 

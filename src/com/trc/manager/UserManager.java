@@ -2,6 +2,7 @@ package com.trc.manager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,10 +49,7 @@ public class UserManager implements UserManagerModel {
 
 	@Autowired
 	public void init(
-			UserDao userDao,
-			AccountManager accountManager,
-			SecurityContextFacade securityContextFacade,
-			WebserviceGateway gateway) {
+			UserDao userDao, AccountManager accountManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
 		this.userDao = userDao;
 		this.accountManager = accountManager;
 		this.port = gateway.getPort();
@@ -132,18 +130,14 @@ public class UserManager implements UserManagerModel {
 
 	@Transactional(readOnly = true)
 	public List<User> searchByEmailAndDate(
-			String email,
-			DateTime startDate,
-			DateTime endDate) {
+			String email, DateTime startDate, DateTime endDate) {
 		return userDao.searchByEmailAndDate(email, startDate, endDate);
 	}
 
 	@Deprecated
 	@Transactional(readOnly = true)
 	public List<User> searchByNotEmailAndDate(
-			String email,
-			DateTime startDate,
-			DateTime endDate) {
+			String email, DateTime startDate, DateTime endDate) {
 		return userDao.searchByNotEmailAndDate(email, startDate, endDate);
 	}
 
@@ -212,14 +206,18 @@ public class UserManager implements UserManagerModel {
 	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
 	public void enableUser(
 			User user) {
-		userDao.enableUser(user);
+		user.setEnabled(true);
+		updateUser(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
 	public void disableUser(
 			User user) {
-		userDao.disableUser(user);
+		user.setEnabled(false);
+		user.setDateDisabled(new Date());
+		updateUser(user);
 	}
 
 	@Override
@@ -290,8 +288,7 @@ public class UserManager implements UserManagerModel {
 
 	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')")
 	public void forceLogout(
-			SessionRegistry sessionRegistry,
-			int userId) {
+			SessionRegistry sessionRegistry, int userId) {
 
 		List<Object> activePrincipals = sessionRegistry.getAllPrincipals();
 
@@ -305,16 +302,13 @@ public class UserManager implements UserManagerModel {
 	}
 
 	public void autoLogin(
-			User user,
-			AuthenticationManager authenticationManager) {
+			User user, AuthenticationManager authenticationManager) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		autoLogin(user, request, authenticationManager);
 	}
 
 	public void autoLogin(
-			User user,
-			HttpServletRequest request,
-			AuthenticationManager authenticationManager) {
+			User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 
 		// generate session if one doesn't exist

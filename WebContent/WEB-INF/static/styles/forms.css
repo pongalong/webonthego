@@ -60,6 +60,29 @@ form.validatedForm .buttons a.button {
 }
 
 /***********************************************
+Captcha form style
+************************************************/
+.captchaImage {
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	color: #666;
+	float: left;
+}
+
+.captchaImage .image {
+	border: 1px #bbb solid;
+	width: 300px;
+	float: left;
+	background: white;
+	padding: 5px;
+}
+
+.captchaImage .image img {
+	display: block;
+	margin: auto;
+}
+
+/***********************************************
 Styles for Login Form
 ***********************************************/
 form.login fieldset {
@@ -125,8 +148,9 @@ form.validatedForm input[type="text"],form.validatedForm input[type="password"] 
 	height: 20px;
 }
 
-form.validatedForm select {
-	width: 303px;
+form.validatedForm select { /*
+	width: 303px; */
+	width: 312px;
 	margin: 3px 0px 0px 0px;
 	float: left;
 }
@@ -273,4 +297,21 @@ form.validatedForm div.registrationTerms {
 
 .hover_tooltip {
 	display: none;
+}
+
+/***********************************************
+Simple unordered list to present "table" style
+information
+***********************************************/
+ul.info {
+	list-style: none;
+	color: black;
+}
+
+ul.info span {
+	display: inline-block;
+	width: 70px;
+	margin-right: 10px;
+	font-weight: bold;
+	text-align: right;
 }

@@ -22,6 +22,8 @@
   </c:if>
 
   <h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Login Information</h3>
+
+
   <div>
     <sec:authorize ifAnyGranted="ROLE_SUPERUSER, ROLE_ADMIN, ROLE_MANAGER">
       <p style="line-height: 36px;">
@@ -40,6 +42,7 @@
         </c:choose>
       </p>
     </sec:authorize>
+
     <p style="line-height: 36px; position: relative;">
       <span class="span-6">E-Mail Address:</span> <span class="span-8">${USER.email}</span> <a href="<spring:url value="/profile/update/email"/>"
         class="button semi-s" style="float: right;"><span>Change</span> </a>
@@ -55,40 +58,41 @@
 
   <h3 style="margin: 10px 0 10px 0; border-bottom: 1px #ccc dotted;">Credit Cards</h3>
 
-  <c:choose>
-    <c:when test="${not empty PAYMENT_METHODS}">
-      <c:forEach var="creditCard" items="${PAYMENT_METHODS}" varStatus="status">
-        <div class="address dontsplit">
-          <div class="btn-group">
-            <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
-              style="background: transparent; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
-              <c:choose>
-                <c:when test="${creditCard.isDefault == 'Y'}">
-                  <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>
-                </c:when>
-                <c:otherwise>
-                  <div>${creditCard.creditCardNumber}</div>
-                </c:otherwise>
-              </c:choose>
-              <span class="caret" style="position: absolute; top: 8px; right: 0;"></span>
-            </button>
-            <ul class="dropdown-menu" style="margin: 1px; padding: 0;">
-              <li><a href="<spring:url value="/account/payment/methods/edit/${encodedPaymentIds[status.index]}" />">Edit</a></li>
-              <c:if test="${fn:length(paymentMethods) > 1}">
-                <li style="margin-bottom: 10px;"><a href="<spring:url value="/account/payment/methods/remove/${encodedPaymentIds[status.index]}" />">Remove</a></li>
-              </c:if>
-            </ul>
+  <div id="paymentMethodContainer">
+    <c:choose>
+      <c:when test="${not empty PAYMENT_METHODS}">
+        <c:forEach var="creditCard" items="${PAYMENT_METHODS}" varStatus="status">
+          <div class="address" style="margin-bottom: 30px;">
+            <div class="btn-group">
+              <button class="btn-discreet dropdown-toggle-discreet" data-toggle="dropdown"
+                style="background: transparent; border-width: 0px; border-bottom: 1px solid #ddd; margin: 0; padding: 0; text-align: left; width: 180px; position: relative;">
+                <c:choose>
+                  <c:when test="${creditCard.isDefault == 'Y'}">
+                    <div style="font-weight: bold;">${creditCard.creditCardNumber}</div>
+                  </c:when>
+                  <c:otherwise>
+                    <div>${creditCard.creditCardNumber}</div>
+                  </c:otherwise>
+                </c:choose>
+                <span class="caret" style="position: absolute; top: 8px; right: 0;"></span>
+              </button>
+              <ul class="dropdown-menu" style="margin: 1px; padding: 0; width: 180px;">
+                <li><a href="<spring:url value="/account/payment/methods/edit/${encodedPaymentIds[status.index]}" />">Edit</a></li>
+                <c:if test="${fn:length(paymentMethods) > 1}">
+                  <li style="margin-bottom: 10px;"><a href="<spring:url value="/account/payment/methods/remove/${encodedPaymentIds[status.index]}" />">Remove</a></li>
+                </c:if>
+              </ul>
+            </div>
+            <div>${creditCard.nameOnCreditCard}</div>
+            <div>${creditCard.city}, ${creditCard.state} ${creditCard.zip}</div>
           </div>
-          <div>${creditCard.nameOnCreditCard}</div>
-          <div>${creditCard.city}, ${creditCard.state} ${creditCard.zip}</div>
-        </div>
-      </c:forEach>
-    </c:when>
-    <c:otherwise>
-      <p>You have no credit cards saved</p>
-    </c:otherwise>
-  </c:choose>
-
+        </c:forEach>
+      </c:when>
+      <c:otherwise>
+        <p>You have no credit cards saved</p>
+      </c:otherwise>
+    </c:choose>
+  </div>
 
   <div class="clear"></div>
   <c:if test="${sessionScope.CONTROLLING_USER.userId != -1}">

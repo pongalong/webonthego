@@ -3,6 +3,7 @@ package com.trc.manager;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import com.trc.domain.ticket.AdminTicket;
@@ -59,15 +60,7 @@ public class TicketManager {
 	}
 
 	public List<Ticket> searchTickets(
-			int custId,
-			int creatorId,
-			int assigneeId,
-			TicketStatus status,
-			TicketCategory category,
-			TicketPriority priority,
-			TicketType type,
-			String title,
-			String description) throws TicketManagementException {
+			int custId, int creatorId, int assigneeId, TicketStatus status, TicketCategory category, TicketPriority priority, TicketType type, String title, String description) throws TicketManagementException {
 		try {
 			return ticketService.searchTickets(custId, creatorId, assigneeId, status, category, priority, type, title, description);
 		} catch (TicketServiceException e) {
@@ -76,8 +69,7 @@ public class TicketManager {
 	}
 
 	public TicketNote getTicketNote(
-			int ticketId,
-			int noteId) throws TicketManagementException {
+			int ticketId, int noteId) throws TicketManagementException {
 		Ticket ticket = getTicketById(ticketId);
 		for (TicketNote note : ticket.getNotes()) {
 			if (note.getId() == noteId)
@@ -117,6 +109,14 @@ public class TicketManager {
 		} catch (TicketServiceException e) {
 			throw new TicketManagementException(e);
 		}
+	}
+
+	@PreAuthorize("isAuthenticated() and hasPermission('', 'ticketAssign')")
+	public void assignTicket(
+			Ticket ticket, User user) throws TicketManagementException {
+		AdminTicket adminTicket = (AdminTicket) ticket;
+		adminTicket.setAssigneeId(user.getUserId());
+		updateTicket(adminTicket);
 	}
 
 	public void updateTicket(

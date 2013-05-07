@@ -12,7 +12,7 @@
           <th>Type</th>
           <th>Account</th>
           <th style="text-align: right;">Amount</th>
-          <c:if test="${!empty sessionScope.controlling_user}">
+          <c:if test="${not empty CONTROLLING_USER}">
             <th style="text-align: right;">Refund</th>
           </c:if>
         </tr>

@@ -37,4 +37,5 @@
   <context:component-scan base-package="com.trc.web.session.**" />
   <context:component-scan base-package="com.tscp.util.logger.**" scoped-proxy="targetClass" />
   <context:component-scan base-package="com.tscp.mvna.domain.controller.**" scoped-proxy="targetClass" />
+  <context:component-scan base-package="com.tscp.mvna.domain.admin.controller.**" scoped-proxy="targetClass" />
 </beans>

@@ -61,7 +61,7 @@
     </div>
     <div class="row clearfix pushed" style="margin-top: -5px; padding-top: 0px;">
       <div style="width: 300px; text-align: right;">
-        <a href="#" onclick="reloadJCaptchaImage('<spring:url value="/static/images/jcaptcha.jpg" />')" tabindex="-1">request another image</a>
+        <a href="#" class="captchaReload" tabindex="-1">request another image</a>
       </div>
     </div>
     <div class="row clearfix">

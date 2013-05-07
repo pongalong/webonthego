@@ -14,8 +14,8 @@
     <h3>Administration</h3>
     <ul>
       <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
-        <li><a href="<spring:url value="/admin/users"/>">View Users</a></li>
-        <li><a href="<spring:url value="/admin/create" />">Create New Agent</a></li>
+        <li><a href="<spring:url value="/admin/user/view"/>">View Users</a></li>
+        <li><a href="<spring:url value="/admin/user/create" />">Create New Agent</a></li>
         <li><a href="<spring:url value="/support/faq/create/article" />">Create Articles</a></li>
       </sec:authorize>
     </ul>

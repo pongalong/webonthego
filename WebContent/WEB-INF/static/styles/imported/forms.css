@@ -102,10 +102,10 @@ input.error {
 	background: #fbe3e4;
 }
 
-div.alert p,div.error p,div.notice p,div.success p,#main-content div.info p {
+div.alert p,div.error p,div.notice p,div.success p, div.info p {
 	color: #404040;
 	font-size: 13px;
-	margin: 0;
+	margin:10px 0;
 	padding: 0;
 }
 
