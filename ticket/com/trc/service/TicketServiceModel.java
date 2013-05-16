@@ -3,8 +3,8 @@ package com.trc.service;
 import java.util.Collection;
 
 import com.trc.domain.ticket.Ticket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.domain.ticket.TicketStatus;
+import com.trc.domain.ticket.category.TicketCategory_old;
 import com.trc.exception.service.TicketServiceException;
 
 public interface TicketServiceModel {
@@ -25,6 +25,6 @@ public interface TicketServiceModel {
 
 	public Collection<Ticket> getTicketByAssignee(int assigneeId, TicketStatus status) throws TicketServiceException;
 
-	public Collection<Ticket> getTicketByCategory(TicketCategory category, TicketStatus status) throws TicketServiceException;
+	public Collection<Ticket> getTicketByCategory(TicketCategory_old category, TicketStatus status) throws TicketServiceException;
 
 }

@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-<div class="span-18 colborder" style="min-height: 200px;">
-  <h3>Ticket ${ticket.id} Detail</h3>
+<div style="min-height: 200px;">
+  <h3>
+    Ticket ${ticket.id} Detail <a style="float: right;" href="<spring:url value="/support/ticket/" />">Back to Tickets</a>
+  </h3>
 
   <div class="tableContainer">
 
@@ -116,10 +118,6 @@
       href="<spring:url value="/support/ticket/reply/${ticket.id}" />" class="mBtn">Reply</a>
   </div>
 
-</div>
-
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
 </div>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

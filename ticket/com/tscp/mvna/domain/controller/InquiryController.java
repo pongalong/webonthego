@@ -1,7 +1,5 @@
 package com.tscp.mvna.domain.controller;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.domain.ticket.InquiryTicket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.exception.management.TicketManagementException;
 import com.trc.manager.TicketManager;
 import com.trc.web.model.ResultModel;
@@ -29,7 +26,7 @@ public class InquiryController {
 	@ModelAttribute
 	public void ticketReferenceData(
 			ModelMap map) {
-		map.addAttribute("categoryList", Arrays.asList(TicketCategory.values()));
+		map.addAttribute("ticketCategories", ticketManager.getRootTicketCategories());
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -45,8 +42,7 @@ public class InquiryController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView postInquiryForm(
-			@ModelAttribute("ticket") InquiryTicket ticket,
-			BindingResult result) {
+			@ModelAttribute("ticket") InquiryTicket ticket, BindingResult result) {
 
 		ResultModel model = new ResultModel("support/inquire/success", "support/inquire/create");
 

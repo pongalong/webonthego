@@ -10,7 +10,7 @@
       <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
-          <form:errors path="category" />
+          <form:errors path="category.id" />
           <form:errors path="contactEmail" />
           <form:errors path="description" />
           <!-- Global Errors -->
@@ -34,10 +34,15 @@
     </div>
 
     <div class="row clearfix">
-      <form:label path="category">Category</form:label>
-      <form:select path="category" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-        <c:forEach var="category" items="${categoryList}" varStatus="status">
-          <form:option value="${category}">${category.description}</form:option>
+      <form:label path="category.id" cssClass="required">Ticket Category</form:label>
+      <form:select path="category.id" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
+        <option value="0">Select one...</option>
+        <c:forEach var="cat" items="${ticketCategories}">
+          <optgroup label="${cat.description}">
+            <c:forEach var="subcategory" items="${cat.subcategories}">
+              <form:option value="${subcategory.id}">${subcategory.description}</form:option>
+            </c:forEach>
+          </optgroup>
         </c:forEach>
       </form:select>
     </div>

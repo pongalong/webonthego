@@ -36,6 +36,7 @@
         <value>com.trc.domain.ticket.CustomerTicket</value>
         <value>com.trc.domain.ticket.InquiryTicket</value>
         <value>com.trc.domain.ticket.AgentTicket</value>
+        <value>com.trc.domain.ticket.category.TicketCategory</value>
       </list>
     </property>
     <property name="hibernateProperties">

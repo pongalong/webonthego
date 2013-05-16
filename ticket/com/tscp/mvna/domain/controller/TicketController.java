@@ -22,11 +22,11 @@ import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
 import com.trc.domain.ticket.Ticket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.domain.ticket.TicketNote;
 import com.trc.domain.ticket.TicketPriority;
 import com.trc.domain.ticket.TicketStatus;
 import com.trc.domain.ticket.TicketType;
+import com.trc.domain.ticket.category.TicketCategory;
 import com.trc.exception.EmailException;
 import com.trc.exception.management.TicketManagementException;
 import com.trc.manager.TicketManager;
@@ -38,7 +38,13 @@ import com.trc.web.validation.TicketValidator;
 
 @Controller
 @RequestMapping("/support/ticket")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "ticket", "ticketNote", "contactEmail" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER",
+		"ticket",
+		"ticketNote",
+		"ticketCategories",
+		"contactEmail" })
 public class TicketController {
 	@Autowired
 	private TicketManager ticketManager;
@@ -52,7 +58,7 @@ public class TicketController {
 	@ModelAttribute
 	public void ticketReferenceData(
 			ModelMap map) {
-		map.addAttribute("categoryList", Arrays.asList(TicketCategory.values()));
+		map.addAttribute("ticketCategories", ticketManager.getRootTicketCategories());
 		map.addAttribute("priorityList", Arrays.asList(TicketPriority.values()));
 		map.addAttribute("statusList", Arrays.asList(TicketStatus.values()));
 	}
@@ -64,7 +70,6 @@ public class TicketController {
 		AdminTicket ticket = new AdminTicket();
 		ticket.setStatus(TicketStatus.NONE);
 		ticket.setPriority(TicketPriority.NONE);
-		ticket.setCategory(TicketCategory.NONE);
 
 		model.addAttribute("ticket", ticket);
 		return model.getSuccess();
@@ -72,14 +77,28 @@ public class TicketController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView postTicketOverviewAndSearch(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("ticket") AdminTicket ticket) {
+			@ModelAttribute("USER") User user, @ModelAttribute("ticketCategories") List<TicketCategory> categories, @ModelAttribute("ticket") AdminTicket ticket) {
 
 		ResultModel model = new ResultModel("support/ticket/tickets", "support/ticket/overview");
 
+		if (ticket.getCategory() != null && ticket.getCategory().getId() > 0) {
+
+			CATEGORYLOOP: for (TicketCategory tc : categories) {
+				if (tc.getId() == ticket.getCategory().getId()) {
+					ticket.setCategory(tc);
+					break CATEGORYLOOP;
+				}
+				for (TicketCategory subTc : tc.getSubcategories())
+					if (subTc.getId() == ticket.getCategory().getId()) {
+						ticket.setCategory(subTc);
+						break CATEGORYLOOP;
+					}
+			}
+
+		}
+
 		try {
-			List<Ticket> tickets = ticketManager.searchTickets(user.getUserId(), ticket.getCreatorId(), ticket.getAssigneeId(), ticket.getStatus(),
-					ticket.getCategory(), ticket.getPriority(), TicketType.NONE, ticket.getTitle(), ticket.getDescription());
+			List<Ticket> tickets = ticketManager.searchTickets(user.getUserId(), ticket);
 
 			String ticketSearchContextString = "";
 			if (ticket.getCreatorId() != 0)
@@ -88,8 +107,12 @@ public class TicketController {
 				ticketSearchContextString += " Assigned to " + ticket.getAssigneeId();
 			if (ticket.getStatus() != TicketStatus.NONE)
 				ticketSearchContextString += " with Status " + ticket.getStatus().getDescription();
-			if (ticket.getCategory() != TicketCategory.NONE)
-				ticketSearchContextString += " in Category " + ticket.getCategory().getDescription();
+			if (ticket.getCategory() != null && ticket.getCategory().getId() > 0) {
+				ticketSearchContextString += " in Category ";
+				if (ticket.getCategory().getParentCategory() != null)
+					ticketSearchContextString += ticket.getCategory().getParentCategory().getDescription() + " > ";
+				ticketSearchContextString += ticket.getCategory().getDescription();
+			}
 			if (ticket.getPriority() != TicketPriority.NONE)
 				ticketSearchContextString += " with Priority " + ticket.getPriority().getDescription();
 			if (ticket.getTitle() != null && !ticket.getTitle().trim().isEmpty())
@@ -107,8 +130,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView showTicketForm(
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("CONTROLLING_USER") User controllingUser) {
+			@ModelAttribute("USER") User user, @ModelAttribute("CONTROLLING_USER") User controllingUser) {
 
 		ResultModel model = new ResultModel("support/ticket/create/create", "support/ticket/exception/error_select_user");
 
@@ -121,8 +143,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView postTicketForm(
-			@ModelAttribute("ticket") Ticket ticket,
-			BindingResult result) {
+			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
 		ResultModel model = new ResultModel("support/ticket/create/success", "support/ticket/create/create");
 
@@ -143,8 +164,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/update/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView showUpdateTicket(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@PathVariable int ticketId) {
+			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
 		ResultModel model = new ResultModel("support/ticket/update");
 
@@ -192,8 +212,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/update/{ticketId}", method = RequestMethod.POST)
 	public ModelAndView postUpdateTicket(
-			@ModelAttribute("ticket") Ticket ticket,
-			BindingResult result) {
+			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
 		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + ticket.getId(), "support/ticket/update");
 
@@ -212,8 +231,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/view/ticket/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView viewTicketById(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@PathVariable int ticketId) {
+			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
 		ResultModel model = new ResultModel("support/ticket/ticket");
 
@@ -302,9 +320,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/reply/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView showReplyTicket(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@ModelAttribute("ticket") Ticket ticket,
-			@PathVariable int ticketId) {
+			@ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("ticket") Ticket ticket, @PathVariable int ticketId) {
 
 		ResultModel model = new ResultModel("support/ticket/reply/reply");
 
@@ -333,11 +349,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/reply/{ticketId}", method = RequestMethod.POST)
 	public ModelAndView postReplyTicket(
-			@ModelAttribute("contactEmail") String contactEmail,
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@ModelAttribute("ticketNote") TicketNote note,
-			BindingResult result,
-			@PathVariable int ticketId) {
+			@ModelAttribute("contactEmail") String contactEmail, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("ticketNote") TicketNote note, BindingResult result, @PathVariable int ticketId) {
 
 		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + ticketId, "support/ticket/reply/reply");
 

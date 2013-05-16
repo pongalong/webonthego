@@ -11,11 +11,11 @@ import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
 import com.trc.domain.ticket.Ticket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.domain.ticket.TicketNote;
 import com.trc.domain.ticket.TicketPriority;
 import com.trc.domain.ticket.TicketStatus;
 import com.trc.domain.ticket.TicketType;
+import com.trc.domain.ticket.category.TicketCategory;
 import com.trc.exception.management.TicketManagementException;
 import com.trc.exception.service.TicketServiceException;
 import com.trc.service.TicketService;
@@ -57,6 +57,11 @@ public class TicketManager {
 		} catch (TicketServiceException e) {
 			throw new TicketManagementException(e);
 		}
+	}
+
+	public List<Ticket> searchTickets(
+			int custId, AdminTicket ticket) throws TicketManagementException {
+		return searchTickets(custId, ticket.getCreatorId(), ticket.getAssigneeId(), ticket.getStatus(), ticket.getCategory(), ticket.getPriority(), TicketType.NONE, ticket.getTitle(), ticket.getDescription());
 	}
 
 	public List<Ticket> searchTickets(
@@ -153,6 +158,18 @@ public class TicketManager {
 		} catch (TicketServiceException e) {
 			throw new TicketManagementException(e);
 		}
+	}
+
+	public List<TicketCategory> getAllTicketCategories() {
+		return ticketService.getAllTicketCategories();
+	}
+
+	public List<TicketCategory> getTicketCategories() {
+		return ticketService.getTicketCategories();
+	}
+
+	public List<TicketCategory> getRootTicketCategories() {
+		return ticketService.getRootTicketCategories();
 	}
 
 }

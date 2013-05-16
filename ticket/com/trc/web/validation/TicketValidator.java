@@ -9,7 +9,6 @@ import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
 import com.trc.domain.ticket.Ticket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.domain.ticket.TicketPriority;
 
 @Component
@@ -18,15 +17,13 @@ public class TicketValidator implements Validator {
 	@Override
 	public boolean supports(
 			Class<?> myClass) {
-		boolean result = InquiryTicket.class.isAssignableFrom(myClass) || CustomerTicket.class.isAssignableFrom(myClass)
-				|| AgentTicket.class.isAssignableFrom(myClass) || AdminTicket.class.isAssignableFrom(myClass);
+		boolean result = InquiryTicket.class.isAssignableFrom(myClass) || CustomerTicket.class.isAssignableFrom(myClass) || AgentTicket.class.isAssignableFrom(myClass) || AdminTicket.class.isAssignableFrom(myClass);
 		return result;
 	}
 
 	@Override
 	public void validate(
-			Object target,
-			Errors errors) {
+			Object target, Errors errors) {
 		Ticket ticket = (Ticket) target;
 		if (ticket instanceof InquiryTicket) {
 			checkInquiryTicket(ticket, errors);
@@ -40,8 +37,7 @@ public class TicketValidator implements Validator {
 	}
 
 	private void checkAdminTicket(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
 		AdminTicket adminTicket = (AdminTicket) ticket;
 
@@ -50,8 +46,7 @@ public class TicketValidator implements Validator {
 	}
 
 	private void checkAgentTicket(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
 		AgentTicket agentTicket = (AgentTicket) ticket;
 
@@ -60,8 +55,7 @@ public class TicketValidator implements Validator {
 	}
 
 	private void checkCustomerTicket(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
 		CustomerTicket customerTicket = (CustomerTicket) ticket;
 
@@ -70,8 +64,7 @@ public class TicketValidator implements Validator {
 	}
 
 	private void checkInquiryTicket(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
 		InquiryTicket inquiryTicket = (InquiryTicket) ticket;
 
@@ -85,23 +78,18 @@ public class TicketValidator implements Validator {
 	}
 
 	private void checkDescriptionAndCategory(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
-		if (ValidationUtil.isEmpty(ticket.getDescription())) {
+		if (ValidationUtil.isEmpty(ticket.getDescription()))
 			errors.rejectValue("description", "ticket.description.required", "You must enter a description");
-		} else if (!ValidationUtil.isBetween(ticket.getDescription(), 10, 1000)) {
+		else if (!ValidationUtil.isBetween(ticket.getDescription(), 10, 10000))
 			errors.rejectValue("description", "ticket.description.size", "Your description is too short");
-		}
-
-		if (ticket.getCategory() == TicketCategory.NONE) {
-			errors.rejectValue("category", "ticket.category.required", "You must choose a category");
-		}
+		if (ticket.getCategory().getId() <= 0)
+			errors.rejectValue("category.id", "ticket.category.required", "You must choose a category");
 	}
 
 	private void checkPriority(
-			Ticket ticket,
-			Errors errors) {
+			Ticket ticket, Errors errors) {
 
 		if (ticket.getPriority() == TicketPriority.NONE)
 			errors.rejectValue("priority", "ticket.priority.required", "You must set a priority");

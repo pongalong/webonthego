@@ -13,6 +13,7 @@ public class InquiryTicket extends Ticket {
 
 	public InquiryTicket() {
 		this.type = TicketType.INQUIRY;
+		this.title = "INQUIRY " + this.createdDate;
 	}
 
 	@Column(name = "requester_email")

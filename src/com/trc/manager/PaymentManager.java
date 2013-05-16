@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.trc.exception.management.AccountManagementException;
 import com.trc.exception.management.PaymentManagementException;
 import com.trc.exception.service.PaymentServiceException;
 import com.trc.service.PaymentService;
 import com.trc.user.User;
+import com.trc.user.account.PaymentHistory;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
@@ -23,6 +25,9 @@ import com.tscp.util.logger.aspect.Loggable;
 public class PaymentManager implements PaymentManagerModel {
 	@Autowired
 	private PaymentService paymentService;
+	@Autowired
+	private AccountManager accountManager;
+
 	@Autowired
 	private CacheManager cacheManager;
 
@@ -52,8 +57,10 @@ public class PaymentManager implements PaymentManagerModel {
 		try {
 			int paymentId = paymentService.getDefaultPaymentMethodId(user);
 			String topupAmount = paymentService.getTopupAmount(user, account);
-			return paymentService.makePayment(user, account, paymentId, topupAmount);
-		} catch (PaymentServiceException e) {
+			PaymentUnitResponse response = paymentService.makePayment(user, account, paymentId, topupAmount);
+			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			return response;
+		} catch (PaymentServiceException | AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
 		}
 	}

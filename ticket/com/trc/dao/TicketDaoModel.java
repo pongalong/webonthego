@@ -3,8 +3,8 @@ package com.trc.dao;
 import java.util.Collection;
 
 import com.trc.domain.ticket.Ticket;
-import com.trc.domain.ticket.TicketCategory;
 import com.trc.domain.ticket.TicketStatus;
+import com.trc.domain.ticket.category.TicketCategory_old;
 
 public interface TicketDaoModel {
 
@@ -24,6 +24,6 @@ public interface TicketDaoModel {
 
 	public Collection<Ticket> getTicketByAssignee(int assigneeId, TicketStatus status);
 
-	public Collection<Ticket> getTicketByCategory(TicketCategory category, TicketStatus status);
+	public Collection<Ticket> getTicketByCategory(TicketCategory_old category, TicketStatus status);
 
 }
