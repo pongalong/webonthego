@@ -123,8 +123,7 @@
     </div>
 
     <div class="buttons">
-      <a href="<spring:url value="/support/ticket/view/ticket/${ticket.id}" />" class="mBtn">Cancel</a> <input type="submit" name="_eventId_submit"
-        value="Submit" />
+      <a href="<spring:url value="/support/ticket/view/${ticket.id}" />" class="mBtn">Cancel</a> <input type="submit" name="_eventId_submit" value="Submit" />
     </div>
 
   </form:form>

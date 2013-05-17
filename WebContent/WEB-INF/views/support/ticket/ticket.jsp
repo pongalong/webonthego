@@ -112,8 +112,8 @@
 </c:choose>
 
 <div class="buttons" style="text-align: right;">
-  <a href="<spring:url value="/support/ticket" />" class="mBtn">Back</a> <a href="<spring:url value="/support/ticket/update/${ticket.id}" />" class="mBtn">Update</a>
-  <a href="<spring:url value="/support/ticket/note/add/${ticket.id}" />" class="mBtn">Add a Note</a> <a
+  <a href="<spring:url value="/support/ticket/update/${ticket.id}" />" class="mBtn">Update</a> <a
+    href="<spring:url value="/support/ticket/note/add/${ticket.id}" />" class="mBtn">Add a Note</a> <a
     href="<spring:url value="/support/ticket/reply/${ticket.id}" />" class="mBtn">Reply</a>
 </div>
 
