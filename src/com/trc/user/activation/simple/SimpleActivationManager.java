@@ -27,6 +27,7 @@ import com.trc.exception.management.DeviceManagementException;
 import com.trc.exception.management.DeviceReservationException;
 import com.trc.exception.management.DeviceServiceCreationException;
 import com.trc.exception.management.PaymentManagementException;
+import com.trc.exception.service.PaymentFailureException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.CouponManager;
 import com.trc.manager.DeviceManager;
@@ -457,7 +458,7 @@ public class SimpleActivationManager {
 	}
 
 	public PaymentUnitResponse makeActivationPayment(
-			SimpleActivation sa) throws PaymentManagementException {
+			SimpleActivation sa) throws PaymentManagementException, PaymentFailureException {
 		User user = sa.getUser();
 		Account account = sa.getAccount();
 		CreditCard cc = sa.getCreditCardPayment().getCreditCard();
@@ -480,13 +481,17 @@ public class SimpleActivationManager {
 		if (amount > 0.0) {
 			NumberFormat formatter = NumberFormat.getCurrencyInstance();
 			String moneyString = formatter.format(amount);
+
 			logger.trace("{} Sending payment of {}", user.getEmail(), moneyString.substring(1));
+
 			PaymentUnitResponse response = paymentManager.makePayment(user, account, cc.getPaymentid(), moneyString.substring(1));
+
 			logger.trace("{} Made payment of {} on account {} with payment ID {}", new Object[] {
 					user.getEmail(),
 					moneyString,
 					account.getAccountNo(),
 					cc.getPaymentid() });
+
 			return response;
 		} else {
 			return new PaymentUnitResponse();

@@ -8,8 +8,9 @@
     <li><span>User:</span> ${USER.email}</li>
     <li><span>Device:</span> ${accountDetail.deviceInfo.label}</li>
     <li><span>Amount:</span> &#36;${topupAmount}</li>
-    <li><span>Response:</span> ${paymentResponse.confdescr}</li>
     <li><span>AuthCode:</span> ${paymentResponse.authcode}</li>
+    <li><span>ConfCode:</span> ${paymentResponse.confcode}</li>
+    <li><span>Additional:</span> ${paymentResponse.confdescr}</li>
   </ul>
 </div>
 

@@ -7,6 +7,7 @@ import javax.xml.ws.WebServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.trc.exception.service.PaymentFailureException;
 import com.trc.exception.service.PaymentServiceException;
 import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.service.gateway.WebserviceGateway;
@@ -16,7 +17,6 @@ import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.CustPmtMap;
 import com.tscp.mvne.CustTopUp;
-import com.tscp.mvne.PaymentException;
 import com.tscp.mvne.PaymentUnitResponse;
 import com.tscp.mvne.TSCPMVNA;
 
@@ -156,21 +156,21 @@ public class PaymentService implements PaymentServiceModel {
 
 	@Override
 	public PaymentUnitResponse makePayment(
-			User user, Account account, CreditCard creditCard, String amount) throws PaymentServiceException {
+			User user, Account account, CreditCard creditCard, String amount) throws PaymentFailureException {
 		try {
 			return port.submitPaymentByCreditCard(SessionManager.getCurrentSession().getId(), account, creditCard, amount);
 		} catch (WebServiceException e) {
-			throw new PaymentServiceException(e.getMessage(), e.getCause());
+			throw new PaymentFailureException(e);
 		}
 	}
 
 	@Override
 	public PaymentUnitResponse makePayment(
-			User user, Account account, int paymentId, String amount) throws PaymentServiceException {
+			User user, Account account, int paymentId, String amount) throws PaymentFailureException {
 		try {
 			return port.submitPaymentByPaymentId(SessionManager.getCurrentSession().getId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
 		} catch (WebServiceException e) {
-			throw new PaymentServiceException(e.getMessage(), e.getCause());
+			throw new PaymentFailureException(e);
 		}
 	}
 

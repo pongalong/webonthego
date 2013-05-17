@@ -68,7 +68,8 @@
     <form:input path="creditCard.paymentid" cssClass="hidden" />
 
     <div class="buttons">
-      <input type="submit" name="_eventId_select" value="Select" /> <input id="addNewMethod_submit" type="submit" name="_eventId_new" value="Add New" />
+      <input id="addNewMethod_submit" type="submit" name="_eventId_new" value="Add New Payment Method" /> <input type="submit" name="_eventId_select"
+        value="Continue" />
     </div>
 
 

@@ -1,27 +1,3 @@
-<c:if test="${CONTROLLING_USER.userId > 0}">
-  <h3>Administration</h3>
-  <ul>
-    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
-      <li><a href="<spring:url value="/admin/user/view"/>">View Users</a></li>
-      <li><a href="<spring:url value="/admin/user/create" />">Create New Agent</a></li>
-      <li><a href="<spring:url value="/support/faq/create/article" />">Create Articles</a></li>
-    </sec:authorize>
-    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT')">
-      <li><a href="<spring:url value="/support/ticket"/>">Tickets</a></li>
-    </sec:authorize>
-  </ul>
-</c:if>
-
-<c:if test="${CONTROLLING_USER.userId > 0 && USER.userId > 0}">
-  <h3>Support User</h3>
-  <ul>
-    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT')">
-      <li><a href="<spring:url value="/support/ticket/view/customer/${USER.userId}"/>">User Tickets</a></li>
-      <li><a href="<spring:url value="/support/ticket/create/"/>">Create User Ticket</a></li>
-    </sec:authorize>
-  </ul>
-</c:if>
-
 <c:if test="${USER.userId > 0}">
   <c:choose>
     <c:when test="${CONTROLLING_USER.userId > 0}">
@@ -42,6 +18,31 @@
     <li><a href="<spring:url value="/coupons"/>">Promotions</a></li>
   </ul>
 </c:if>
+
+<c:if test="${CONTROLLING_USER.userId > 0 && USER.userId > 0}">
+  <h3>Support User</h3>
+  <ul>
+    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT')">
+      <li><a href="<spring:url value="/support/ticket/view/customer/${USER.userId}"/>">User Tickets</a></li>
+      <li><a href="<spring:url value="/support/ticket/create/"/>">Create User Ticket</a></li>
+    </sec:authorize>
+  </ul>
+</c:if>
+
+<c:if test="${CONTROLLING_USER.userId > 0}">
+  <h3>Administration</h3>
+  <ul>
+    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+      <li><a href="<spring:url value="/admin/user/view"/>">View Users</a></li>
+      <li><a href="<spring:url value="/admin/user/create" />">Create New Agent</a></li>
+      <li><a href="<spring:url value="/support/faq/create/article" />">Create Articles</a></li>
+    </sec:authorize>
+    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT')">
+      <li><a href="<spring:url value="/support/ticket"/>">Tickets</a></li>
+    </sec:authorize>
+  </ul>
+</c:if>
+
 
 <c:if test="${(empty CONTROLLING_USER && empty USER) || (CONTROLLING_USER.userId < 1 && USER.userId < 1)}">
   <h3>Manage Account</h3>

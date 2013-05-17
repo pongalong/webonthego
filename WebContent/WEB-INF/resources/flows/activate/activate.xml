@@ -81,6 +81,9 @@
   <action-state id="takePayment">
     <evaluate expression="simpleActivationManager.makeActivationPayment(sa)" result="flowScope.paymentUnitResponse" />
     <transition on="success" to="applyContract" />
+    <transition on-exception="com.trc.exception.service.PaymentFailureException" to="editPaymentMethod_takePayment">
+      <evaluate expression="simpleActivationManager.addFlowError(rootCauseException.authCode)" />
+    </transition>
     <transition on-exception="com.trc.exception.management.PaymentManagementException" to="editPaymentMethod_takePayment">
       <evaluate expression="simpleActivationManager.addFlowError('flow.payment.submit', null)" />
     </transition>

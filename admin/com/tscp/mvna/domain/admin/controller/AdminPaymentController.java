@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.exception.management.PaymentManagementException;
+import com.trc.exception.service.PaymentFailureException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.user.User;
@@ -19,6 +20,7 @@ import com.trc.user.account.AccountDetail;
 import com.trc.web.model.ResultModel;
 import com.trc.web.session.cache.CachedAttributeNotFound;
 import com.tscp.mvne.PaymentUnitResponse;
+import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/admin/payment")
@@ -84,12 +86,16 @@ public class AdminPaymentController {
 			PaymentUnitResponse response = paymentManager.makePayment(user, accountDetail.getAccount());
 			model.addAttribute("paymentResponse", response);
 			return model.getSuccess();
-		} catch (PaymentManagementException e) {
-			String[] parsedMessage = e.getMessage().split("\\*");
+		} catch (PaymentFailureException e) {
 			PaymentUnitResponse response = new PaymentUnitResponse();
-			response.setConfdescr(parsedMessage[1].replace("Response: ", ""));
-			response.setAuthcode(parsedMessage[2].replace("AuthCode: ", ""));
+			response.setAuthcode(e.getAuthCode());
+			response.setConfcode(e.getResponse());
+			response.setConfdescr(e.getMessage());
 			model.addAttribute("paymentResponse", response);
+			return model.getError();
+		} catch (PaymentManagementException e) {
+			DevLogger.log(e.getMessage() + " " + e.getCause());
+			model.addAttribute("paymentResponse", new PaymentUnitResponse());
 			return model.getError();
 		}
 	}

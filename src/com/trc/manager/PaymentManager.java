@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.trc.exception.management.AccountManagementException;
 import com.trc.exception.management.PaymentManagementException;
+import com.trc.exception.service.PaymentFailureException;
 import com.trc.exception.service.PaymentServiceException;
 import com.trc.service.PaymentService;
 import com.trc.user.User;
@@ -53,13 +54,15 @@ public class PaymentManager implements PaymentManagerModel {
 
 	@Loggable(value = LogLevel.INFO)
 	public PaymentUnitResponse makePayment(
-			User user, Account account) throws PaymentManagementException {
+			User user, Account account) throws PaymentManagementException, PaymentFailureException {
 		try {
 			int paymentId = paymentService.getDefaultPaymentMethodId(user);
 			String topupAmount = paymentService.getTopupAmount(user, account);
 			PaymentUnitResponse response = paymentService.makePayment(user, account, paymentId, topupAmount);
 			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
 			return response;
+		} catch (PaymentFailureException e) {
+			throw e;
 		} catch (PaymentServiceException | AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
 		}
@@ -68,10 +71,12 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makePayment(
-			User user, Account account, int paymentId, String amount) throws PaymentManagementException {
+			User user, Account account, int paymentId, String amount) throws PaymentFailureException, PaymentManagementException {
 		try {
-			return paymentService.makePayment(user, account, paymentId, amount);
-		} catch (PaymentServiceException e) {
+			PaymentUnitResponse response = paymentService.makePayment(user, account, paymentId, amount);
+			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			return response;
+		} catch (AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
 		}
 	}
@@ -79,22 +84,28 @@ public class PaymentManager implements PaymentManagerModel {
 	@Override
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makePayment(
-			User user, Account account, CreditCard creditCard, String amount) throws PaymentManagementException {
+			User user, Account account, CreditCard creditCard, String amount) throws PaymentFailureException, PaymentManagementException {
 		try {
-			return paymentService.makePayment(user, account, creditCard, amount);
-		} catch (PaymentServiceException e) {
+			PaymentUnitResponse response = paymentService.makePayment(user, account, creditCard, amount);
+			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			return response;
+		} catch (AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
 		}
+
 	}
 
 	@Loggable(value = LogLevel.TRACE)
 	public PaymentUnitResponse makeActivationPayment(
-			User user, Account account, CreditCard creditCard) throws PaymentManagementException {
+			User user, Account account, CreditCard creditCard) throws PaymentFailureException, PaymentManagementException {
 		try {
-			return makePayment(user, account, creditCard.getPaymentid(), "10.00");
-		} catch (PaymentManagementException e) {
-			throw e;
+			PaymentUnitResponse response = makePayment(user, account, creditCard.getPaymentid(), "10.00");
+			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			return response;
+		} catch (AccountManagementException e) {
+			throw new PaymentManagementException(e.getMessage(), e.getCause());
 		}
+
 	}
 
 	@Override

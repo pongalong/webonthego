@@ -165,10 +165,10 @@
       </div>
 
       <div id="creditCardImages" class="row clearfix pushed">
-        <img id="ImgAmex" src="<spring:url value='/static/images/creditCard/iconAmex.png' />" /> 
-        <img id="ImgMastercard" src="<spring:url value='/static/images/creditCard/iconMasterCard.png' />" /> 
-        <img id="ImgVisa" src="<spring:url value='/static/images/creditCard/iconVisa.png' />" /> 
-        <img id="ImgDiscover" src="<spring:url value='/static/images/creditCard/iconDiscover.png' />" />
+        <img id="ImgAmex" src="<spring:url value='/static/images/creditCard/iconAmex.png' />" /> <img id="ImgMastercard"
+          src="<spring:url value='/static/images/creditCard/iconMasterCard.png' />" /> <img id="ImgVisa"
+          src="<spring:url value='/static/images/creditCard/iconVisa.png' />" /> <img id="ImgDiscover"
+          src="<spring:url value='/static/images/creditCard/iconDiscover.png' />" />
       </div>
     </div>
 
