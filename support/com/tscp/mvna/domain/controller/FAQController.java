@@ -87,11 +87,10 @@ public class FAQController {
 	 * 
 	 * @return String
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.GET)
 	public String insertArticle(
-			@ModelAttribute("categoryList") List<Category> categoryList,
-			@ModelAttribute("article") Article article) {
+			@ModelAttribute("categoryList") List<Category> categoryList, @ModelAttribute("article") Article article) {
 		article = new Article();
 		return "/admin/support/faq/createArticle";
 	}
@@ -101,7 +100,7 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.POST)
 	public ModelAndView processInsertArticle(
 			@ModelAttribute("article") Article article) {
@@ -118,7 +117,7 @@ public class FAQController {
 
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
 	@RequestMapping(value = "/create/category", method = RequestMethod.GET)
 	public String insertCategory(
 			@ModelAttribute("category") Category category) {
@@ -131,11 +130,10 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
 	@RequestMapping(value = "/create/category", method = RequestMethod.POST)
 	public ModelAndView processInsertCategory(
-			@ModelAttribute("category") Category category,
-			@RequestParam(value = "categoryName", required = true) String categoryName) {
+			@ModelAttribute("category") Category category, @RequestParam(value = "categoryName", required = true) String categoryName) {
 
 		ResultModel resultModel = new ResultModel("support/faq/faq");
 

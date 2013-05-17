@@ -1,12 +1,6 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<div class="span-18 colborder" style="min-height: 200px;">
-  <h3>Tickets</h3>
-  <p>You must select a user account before viewing tickets.</p>
-</div>
+<h3>Tickets</h3>
+<p>You must select a user account before viewing tickets.</p>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

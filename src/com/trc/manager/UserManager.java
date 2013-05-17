@@ -195,7 +195,8 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
-	@PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
+	// commented out to allow for password resets
+	// @PreAuthorize("isAuthenticated() and hasPermission(#user, 'canUpdate')")
 	public void updateUser(
 			User user) {
 		userDao.updateUser(user);

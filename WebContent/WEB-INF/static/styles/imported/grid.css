@@ -444,21 +444,17 @@ input.span-24,textarea.span-24 {
 	border-right: 1px solid #dc6f64;
 }
 
+/* Border with more whitespace, spans one column. */
+.colborderleft {
+	padding-left: 25px;
+	margin-left: -26px;
+	border-left: 1px solid #dc6f64;
+}
+
 /* Border on left hand side of a column. */
 .borderleft {
 	padding-left: 4px;
 	margin-left: 5px;
-	border-left: 1px solid #dc6f64;
-}
-
-.colborderright {
-	border-right: 1px solid #dc6f64;
-}
-
-/* Border with more whitespace, spans one column. */
-.colborderleft {
-	padding-left: 24px;
-	margin-left: -25px;
 	border-left: 1px solid #dc6f64;
 }
 

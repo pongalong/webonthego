@@ -1,17 +1,11 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<div class="span-18 colborder">
-  <h3>Your Previous Session Has Expired</h3>
-  <p>
-    Your previous session has expired.<br /> <b>You will be redirected in <span id="counter">5</span> seconds to a valid session
-    </b>
-  </p>
-  <p>Or you can use the navigation links on the right side of the page.</p>
-</div>
-
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
+<h3>Your Previous Session Has Expired</h3>
+<p>
+  Your previous session has expired.<br /> <b>You will be redirected in <span id="counter">5</span> seconds to a valid session
+  </b>
+</p>
+<p>Or you can use the navigation links on the right side of the page.</p>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -33,4 +27,4 @@
 	};
 </script>
 
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

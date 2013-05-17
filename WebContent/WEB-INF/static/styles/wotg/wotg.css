@@ -107,6 +107,25 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 	border: 3px solid #dc6f64;
 }
 
+.mBtnSlim {
+	height: 23px;
+	line-height: 24px;
+	padding: 0 5px;
+	margin: -10px 0 0 0 !important;
+	font-size: 12px;
+	font-weight: normal;
+	word-spacing: normal;
+	letter-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	textshadow: none;
+	display: inline-block;
+	-webkit-box-align: center;
+	box-sizing: border-box;
+	border-width: 1px !important;
+	box-shadow: none !important;
+}
+
 .loginBtn {
 	background: none repeat scroll 0 0 #FFCD2B;
 	color: #B28634 !important;
@@ -204,7 +223,7 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 	width: 100%;
 	min-height: 235px;
 	background: url(../../images/bottom_bg.png);
-	margin-top: 40px; 
+	margin-top: 40px;
 }
 
 #footer {
@@ -212,7 +231,7 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 	background: url(../../images/wotg-footer-texture.jpg) repeat-x; */
 	width: 100%;
 	background: #333333;
-    border-top: 10px solid #1C6866;
-    color: #FFFFFF;
-    padding: 12px 0;
+	border-top: 10px solid #1C6866;
+	color: #FFFFFF;
+	padding: 12px 0;
 }

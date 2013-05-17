@@ -27,7 +27,7 @@
     </div>
 
     <p>After you click "Disconnect Device" at the bottom of this page:</p>
-    
+
     <ul style="font-size: 14px; margin: 10px 50px;">
       <li>Your device (ESN: ${deviceInfo.value}) and the account "${deviceInfo.label}" will be deactivated immediately.</li>
       <li>If the device is currently connected, the service will stop after the current session.</li>
@@ -39,7 +39,7 @@
         you reactivate a device within 60 days, you can continue using your balance. After this period your balance will expire.
       </li>
     </ul>
-    
+
     <p>Are you sure you want to deactivate device ${deviceInfo.label}?</p>
 
     <div class="row clearfix" style="display: none;">
@@ -55,8 +55,4 @@
 
 </div>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

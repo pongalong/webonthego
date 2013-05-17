@@ -6,8 +6,4 @@
   <a class="button action-m" href="<spring:url value="/devices" />"><span>Continue</span> </a>
 </div>
 
-<div class="span-6 last sub-navigation formProgress">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

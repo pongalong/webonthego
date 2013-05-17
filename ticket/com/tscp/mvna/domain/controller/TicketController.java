@@ -25,8 +25,6 @@ import com.trc.domain.ticket.Ticket;
 import com.trc.domain.ticket.TicketNote;
 import com.trc.domain.ticket.TicketPriority;
 import com.trc.domain.ticket.TicketStatus;
-import com.trc.domain.ticket.TicketType;
-import com.trc.domain.ticket.category.TicketCategory;
 import com.trc.exception.EmailException;
 import com.trc.exception.management.TicketManagementException;
 import com.trc.manager.TicketManager;
@@ -64,68 +62,9 @@ public class TicketController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView showTicketOverviewAndSearch() {
-		ResultModel model = new ResultModel("support/ticket/overview");
-
-		AdminTicket ticket = new AdminTicket();
-		ticket.setStatus(TicketStatus.NONE);
-		ticket.setPriority(TicketPriority.NONE);
-
-		model.addAttribute("ticket", ticket);
+	public ModelAndView home() {
+		ResultModel model = new ResultModel("support/ticket/home");
 		return model.getSuccess();
-	}
-
-	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView postTicketOverviewAndSearch(
-			@ModelAttribute("USER") User user, @ModelAttribute("ticketCategories") List<TicketCategory> categories, @ModelAttribute("ticket") AdminTicket ticket) {
-
-		ResultModel model = new ResultModel("support/ticket/tickets", "support/ticket/overview");
-
-		if (ticket.getCategory() != null && ticket.getCategory().getId() > 0) {
-
-			CATEGORYLOOP: for (TicketCategory tc : categories) {
-				if (tc.getId() == ticket.getCategory().getId()) {
-					ticket.setCategory(tc);
-					break CATEGORYLOOP;
-				}
-				for (TicketCategory subTc : tc.getSubcategories())
-					if (subTc.getId() == ticket.getCategory().getId()) {
-						ticket.setCategory(subTc);
-						break CATEGORYLOOP;
-					}
-			}
-
-		}
-
-		try {
-			List<Ticket> tickets = ticketManager.searchTickets(user.getUserId(), ticket);
-
-			String ticketSearchContextString = "";
-			if (ticket.getCreatorId() != 0)
-				ticketSearchContextString += " Created by " + ticket.getCreatorId();
-			if (ticket.getAssigneeId() != 0)
-				ticketSearchContextString += " Assigned to " + ticket.getAssigneeId();
-			if (ticket.getStatus() != TicketStatus.NONE)
-				ticketSearchContextString += " with Status " + ticket.getStatus().getDescription();
-			if (ticket.getCategory() != null && ticket.getCategory().getId() > 0) {
-				ticketSearchContextString += " in Category ";
-				if (ticket.getCategory().getParentCategory() != null)
-					ticketSearchContextString += ticket.getCategory().getParentCategory().getDescription() + " > ";
-				ticketSearchContextString += ticket.getCategory().getDescription();
-			}
-			if (ticket.getPriority() != TicketPriority.NONE)
-				ticketSearchContextString += " with Priority " + ticket.getPriority().getDescription();
-			if (ticket.getTitle() != null && !ticket.getTitle().trim().isEmpty())
-				ticketSearchContextString += " with Title like " + ticket.getTitle();
-			if (ticket.getDescription() != null && !ticket.getDescription().trim().isEmpty())
-				ticketSearchContextString += " with Description like " + ticket.getDescription();
-
-			model.addAttribute("ticketList", tickets);
-			model.addAttribute("ticketSearchContextString", ticketSearchContextString);
-			return model.getSuccess();
-		} catch (TicketManagementException e) {
-			return model.getAccessException();
-		}
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -137,7 +76,17 @@ public class TicketController {
 		if (user.getUserId() == 0)
 			return model.getError();
 
-		model.addAttribute("ticket", ticketManager.buildMyTicketType(controllingUser));
+		Ticket ticket = ticketManager.buildMyTicketType(controllingUser);
+
+		if (ticket instanceof AdminTicket) {
+			((AdminTicket) ticket).setCustomerId(user.getUserId());
+			((AdminTicket) ticket).setCreatorId(controllingUser.getUserId());
+		} else if (ticket instanceof AgentTicket) {
+			((AdminTicket) ticket).setCustomerId(user.getUserId());
+			((AdminTicket) ticket).setCreatorId(controllingUser.getUserId());
+		}
+
+		model.addAttribute("ticket", ticket);
 		return model.getSuccess();
 	}
 
@@ -227,95 +176,6 @@ public class TicketController {
 			} catch (TicketManagementException e) {
 				return model.getException();
 			}
-	}
-
-	@RequestMapping(value = "/view/ticket/{ticketId}", method = RequestMethod.GET)
-	public ModelAndView viewTicketById(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
-
-		ResultModel model = new ResultModel("support/ticket/ticket");
-
-		try {
-			Ticket ticket = ticketManager.getTicketById(ticketId);
-
-			// customer ticket
-			if (ticket instanceof CustomerTicket) {
-				CustomerTicket cTicket = (CustomerTicket) ticket;
-				if (cTicket.getCustomerId() != controllingUser.getUserId())
-					model.addAttribute("customer", userManager.getUserById(cTicket.getCustomerId()));
-				model.addAttribute("assignee", userManager.getUserById(cTicket.getAssigneeId()));
-				model.addAttribute("ticket", cTicket);
-			}
-
-			// agent ticket
-			if (ticket instanceof AgentTicket) {
-				AgentTicket aTicket = (AgentTicket) ticket;
-				if (aTicket.getCreatorId() == controllingUser.getUserId())
-					model.addAttribute("creator", controllingUser);
-				else
-					model.addAttribute("creator", userManager.getUserById(aTicket.getCreatorId()));
-				model.addAttribute("ticket", aTicket);
-			}
-
-			// inquiry ticket
-			if (ticket instanceof InquiryTicket) {
-				InquiryTicket iTicket = (InquiryTicket) ticket;
-				model.addAttribute("ticket", iTicket);
-			}
-
-			return model.getSuccess();
-
-		} catch (TicketManagementException e) {
-			return model.getAccessException();
-		}
-
-	}
-
-	@RequestMapping(value = "/view/inquiry", method = RequestMethod.GET)
-	public ModelAndView viewInquiries() {
-
-		ResultModel resultModel = new ResultModel("support/ticket/tickets", "support/ticket/overview");
-
-		try {
-			List<Ticket> tickets = ticketManager.searchTickets(0, 0, 0, null, null, null, TicketType.INQUIRY, null, null);
-			resultModel.addAttribute("ticketList", tickets);
-			resultModel.addAttribute("ticketSearchContextString", "Inquiries");
-			return resultModel.getSuccess();
-		} catch (TicketManagementException e) {
-			return resultModel.getAccessException();
-		}
-	}
-
-	@RequestMapping(value = "/view/creator/me", method = RequestMethod.GET)
-	public ModelAndView viewTicketsCreated(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser) {
-
-		ResultModel resultModel = new ResultModel("support/ticket/tickets", "support/ticket/overview");
-
-		try {
-			List<Ticket> tickets = ticketManager.searchTickets(0, controllingUser.getUserId(), 0, TicketStatus.NONE, null, null, TicketType.NONE, null, null);
-			resultModel.addAttribute("ticketList", tickets);
-			resultModel.addAttribute("ticketSearchContextString", "Created By Me");
-			return resultModel.getSuccess();
-		} catch (TicketManagementException e) {
-			return resultModel.getAccessException();
-		}
-	}
-
-	@RequestMapping(value = "/view/assignee/me", method = RequestMethod.GET)
-	public ModelAndView viewTicketsAssigned(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser) {
-
-		ResultModel resultModel = new ResultModel("support/ticket/tickets", "support/ticket/overview");
-
-		try {
-			List<Ticket> tickets = ticketManager.searchTickets(0, 0, controllingUser.getUserId(), TicketStatus.NONE, null, null, TicketType.NONE, null, null);
-			resultModel.addAttribute("ticketList", tickets);
-			resultModel.addAttribute("ticketSearchContextString", "Assigned to Me");
-			return resultModel.getSuccess();
-		} catch (TicketManagementException e) {
-			return resultModel.getAccessException();
-		}
 	}
 
 	@RequestMapping(value = "/reply/{ticketId}", method = RequestMethod.GET)

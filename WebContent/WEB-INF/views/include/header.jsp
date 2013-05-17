@@ -35,14 +35,14 @@
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/h5bp/normalize.min.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/h5bp/main.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/bootstrap/bootstrap.min.css' />" />
-<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/grid.min.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/grid.css' />" />
 
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/imported/forms.css' />" />
 
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/grid-12.css' />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/gantry.css' />" />
-<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/wotg.min.css' />" />
-<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/style.min.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/wotg.css' />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/wotg/style.css' />" />
 
 <link rel="stylesheet" type="text/css" href="<spring:url value='/static/styles/dropdown.css' />" />
 
@@ -87,15 +87,13 @@
             <c:when test="${USER.userId > 0 && CONTROLLING_USER.userId <= 0}">
               <div>Welcome ${USER.contactInfo.firstName} ${USER.contactInfo.lastName}</div>
               <div>
-                <span style="color: #ec7958;">TechSupport</span> 
-                <span style="color: black;">855-932-6646</span> | 
-                <a href="<spring:url value='/logout' />" style="font-weight: bold;">LOGOUT</a>
+                <span style="color: #ec7958;">TechSupport</span> <span style="color: black;">855-932-6646</span> | <a href="<spring:url value='/logout' />"
+                  style="font-weight: bold;">LOGOUT</a>
               </div>
             </c:when>
             <c:otherwise>
               <div>
-                <span style="color: #ec7958;">TechSupport</span> 
-                <span style="color: black;">855-932-6646</span>
+                <span style="color: #ec7958;">TechSupport</span> <span style="color: black;">855-932-6646</span>
               </div>
             </c:otherwise>
           </c:choose>

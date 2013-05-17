@@ -1,18 +1,12 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<div class="span-18 colborder" style="min-height: 200px;">
-  <h3>User Created</h3>
+<h3>User Created</h3>
 
-  <p>
-    ${newInternalUser.username}<br /> ${newInternalUser.email}<br /> 
-    <c:forEach var="r" items="${newInternalUser.roles}">
+<p>
+  ${newInternalUser.username}<br /> ${newInternalUser.email}<br />
+  <c:forEach var="r" items="${newInternalUser.roles}">
       ${r.role.name}
     </c:forEach>
-  </p>
-</div>
+</p>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

@@ -1,35 +1,34 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-<div class="span-15">
-  <form:form id="resetPassword" cssClass="validatedForm" method="POST" commandName="verifyIdentity">
+<h3>Enter Your Registered E-Mail</h3>
 
-    <h3>Enter Your Registered E-Mail</h3>
-    <p style="margin-bottom: 10px;">To reset your password please enter your email. We will send you further instructions to complete the request.</p>
+<form:form id="resetPassword" cssClass="validatedForm" cssStyle="padding-bottom: 0;" method="POST" commandName="verifyIdentity">
 
-    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.verifyIdentity'].allErrors}">
-      <div class="row clearfix">
-        <div class="alert error">
-          <h1>Please correct the following problems</h1>
-          <form:errors path="email" />
-          <spring:bind path="verifyIdentity">
-            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-            </c:forEach>
-          </spring:bind>
-        </div>
-      </div>
-    </c:if>
+  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.verifyIdentity'].allErrors}">
+    <div class="alert error">
+      <h1>Please correct the following problems</h1>
+      <form:errors path="email" />
+      <spring:bind path="verifyIdentity">
+        <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+          <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+        </c:forEach>
+      </spring:bind>
+    </div>
+  </c:if>
+
+  <div class="alert info" style="margin-bottom: 0px;">
+
+    <p>To reset your password please enter your email. We will send you further instructions to complete the request.</p>
 
     <div class="row clearfix">
-      <form:label path="email" cssClass="required">E-Mail Address</form:label>
-    </div>
-    <div class="row clearfix">
-      <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="email" />
+      <form:input path="email" placeholder="Email Address" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
 
-    <input type="submit" value="Reset My Password!"></input>
+    <p>
+      <input type="submit" value="Reset My Password" />
+    </p>
 
-  </form:form>
-</div>
+  </div>
+</form:form>
 
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

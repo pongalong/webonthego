@@ -1,23 +1,15 @@
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<h3>Change Topup Amount</h3>
 
-<div class="span-18 colborder" style="min-height: 200px;">
+<p>You have successfully changed your topup amount.</p>
 
-  <h3>Change Top-Up Amount</h3>
-  
-  <p>You have successfully changed your top-up amount.</p>
-  
-  <p>
-    <strong>Device:</strong> ${accountDetail.deviceInfo.label}<br /> <strong>Top-Up:</strong> $${accountDetail.topUp}.
-  </p>
+<p>
+  <strong>Device:</strong> ${accountDetail.deviceInfo.label}<br /> <strong>Topup:</strong> $${accountDetail.topUp}.
+</p>
 
-  <p style="margin-top: 20px;">
-    <a class="mBtn" href="<spring:url value="/devices" />"><span>Continue</span> </a>
-  </p>
-</div>
+<p style="margin-top: 20px;">
+  <a class="mBtn" href="<spring:url value="/devices" />">Continue</a>
+</p>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

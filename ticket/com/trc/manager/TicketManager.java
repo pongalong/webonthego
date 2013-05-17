@@ -10,10 +10,9 @@ import com.trc.domain.ticket.AdminTicket;
 import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
+import com.trc.domain.ticket.SearchTicket;
 import com.trc.domain.ticket.Ticket;
 import com.trc.domain.ticket.TicketNote;
-import com.trc.domain.ticket.TicketPriority;
-import com.trc.domain.ticket.TicketStatus;
 import com.trc.domain.ticket.TicketType;
 import com.trc.domain.ticket.category.TicketCategory;
 import com.trc.exception.management.TicketManagementException;
@@ -60,17 +59,8 @@ public class TicketManager {
 	}
 
 	public List<Ticket> searchTickets(
-			int custId, AdminTicket ticket) throws TicketManagementException {
-		return searchTickets(custId, ticket.getCreatorId(), ticket.getAssigneeId(), ticket.getStatus(), ticket.getCategory(), ticket.getPriority(), TicketType.NONE, ticket.getTitle(), ticket.getDescription());
-	}
-
-	public List<Ticket> searchTickets(
-			int custId, int creatorId, int assigneeId, TicketStatus status, TicketCategory category, TicketPriority priority, TicketType type, String title, String description) throws TicketManagementException {
-		try {
-			return ticketService.searchTickets(custId, creatorId, assigneeId, status, category, priority, type, title, description);
-		} catch (TicketServiceException e) {
-			throw new TicketManagementException(e);
-		}
+			SearchTicket ticket) throws TicketManagementException {
+		return ticketService.searchTickets(ticket);
 	}
 
 	public TicketNote getTicketNote(
@@ -87,26 +77,14 @@ public class TicketManager {
 			Ticket ticket) throws TicketManagementException {
 		try {
 			TicketType type = ticket.getType();
-			User customer;
-			User creator;
 			switch (type) {
 				case INQUIRY:
 					return ticketService.saveTicket((InquiryTicket) ticket);
 				case CUSTOMER:
-					customer = userManager.getCurrentUser();
-					((CustomerTicket) ticket).setCustomerId(customer.getUserId());
 					return ticketService.saveTicket((CustomerTicket) ticket);
 				case AGENT:
-					customer = userManager.getCurrentUser();
-					creator = userManager.getLoggedInUser();
-					((AgentTicket) ticket).setCustomerId(customer.getUserId());
-					((AgentTicket) ticket).setCreatorId(creator.getUserId());
 					return ticketService.saveTicket((AgentTicket) ticket);
 				case ADMIN:
-					customer = userManager.getCurrentUser();
-					creator = userManager.getLoggedInUser();
-					((AdminTicket) ticket).setCustomerId(customer.getUserId());
-					((AdminTicket) ticket).setCreatorId(creator.getUserId());
 					return ticketService.saveTicket((AdminTicket) ticket);
 				default:
 					throw new TicketManagementException("Cannot open ticket for unknown type");

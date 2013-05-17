@@ -1,8 +1,6 @@
-
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 <div class="span-18">
-
 
   <form:form id="registration_security" cssClass="validatedForm" method="post" commandName="simpleRegistrationSecurity">
 
@@ -87,4 +85,5 @@
 		$("#securityQuestionAnswer\\.answer").enableValidation(validateNotEmpty);
 	});
 </script>
+
 <%@ include file="/WEB-INF/views/include/footer.jsp"%>

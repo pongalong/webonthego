@@ -3,7 +3,7 @@
 <div class="span-18">
 
   <form:form id="device_form" cssClass="validatedForm" method="post" commandName="device">
-  
+
     <h3>Enter Your Device Information</h3>
 
     <!-- Error Alert -->

@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 <!--  Begin left column -->
-<div class="span-15 colborder" style="min-height: 250px;">
+<div class="span-15 colborder">
   <h3>Create Your Web on the Go &#8480; Account</h3>
   <p>If you have received your Web on the Go &#8480; device you can create your account and activate it here. Start by creating a new user account.</p>
   <p style="text-align: center; margin-top: 35px;">
@@ -11,7 +11,7 @@
 <!--  End left column -->
 
 <!--  Begin right column -->
-<div class="span-8 last">
+<div class="span-8 colborderleft last">
 
   <form id="login" class="login" action="<spring:url value='/j_spring_security_check' />" method="post">
     <h3>Existing Users</h3>
@@ -28,13 +28,14 @@
     </c:choose>
 
     <div>
-      <input class="span-8" id="j_username" type="text" name="j_username" placeholder="Email Address" value="${last_username}" /> <input class="span-8 hidden"
-        id="j_password" type="password" name="j_password" /> <input class="span-8" id="j_password_holder" type="text" name="j_password_holder"
-        placeholder="Password" value="Password" />
+      <input class="span-8" id="j_username" type="text" name="j_username" placeholder="Email Address" value="${last_username}" /> 
+      <input class="span-8 hidden" id="j_password" type="password" name="j_password" /> 
+      <input class="span-8" id="j_password_holder" type="text" name="j_password_holder" placeholder="Password" value="Password" />
     </div>
 
     <div>
-      <input type="submit" value="Log In" style="float: right;" /> <a href="<spring:url value='/reset/password' />" style="float: left;">Forgot password</a>
+      <input type="submit" value="Log In" style="float: right;" /> 
+      <a href="<spring:url value='/reset/password' />" style="float: left;">Forgot password</a>
     </div>
 
   </form>

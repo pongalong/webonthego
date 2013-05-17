@@ -1,63 +1,56 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<div class="span-18 colborder">
-  <h3>Create User</h3>
+<h3>Create User</h3>
 
-  <form:form id="createRep" cssClass="validatedForm" commandName="newInternalUser" method="post">
+<form:form id="createRep" cssClass="validatedForm" commandName="newInternalUser" method="post">
 
-    <!-- Errors -->
-    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.newInternalUser'].allErrors}">
-      <div class="row clearfix">
-        <div class="alert error">
-          <h1>Please correct the following problems</h1>
-          <form:errors path="username" />
-          <form:errors path="email" />
-          <form:errors path="password" />
-          <!-- Global Errors -->
-          <spring:bind path="newInternalUser">
-            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-            </c:forEach>
-          </spring:bind>
-        </div>
+  <!-- Errors -->
+  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.newInternalUser'].allErrors}">
+    <div class="row clearfix">
+      <div class="alert error">
+        <h1>Please correct the following problems</h1>
+        <form:errors path="username" />
+        <form:errors path="email" />
+        <form:errors path="password" />
+        <!-- Global Errors -->
+        <spring:bind path="newInternalUser">
+          <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+          </c:forEach>
+        </spring:bind>
       </div>
-    </c:if>
-
-    <div class="row clearfix">
-      <form:label path="username">Username</form:label>
-      <form:input path="username" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
     </div>
+  </c:if>
 
-    <div class="row clearfix">
-      <form:label path="email" cssClass="required">Email</form:label>
-      <form:input path="email" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+  <div class="row clearfix">
+    <form:label path="username">Username</form:label>
+    <form:input path="username" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+  </div>
 
-    <div class="row clearfix">
-      <label class="required">Role</label> <select name="user_role" class="span-8" style="width: 312px;">
-        <c:forEach var="availableRole" items="${availableRoles}">
-          <c:if test="${availableRole != 'ROLE_USER' && availableRole != 'ROLE_ANONYMOUS' }">
-            <option value="${availableRole}">${availableRole.name}</option>
-          </c:if>
-        </c:forEach>
-      </select>
-    </div>
+  <div class="row clearfix">
+    <form:label path="email" cssClass="required">Email</form:label>
+    <form:input path="email" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+  </div>
 
-    <div class="row clearfix">
-      <form:label path="password" cssClass="required">Password</form:label>
-      <form:input path="password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+  <div class="row clearfix">
+    <label class="required">Role</label> <select name="user_role" class="span-8" style="width: 312px;">
+      <c:forEach var="availableRole" items="${availableRoles}">
+        <c:if test="${availableRole != 'ROLE_USER' && availableRole != 'ROLE_ANONYMOUS' }">
+          <option value="${availableRole}">${availableRole.name}</option>
+        </c:if>
+      </c:forEach>
+    </select>
+  </div>
 
-    <div class="buttons">
-      <input type="submit" value="Create" />
-    </div>
+  <div class="row clearfix">
+    <form:label path="password" cssClass="required">Password</form:label>
+    <form:input path="password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+  </div>
 
-  </form:form>
-</div>
+  <div class="buttons">
+    <input type="submit" value="Create" />
+  </div>
 
+</form:form>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

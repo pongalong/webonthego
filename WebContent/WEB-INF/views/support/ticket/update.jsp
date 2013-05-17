@@ -1,6 +1,6 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
 
-<div class="span-18 colborder" style="min-height: 200px;">
+<div class="span-18 colborder">
 
   <form:form id="updateTicket" cssClass="validatedForm" method="post" commandName="ticket">
 
@@ -131,8 +131,4 @@
 
 </div>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

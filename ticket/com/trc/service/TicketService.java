@@ -11,13 +11,10 @@ import com.trc.domain.ticket.AdminTicket;
 import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
+import com.trc.domain.ticket.SearchTicket;
 import com.trc.domain.ticket.Ticket;
 import com.trc.domain.ticket.TicketNote;
-import com.trc.domain.ticket.TicketPriority;
-import com.trc.domain.ticket.TicketStatus;
-import com.trc.domain.ticket.TicketType;
 import com.trc.domain.ticket.category.TicketCategory;
-import com.trc.domain.ticket.category.TicketCategory_old;
 import com.trc.exception.service.TicketServiceException;
 
 @Service
@@ -31,8 +28,8 @@ public class TicketService {
 	}
 
 	public List<Ticket> searchTickets(
-			int custId, int creatorId, int assigneeId, TicketStatus status, TicketCategory category, TicketPriority priority, TicketType type, String title, String description) throws TicketServiceException {
-		return ticketDao.searchTickets(custId, creatorId, assigneeId, status, category, priority, type, title, description);
+			SearchTicket ticket) {
+		return ticketDao.searchTickets(ticket);
 	}
 
 	public int saveTicket(

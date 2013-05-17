@@ -3,6 +3,7 @@ package com.trc.dao;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -13,14 +14,13 @@ import com.trc.domain.ticket.AdminTicket;
 import com.trc.domain.ticket.AgentTicket;
 import com.trc.domain.ticket.CustomerTicket;
 import com.trc.domain.ticket.InquiryTicket;
+import com.trc.domain.ticket.SearchTicket;
 import com.trc.domain.ticket.Ticket;
 import com.trc.domain.ticket.TicketNote;
 import com.trc.domain.ticket.TicketPriority;
 import com.trc.domain.ticket.TicketStatus;
 import com.trc.domain.ticket.TicketType;
 import com.trc.domain.ticket.category.TicketCategory;
-import com.trc.domain.ticket.category.TicketCategory_old;
-import com.tscp.util.logger.DevLogger;
 
 @Repository
 public class TicketDao extends HibernateDaoSupport {
@@ -37,30 +37,29 @@ public class TicketDao extends HibernateDaoSupport {
 	}
 
 	public List<Ticket> searchTickets(
+			SearchTicket ticket) {
+		return searchTickets(ticket.getCustomerId(), ticket.getCreatorId(), ticket.getAssigneeId(), ticket.getStatus(), ticket.getCategory(), ticket.getPriority(), ticket.getType(), ticket.getTitle(), ticket.getDescription());
+	}
+
+	public List<Ticket> searchTickets(
 			int custId, int creatorId, int assigneeId, TicketStatus status, TicketCategory category, TicketPriority priority, TicketType type, String title, String description) {
 
-		// Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 		DetachedCriteria criteria;
 
 		switch (type) {
 			case INQUIRY:
-				// criteria = session.createCriteria(InquiryTicket.class);
 				criteria = DetachedCriteria.forClass(InquiryTicket.class);
 				break;
 			case CUSTOMER:
-				// criteria = session.createCriteria(CustomerTicket.class);
 				criteria = DetachedCriteria.forClass(CustomerTicket.class);
 				break;
 			case AGENT:
-				// criteria = session.createCriteria(AgentTicket.class);
 				criteria = DetachedCriteria.forClass(AgentTicket.class);
 				break;
 			case ADMIN:
-				// criteria = session.createCriteria(AdminTicket.class);
 				criteria = DetachedCriteria.forClass(AdminTicket.class);
 				break;
 			default:
-				// criteria = session.createCriteria(Ticket.class);
 				criteria = DetachedCriteria.forClass(Ticket.class);
 				break;
 		}
@@ -73,16 +72,8 @@ public class TicketDao extends HibernateDaoSupport {
 			criteria.add(Restrictions.eq("assigneeId", assigneeId));
 		if (status != null && status != TicketStatus.NONE)
 			criteria.add(Restrictions.eq("status", status));
-
-		if (category != null)
-			DevLogger.log("TicketCategory is " + category);
-		if (category != null && category.getId() > 0) {
+		if (category != null && category.getId() > 0)
 			criteria.add(Restrictions.eq("category.id", category.getId()));
-			DevLogger.log("adding restriction to category.id as " + category.getId());
-		} else {
-			DevLogger.log("no restrictions added to category");
-		}
-
 		if (priority != null && priority != TicketPriority.NONE)
 			criteria.add(Restrictions.eq("priority", priority));
 		if (title != null && !title.trim().isEmpty())
@@ -90,6 +81,7 @@ public class TicketDao extends HibernateDaoSupport {
 		if (description != null && !description.trim().isEmpty())
 			criteria.add(Restrictions.like("description", "%" + description + "%"));
 
+		criteria.addOrder(Order.desc("id"));
 		return getHibernateTemplate().findByCriteria(criteria);
 	}
 

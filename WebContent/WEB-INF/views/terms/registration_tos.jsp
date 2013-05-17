@@ -664,35 +664,36 @@ div.WordSection1 {
         including our service plans and pricing. <span style='mso-spacerun: yes'> </span>Unless expressly prohibited by law, we reserve the right to modify or
         cancel our service or your account or take corrective action at any time and for any reason, including, but not limited to, your violation of any
         provision of the Terms and Conditions.<span style='mso-spacerun: yes'>  </span>Go to our<span style='color: #404040'> </span>website<span
-        style='color: #404040'> </span> http://www.webonthego.com to check out the most recent product and service pricing and Terms of Service.<span style='mso-spacerun: yes'>  </span>We
-        will notify you thirty (30) days in advance of any change to the Terms and Conditions that we determine to be materially adverse to you.<span
-        style='mso-spacerun: yes'>  </span>If you do not terminate your service within thirty (30) days of receiving such notice, you agree to accept that
-        change.
+        style='color: #404040'> </span> http://www.webonthego.com to check out the most recent product and service pricing and Terms of Service.<span
+        style='mso-spacerun: yes'>  </span>We will notify you thirty (30) days in advance of any change to the Terms and Conditions that we determine to be
+        materially adverse to you.<span style='mso-spacerun: yes'>  </span>If you do not terminate your service within thirty (30) days of receiving such
+        notice, you agree to accept that change.
       </span><span style='font-size: 10.0pt; mso-ansi-language: EN'> </span><span style='font-size: 10.0pt'><o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <b><span style='font-size: 10.0pt'>Account History.<span style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>Your Web on
-        the <span class=SpellE>Go<sup>sm</sup></span> account history for the previous ninety (90) days is available for your review. Simply go online at http://www.webonthego.com. Look for the Manage My Account link and login.
-        Go to Manage Account to view your usage details.<span style='mso-spacerun: yes'>  </span>If you deactivate your
-        service or change your mobile phone number, you may obtain your account history by contacting Web on the <span class=SpellE>Go<sup>sm</sup></span>
-        Customer Support at 855-WEBONGO (855-932-6646). <o:p></o:p>
+        the <span class=SpellE>Go<sup>sm</sup></span> account history for the previous ninety (90) days is available for your review. Simply go online at
+        http://www.webonthego.com. Look for the Manage My Account link and login. Go to Manage Account to view your usage details.<span
+        style='mso-spacerun: yes'>  </span>If you deactivate your service or change your mobile phone number, you may obtain your account history by contacting
+        Web on the <span class=SpellE>Go<sup>sm</sup></span> Customer Support at 855-WEBONGO (855-932-6646). <o:p></o:p>
       </span>
     </p>
 
     <p class=MsoNormal style='text-align: justify; tab-stops: 300.0pt'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Coverage.</span></b></span><b><span style='font-size: 10.0pt'><span
-          style='mso-spacerun: yes'>  </span></span></b><span lang=EN style='font-size: 10.0pt; mso-ansi-language: EN'>Our coverage map is available at http://www.webonthego.com.
-          The specific network coverage you get will depend on the radio transmissions your device can pick up. <span style='mso-spacerun: yes'> </span><strong><span
-          style='font-weight: normal; mso-bidi-font-weight: bold'>Our coverage maps provide high level estimates of our coverage areas when using
-            services outdoors under optimal conditions. <span style='mso-spacerun: yes'> </span>Coverage is not available everywhere. <span
-            style='mso-spacerun: yes'> </span>Coverage and service speeds are not guaranteed. <span style='mso-spacerun: yes'> </span>Coverage is subject to
-            change without notice. <span style='mso-spacerun: yes'> </span>Estimating wireless coverage, signal strength, and service speed is not an exact
-            science.<span style='mso-spacerun: yes'>  </span>There are gaps in coverage within our estimated coverage areas that, along with other factors, both
-            within and beyond our control (for example, network problems, network or Internet congestion, software, signal strength, your device, structures,
-            buildings, weather, geography, topography, server speeds of the websites you access, actions of third parties, etc.) may result in dropped and
-            blocked connections, slower service speeds, or otherwise impact the quality of service.
-        </span></strong></span><span style='font-size: 10.0pt'><o:p></o:p></span>
+          style='mso-spacerun: yes'>  </span></span></b><span lang=EN style='font-size: 10.0pt; mso-ansi-language: EN'>Our coverage map is available at
+        http://www.webonthego.com. The specific network coverage you get will depend on the radio transmissions your device can pick up. <span
+        style='mso-spacerun: yes'> </span><strong><span style='font-weight: normal; mso-bidi-font-weight: bold'>Our coverage maps provide high
+            level estimates of our coverage areas when using services outdoors under optimal conditions. <span style='mso-spacerun: yes'> </span>Coverage is not
+            available everywhere. <span style='mso-spacerun: yes'> </span>Coverage and service speeds are not guaranteed. <span style='mso-spacerun: yes'> </span>Coverage
+            is subject to change without notice. <span style='mso-spacerun: yes'> </span>Estimating wireless coverage, signal strength, and service speed is not
+            an exact science.<span style='mso-spacerun: yes'>  </span>There are gaps in coverage within our estimated coverage areas that, along with other
+            factors, both within and beyond our control (for example, network problems, network or Internet congestion, software, signal strength, your device,
+            structures, buildings, weather, geography, topography, server speeds of the websites you access, actions of third parties, etc.) may result in
+            dropped and blocked connections, slower service speeds, or otherwise impact the quality of service.
+        </span></strong>
+      </span><span style='font-size: 10.0pt'><o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
@@ -705,10 +706,10 @@ div.WordSection1 {
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Taxes and Surcharges</span></b><span style='font-size: 10.0pt'>.</span></span><span
         style='font-size: 10.0pt'><span style='mso-spacerun: yes'>  </span>Web on the <span class=SpellE>Go<sup>sm</sup></span> will charge applicable
-        state and local sales taxes on all purchases made through our store at http://store.webonthego.com. Stated prices for our data services do not include certain taxes or surcharges.<span style='mso-spacerun: yes'> 
-      </span>The amounts of surcharges are subject to change and may vary from time to time and by geographic area.<span style='mso-spacerun: yes'>  </span>Surcharges
-        are assessed to help defray costs incurred in complying with federal and state telecommunications regulations.<span style='mso-spacerun: yes'>  </span>All
-        taxes, fees and surcharges are subject to change without notice. <o:p></o:p></span>
+        state and local sales taxes on all purchases made through our store at http://store.webonthego.com. Stated prices for our data services do not include
+        certain taxes or surcharges.<span style='mso-spacerun: yes'>  </span>The amounts of surcharges are subject to change and may vary from time to time and
+        by geographic area.<span style='mso-spacerun: yes'>  </span>Surcharges are assessed to help defray costs incurred in complying with federal and state
+        telecommunications regulations.<span style='mso-spacerun: yes'>  </span>All taxes, fees and surcharges are subject to change without notice. <o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
@@ -722,15 +723,15 @@ div.WordSection1 {
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Pricing Information.</span></b></span><b><span style='font-size: 10.0pt'><span
           style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>Please contact Web on the <span class=SpellE>Go<sup>sm</sup></span> Customer
-        Support at 855-WEBONGO (855-932-6646) or visit our website at http://www.webonthego.com for additional pricing information or answers to
-        any questions about our services. <o:p></o:p></span>
+        Support at 855-WEBONGO (855-932-6646) or visit our website at http://www.webonthego.com for additional pricing information or answers to any questions
+        about our services. <o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 6.0pt; text-align: justify'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Disputed Charges.</span></b></span><b><span style='font-size: 10.0pt'><span
           style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>There will be occasions when a customer disputes a charge that appears on
-        his/her account. Charges are disputed for a variety of reasons, such as, unauthorized charges, usage errors,
-        wrong amounts/dates, services not received, etc.<span style='color: #404040'><o:p></o:p></span>
+        his/her account. Charges are disputed for a variety of reasons, such as, unauthorized charges, usage errors, wrong amounts/dates, services not received,
+        etc.<span style='color: #404040'><o:p></o:p></span>
       </span>
     </p>
 
@@ -748,11 +749,12 @@ div.WordSection1 {
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <b><span style='font-size: 10.0pt'>Account Suspension Related to Credit Card Chargebacks.<span style='mso-spacerun: yes'>  </span></span></b><span
-       style='font-size: 10.0pt'>If for any reason a valid charge (in accordance with Terms and Conditions) to your account is not authorized as a
-       result of the credit card company withholding such payment because it has been disputed (a “Chargeback”), Web on the <span class=SpellE>Go<sup>sm</sup></span><sup>
-       </sup>has the right to suspend your access to our data service until the Chargeback is reversed. Once your account is reactivated, you may be charged a fee for each Chargeback.
-       Since all service provide by Web on the <span class=SpellE>Go<sup>sm</sup></span> is prepaid, if your payment method is declined, your account will be suspended. 
-       You will no longer be able to use the service until you reactivate your account. For assistance in this situation, please contact Customer Support at 855-WEBONGO (855-932-6646). <o:p></o:p>
+        style='font-size: 10.0pt'>If for any reason a valid charge (in accordance with Terms and Conditions) to your account is not authorized as a
+        result of the credit card company withholding such payment because it has been disputed (a “Chargeback”), Web on the <span class=SpellE>Go<sup>sm</sup></span><sup>
+      </sup>has the right to suspend your access to our data service until the Chargeback is reversed. Once your account is reactivated, you may be charged a fee for
+        each Chargeback. Since all service provide by Web on the <span class=SpellE>Go<sup>sm</sup></span> is prepaid, if your payment method is declined, your
+        account will be suspended. You will no longer be able to use the service until you reactivate your account. For assistance in this situation, please
+        contact Customer Support at 855-WEBONGO (855-932-6646). <o:p></o:p>
       </span>
     </p>
 
@@ -763,36 +765,38 @@ div.WordSection1 {
     </p>
 
     <p class=MsoNormal style='margin-bottom: 12.0pt; text-align: justify'>
-      <span style='font-size: 10.0pt'>Devices purchased directly from Web on the <span class=SpellE>Go<sup>sm</sup></span> through our website at https://store.webonthego.com may be returned for a full refund within thirty (30) days of purchase.<span style='mso-spacerun: yes'>  </span><span
-        style='mso-bidi-font-weight: bold'>Please refer to our Return Policy for complete details for returning your device. Web on the <span class=SpellE>Go<sup>sm</sup></span> extends to our customers the original 
-        limited manufacturer’s warranty coverage which is one (1) year from date of purchase, against defects in parts or workmanship. If you experience a device malfunction, visit the support site 
-        at https://account.webonthego.com/support and we will arrange for a replacement. Refer to our Return Policy for full details.</span>
-      <o:p></o:p></span>
+      <span style='font-size: 10.0pt'>Devices purchased directly from Web on the <span class=SpellE>Go<sup>sm</sup></span> through our website at
+        https://store.webonthego.com may be returned for a full refund within thirty (30) days of purchase.<span style='mso-spacerun: yes'>  </span><span
+        style='mso-bidi-font-weight: bold'>Please refer to our Return Policy for complete details for returning your device. Web on the <span
+          class=SpellE>Go<sup>sm</sup></span> extends to our customers the original limited manufacturer’s warranty coverage which is one (1) year from date of
+          purchase, against defects in parts or workmanship. If you experience a device malfunction, visit the support site at
+          https://account.webonthego.com/support and we will arrange for a replacement. Refer to our Return Policy for full details.
+      </span> <o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <b><span style='font-size: 10.0pt'>Lost or Stolen Equipment.<span style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>If
         you lose your device or it is stolen, immediately contact Web on the <span class=SpellE>Go<sup>sm</sup></span> Customer Support at 855-WEBONGO
-        (855-932-6646) or visit our website at http://www.webonthego.com. Upon receiving notice that your device is lost or stolen, we will immediately suspend your account.
-        You are responsible for all charges incurred until you notify Web on the <span class=SpellE>Go<sup>sm</sup></span> of
-        the loss of your device. If you do not either activate a new device, or notify us that you have found your
-        device within 60 days of the account suspension, your account will be deactivated.<span style='mso-bidi-font-weight: bold'><o:p></o:p></span>
+        (855-932-6646) or visit our website at http://www.webonthego.com. Upon receiving notice that your device is lost or stolen, we will immediately suspend
+        your account. You are responsible for all charges incurred until you notify Web on the <span class=SpellE>Go<sup>sm</sup></span> of the loss of your
+        device. If you do not either activate a new device, or notify us that you have found your device within 60 days of the account suspension, your account
+        will be deactivated.<span style='mso-bidi-font-weight: bold'><o:p></o:p></span>
       </span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Safety.</span></b></span><b><span style='font-size: 10.0pt'><span
           style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>Always use your device in a safe manner that does not create a risk to your
-        safety or the safety of others. Do not use your device while operating a motor vehicle. <span
-        style='mso-spacerun: yes'> </span>Always use your device in accordance with all applicable laws and regulations. <o:p></o:p>
+        safety or the safety of others. Do not use your device while operating a motor vehicle. <span style='mso-spacerun: yes'> </span>Always use your device
+        in accordance with all applicable laws and regulations. <o:p></o:p>
       </span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 6.0pt; text-align: justify'>
-      <span class=GramE><b><span style='font-size: 10.0pt'>Use of Your Customer Information.</span></b> <span style='font-size: 10.0pt'>When you agree to the Terms and Conditions, 
-      you also agree to the terms of our Privacy Policy (available at http://www.webonthego.com). This Policy may change from time to time and includes
-        important information on what data we collect about you, how we use this data and with whom we share that data. <o:p></o:p></span>
-      </span>
+      <span class=GramE><b><span style='font-size: 10.0pt'>Use of Your Customer Information.</span></b> <span style='font-size: 10.0pt'>When you
+          agree to the Terms and Conditions, you also agree to the terms of our Privacy Policy (available at http://www.webonthego.com). This Policy may change
+          from time to time and includes important information on what data we collect about you, how we use this data and with whom we share that data. <o:p></o:p>
+      </span> </span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 6.0pt; text-align: justify'>
@@ -800,8 +804,7 @@ div.WordSection1 {
         is committed to protecting all of your private and personal information, including information about your service account with us. The <span class=GramE>services</span>
         to which you subscribe and use, are referred to as Customer Proprietary Network Information (CPNI). We have established policies and operating
         procedures to fully comply with rules and guidelines provided by the Federal Communications Commission regarding CPNI; we take these rules seriously and
-        they are strictly followed.<span style='color: black'> </span>
-      <o:p></o:p>
+        they are strictly followed.<span style='color: black'> </span> <o:p></o:p>
       </span>
     </p>
 
@@ -825,18 +828,18 @@ div.WordSection1 {
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
-      <span class=GramE><b><span style='font-size: 10.0pt'>Website.</span></b></span> <span style='font-size: 10.0pt'>You can manage your account, make payments, view our content and learn more
-        about our products and services by using our website at http://www.webonthego.com. Use of the our website is subject to the terms set forth in 
-        Terms of Website Use and Privacy Policy, which are available on our website <span style='color: #404040'>(</span>http://www.webonthego.com<span style='color: #404040'>).</span> 
-        <o:p></o:p></span>
-      </span>
+      <span class=GramE><b><span style='font-size: 10.0pt'>Website.</span></b></span> <span style='font-size: 10.0pt'>You can manage your account, make
+        payments, view our content and learn more about our products and services by using our website at http://www.webonthego.com. Use of the our website is
+        subject to the terms set forth in Terms of Website Use and Privacy Policy, which are available on our website <span style='color: #404040'>(</span>http://www.webonthego.com<span
+        style='color: #404040'>).</span> <o:p></o:p>
+      </span> </span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 6.0pt; text-align: justify'>
       <span class=GramE><b><span style='font-size: 10.0pt'>Dispute Resolution and Mandatory Arbitration of Disputes.</span></b></span><b><span
         style='font-size: 10.0pt'><span style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>You and Web on the <span class=SpellE>Go<sup>sm</sup></span>
-        each agree to negotiate in good faith by contacting each other first with any disputes.You must contact us with
-        any dispute by visiting https://support.webonthego.com, or calling Customer Support at 855-WEBONGO (855-932-6646), or writing us at Web on the <span class=SpellE>Go<sup>sm</sup></span>,
+        each agree to negotiate in good faith by contacting each other first with any disputes.You must contact us with any dispute by visiting
+        https://support.webonthego.com, or calling Customer Support at 855-WEBONGO (855-932-6646), or writing us at Web on the <span class=SpellE>Go<sup>sm</sup></span>,
         c/o Sage Telecom, Inc., 10440 North Central Expressway, Suite 700, Dallas, TX 75231, <span class=GramE>Attn</span>: Customer Support.<span
         style='mso-spacerun: yes'>  </span>Please provide all relevant documents, description of the problem and any proposed resolution.<span
         style='mso-spacerun: yes'>  </span>Web on the <span class=SpellE>Go<sup>sm</sup></span> will contact you at the last address that you have provided us
@@ -916,8 +919,7 @@ div.WordSection1 {
         style='mso-spacerun: yes'> </span>No portion of the Web on the <span class=SpellE>Go<sup>sm</sup></span> websites and images may be reproduced in any
         form or by any means, except as expressly permitted in these terms.<span style='mso-spacerun: yes'>  </span>Except to the extent that applicable laws
         prevent Web on the <span class=SpellE>Go<sup>sm</sup></span> restraining you from doing so, you agree not to modify, rent, lease, loan, sell,
-        distribute, or create derivative works based on the products and services in any manner.<span style='mso-spacerun: yes'>  </span>
-      <o:p></o:p></span>
+        distribute, or create derivative works based on the products and services in any manner.<span style='mso-spacerun: yes'>  </span> <o:p></o:p></span>
     </p>
 
     <p class=MsoNormal style='margin-bottom: 11.25pt; text-align: justify'>
@@ -931,7 +933,8 @@ div.WordSection1 {
           style='mso-spacerun: yes'>  </span></span></b><span style='font-size: 10.0pt'>You may contact us by mail (Web on the <span class=SpellE>Go<sup>sm</sup></span>,
         c/o Sage Telecom, Inc., 10440 North Central Expressway, Suite 700, Dallas, TX 75231, Attn: Customer Support) or phone 855-WEBONGO (855-932-6646) or
         electronic means (via our website at http://www.webonthego.com).<span style='mso-spacerun: yes'>  </span></span>
-      <o:p></o:p></span>
+      <o:p></o:p>
+      </span>
     </p>
 
     <p class=MsoNormal style='text-align: justify'>

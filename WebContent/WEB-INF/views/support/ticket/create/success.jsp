@@ -1,11 +1,11 @@
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
-<div class="span-18 colborder" style="height: 100%;">
+<div class="span-18 colborder">
   <h3>Ticket Submitted</h3>
 
   <div class="info">
     <p>We will investigate the issue and get back to you as soon as possible. Thank You!</p>
-    <ul>
+    <ul class="info">
       <li><span>Ticket Number:</span> ${ticket.id}</li>
       <li><span>Category:</span> ${ticket.category.description}</li>
       <li><span>Title:</span> ${ticket.title}</li>
@@ -16,8 +16,4 @@
 
 </div>
 
-<div class="span-6 last accountNav">
-  <%@ include file="/WEB-INF/views/include/navigation/accountNav.jsp"%>
-</div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>

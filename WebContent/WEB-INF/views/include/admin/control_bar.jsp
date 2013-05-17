@@ -49,10 +49,7 @@
       <div id="admin_search_results" class="search_results_box"></div>
     </div>
 
-
-    <input id="adminControl_button_submit" type="submit" value="Go" class="mBtn" /> <input id="adminControl_button_reset" type="reset" class="mBtn" /> <a
-      href="<spring:url value="/support/ticket" />" class="mBtn">Tickets</a>
-
+    <input id="adminControl_button_submit" type="submit" value="Go" class="mBtn" /> <input id="adminControl_button_reset" type="reset" class="mBtn" />
 
   </form>
   <!--  END SEARCH FORM -->

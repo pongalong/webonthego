@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 
 <!--  Begin left column -->
@@ -23,14 +22,15 @@
       </div>
     </c:if>
 
+    <!--  Begin login box -->
     <div class="span-9">
-      <input class="span-9" id="j_username" type="text" name="j_username" placeholder="Email Address" value="${last_username}" /> <input class="span-9 hidden"
-        id="j_password" type="password" name="j_password" /> <input class="span-9" id="j_password_holder" type="text" name="j_password_holder"
-        placeholder="Password" value="Password" />
-        
-        <a href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> 
-        <input type="submit" value="Login" style="float: right;" />
+      <input class="span-9" id="j_username" type="text" name="j_username" placeholder="Email Address" value="${last_username}" /> 
+      <input class="span-9 hidden" id="j_password" type="password" name="j_password" /> 
+      <input class="span-9" id="j_password_holder" type="text" name="j_password_holder" placeholder="Password" value="Password" /> 
+      <a href="<spring:url value='/reset/password' />" style="float: left;">Lost password</a> 
+      <input type="submit" value="Login" style="float: right;" />
     </div>
+    <!--  End login box -->
 
   </form>
 
@@ -38,7 +38,7 @@
 <!--  End left column -->
 
 <!--  Begin right column -->
-<div class="span-8 last">
+<div class="span-8 colborderleft last">
   <h3>Sign up for Web on the Go &#8480;</h3>
   <p>Don't have an account?</p>
   <ul style="height: 80px;">
@@ -46,7 +46,7 @@
     <li>Manage devices</li>
     <li>Get support</li>
   </ul>
-  <a class="mBtn" href="<spring:url value="/register" />" style="float: right;"><span>Create an Account</span></a>
+  <a class="mBtn" href="<spring:url value="/register" />" style="float: right;">Create an Account</a>
 </div>
 <!--  End right column -->
 

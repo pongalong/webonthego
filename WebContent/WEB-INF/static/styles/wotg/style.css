@@ -25,6 +25,7 @@ html,body {
 	margin: 65px -15px 0;
 	padding: 15px;
 	border-top: 8px solid #2a9c97;
+	/* background: url('../../images/background/mainbody_bg.png') repeat-y fixed center; */
 }
 
 /* **************************************************************************
@@ -49,7 +50,7 @@ html,body {
 #jsCheckCurtain {
 	background-color: #111;
 	opacity: 0.45;
-	filter: alpha(opacity =                                                             0.45);
+	filter: alpha(opacity =                                                               0.45);
 	position: fixed;
 	top: 0px;
 	left: 0px;

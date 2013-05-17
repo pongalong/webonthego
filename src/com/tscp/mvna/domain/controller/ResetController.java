@@ -23,16 +23,20 @@ import com.trc.manager.UserManager;
 import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.trc.user.security.SecurityQuestion;
 import com.trc.user.security.UpdatePassword;
 import com.trc.user.security.VerifyIdentity;
 import com.trc.web.model.ResultModel;
 import com.trc.web.validation.EmailValidator;
 import com.trc.web.validation.UserUpdateValidator;
+import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/reset")
-@SessionAttributes({ "verifyIdentity" })
+@SessionAttributes({
+		"verifyIdentity",
+		"securityQuestion",
+		"updatePassword",
+		"userToReset" })
 public class ResetController {
 	@Autowired
 	private UserManager userManager;
@@ -52,9 +56,7 @@ public class ResetController {
 
 	@RequestMapping(value = "/password", method = RequestMethod.POST)
 	public ModelAndView postRequest(
-			HttpSession session,
-			@ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity,
-			Errors errors) {
+			HttpSession session, @ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity, Errors errors) {
 
 		ResultModel model = new ResultModel("account/reset/password/request/success", "account/reset/password/request/prompt");
 
@@ -63,48 +65,25 @@ public class ResetController {
 			return model.getError();
 		}
 
-		storeEmail(session, verifyIdentity.getEmail());
-		User user = userManager.getUserByEmail(verifyIdentity.getEmail());
+		User userToReset = userManager.getUserByEmail(verifyIdentity.getEmail());
 
-		if (user == null) {
-			// errors.reject("email.notExist", "User &quot;" +
-			// verifyIdentity.getEmail() + "&quot; not found");
-			// return model.getError();
+		if (userToReset == null) {
 			return model.getSuccess();
 		} else {
-			Map<Object, Object> mailModel = new HashMap<Object, Object>();
-			mailModel.put("key", session.getId());
-			mailModel.put("user", user);
-			SimpleMailMessage message = new SimpleMailMessage();
-			message.setTo(verifyIdentity.getEmail());
-			message.setFrom("no-reply@webonthego.com");
-			message.setSubject("A request to reset your password has been made.");
-
-			try {
-				velocityEmailService.send("passwordReset", message, mailModel);
-			} catch (EmailException e) {
-				e.printStackTrace();
-			}
-
+			sendVerificationEmail(session.getId(), userToReset);
+			model.addAttribute("userToReset", userToReset);
+			return model.getSuccess();
 		}
-		return model.getSuccess();
 	}
 
 	@RequestMapping(value = "/password/verify/{key}", method = RequestMethod.GET)
 	public ModelAndView showVerification(
-			HttpSession session,
-			@ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity,
-			@PathVariable("key") String key) {
+			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset) {
 
 		ResultModel model = new ResultModel("account/reset/password/verify/security");
 
 		if (isValidKey(session, key)) {
-			String email = retrieveEmail(session);
-			User user = userManager.getUserByEmail(email);
-			if (user != null) {
-				SecurityQuestion hint = securityQuestionManager.getSecurityQuestion(user.getSecurityQuestionAnswer().getId());
-				model.addAttribute("question", hint.getQuestion());
-			}
+			model.addAttribute("securityQuestion", securityQuestionManager.getSecurityQuestion(userToReset.getSecurityQuestionAnswer().getId()));
 			return model.getSuccess();
 		} else {
 			return model.getTimeout();
@@ -113,33 +92,24 @@ public class ResetController {
 
 	@RequestMapping(value = "/password/verify/{key}", method = RequestMethod.POST)
 	public ModelAndView postVerification(
-			HttpSession session,
-			@PathVariable("key") String key,
-			@ModelAttribute VerifyIdentity verifyIdentity,
-			Errors errors) {
+			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset, @ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity, Errors errors) {
 
 		ResultModel model = new ResultModel("redirect:/reset/password/update/" + key, "account/reset/password/verify/security");
-		if (isValidKey(session, key)) {
-			String email = (String) session.getAttribute(getEmailKey(session));
-			User user = userManager.getUserByEmail(email);
-			if (!isCorrectAnswer(user, verifyIdentity)) {
-				errors.reject("securtyQuestion.answer.incorrect", "Your response did not match your saved answer");
-				SecurityQuestion hint = securityQuestionManager.getSecurityQuestion(user.getSecurityQuestionAnswer().getId());
-				model.addAttribute("question", hint.getQuestion());
-				return model.getError();
-			} else {
-				return model.getSuccess();
-			}
-		} else {
+
+		if (!isValidKey(session, key))
 			return model.getTimeout();
+		else if (!isCorrectAnswer(userToReset, verifyIdentity)) {
+			errors.reject("securtyQuestion.answer.incorrect", "Your response did not match your saved answer");
+			return model.getError();
+		} else {
+			model.addAttribute("updatePassword", new UpdatePassword());
+			return model.getSuccess();
 		}
 	}
 
 	@RequestMapping(value = "/password/update/{key}", method = RequestMethod.GET)
 	public ModelAndView updatePassword(
-			HttpSession session,
-			@ModelAttribute("updatePassword") UpdatePassword updatePassword,
-			@PathVariable("key") String key) {
+			HttpSession session, @ModelAttribute("updatePassword") UpdatePassword updatePassword, @PathVariable("key") String key) {
 
 		ResultModel model = new ResultModel("account/reset/password/update/prompt");
 
@@ -151,30 +121,23 @@ public class ResetController {
 
 	@RequestMapping(value = "/password/update/{key}", method = RequestMethod.POST)
 	public ModelAndView postUpdatePassword(
-			HttpSession session,
-			@PathVariable("key") String key,
-			@ModelAttribute("updatePassword") UpdatePassword updatePassword,
-			BindingResult result) {
+			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset, @ModelAttribute("updatePassword") UpdatePassword updatePassword, BindingResult result) {
 
 		ResultModel model = new ResultModel("account/reset/password/update/success", "account/reset/password/update/prompt");
 
-		if (isValidKey(session, key)) {
-			String email = retrieveEmail(session);
-
-			userUpdateValidator.validateNewPassword(updatePassword, result);
-
-			if (result.hasErrors()) {
-				return model.getError();
-			} else {
-				User user = userManager.getUserByEmail(email);
-				user.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
-				userManager.updateUser(user);
-				return model.getSuccess();
-			}
-
-		} else {
+		if (!isValidKey(session, key))
 			return model.getTimeout();
+
+		userUpdateValidator.validateNewPassword(updatePassword, result);
+
+		if (result.hasErrors()) {
+			return model.getError();
+		} else {
+			userToReset.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
+			userManager.updateUser(userToReset);
+			return model.getSuccess();
 		}
+
 	}
 
 	/* ********************************************************************************************************
@@ -183,31 +146,30 @@ public class ResetController {
 	 */
 
 	private boolean isValidKey(
-			HttpSession session,
-			String key) {
+			HttpSession session, String key) {
 		return key.equals(session.getId());
 	}
 
 	private boolean isCorrectAnswer(
-			User user,
-			VerifyIdentity verifyIdentity) {
+			User user, VerifyIdentity verifyIdentity) {
 		return user.getSecurityQuestionAnswer().getAnswer().equalsIgnoreCase(verifyIdentity.getHintAnswer().trim());
 	}
 
-	private String getEmailKey(
-			HttpSession session) {
-		return "resetEmail" + session.getId();
-	}
-
-	private void storeEmail(
-			HttpSession session,
-			String email) {
-		session.setAttribute(getEmailKey(session), email);
-	}
-
-	private String retrieveEmail(
-			HttpSession session) {
-		return (String) session.getAttribute(getEmailKey(session));
+	private void sendVerificationEmail(
+			String key, User user) {
+		Map<Object, Object> mailModel = new HashMap<Object, Object>();
+		mailModel.put("key", key);
+		mailModel.put("user", user);
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(user.getEmail());
+		message.setFrom("no-reply@webonthego.com");
+		message.setSubject("A request to reset your password has been made.");
+		DevLogger.log("http://localhost:8080/reset/password/verify/" + key);
+		try {
+			velocityEmailService.send("passwordReset", message, mailModel);
+		} catch (EmailException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
