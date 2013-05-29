@@ -43,13 +43,14 @@
   <!-- SEARCH FORM -->
   <form id="adminControl" method="post" action="<spring:url value="/admin/search" />">
 
-    <div style="float: left; padding-right: 5px;">
-      <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" value="${USER.userId}" /> <input autocomplete="off"
-        name="admin_search_param" id="admin_search_param" type="text" placeholder="${currentUser}" />
-      <div id="admin_search_results" class="search_results_box"></div>
-    </div>
+    <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" value="${USER.userId}" />
 
-    <input id="adminControl_button_submit" type="submit" value="Go" class="mBtn" /> <input id="adminControl_button_reset" type="reset" class="mBtn" />
+    <div class="input-append">
+      <input autocomplete="off" name="admin_search_param" id="admin_search_param" type="text" placeholder="${currentUser}" />
+      <button id="adminControl_button_submit" class="btn" type="submit">Go</button>
+      <button id="adminControl_button_reset" class="btn" type="reset">Reset</button>
+    </div>
+    <div id="admin_search_results" class="search_results_box"></div>
 
   </form>
   <!--  END SEARCH FORM -->

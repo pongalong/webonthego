@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>Change Topup Amount</h3>
 
@@ -8,8 +8,8 @@
   <strong>Device:</strong> ${accountDetail.deviceInfo.label}<br /> <strong>Topup:</strong> $${accountDetail.topUp}.
 </p>
 
-<p style="margin-top: 20px;">
-  <a class="mBtn" href="<spring:url value="/devices" />">Continue</a>
+<p>
+  <a class="button" href="<spring:url value="/devices" />">Continue</a>
 </p>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

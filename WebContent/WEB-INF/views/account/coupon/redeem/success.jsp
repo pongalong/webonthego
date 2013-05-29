@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>Promotion Coupon Applied!</h3>
 <p>A promotional coupon was applied to your account:</p>
@@ -15,6 +15,4 @@
   <a href="<spring:url value="/" />" class="button action-m">Done</a>
 </div>
 
-<script type="text/javascript" src="<spring:url value='/static/javascript/pages/addCoupon.js' />"></script>
-
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

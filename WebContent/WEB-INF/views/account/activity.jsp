@@ -1,27 +1,31 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>Account Activity</h3>
 
-<div style="position: relative; margin-bottom: 30px;">
-  <select id="deviceSelect" style="border-radius: 3px; border-color: #aaa;">
-    <c:forEach var="acc" items="${ACCOUNT_DETAILS}">
-      <option value="${acc.encodedAccountNum}">${acc.deviceInfo.label}</option>
-    </c:forEach>
-  </select>
-  <div style="position: absolute; top: 0; bottom: 0; right: 0; margin: auto; height: 15px;">
-    <c:choose>
-      <c:when test="${not empty accountDetail.account.inactiveDate}">
-        <div class="badge" style="float: right;">Current Balance: Disconnected</div>
+<!-- Begin Device Select and Balance -->
+<div class="row">
+  <div class="span8">
+    <select id="deviceSelect">
+      <c:forEach var="acc" items="${ACCOUNT_DETAILS}">
+        <option value="${acc.encodedAccountNum}">${acc.deviceInfo.label}</option>
+      </c:forEach>
+    </select>
+  </div>
+  <div class="span2">
+    <div class="badge" style="float: right;">
+      Current Balance:
+      <c:choose>
+        <c:when test="${not empty accountDetail.account.inactiveDate}">
+       Disconnected
       </c:when>
-      <c:otherwise>
-        <div class="badge" style="float: right;">
-          Current Balance: $
+        <c:otherwise>
           <fmt:formatNumber value="${accountDetail.account.balance}" pattern="0.00" />
-        </div>
-      </c:otherwise>
-    </c:choose>
+        </c:otherwise>
+      </c:choose>
+    </div>
   </div>
 </div>
+<!-- End Device Select and Balance -->
 
 <c:set var="currentBalance" value="${accountDetail.account.balance}" />
 
@@ -42,12 +46,10 @@
     <c:set var="prevPageNum" value="${accountDetail.usageHistory.currentPageNum - 1}" />
     <c:set var="nextPageNum" value="${accountDetail.usageHistory.currentPageNum + 1}" />
     <c:if test="${prevPageNum > 0}">
-      <span style="float: left"><a href="<spring:url value="/account/activity/${accountDetail.encodedAccountNum}/${prevPageNum}" />">&laquo; Previous
-          Page</a> </span>
+      <a class="prev" href="<spring:url value="/account/activity/${accountDetail.encodedAccountNum}/${prevPageNum}" />">Previous Page</a>
     </c:if>
     <c:if test="${accountDetail.usageHistory.currentPageNum < accountDetail.usageHistory.pageCount}">
-      <span style="float: right"><a href="<spring:url value="/account/activity/${accountDetail.encodedAccountNum}/${nextPageNum}" />">Next Page
-          &raquo;</a> </span>
+      <a class="next" href="<spring:url value="/account/activity/${accountDetail.encodedAccountNum}/${nextPageNum}" />">Next Page</a>
     </c:if>
   </c:when>
   <c:otherwise>
@@ -76,4 +78,4 @@
 	});
 </script>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

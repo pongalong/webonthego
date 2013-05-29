@@ -24,7 +24,8 @@ public class ArticleService {
 	/********** Article Operations **************/
 	/****************************************************************************************/
 
-	public int saveArticle(Article article) throws SupportServiceException {
+	public int saveArticle(
+			Article article) throws SupportServiceException {
 		try {
 			return articleDao.saveArticle(article);
 		} catch (DataAccessException e) {
@@ -32,7 +33,8 @@ public class ArticleService {
 		}
 	}
 
-	public Article getArticleById(int id) throws SupportServiceException {
+	public Article getArticleById(
+			int id) throws SupportServiceException {
 		try {
 			return articleDao.getArticleById(id);
 		} catch (DataAccessException e) {
@@ -48,7 +50,8 @@ public class ArticleService {
 		}
 	}
 
-	public List<Article> searchArticlesByKeyword(String keyword) throws SupportServiceException {
+	public List<Article> searchArticlesByKeyword(
+			String keyword) throws SupportServiceException {
 		try {
 			return articleDao.searchArticlesByKeyword(keyword);
 		} catch (DataAccessException e) {
@@ -63,7 +66,8 @@ public class ArticleService {
 		return articleDao.getAllCategories();
 	}
 
-	public List<Article> getArticlesByCategory(int categoryId) throws SupportServiceException {
+	public List<Article> getArticlesByCategory(
+			int categoryId) throws SupportServiceException {
 		try {
 			return articleDao.getArticlesByCategory(categoryId);
 		} catch (DataAccessException e) {
@@ -71,7 +75,8 @@ public class ArticleService {
 		}
 	}
 
-	public Category getCategoryById(int categoryId) throws SupportServiceException {
+	public Category getCategoryById(
+			int categoryId) throws SupportServiceException {
 		try {
 			return articleDao.getCategoryById(categoryId);
 		} catch (DataAccessException e) {
@@ -79,7 +84,8 @@ public class ArticleService {
 		}
 	}
 
-	public int createCategory(Category category) throws SupportServiceException {
+	public int createCategory(
+			Category category) throws SupportServiceException {
 		try {
 			return articleDao.createCategory(category);
 		} catch (DataAccessException e) {

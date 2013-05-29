@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>We're sorry, an unexpected error occurred</h3>
 <p>
@@ -41,4 +41,4 @@
   %>
 </sec:authorize>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

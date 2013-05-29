@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 <div class="span-18">
 
   <form:form id="payment_form" cssClass="validatedForm" method="post" commandName="creditCardPayment">
@@ -8,7 +7,6 @@
 
     <!-- Begin Errors -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCardPayment'].allErrors}">
-      <div class="row clearfix">
         <div class="alert error">
           <h1>Please correct the following problems</h1>
           <form:errors path="creditCard.nameOnCreditCard" />
@@ -30,7 +28,6 @@
             </c:forEach>
           </spring:bind>
         </div>
-      </div>
     </c:if>
 
     <p>Add your preferred payment information below. You can log back in to update this information at any time.</p>
@@ -196,5 +193,4 @@
   </form:form>
 
 </div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

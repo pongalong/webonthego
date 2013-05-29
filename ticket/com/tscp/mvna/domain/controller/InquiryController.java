@@ -30,17 +30,12 @@ public class InquiryController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String showInqiuryPage() {
-		return "support/inquire/overview";
-	}
-
-	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public String showInquiryForm(
 			@ModelAttribute("ticket") InquiryTicket ticket) {
 		return "support/inquire/create";
 	}
 
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView postInquiryForm(
 			@ModelAttribute("ticket") InquiryTicket ticket, BindingResult result) {
 

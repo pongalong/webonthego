@@ -1,15 +1,15 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
+<form:form commandName="simpleRegistrationLogin" method="post" cssClass="form-horizontal">
 
-<form:form id="registration_username" cssClass="validatedForm" method="post" commandName="simpleRegistrationLogin">
+  <fieldset>
+    <legend>Sign Up For An Account</legend>
 
-  <h3>Sign up for an account</h3>
-
-  <!-- Errors -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationLogin'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <!-- Errors -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationLogin'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="email.value" />
         <form:errors path="email.confirmValue" />
         <form:errors path="password.value" />
@@ -21,56 +21,69 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <div class="well">
+      <p>Your email address will be your login for your account.</p>
+      <p>Choose a password of at least 5 characters containing letters and numbers.</p>
     </div>
-  </c:if>
 
-  <p>Your email address will be your login for your account.</p>
-  <p>Choose a password of at least 5 characters containing letters and numbers.</p>
+    <!-- Email -->
+    <div class="control-group">
+      <form:label path="email.value" cssClass="control-label required">
+        <spring:message code="label.email" />
+      </form:label>
+      <div class="controls">
+        <form:input path="email.value" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Not a valid email</span>
+        </span>
+      </div>
+    </div>
 
-  <!-- Email -->
-  <div class="row clearfix">
-    <form:label path="email.value" cssClass="required">
-      <spring:message code="label.email" />
-    </form:label>
-    <form:input path="email.value" cssErrorClass="validationFailed" />
-    <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Not a valid email</span>
-    </span>
-  </div>
-  <!-- Confirm Email -->
-  <div class="row clearfix">
-    <form:label path="email.confirmValue" cssClass="required">
-      <spring:message code="label.confirmEmail" />
-    </form:label>
-    <form:input path="email.confirmValue" cssErrorClass="validationFailed" />
-    <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Emails do not match</span>
-    </span>
-  </div>
+    <!-- Confirm Email -->
+    <div class="control-group">
+      <form:label path="email.confirmValue" cssClass="control-label required">
+        <spring:message code="label.confirmEmail" />
+      </form:label>
+      <div class="controls">
+        <form:input path="email.confirmValue" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Emails do not match</span>
+        </span>
+      </div>
+    </div>
 
-  <!-- Password -->
-  <div class="row clearfix">
-    <form:label path="password.value" cssClass="required">
-      <spring:message code="label.password" />
-    </form:label>
-    <form:password cssErrorClass="validationFailed" path="password.value" />
-    <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Must have both numbers &amp; letters</span>
-    </span>
-  </div>
-  <!-- Confirm Password -->
-  <div class="row clearfix">
-    <form:label path="password.confirmValue" cssClass="required">
-      <spring:message code="label.confirmPassword" />
-    </form:label>
-    <form:password cssErrorClass="validationFailed" path="password.confirmValue" />
-    <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Passwords do not match</span>
-    </span>
-  </div>
+    <!-- Password -->
+    <div class="control-group">
+      <form:label path="password.value" cssClass="control-label required">
+        <spring:message code="label.password" />
+      </form:label>
+      <div class="controls">
+        <form:password path="password.value" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Must have both numbers &amp;
+            letters</span>
+        </span>
+      </div>
+    </div>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <input id="registration_username_submit" type="submit" name="_eventId_submit" value="Continue"></input>
-  </div>
+    <!-- Confirm Password -->
+    <div class="control-group">
+      <form:label path="password.confirmValue" cssClass="control-label required">
+        <spring:message code="label.confirmPassword" />
+      </form:label>
+      <div class="controls">
+        <form:password path="password.confirmValue" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        <span class="validation"> <span class="message"></span> <span class="accept"></span> <span class="reject">Passwords do not match</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="controls">
+      <button type="submit" class="button" name="_eventId_submit">Continue</button>
+    </div>
+
+  </fieldset>
 </form:form>
-
 
 
 <script type="text/javascript">
@@ -80,4 +93,4 @@
 	});
 </script>
 
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerNoMenu.jsp"%>

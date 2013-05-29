@@ -1,4 +1,4 @@
-#rt-header {
+#header {
 	margin-top: 70px;
 }
 
@@ -85,6 +85,7 @@
 #admin_control_bar #adminControl #admin_search_results {
 	z-index: 10;
 	position: relative;
+	top: -10px;
 	overflow-x: hidden;
 	overflow-y: auto;
 	display: none;

@@ -9,7 +9,6 @@ forms.validation = forms.validation || {};
  * Validation Methods
  ******************************************************************************/
 
-
 forms.validation.validateChecked = function(value) {
 	return value == "true";
 };

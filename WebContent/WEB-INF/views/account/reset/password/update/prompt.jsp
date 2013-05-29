@@ -1,42 +1,45 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 
-<h3>Update Your Password</h3>
+<div class="span12">
 
-<form:form id="updatePassword" cssStyle="padding-bottom: 0;" method="POST" commandName="updatePassword" cssClass="validatedForm">
+  <form:form id="updatePassword" method="POST" commandName="updatePassword" cssClass="form-horizontal">
+    <fieldset>
+      <legend>Update Your Password</legend>
 
-  <!--Begin Error Display -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.updatePassword'].allErrors}">
-    <div class="alert error">
-      <h1>Please correct the following problems</h1>
-      <form:errors path="oldPassword" />
-      <form:errors path="newPassword" />
-      <form:errors path="confirmNewPassword" />
-    </div>
-  </c:if>
-  <!--End Error Display -->
+      <!--Begin Error Display -->
+      <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.updatePassword'].allErrors}">
+        <div class="alert alert-error">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4>Please correct the following problems</h4>
+          <form:errors path="oldPassword" />
+          <form:errors path="newPassword" />
+          <form:errors path="confirmNewPassword" />
+        </div>
+      </c:if>
+      <!--End Error Display -->
 
-  <div class="alert info" style="margin-bottom: 0;">
+      <p>Enter a new password for your account.</p>
 
-    <p>Enter a new password for your account.</p>
+      <div class="control-group">
+        <form:label path="newPassword" cssClass="control-label">New Password</form:label>
+        <div class="controls">
+          <form:password path="newPassword" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        </div>
+      </div>
 
-    <div class="row clearfix hidden">
-      <form:password path="oldPassword" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+      <div class="control-group">
+        <form:label path="confirmNewPassword" cssClass="control-label">Confirm Password</form:label>
+        <div class="controls">
+          <form:password path="confirmNewPassword" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        </div>
+      </div>
 
-    <div class="row clearfix">
-      <form:password path="newPassword" placeholder="New Password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+      <div class="controls">
+        <button type="submit" class="button">Update Password</button>
+      </div>
 
-    <div class="row clearfix">
-      <form:password path="confirmNewPassword" placeholder="Confirm Password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+    </fieldset>
+  </form:form>
+</div>
 
-    <p>
-      <input type="submit" value="Update Password"></input>
-    </p>
-
-  </div>
-
-</form:form>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

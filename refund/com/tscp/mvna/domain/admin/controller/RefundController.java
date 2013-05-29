@@ -30,6 +30,7 @@ import com.trc.web.validation.JCaptchaValidator;
 import com.trc.web.validation.RefundRequestValidator;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.PaymentTransaction;
+import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/admin/refund")
@@ -57,7 +58,7 @@ public class RefundController {
 		modelMap.addAttribute("refundCodes", Arrays.asList(RefundCode.values()));
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SU')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "{transId}", method = RequestMethod.GET)
 	public ModelAndView showRefund(
 			@ModelAttribute("USER") User user, @PathVariable int transId) {
@@ -74,7 +75,7 @@ public class RefundController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SU')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "{transId}", method = RequestMethod.POST)
 	public ModelAndView processRefund(
 			HttpServletRequest request, @ModelAttribute("USER") User user, @ModelAttribute("refundRequest") RefundRequest refundRequest, BindingResult result, @PathVariable int transId) {
@@ -91,6 +92,7 @@ public class RefundController {
 				refundManager.refundPayment(user, refundRequest);
 				return resultModel.getSuccess();
 			} catch (RefundManagementException e) {
+				DevLogger.getLogger().debug("exception {}", e);
 				return resultModel.getException();
 			}
 		}

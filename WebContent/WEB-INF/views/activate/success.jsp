@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 <div>
 
   <h3>Your device has been activated!</h3>
@@ -19,4 +18,4 @@
   </div>
 </div>
 
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

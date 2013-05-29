@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 <div class="span-18">
 
   <form:form id="device_form" cssClass="validatedForm" method="post" commandName="device">
@@ -8,17 +7,15 @@
 
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.device'].allErrors}">
-      <div class="row clearfix">
-        <div class="alert error">
-          <h1>Please correct the following problems</h1>
-          <form:errors path="value" />
-          <form:errors path="label" />
-          <spring:bind path="device">
-            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-            </c:forEach>
-          </spring:bind>
-        </div>
+      <div class="alert error">
+        <h1>Please correct the following problems</h1>
+        <form:errors path="value" />
+        <form:errors path="label" />
+        <spring:bind path="device">
+          <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+          </c:forEach>
+        </spring:bind>
       </div>
     </c:if>
 
@@ -46,5 +43,4 @@
   </form:form>
 
 </div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

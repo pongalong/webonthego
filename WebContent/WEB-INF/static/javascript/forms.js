@@ -1,38 +1,4 @@
 /*******************************************************************************
- * Radio Button Effects to be removed - addCoupon.js still uses some of these
- ******************************************************************************/
-function highlightRadio(name, val) {
-	var radioButtons = $("input[name='" + name + "']:radio");
-	var selectedRadio = $("input[value='" + val + "']");
-	$(selectedRadio).attr("checked", true);
-	$(radioButtons).selectRadioFromList($(selectedRadio));
-}
-
-$.fn.fadeInRadio = function() {
-	var label = $(this).next("span");
-	$(label).css("font-style", "italic").css("color", "#0067B2").fadeTo("slow", 1.0);
-};
-
-$.fn.fadeOutRadio = function() {
-	var label = $(this).next("span");
-	$(label).css("font-style", "").css("color", "").fadeTo("slow", 0.5);
-};
-
-$.fn.selectRadio = function(radioButtons) {
-	$(this).fadeInRadio();
-	$(radioButtons).not($(this)).each(function() {
-		$(this).fadeOutRadio();
-	});
-};
-
-$.fn.selectRadioFromList = function(selected) {
-	$(selected).fadeInRadio();
-	$(this).not($(selected)).each(function() {
-		$(this).fadeOutRadio();
-	});
-};
-
-/*******************************************************************************
  * Toggle Slide Effects: drop down and bounce effect for divs
  ******************************************************************************/
 $.fn.toggleSlideDownFullHeight = function() {
@@ -74,60 +40,17 @@ $.fn.toggleSlide = function() {
 };
 
 /*******************************************************************************
- * Tooltip Effects
- ******************************************************************************/
-
-$.fn.enableTooltip = function() {
-	$(this).focus(function() {
-		$(this).next(".tooltip").fadeIn();
-	});
-	$(this).blur(function() {
-		$(this).next(".tooltip").fadeOut();
-	});
-	return $(this);
-};
-
-/*******************************************************************************
  * Caption Effects
  ******************************************************************************/
-$.fn.enableCaption = function() {
-	var caption = $(this).attr("placeholder");
-	var val = $(this).val();
+function type(target, placeholder) {
+	typeToIndex(target, placeholder, 0);
+}
 
-	if (val.length == 0)
-		val = caption;
-
-	$(this).css("color", "gray").val(val).focus(function() {
-		if ($(this).val() == caption)
-			$(this).css("color", "").val("");
-	}).blur(function() {
-		if ($(this).val() == "") {
-			$(this).css("color", "gray");
-			$(this).showCaption(caption);
-		}
-	});
-	return $(this);
-};
-
-$.fn.showCaption = function(caption) {
-	if (caption != null)
-		type($(this), caption, 0);
-	else
-		type($(this), $(this).attr("placeholder"), 0);
-};
-
-/**
- * Type-writer text effect
- * 
- * @param obj
- * @param caption
- * @param count
- */
-function type(obj, caption, count) {
-	$(obj).val(caption.substr(0, count++));
-	if (count < caption.length + 1)
+function typeToIndex(target, placeholder, index) {
+	$(target).val(placeholder.substr(0, index++));
+	if (index < placeholder.length + 1)
 		setTimeout(function() {
-			type(obj, caption, count);
+			typeToIndex(target, placeholder, index);
 		}, 22);
 }
 
@@ -200,10 +123,6 @@ $(function() {
 	});
 });
 
-
-
-
-
 /*******************************************************************************
  * Confirm Form Value Effects
  ******************************************************************************/
@@ -243,7 +162,6 @@ $.fn.toggleConfirmationField = function(focus, validate) {
 /*******************************************************************************
  * Validation Effects
  ******************************************************************************/
-
 $.fn.toggleValidationFields = function(isValid) {
 	var container = $(this).next(".validation");
 	var accept = container.children(".accept");

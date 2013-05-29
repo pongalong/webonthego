@@ -1,11 +1,6 @@
 /* Google web font import */
 @import url(https://fonts.googleapis.com/css?family=Oxygen:400,700,300);
 
-* {
-	margin: 0;
-	padding: 0;
-}
-
 body {
 	background: #f0e9e1;
 	font-family: 'Oxygen', sans-serif;
@@ -16,21 +11,15 @@ body {
 a:link {
 	color: #2a9d98;
 	text-decoration: none;
-	font-size: 12px;
 }
 
 a:hover {
 	text-decoration: underline;
 }
 
-a:active {
-	
-}
-
 a:visited {
 	color: #2a9d98;
 	text-decoration: none;
-	font-size: 12px;
 }
 
 .revLink {
@@ -51,11 +40,19 @@ h2 {
 }
 
 h3 {
-	color: #ea7858;
-	font-size: 18px;
-	font-weight: 400;
+	display: block;
+	width: 100%;
+	padding: 0;
+	margin: 0 0 20px;
+	font-size: 21px;
+	font-weight: 300; line-height : 40px;
+	color: #EA7858;
+	border: 0;
+	line-height: 40px; color : #EA7858; border : 0;
+	border-bottom: 1px dotted #999;
 }
 
+}
 h4 {
 	color: #2a9d98;
 	font-size: 16px;
@@ -81,24 +78,50 @@ p {
 	line-height: 20px;
 }
 
-/* Button */
+/* ---------- Button Elements ---------- */
 input[type="submit"],input[type="reset"],.mBtn {
 	height: auto;
 	margin: 0;
 	color: #fff !important;
 	padding: 10px 25px;
+	line-height: 32px;
 	background: #2a9d98 url(../../images/btn-bg.jpg) top repeat-x;
 	border: 3px solid #93ccc8;
-	font-size: 15px;
-	z-index: 50; pointer;
+	z-index: 50;
+	cursor: pointer;
 	position: relative;
 	outline: none;
-	font-weight: 700;
 	text-align: center;
-	line-height: 32px;
 	-moz-box-shadow: -2px 2px 0px 0px #59938f;
 	-webkit-box-shadow: -2px 2px 0px 0px #59938f;
 	box-shadow: -2px 2px 0px 0px #59938f;
+}
+
+.button {
+	height: auto;
+	margin: 0;
+	color: #fff !important;
+	line-height: 25px !important;
+	padding: 5px 15px !important;
+	background: #2a9d98 url(../../images/btn-bg.jpg) top repeat-x;
+	border: 1px solid #93ccc8;
+	z-index: 50;
+	cursor: pointer;
+	position: relative;
+	outline: none;
+	text-align: center;
+	-moz-box-shadow: -1px 1px 0px 0px #59938f;
+	-webkit-box-shadow: -1px 1px 0px 0px #59938f;
+	box-shadow: -1px 1px 0px 0px #59938f;
+	font-size: 14px !important;
+	text-decoration: none;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.button:hover {
+	text-decoration: none;
+	border: 1px solid #dc6f64;
+	background: #eb7859 url(../../images/btn-bg-hover.jpg) top repeat-x;
 }
 
 input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
@@ -126,15 +149,6 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 	box-shadow: none !important;
 }
 
-.loginBtn {
-	background: none repeat scroll 0 0 #FFCD2B;
-	color: #B28634 !important;
-	margin-left: 12px;
-	padding: 8px 20px;
-	font-weight: 700;
-	text-transform: uppercase;
-}
-
 /* Drop shadow */
 .ds {
 	-moz-box-shadow: -2px 2px 1px 1px #666666;
@@ -142,96 +156,46 @@ input[type="submit"]:hover,input[type="reset"]:hover,.mBtn:hover,.active {
 	box-shadow: -2px 2px 1px 1px #666666;
 }
 
-/* Numbered Steps */
-.nt-container {
-	width: 290px;
-	height: 130px;
-	background: #fff url(../../images/wotg-numtask-sidebar.jpg) repeat-y;
-	padding: 1px 0 10px 0;
-}
-
-.nt-top-bar {
-	margin: -28px auto 0 auto;
-	width: 257px;
-	height: 52px;
-	background: url(../../images/wotg-numtask-bg.jpg) repeat-x;
-	border: 3px solid #f3a49d;
+/* ---------- Structure Elements ---------- */
+#header {
+	background: url(../../images/topStrip.jpg) repeat-x;
 	position: relative;
 }
 
-.nt-num {
-	float: left;
-	margin-left: 6px;
-	width: 50px;
-	height: 50px;
-	font-size: 24px;
-	text-align: center;
-	line-height: 50px;
-	color: #fff;
-	text-shadow: -1px 1px 1px #000;
-	background: url(../../images/wotg-number-badge.png) no-repeat;
-}
-
-.nt-step {
-	font-size: 16px;
-	font-weight: 700;
-	color: #fff;
-	vertical-align: top;
-	line-height: 50px;
-	float: left;
-	padding-left: 15px;
-	text-shadow: -1px 1px 1px #000;
-}
-
-.nt-content {
-	width: 207px;
-	margin: 12px 0 0 58px;
-	font-size: 12px;
-	color: #333;
-	line-height: 24px;
-}
-
-.stepWrap {
-	padding: 68px 0 40px 20px;
-	background: #827D78;
-}
-
-.wrap {
-	padding: 20px 0;
-	border-bottom: 1px dashed #666;
-}
-
-/* ---------- Structure Elements ---------- */
-#container {
-	width: 950px;
-	/* padding: 0 10px; */
-	/* margin: 0 auto; */
-	padding-bottom: 343px;
-}
-
-#rt-header {
-	background: url(../../images/topStrip.jpg) repeat-x;
-	height: 93px;
-	width: 100%;
-}
-
-#logo { /* margin: -93px 0 0 -110px; */
+#logo {
 	margin: 0 0 0 -110px;
 }
 
-#bottom {
-	width: 100%;
-	min-height: 235px;
-	background: url(../../images/bottom_bg.png);
-	margin-top: 40px;
-}
-
-#footer {
-	/* height: 68px;
-	background: url(../../images/wotg-footer-texture.jpg) repeat-x; */
-	width: 100%;
+#copyright {
+	height: 50px;
 	background: #333333;
 	border-top: 10px solid #1C6866;
 	color: #FFFFFF;
-	padding: 12px 0;
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 50px;
+	text-align: center;
+}
+
+#footer {
+	background: url(../../images/background/bottom_bg.png);
+}
+
+.footerlinks {
+	margin: 0 auto;
+}
+
+.footerlinks h2 {
+	font-size: 18px;
+	margin: 5px 0;
+	color: #333333;
+	font-weight: 700;
+	line-height: 40px;
+	padding: 0;
+	color: #333333;
+}
+
+.footerlinks ul {
+	margin: 0;
+	padding: 0;
 }

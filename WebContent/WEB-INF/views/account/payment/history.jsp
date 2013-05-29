@@ -1,6 +1,6 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<h3 style="margin-bottom: 10px; padding-bottom: 0px;">Payment History</h3>
+<h3>Payment History</h3>
 
 <c:choose>
   <c:when test="${not empty PAYMENT_HISTORY.records}">
@@ -23,10 +23,10 @@
     <c:set var="prevPageNum" value="${PAYMENT_HISTORY.currentPageNum - 1}" />
     <c:set var="nextPageNum" value="${PAYMENT_HISTORY.currentPageNum + 1}" />
     <c:if test="${prevPageNum > 0}">
-      <span style="float: left"><a href="<spring:url value="/account/payment/history/${prevPageNum}" />">&laquo; Previous Page</a> </span>
+      <a class="prev" href="<spring:url value="/account/payment/history/${prevPageNum}" />">Previous Page</a>
     </c:if>
     <c:if test="${PAYMENT_HISTORY.currentPageNum < PAYMENT_HISTORY.pageCount}">
-      <span style="float: right"><a href="<spring:url value="/account/payment/history/${nextPageNum}" />">Next Page &raquo;</a> </span>
+      <a class="next" href="<spring:url value="/account/payment/history/${nextPageNum}" />">Next Page</a>
     </c:if>
   </c:when>
   <c:otherwise>
@@ -34,4 +34,4 @@
   </c:otherwise>
 </c:choose>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

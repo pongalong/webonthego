@@ -1,60 +1,107 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <c:if test="${not empty param.notification_sent}">
-  <div class="info">
-    <h1>An email has been sent to you</h1>
-    <p>An email has been sent to ${param.notification_sent} with further instructions</p>
+  <div class="alert alert-info">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>An email has been sent to you</h4>
+    An email has been sent to ${param.notification_sent} with further instructions
   </div>
 </c:if>
 
 <c:if test="${param.updated == 'password'}">
-  <div class="success">
-    <p>Your password has been successfully updated!</p>
+  <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Profile Updated</h4>
+    Your password has been successfully updated!
   </div>
 </c:if>
 
 <c:if test="${param.updated == 'email'}">
-  <div class="success">
-    <p>Your email has been successfully updated!</p>
+  <div class="alert alert-success">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h4>Profile Updated</h4>
+    Your email has been successfully updated!
   </div>
 </c:if>
 
-<h3 style="margin-bottom: 10px; padding-bottom: 0px; border-bottom: 1px #ccc dotted;">Login Information</h3>
-
+<h3>Login Information</h3>
 
 <div>
-  <sec:authorize ifAnyGranted="ROLE_SUPERUSER, ROLE_ADMIN, ROLE_MANAGER">
-    <p style="line-height: 36px;">
-      <span class="span-6">Status:</span>
+
+  <sec:authorize ifAnyGranted="ROLE_SU, ROLE_ADMIN, ROLE_MANAGER">
+    <div class="row" style="margin: 10px 0;">
+      <div class="span2">Status</div>
       <c:choose>
         <c:when test="${USER.enabled}">
-          <span class="span-8"> Enabled </span>
-          <a href="<spring:url value="/profile/user/disable"/>" class="button escape-s" style="float: right;"
-            onclick="return confirm('Do you want to disable ${USER.email}?')"><span>Disable</span> </a>
+          <div class="span4">Enabled</div>
+          <div class="span2">
+            <a href="#disableUser" role="button" class="btn" data-toggle="modal">Disable User</a>
+          </div>
         </c:when>
         <c:otherwise>
-          <span class="span-8">Disabled</span>
-          <a href="<spring:url value="/profile/user/enable"/>" class="button escape-s" style="float: right;"
-            onclick="return confirm('Do you want to enable ${USER.email}?')"><span>Enable</span> </a>
+          <div class="span4">Disabled</div>
+          <div class="span2">
+            <a href="#enableUser" role="button" class="btn" data-toggle="modal">Enable User</a>
+          </div>
         </c:otherwise>
       </c:choose>
-    </p>
+    </div>
+
+    <!-- Modal -->
+    <div id="enableUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="enableUserLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="enableUserLabel">Enable user ${USER.email}</h3>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to enable user ${USER.email}? This will allow the user to login with his given credentials. Their device is unaffected.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary" onclick="location.href='<spring:url value="/profile/user/enable"/>'">Enable</button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="disableUser" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="disableUserLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="disableUserLabel">Disable user ${USER.email}</h3>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to disable user ${USER.email}? This will prevent the user from logging in. Their device is unaffected.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary" onclick="location.href='<spring:url value="/profile/user/disable"/>'">Disable</button>
+      </div>
+    </div>
+
+
   </sec:authorize>
 
-  <p style="line-height: 36px; position: relative;">
-    <span class="span-6">E-Mail Address:</span> <span class="span-8">${USER.email}</span> <a href="<spring:url value="/profile/update/email"/>"
-      class="button semi-s" style="float: right;"><span>Change</span> </a>
-  </p>
-  <p style="line-height: 36px;">
-    <span class="span-6">Password:</span> <span class="span-8">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span> <a
-      href="<spring:url value="/profile/update/password"/>" class="button semi-s" style="float: right;"><span>Change</span> </a>
-  </p>
+  <div class="row" style="margin: 10px 0;">
+    <div class="span2">E-Mail Address:</div>
+    <div class="span4">${USER.email}</div>
+    <div class="span1">
+      <a href="<spring:url value="/profile/update/email"/>">Change</a>
+    </div>
+  </div>
+
+  <div class="row" style="margin: 10px 0;">
+    <div class="span2">Password:</div>
+    <div class="span4">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
+    <div class="span1">
+      <a href="<spring:url value="/profile/update/password"/>">Change</a>
+    </div>
+  </div>
+
 </div>
 
 <div class="clear"></div>
 
 
-<h3 style="margin: 10px 0 10px 0; border-bottom: 1px #ccc dotted;">Credit Cards</h3>
+<h3>Credit Cards</h3>
 
 <div id="paymentMethodContainer">
   <c:choose>
@@ -99,4 +146,4 @@
   </div>
 </c:if>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

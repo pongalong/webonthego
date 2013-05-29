@@ -98,11 +98,8 @@ public class ProfileUpdateController {
 
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
 	public ModelAndView updatePassword() {
-
 		ResultModel model = new ResultModel("account/profile/update/password");
-
 		model.addAttribute("updatePassword", new UpdatePassword());
-
 		return model.getSuccess();
 	}
 

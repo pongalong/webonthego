@@ -15,6 +15,17 @@ public enum ROLE {
 	ROLE_ANONYMOUS("Anonymous");
 
 	private String name;
+	private static ROLE[] internalRoles = {
+			ROLE_SU,
+			ROLE_ADMIN,
+			ROLE_MANAGER,
+			ROLE_ACCOUNTING_MANAGER,
+			ROLE_ACCOUNTING,
+			ROLE_AGENT,
+			ROLE_SALES };
+	private static ROLE[] externalRoles = {
+			ROLE_USER,
+			ROLE_ANONYMOUS };
 
 	private ROLE(String name) {
 		this.name = name;
@@ -23,6 +34,19 @@ public enum ROLE {
 	public String getName() {
 		return name;
 	}
+
+	public static ROLE[] getInternalRoles() {
+		return internalRoles;
+	}
+
+	public static ROLE[] getExternalRoles() {
+		return externalRoles;
+	}
+
+	/* *********************************************************************************************
+	 * Ranking and Ordering Methods
+	 * *********************************************************************************************
+	 */
 
 	public static List<ROLE> getRolesAbove(
 			ROLE role, boolean eq) {
@@ -51,33 +75,16 @@ public enum ROLE {
 		return lesserRoles;
 	}
 
-	public static ROLE[] getInternalRoles() {
-		return new ROLE[] {
-				ROLE_SU,
-				ROLE_ADMIN,
-				ROLE_MANAGER,
-				ROLE_AGENT,
-				ROLE_SALES };
-	}
-
-	public static ROLE[] getExternalRoles() {
-		return new ROLE[] {
-				ROLE_USER,
-				ROLE_ANONYMOUS };
-	}
-
 	/* *********************************************************************************************
 	 * Helper methods. Mostly for HQL.
 	 * *********************************************************************************************
 	 */
 
 	public static String[] getInternalRolesAsString() {
-		return new String[] {
-				ROLE_SU.toString(),
-				ROLE_ADMIN.toString(),
-				ROLE_MANAGER.toString(),
-				ROLE_AGENT.toString(),
-				ROLE_SALES.toString() };
+		String[] internalRolesAsString = new String[internalRoles.length];
+		for (int i = 0; i < internalRoles.length; i++)
+			internalRolesAsString[i] = internalRoles[i].toString();
+		return internalRolesAsString;
 	}
 
 }

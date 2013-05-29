@@ -1,6 +1,4 @@
-
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 <div class="span-18">
 
   <form:form id="prompt_complete_account" cssClass="validatedForm" method="post" commandName="creditCardPayment">
@@ -17,5 +15,4 @@
   </form:form>
 
 </div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

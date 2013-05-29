@@ -1,12 +1,13 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <form:form id="reconnect" cssClass="validatedForm" method="POST" commandName="accountDetail">
-  <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Reconnect Device</h3>
+  <fieldset>
+    <legend>Reconnect Device</legend>
 
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="deviceInfo.id" />
         <form:errors path="deviceInfo.value" />
         <form:errors path="deviceInfo.label" />
@@ -16,25 +17,19 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <div class="alert alert-info">
+      <h4>Attention!</h4>
+      <p>You are about to Reconnect a device and the associated account.</p>
     </div>
-  </c:if>
 
-  <div class="notice">
-    <h4>Attention!</h4>
-    <p>You are about to Reconnect a device and the associated account.</p>
-  </div>
+    <p>Are you sure you want to reconnect device ${accountDetail.deviceInfo.label}?</p>
 
-  <p>Are you sure you want to reactivate device ${deviceInfo.label}?</p>
+    <button type="button" class="button" onclick="location.href='<spring:url value="/devices" />'">Cancel</button>
+    <button type="submit" class="button">Reconnect</button>
 
-  <div class="row clearfix" style="display: none;">
-    <form:input path="deviceInfo.id" />
-    <form:input path="deviceInfo.label" />
-    <form:input path="deviceInfo.value" />
-  </div>
-
-  <div class="buttons">
-    <a class="mBtn" href="<spring:url value="/devices" />">Cancel</a> <input type="submit" value="Reactivate"></input>
-  </div>
+  </fieldset>
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

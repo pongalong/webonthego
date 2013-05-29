@@ -1,28 +1,26 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 <h3>Remove Credit Card</h3>
 
 <form:form name="deleteCreditCard" id="deleteCreditCard" method="post" commandName="creditCard">
 
   <!-- Error Alert -->
   <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCard'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
-        <form:errors path="nameOnCreditCard" />
-        <form:errors path="creditCardNumber" />
-        <form:errors path="verificationcode" />
-        <form:errors path="expirationDate" />
-        <form:errors path="address1" />
-        <form:errors path="address2" />
-        <form:errors path="city" />
-        <form:errors path="state" />
-        <form:errors path="zip" />
-        <spring:bind path="creditCard">
-          <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-          </c:forEach>
-        </spring:bind>
-      </div>
+    <div class="alert error">
+      <h1>Please correct the following problems</h1>
+      <form:errors path="nameOnCreditCard" />
+      <form:errors path="creditCardNumber" />
+      <form:errors path="verificationcode" />
+      <form:errors path="expirationDate" />
+      <form:errors path="address1" />
+      <form:errors path="address2" />
+      <form:errors path="city" />
+      <form:errors path="state" />
+      <form:errors path="zip" />
+      <spring:bind path="creditCard">
+        <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+          <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+        </c:forEach>
+      </spring:bind>
     </div>
   </c:if>
 
@@ -128,4 +126,4 @@
 
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

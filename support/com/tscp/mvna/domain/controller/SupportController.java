@@ -25,14 +25,13 @@ public class SupportController {
 	private UserManager userManager;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView showSupport() {
+	public ModelAndView support() {
 		ResultModel model = new ResultModel("support/support");
-		model.addAttribute("user", userManager.getCurrentUser());
 		return model.getSuccess();
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processSearchArticles(
+	public ModelAndView supportSearchPost(
 			@RequestParam(value = "keyword", required = true) String keyword) {
 
 		ResultModel model = new ResultModel("support/faq/article");
@@ -52,7 +51,7 @@ public class SupportController {
 	}
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public ModelAndView showDownload() {
+	public ModelAndView download() {
 		ResultModel model = new ResultModel("support/download/download");
 		return model.getSuccess();
 	}

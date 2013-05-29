@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 
 <div class="span-18">
 
@@ -7,28 +7,26 @@
   <form:form id="choose_payment" cssClass="validatedForm" method="post" commandName="creditCardPayment">
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCardPayment'].allErrors}">
-      <div class="row clearfix">
-        <div class="alert error">
-          <h1>Please correct the following problems</h1>
-          <form:errors path="creditCard.nameOnCreditCard" />
-          <form:errors path="creditCard.creditCardNumber" />
-          <form:errors path="creditCard.verificationcode" />
-          <form:errors path="creditCard.expirationDate" />
-          <form:errors path="creditCard.address1" />
-          <form:errors path="creditCard.address2" />
-          <form:errors path="creditCard.city" />
-          <form:errors path="creditCard.state" />
-          <form:errors path="creditCard.zip" />
-          <form:errors path="coupon.couponCode" />
-          <form:errors path="coupon.startDate" />
-          <form:errors path="coupon.endDate" />
-          <form:errors path="coupon.quantity" />
-          <spring:bind path="creditCardPayment">
-            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-            </c:forEach>
-          </spring:bind>
-        </div>
+      <div class="alert error">
+        <h1>Please correct the following problems</h1>
+        <form:errors path="creditCard.nameOnCreditCard" />
+        <form:errors path="creditCard.creditCardNumber" />
+        <form:errors path="creditCard.verificationcode" />
+        <form:errors path="creditCard.expirationDate" />
+        <form:errors path="creditCard.address1" />
+        <form:errors path="creditCard.address2" />
+        <form:errors path="creditCard.city" />
+        <form:errors path="creditCard.state" />
+        <form:errors path="creditCard.zip" />
+        <form:errors path="coupon.couponCode" />
+        <form:errors path="coupon.startDate" />
+        <form:errors path="coupon.endDate" />
+        <form:errors path="coupon.quantity" />
+        <spring:bind path="creditCardPayment">
+          <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+          </c:forEach>
+        </spring:bind>
       </div>
     </c:if>
 
@@ -79,4 +77,4 @@
 
 <script type="text/javascript" src="<spring:url value='/static/javascript/pages/selectPaymentMethod.js' />"></script>
 
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

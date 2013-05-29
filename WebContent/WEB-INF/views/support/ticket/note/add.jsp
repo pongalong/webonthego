@@ -1,66 +1,60 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<h3>Ticket ${ticket.id}</h3>
+<form:form commandName="ticketNote" method="post">
+  <fieldset>
+    <legend>Add a Note to Ticket ${ticket.id}</legend>
 
-<div class="tableContainer">
+    <c:if test="${ticketNote.ticket.type == 'INQUIRY'}">
+      <table class="info_table_form">
+        <tr>
+          <td>Email:</td>
+          <td>${ticketNote.ticket.contactEmail}</td>
+        </tr>
+        <tr>
+          <td>Phone:</td>
+          <td>${ticketNote.ticket.contactPhone}</td>
+        </tr>
+      </table>
+    </c:if>
 
-  <c:if test="${ticketNote.ticket.type == 'INQUIRY'}">
-    <table style="border: 1px #ccc solid; border-radius: 4px;">
+    <table class="info_table_form">
       <tr>
-        <td>Email:</td>
-        <td class="value">${ticketNote.ticket.contactEmail}</td>
+        <td>Title:</td>
+        <td>${ticketNote.ticket.title}</td>
       </tr>
       <tr>
-        <td>Phone:</td>
-        <td class="value">${ticketNote.ticket.contactPhone}</td>
+        <td>Description:</td>
+        <td>${ticketNote.ticket.description}</td>
+      </tr>
+      <tr>
+        <td>Category:</td>
+        <td>${ticketNote.ticket.category.description}</td>
       </tr>
     </table>
-  </c:if>
 
-
-  <table style="border: 1px #ccc solid; border-radius: 4px;">
-    <tr>
-      <td>Title:</td>
-      <td class="value">${ticketNote.ticket.title}</td>
-    </tr>
-    <tr>
-      <td>Description:</td>
-      <td class="value">${ticketNote.ticket.description}</td>
-    </tr>
-    <tr>
-      <td>Category:</td>
-      <td class="value">${ticketNote.ticket.category.description}</td>
-    </tr>
-  </table>
-
-</div>
-
-<form:form id="createTicketNote" cssClass="validatedForm" method="post" commandName="ticketNote">
-  <h3>Note</h3>
-  <!-- Error Alert -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticketNote'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <!-- Error Alert -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticketNote'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="note" />
-        <!-- Global Errors -->
         <spring:bind path="ticketNote">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
             <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <form:label path="note">Notes</form:label>
+    <form:textarea path="note" cssClass="span10" cssErrorClass="span10 validationFailed" cssStyle="min-height: 150px;" />
+
+    <div class="right">
+      <button type="button" class="button" onclick="location.href='../../view/${ticket.id}'">Cancel</button>
+      <button type="submit" class="button">Add Note</button>
     </div>
-  </c:if>
 
-  <div class="row clearfix" style="text-align: center;">
-    <form:textarea rows="5" cols="30" path="note" cssErrorClass="validationFailed" cssStyle="resize: vertical; width:97%; height: 150px; margin: auto;" />
-  </div>
-
-  <div class="buttons">
-    <a href="<spring:url value="/support/ticket/view/ticket/${ticket.id}" />" class="mBtn">Cancel</a> <input type="submit" name="_eventId_submit" value="Add" />
-  </div>
-
+  </fieldset>
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

@@ -1,5 +1,6 @@
 package com.tscp.mvna.domain.controller;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -37,7 +38,6 @@ import com.tscp.mvne.NetworkInfo;
 		"CONTROLLING_USER",
 		"ACCOUNT_DETAILS",
 		"label",
-		"accessFeeDate",
 		"accountDetail",
 		"newDevice" })
 public class DeviceController {
@@ -126,12 +126,12 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	// @PreAuthorize("hasRole('ROLE_ADMIN')")
-	// @RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSwapDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/swap/swap");
+		ResultModel model = new ResultModel("account/device/swap/prompt");
 
 		try {
 			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
@@ -147,12 +147,12 @@ public class DeviceController {
 	}
 
 	@Deprecated
-	// @PreAuthorize("hasRole('ROLE_ADMIN')")
-	// @RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSwapDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("newDevice") Device newDevice, Errors errors) {
 
-		ResultModel model = new ResultModel("account/device/swap/success", "account/device/swap/swap");
+		ResultModel model = new ResultModel("account/device/swap/success", "account/device/swap/prompt");
 
 		try {
 			// the existing device is in the accountDetail object
@@ -173,7 +173,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSuspendDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -183,6 +183,7 @@ public class DeviceController {
 		try {
 			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
 			XMLGregorianCalendar accessFeeDate = accountManager.getLastAccessFeeDate(user, accountDetail.getAccount());
+
 			model.addAttribute("accountDetail", accountDetail);
 			model.addAttribute("accessFeeDate", accessFeeDate);
 			return model.getSuccess();
@@ -191,8 +192,8 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.GET)
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSuspendDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
@@ -206,7 +207,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showRestoreDevice(
 			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -222,8 +223,8 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postRestoreDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
@@ -237,7 +238,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showDisconnectDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -255,10 +256,10 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postDisconnectDevice(
-			@ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("accessFeeDate") XMLGregorianCalendar accessFeeDate, Errors errors) {
+			@ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
 		ResultModel model = new ResultModel("account/device/disconnect/success", "account/device/disconnect/prompt");
 
@@ -277,7 +278,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showReinstallDevice(
 			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -292,7 +293,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postReinstallDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {

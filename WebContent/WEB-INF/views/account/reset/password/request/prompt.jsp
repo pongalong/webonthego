@@ -1,34 +1,38 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 
-<h3>Enter Your Registered E-Mail</h3>
+<div class="span12">
+  <form:form id="resetPassword" method="POST" commandName="verifyIdentity" cssClass="form-horizontal">
+    <fieldset>
+      <legend>Enter Your Registered E-Mail</legend>
 
-<form:form id="resetPassword" cssClass="validatedForm" cssStyle="padding-bottom: 0;" method="POST" commandName="verifyIdentity">
+      <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.verifyIdentity'].allErrors}">
+        <div class="alert alert-error">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <h4>Please correct the following problems</h4>
+          <form:errors path="email" />
+          <spring:bind path="verifyIdentity">
+            <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+              <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+            </c:forEach>
+          </spring:bind>
+        </div>
+      </c:if>
 
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.verifyIdentity'].allErrors}">
-    <div class="alert error">
-      <h1>Please correct the following problems</h1>
-      <form:errors path="email" />
-      <spring:bind path="verifyIdentity">
-        <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-          <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-        </c:forEach>
-      </spring:bind>
-    </div>
-  </c:if>
+      <p>To reset your password please enter your email. We will send you further instructions to complete the request.</p>
 
-  <div class="alert info" style="margin-bottom: 0px;">
+      <div class="control-group">
+        <form:label path="email" cssClass="control-label required">Email</form:label>
+        <div class="controls">
+          <form:input path="email" placeholder="Email Address" cssClass="span6" cssErrorClass="span6 validationFailed" />
+        </div>
+      </div>
 
-    <p>To reset your password please enter your email. We will send you further instructions to complete the request.</p>
+      <div class="controls">
+        <button type="submit" class="button">Reset My Password</button>
+      </div>
 
-    <div class="row clearfix">
-      <form:input path="email" placeholder="Email Address" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
+    </fieldset>
+  </form:form>
+</div>
 
-    <p>
-      <input type="submit" value="Reset My Password" />
-    </p>
-
-  </div>
-</form:form>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

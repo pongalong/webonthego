@@ -1,14 +1,14 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<form:form id="customerCreateTicket" cssClass="validatedForm" method="post" commandName="ticket">
-  <h3>Send an Inquiry</h3>
-  <p>Please provide as much information that is relevant to the issue as possible.</p>
+<form:form commandName="ticket" method="post" cssClass="form-horizontal">
+  <fieldset>
+    <legend>Ask us a question before you activate</legend>
 
-  <!-- Error Alert -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <!-- Error Alert -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="category.id" />
         <form:errors path="contactEmail" />
         <form:errors path="description" />
@@ -19,42 +19,52 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <p>Send your question to us and we'll do our best to help you. Please provide as much information that is relevant to the issue as possible.</p>
+
+    <div class="control-group">
+      <form:label path="contactEmail" cssClass="control-label required">Email</form:label>
+      <div class="controls">
+        <form:input path="contactEmail" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
     </div>
-  </c:if>
 
-  <div class="row clearfix">
-    <form:label path="contactEmail" cssClass="required">Email</form:label>
-    <form:input path="contactEmail" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
+    <div class="control-group">
+      <form:label path="contactPhone" cssClass="control-label">Phone</form:label>
+      <div class="controls">
+        <form:input path="contactPhone" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
 
-  <div class="row clearfix">
-    <form:label path="contactPhone">Phone</form:label>
-    <form:input path="contactPhone" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="category.id" cssClass="required">Ticket Category</form:label>
-    <form:select path="category.id" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-      <option value="0">Select one...</option>
-      <c:forEach var="cat" items="${ticketCategories}">
-        <optgroup label="${cat.description}">
-          <c:forEach var="subcategory" items="${cat.subcategories}">
-            <form:option value="${subcategory.id}">${subcategory.description}</form:option>
+    <div class="control-group">
+      <form:label path="category.id" cssClass="control-label required">Ticket Category</form:label>
+      <div class="controls">
+        <form:select path="category.id" cssClass="span5" cssErrorClass="span5 validationFailed">
+          <c:forEach var="cat" items="${ticketCategories}">
+            <optgroup label="${cat.description}">
+              <c:forEach var="subcategory" items="${cat.subcategories}">
+                <form:option value="${subcategory.id}">${subcategory.description}</form:option>
+              </c:forEach>
+            </optgroup>
           </c:forEach>
-        </optgroup>
-      </c:forEach>
-    </form:select>
-  </div>
+        </form:select>
+      </div>
+    </div>
 
-  <div class="row clearfix" style="height: 250px;">
-    <form:label path="description" cssClass="required">Description</form:label>
-    <form:textarea path="description" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
+    <div class="control-group">
+      <form:label path="description" cssClass="control-label required">Description</form:label>
+      <div class="controls">
+        <form:textarea path="description" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
 
-  <div class="buttons">
-    <input type="submit" name="_eventId_submit" value="Submit" />
-  </div>
+    <div class="controls">
+      <button type="submit" class="button">Submit</button>
+    </div>
+
+  </fieldset>
 
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

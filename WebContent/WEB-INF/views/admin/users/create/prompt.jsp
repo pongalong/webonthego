@@ -1,14 +1,14 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<h3>Create User</h3>
+<form:form commandName="newInternalUser" method="post" cssClass="form-horizontal">
+  <fieldset>
+    <legend>Create User</legend>
 
-<form:form id="createRep" cssClass="validatedForm" commandName="newInternalUser" method="post">
-
-  <!-- Errors -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.newInternalUser'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <!-- Errors -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.newInternalUser'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="username" />
         <form:errors path="email" />
         <form:errors path="password" />
@@ -19,38 +19,50 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <p>Create an internal user with the given role. Users are only able to create new accounts with roles below their own.</p>
+
+    <div class="control-group">
+      <form:label path="username" cssClass="control-label">Username</form:label>
+      <div class="controls">
+        <form:input path="username" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
     </div>
-  </c:if>
 
-  <div class="row clearfix">
-    <form:label path="username">Username</form:label>
-    <form:input path="username" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
+    <div class="control-group">
+      <form:label path="email" cssClass="control-label required">Email</form:label>
+      <div class="controls">
+        <form:input path="email" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
 
-  <div class="row clearfix">
-    <form:label path="email" cssClass="required">Email</form:label>
-    <form:input path="email" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
+    <div class="control-group">
+      <label class="control-label required">Role</label>
+      <div class="controls">
+        <select name="user_role" class="span5">
+          <c:forEach var="availableRole" items="${availableRoles}">
+            <c:if test="${availableRole != 'ROLE_USER' && availableRole != 'ROLE_ANONYMOUS' }">
+              <option value="${availableRole}">${availableRole.name}</option>
+            </c:if>
+          </c:forEach>
+        </select>
+      </div>
+    </div>
 
-  <div class="row clearfix">
-    <label class="required">Role</label> <select name="user_role" class="span-8" style="width: 312px;">
-      <c:forEach var="availableRole" items="${availableRoles}">
-        <c:if test="${availableRole != 'ROLE_USER' && availableRole != 'ROLE_ANONYMOUS' }">
-          <option value="${availableRole}">${availableRole.name}</option>
-        </c:if>
-      </c:forEach>
-    </select>
-  </div>
+    <div class="control-group">
+      <form:label path="password" cssClass="control-label required">Password</form:label>
+      <div class="controls">
+        <form:input path="password" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
 
-  <div class="row clearfix">
-    <form:label path="password" cssClass="required">Password</form:label>
-    <form:input path="password" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
+    <div class="controls">
+      <button type="submit" class="button">Create</button>
+    </div>
 
-  <div class="buttons">
-    <input type="submit" value="Create" />
-  </div>
+  </fieldset>
 
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

@@ -23,5 +23,5 @@ $.fn.staticMousePopup = function(xOffset, yOffset) {
 };
 
 $(function() {
-	$("img.info").staticMousePopup(-355, 10);
+	$("img.info").staticMousePopup(-300, 3);
 });

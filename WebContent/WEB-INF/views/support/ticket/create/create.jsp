@@ -1,15 +1,18 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <c:choose>
+
   <c:when test="${USER.userId > 0}">
-    <form:form id="createTicket" cssClass="validatedForm" method="post" commandName="ticket">
-      <h3>Open a Ticket for ${USER.email}</h3>
-      <!-- Error Alert -->
-      <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
-        <div class="row clearfix">
-          <div class="alert error">
-            <h1>Please correct the following problems</h1>
+
+    <form:form commandName="ticket" method="post" cssClass="form-horizontal">
+      <fieldset>
+        <legend>Open a Ticket for ${USER.email}</legend>
+
+        <!-- Error Alert -->
+        <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.ticket'].allErrors}">
+          <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <h4>Please correct the following problems</h4>
             <form:errors path="title" />
             <form:errors path="category.id" />
             <form:errors path="priority" />
@@ -21,53 +24,65 @@
               </c:forEach>
             </spring:bind>
           </div>
+        </c:if>
+
+        <div class="control-group">
+          <form:label path="title" cssClass="control-label">Ticket Title</form:label>
+          <div class="controls">
+            <form:input path="title" cssClass="span6" cssErrorClass="span6 validationFailed" />
+          </div>
         </div>
-      </c:if>
 
-      <div class="row clearfix">
-        <form:label path="title">Ticket Title</form:label>
-        <form:input path="title" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-      </div>
-
-      <div class="row clearfix">
-        <form:label path="category.id" cssClass="required">Ticket Category</form:label>
-        <form:select path="category.id" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-          <option value="0">Select one...</option>
-          <c:forEach var="cat" items="${ticketCategories}">
-            <optgroup label="${cat.description}">
-              <c:forEach var="subcategory" items="${cat.subcategories}">
-                <form:option value="${subcategory.id}">${subcategory.description}</form:option>
+        <div class="control-group">
+          <form:label path="category.id" cssClass="control-label required">Ticket Category</form:label>
+          <div class="controls">
+            <form:select path="category.id" cssClass="span6" cssErrorClass="span6 validationFailed">
+              <option value="0">Select one...</option>
+              <c:forEach var="cat" items="${ticketCategories}">
+                <optgroup label="${cat.description}">
+                  <c:forEach var="subcategory" items="${cat.subcategories}">
+                    <form:option value="${subcategory.id}">${subcategory.description}</form:option>
+                  </c:forEach>
+                </optgroup>
               </c:forEach>
-            </optgroup>
-          </c:forEach>
-        </form:select>
-      </div>
-
-      <c:if test="${CONTROLLING_USER.userId > 0}">
-        <div class="row clearfix">
-          <form:label path="priority" cssClass="required">Priority</form:label>
-          <form:select path="priority" cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;">
-            <c:forEach var="priority" items="${priorityList}" varStatus="status">
-              <form:option value="${priority}">${priority.description}</form:option>
-            </c:forEach>
-          </form:select>
+            </form:select>
+          </div>
         </div>
-      </c:if>
 
-      <div class="row clearfix" style="height: 250px;">
-        <form:label path="description" cssClass="required">Description</form:label>
-        <form:textarea path="description" cssClass="span-9" cssErrorClass="span-8 validationFailed" />
-      </div>
+        <c:if test="${CONTROLLING_USER.userId > 0}">
+          <div class="control-group">
+            <form:label path="priority" cssClass="control-label required">Priority</form:label>
+            <div class="controls">
+              <form:select path="priority" cssClass="span6" cssErrorClass="span6 validationFailed">
+                <c:forEach var="priority" items="${priorityList}" varStatus="status">
+                  <form:option value="${priority}">${priority.description}</form:option>
+                </c:forEach>
+              </form:select>
+            </div>
+          </div>
+        </c:if>
 
-      <div class="buttons">
-        <input type="submit" name="_eventId_submit" value="Create" />
-      </div>
+        <div class="control-group">
+          <form:label path="description" cssClass="control-label required">Description</form:label>
+          <div class="controls">
+            <form:textarea path="description" cssClass="span6" cssErrorClass="span6 validationFailed" />
+          </div>
+        </div>
 
+        <div class="controls">
+          <button type="button" class="button" onclick="location.href='/account'">Cancel</button>
+          <button type="submit" class="button">Submit Ticket</button>
+        </div>
+
+      </fieldset>
     </form:form>
+
   </c:when>
+
   <c:otherwise>
     <p>You must create tickets with a customer account. Please navigate to the customers account before creating a ticket.</p>
   </c:otherwise>
+
 </c:choose>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

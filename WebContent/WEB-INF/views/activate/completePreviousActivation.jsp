@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 <div>
 
   <form:form id="prompt_complete_account" cssClass="validatedForm" method="post">
@@ -16,5 +15,4 @@
   </form:form>
 
 </div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

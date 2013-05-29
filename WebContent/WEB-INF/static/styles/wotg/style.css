@@ -1,31 +1,41 @@
 /* **************************************************************************
 * Conatiner Helpers
 ************************************************************************** */
-html,body {
-	height: 100%;
+.contentContainer {
+	width: 970px;
 }
 
-#wrapper {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-#footerContainer {
-	position: relative;
-	height: 303px;
-	margin-top: -303px;
-	clear: both;
-}
-
-.mainbody {
+.content {
 	background: #fbf8f6;
-	margin: 65px -15px 0;
 	padding: 15px;
 	border-top: 8px solid #2a9c97;
-	/* background: url('../../images/background/mainbody_bg.png') repeat-y fixed center; */
+}
+
+/* Border with more whitespace, spans one column. */
+.colborder {
+	padding-right: 24px;
+	margin-right: 25px;
+	border-right: 1px solid #dc6f64;
+}
+
+/* Border with more whitespace, spans one column. */
+.colborderleft {
+	padding-left: 25px;
+	margin-left: -26px;
+	border-left: 1px solid #dc6f64;
+}
+
+.hidden {
+	display: none !important;
+}
+
+ul.menu li {
+	padding: 5px 0 5px 15px;
+	background-image: url(../../images/buttons/marker-footer.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+	display: block;
+	line-height: 20px;
 }
 
 /* **************************************************************************
@@ -50,7 +60,7 @@ html,body {
 #jsCheckCurtain {
 	background-color: #111;
 	opacity: 0.45;
-	filter: alpha(opacity =                                                               0.45);
+	filter: alpha(opacity =                                                                                                   0.45);
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -62,25 +72,28 @@ html,body {
 /* **************************************************************************
 * Button and Link Styles
 ************************************************************************** */
-.menutop {
+#menutop {
 	list-style: none;
 	display: inline-block;
-	float: right;
-	margin-top: 50px;
+	position: absolute;
+	top: 51px;
+	right: 0;
 	z-index: 1;
 }
 
-.menutop li {
+#menutop li {
 	float: left;
 	margin: 0 5px;
 	padding: 0 5px;
+	font-family: Verdana, sans-serif;
+	font-weight: bold;
 }
 
-input[type="submit"],input[type="reset"] {
-	height: 41px;
-	margin: 0 5px;
-	padding: 0 10px;
-	font-weight: normal;
+#loginMenu {
+	position: absolute;
+	top: 3px;
+	right: 0;
+	text-align: right;
 }
 
 .accountNav ul {
@@ -142,12 +155,6 @@ caption {
 /* **************************************************************************
 * Page Specific Styles
 ************************************************************************** */
-h3 {
-	margin: 10px 0;
-	padding: 0;
-	border-bottom: 1px #ccc dotted;
-}
-
 .overviewLabel h4 {
 	float: left;
 	display: inline-block;
@@ -162,28 +169,38 @@ h3 {
 a.next {
 	float: right;
 	margin-bottom: 20px;
+	padding-right: 20px;
+	background-image: url(../../images/icons/control_fastforward.png);
+	background-repeat: no-repeat;
+	background-position: right center;
 }
 
+a.next:hover {
+	background-image: url(../../images/icons/control_fastforward_blue.png);
+}
+
+a.prev {
+	float: left;
+	margin-bottom: 20px;
+	padding-left: 20px;
+	background-image: url(../../images/icons/control_rewind.png);
+	background-repeat: no-repeat;
+	background-position: left center;
+}
+
+a.prev:hover {
+	background-image: url(../../images/icons/control_rewind_blue.png);
+}
+
+/*
 a.next:after {
-	content: "»";
+	content: " »";
 }
-
-#creditCardImages {
-	height: 40px;
-	line-height: 40px;
-}
-
-#creditCardImages img {
-	vertical-align: middle;
-}
+*/
 
 /* **************************************************************************
 * Imported Footer Styles
 ************************************************************************** */
-#bottom {
-	margin: 0 auto;
-}
-
 #rt-footer h2.title {
 	font-size: 18px;
 	margin: 15px 0;
@@ -239,42 +256,4 @@ a.next:after {
 	margin: 3px 0;
 	float: left;
 	clear: both;
-}
-
-#rt-footer ul.menu {
-	margin: 0;
-	padding: 0;
-}
-
-#rt-footer ul.menu li {
-	padding: 5px 0 5px 15px;
-	background-image: url(../../images/buttons/marker-footer.png);
-	background-repeat: no-repeat;
-	background-position: left center;
-	display: block;
-}
-
-#rt-footer ul.menu li a {
-	color: #2a9d98;
-}
-
-#rt-footer ul.menu li a:hover {
-	text-decoration: underline;
-}
-
-/* Copyright */
-#rt-copyright {
-	padding: 25px 0 12px;
-}
-
-#rt-copyright .rt-block {
-	margin: 0 !important;
-	/*padding:14px 0 12px;*/
-	color: #333;
-}
-
-#copyright {
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: 300;
 }

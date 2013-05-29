@@ -21,7 +21,11 @@ import com.trc.web.validation.TicketValidator;
 //TODO CREATE ticketNoteValidator
 @Controller
 @RequestMapping("/support/ticket/note")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "ticket", "ticketNote" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER",
+		"ticket",
+		"ticketNote" })
 public class TicketNoteController {
 	@Autowired
 	private TicketManager ticketManager;
@@ -32,8 +36,7 @@ public class TicketNoteController {
 
 	@RequestMapping(value = "/add/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView showAddNote(
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@PathVariable int ticketId) {
+			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
 		ResultModel model = new ResultModel("support/ticket/note/add");
 
@@ -52,11 +55,9 @@ public class TicketNoteController {
 
 	@RequestMapping(value = "/add/{ticketId}", method = RequestMethod.POST)
 	public ModelAndView postAddNote(
-			@PathVariable int ticketId,
-			@ModelAttribute("ticketNote") TicketNote note,
-			BindingResult result) {
+			@PathVariable int ticketId, @ModelAttribute("ticketNote") TicketNote note, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + ticketId, "support/ticket/note/add");
+		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticketId, "support/ticket/note/add");
 
 		// TODO ADD VALIDATION
 
@@ -88,10 +89,9 @@ public class TicketNoteController {
 
 	@RequestMapping(value = "/update/{noteId}", method = RequestMethod.POST)
 	public ModelAndView postUpdateNote(
-			@ModelAttribute("ticketNote") TicketNote note,
-			BindingResult result) {
+			@ModelAttribute("ticketNote") TicketNote note, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + note.getTicket().getId(), "support/ticket/note/edit");
+		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + note.getTicket().getId(), "support/ticket/note/edit");
 
 		// TODO ADD VALIDATION
 

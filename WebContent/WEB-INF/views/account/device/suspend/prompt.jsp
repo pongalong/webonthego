@@ -1,12 +1,13 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<form:form id="disconnect" cssClass="validatedForm" method="POST" commandName="accountDetail">
-  <h3>Suspend Device</h3>
+<form:form commandName="accountDetail" method="post">
+  <fieldset>
+    <legend>Suspend Device</legend>
 
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="deviceInfo.id" />
         <form:errors path="deviceInfo.value" />
         <form:errors path="deviceInfo.label" />
@@ -16,36 +17,28 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <div class="alert alert-info">
+      <h4>Attention!</h4>
+      <p>You are about to suspend a device and the associated account.</p>
+      <p>After you click "Suspend" at the bottom of this page:</p>
+      <ul style="font-size: 14px; margin: 10px 50px;">
+        <li>Your device (ESN: ${accountDetail.deviceInfo.value}) and the account "${accountDetail.deviceInfo.label}" will be suspended immediately.</li>
+        <li>If the device is currently connected, the service will stop after the current session.</li>
+        <li>You will no longer be charged the monthly access fee for this account, the monthly access fee paid for this period expires on
+          ${accessFeeDate.month}/${accessFeeDate.day}/${accessFeeDate.year}.</li>
+        <li>If you restore this account before the current monthly access fee expires, you will be charged the next monthly access fee on
+          ${accessFeeDate.month}/${accessFeeDate.day}/${accessFeeDate.year}.</li>
+      </ul>
     </div>
-  </c:if>
 
-  <div class="notice">
-    <h4>Attention!</h4>
-    <p>You are about to suspend a device and the associated account.</p>
-  </div>
+    <p>Are you sure you want to suspend device ${accountDetail.deviceInfo.label}?</p>
 
-  <p>After you click "Suspend" at the bottom of this page:</p>
+    <button type="button" class="button" onclick="location.href='<spring:url value="/devices" />'">Cancel</button>
+    <button type="submit" class="button">Suspend</button>
 
-  <ul style="font-size: 14px; margin: 10px 50px;">
-    <li>Your device (ESN: ${deviceInfo.value}) and the account "${deviceInfo.label}" will be suspended immediately.</li>
-    <li>If the device is currently connected, the service will stop after the current session.</li>
-    <li>You will no longer be charged the monthly access fee for this account, the monthly access fee paid for this period expires on
-      ${accessFeeDate.month}/${accessFeeDate.day}/${accessFeeDate.year}.</li>
-    <li>If you restore this account before the current monthly access fee expires, you will be charged the next monthly access fee on
-      ${accessFeeDate.month}/${accessFeeDate.day}/${accessFeeDate.year}.</li>
-  </ul>
-
-  <p>Are you sure you want to deactivate device ${deviceInfo.label}?</p>
-
-  <div class="row clearfix" style="display: none;">
-    <form:input path="deviceInfo.id" />
-    <form:input path="deviceInfo.label" />
-    <form:input path="deviceInfo.value" />
-  </div>
-
-  <div class="buttons">
-    <a class="mBtn" href="<spring:url value="/devices" />">Cancel </a> <input type="submit" value="Suspend"></input>
-  </div>
+  </fieldset>
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

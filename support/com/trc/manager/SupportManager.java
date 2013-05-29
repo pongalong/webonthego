@@ -13,7 +13,6 @@ import com.trc.service.ArticleService;
 
 @Service
 public class SupportManager {
-
 	@Autowired
 	private ArticleService articleService;
 
@@ -25,7 +24,8 @@ public class SupportManager {
 		}
 	}
 
-	public Article getArticleById(int articleId) throws SupportManagementException {
+	public Article getArticleById(
+			int articleId) throws SupportManagementException {
 		try {
 			return articleService.getArticleById(articleId);
 		} catch (SupportServiceException e) {
@@ -33,7 +33,8 @@ public class SupportManager {
 		}
 	}
 
-	public List<Article> getArticlesByCategory(int categoryId) throws SupportManagementException {
+	public List<Article> getArticlesByCategory(
+			int categoryId) throws SupportManagementException {
 		try {
 			return articleService.getArticlesByCategory(categoryId);
 		} catch (SupportServiceException e) {
@@ -41,7 +42,8 @@ public class SupportManager {
 		}
 	}
 
-	public List<Article> searchArticlesByKeyword(String keyword) throws SupportManagementException {
+	public List<Article> searchArticlesByKeyword(
+			String keyword) throws SupportManagementException {
 		try {
 			return articleService.searchArticlesByKeyword(keyword);
 		} catch (SupportServiceException e) {
@@ -57,7 +59,8 @@ public class SupportManager {
 		}
 	}
 
-	public Category getCategoryById(int categoryId) throws SupportManagementException {
+	public Category getCategoryById(
+			int categoryId) throws SupportManagementException {
 		try {
 			return articleService.getCategoryById(categoryId);
 		} catch (SupportServiceException e) {
@@ -65,13 +68,13 @@ public class SupportManager {
 		}
 	}
 
-	public int insertArticle(Article article) throws SupportManagementException {
+	public int insertArticle(
+			Article article) throws SupportManagementException {
 		try {
 			/*
-			 * List<Category> cl = article.getCategories(); ArticleData articledData =
-			 * article.getArticleData(); Category c = null;
-			 * articledData.setArticle(article); for(int i=0; i<=cl.size(); i++){ c =
-			 * cl.get(i); c.addArticle(article); } article.setCategories(cl);
+			 * List<Category> cl = article.getCategories(); ArticleData articledData = article.getArticleData(); Category c =
+			 * null; articledData.setArticle(article); for(int i=0; i<=cl.size(); i++){ c = cl.get(i); c.addArticle(article);
+			 * } article.setCategories(cl);
 			 */
 			return articleService.saveArticle(article);
 		} catch (SupportServiceException e) {
@@ -79,7 +82,8 @@ public class SupportManager {
 		}
 	}
 
-	public int createCategory(Category category) throws SupportManagementException {
+	public int createCategory(
+			Category category) throws SupportManagementException {
 		try {
 			return articleService.createCategory(category);
 		} catch (SupportServiceException e) {

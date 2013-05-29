@@ -1,13 +1,13 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<form:form id="renameDevice" cssClass="validatedForm" method="post" commandName="accountDetail.deviceInfo">
+<form:form commandName="accountDetail.deviceInfo" method="post">
+  <fieldset>
+    <legend>Rename Your Device</legend>
 
-  <h3>Rename Your Device</h3>
-
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.accountDetail'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="label" />
         <spring:bind path="accountDetail.deviceInfo">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
@@ -15,18 +15,17 @@
           </c:forEach>
         </spring:bind>
       </div>
+    </c:if>
+
+    <form:label path="label">Enter a new name for your device</form:label>
+    <form:input path="label" cssClass="span5" cssErrorClass="span5 validationFailed" />
+
+    <div>
+      <button type="button" class="button" onclick="location.href='<spring:url value="/devices" />'">Cancel</button>
+      <button type="submit" class="button">Rename</button>
     </div>
-  </c:if>
 
-  <div class="row clearfix">Enter a new name for your device</div>
-  <div class="row clearfix">
-    <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="label" />
-  </div>
-
-  <div class="buttons">
-    <a href="<spring:url value="/devices" />" class="mBtn">Cancel </a> <input type="submit" value="Rename"></input>
-  </div>
-
+  </fieldset>
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

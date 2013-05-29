@@ -165,7 +165,7 @@ $(function() {
  * Initialize box behaviors.
  */
 $(function() {
-	search.param.enableCaption();
+
 	search.param.keyup(function(e) {
 		if (!isNavigationKey(e) && $(this).val() != "") {
 			search.resultsCanvas.toggleSlideDownFullHeight();

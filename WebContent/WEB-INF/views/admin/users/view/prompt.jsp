@@ -1,23 +1,28 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<h3>View Users</h3>
+<form method="post" class="form-horizontal">
+  <fieldset>
 
-<form:form id="viewUsers" cssClass="validatedForm" commandName="newInternalUser" method="post">
+    <legend>View Internal Users</legend>
 
-  <div class="row clearfix">
-    <label class="required">Role</label> <select name="user_role" class="span-8" style="width: 312px;">
-      <c:forEach var="availableRole" items="${availableRoles}">
-        <c:if test="${availableRole != 'ROLE_ANONYMOUS' }">
-          <option value="${availableRole}">${availableRole.name}</option>
-        </c:if>
-      </c:forEach>
-    </select>
-  </div>
+    <div class="control-group">
+      <label class="control-label">Role</label>
+      <div class="controls">
+        <select name="user_role" class="span5">
+          <c:forEach var="availableRole" items="${availableRoles}">
+            <c:if test="${availableRole != 'ROLE_ANONYMOUS' }">
+              <option value="${availableRole}">${availableRole.name}</option>
+            </c:if>
+          </c:forEach>
+        </select>
+      </div>
+    </div>
 
-  <div class="buttons">
-    <input type="submit" value="View" />
-  </div>
+    <div class="controls">
+      <button type="submit" class="button">View Users</button>
+    </div>
 
-</form:form>
+  </fieldset>
+</form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

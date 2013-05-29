@@ -1,14 +1,15 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<h3>Credit Card Information</h3>
+<form:form method="post" commandName="creditCard" cssClass="form-horizontal">
 
-<form:form id="addCreditCard" cssClass="validatedForm" method="post" commandName="creditCard">
+  <fieldset>
+    <legend>Credit Card Information</legend>
 
-  <!-- Begin Errors -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCard'].allErrors}">
-    <div class="row clearfix">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+    <!-- Begin Errors -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCard'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="nameOnCreditCard" />
         <form:errors path="creditCardNumber" />
         <form:errors path="verificationcode" />
@@ -25,101 +26,117 @@
           </c:forEach>
         </spring:bind>
       </div>
-    </div>
-  </c:if>
-  <!-- End Errors -->
+    </c:if>
+    <!-- End Errors -->
 
-  <div class="row clearfix">
-    <form:label path="isDefault">Default</form:label>
-    <form:checkbox path="isDefault" value="Y" />
-  </div>
-
-  <div class="row clearfix" style="display: none">
-    <form:label path="alias">Alias</form:label>
-    <form:input path="alias" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="nameOnCreditCard" cssClass="required">Name on Card</form:label>
-    <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="nameOnCreditCard" />
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="creditCardNumber" cssClass="required">
-      <spring:message code="label.payment.cardNumber" />
-    </form:label>
-    <form:input cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" maxLength="16" path="creditCardNumber" />
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="verificationcode" cssClass="required">Security Code</form:label>
-    <form:input cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" maxLength="4" path="verificationcode" cssStyle="width:60px;" />
-    <a id="cvvInfo" href="#" style="margin-left: 10px;">What is this?</a> <span class="hover_tooltip">This is the 3 digit code on the back of the card
-      for Visa and Mastercard, or the 4 digit number on the front for American Express.<br /> <img
-      src="<spring:url value='/static/images/creditCard/securityExample.png' />" />
-    </span>
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="expirationDate" cssClass="required">Expiration Date</form:label>
-    <select id="monthSelect" style="width: 50px; margin-right: 10px;">
-      <c:forEach var="month" items="${months}">
-        <option value="${month.key}">${month.key}</option>
-      </c:forEach>
-    </select> <select id="yearSelect" style="width: 70px;">
-      <c:forEach var="year" items="${years}">
-        <option value="${year.value}">${year.key}</option>
-      </c:forEach>
-    </select>
-    <form:input cssStyle="display:none;" cssClass="numOnly" maxLength="4" cssErrorClass="numOnly verificationFailed" path="expirationDate" />
-  </div>
-
-  <div id="creditCardImages" class="row clearfix pushed">
-    <img id="ImgAmex" src="<spring:url value='/static/images/creditCard/iconAmex.png' />" /> <img id="ImgMastercard"
-      src="<spring:url value='/static/images/creditCard/iconMasterCard.png' />" /> <img id="ImgVisa"
-      src="<spring:url value='/static/images/creditCard/iconVisa.png' />" /> <img id="ImgDiscover"
-      src="<spring:url value='/static/images/creditCard/iconDiscover.png' />" />
-  </div>
-
-  <h3>Billing Address</h3>
-
-  <div id="billingAddress" style="margin-top: 12px; padding-top: 12px;">
-    <div class="row clearfix">
-      <form:label path="address1" cssClass="required">Address 1</form:label>
-      <form:input path="address1" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
-    <div class="row clearfix">
-      <form:label path="address2">Address 2</form:label>
-      <form:input path="address2" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
-    </div>
-    <div class="row clearfix">
-      <form:label path="city" cssClass="required">City</form:label>
-      <form:input path="city" cssClass="span-8" cssErrorClass="span-8 validationFailed" />
+    <div class="controls">
+      <form:label path="isDefault" cssClass="checkbox">
+        <form:checkbox path="isDefault" value="Y" />Default</form:label>
     </div>
 
-    <div class="row clearfix">
-      <form:label path="state" cssClass="required">State</form:label>
-      <form:select cssClass="span-8" cssErrorClass="span-8 validationFailed" cssStyle="width:312px;" path="state">
-        <form:option value="0">
-          <spring:message code="label.selectOne" />
-        </form:option>
-        <c:forEach var="state" items="${states}">
-          <form:option value="${state.value}">${state.key}</form:option>
-        </c:forEach>
-      </form:select>
+    <div class="control-group">
+      <form:label path="nameOnCreditCard" cssClass="control-label required">Name on Card</form:label>
+      <div class="controls">
+        <form:input path="nameOnCreditCard" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
     </div>
 
-    <div class="row clearfix">
-      <form:label path="zip" cssClass="required">Billing Zip Code</form:label>
-      <form:input path="zip" maxLength="5" cssClass="span-8 numOnly" cssErrorClass="span-8 numOnly validationFailed" />
+    <div class="control-group">
+      <form:label path="creditCardNumber" cssClass="control-label required">
+        <spring:message code="label.payment.cardNumber" />
+      </form:label>
+      <div class="controls">
+        <form:input path="creditCardNumber" cssClass="span5 numOnly" cssErrorClass="span5 validationFailed numOnly" />
+      </div>
     </div>
-  </div>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <a href="<spring:url value="/profile" />" class="mBtn">Cancel </a> <input type="submit" name="_eventId_submitAddCreditCard" value="Add" />
-  </div>
+    <div class="control-group">
+      <form:label path="verificationcode" cssClass="control-label required">Security Code</form:label>
+      <div class="controls">
+        <form:input cssClass="span1 numOnly" cssErrorClass="span1 numOnly validationFailed" maxLength="4" path="verificationcode" />
+        <a id="cvvInfo" href="#" style="margin-left: 10px;">What is this?</a> 
+        <span class="hover_tooltip">
+          This is the 3 digit code on the back of the card for Visa and Mastercard, or the 4 digit number on the front for American Express.<br /> 
+          <img src="<spring:url value='/static/images/creditCard/securityExample.png' />" />
+        </span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="expirationDate" cssClass="control-label required">Expiration Date</form:label>
+      <div class="controls">
+        <select id="monthSelect" class="span1">
+          <c:forEach var="month" items="${months}">
+            <option value="${month.key}">${month.key}</option>
+          </c:forEach>
+        </select> <select id="yearSelect" class="span2">
+          <c:forEach var="year" items="${years}">
+            <option value="${year.value}">${year.key}</option>
+          </c:forEach>
+        </select>
+        <form:input cssStyle="display:none;" cssClass="numOnly" maxLength="4" cssErrorClass="numOnly verificationFailed" path="expirationDate" />
+      </div>
+    </div>
+
+
+    <div id="creditCardImages" class="controls">
+      <img id="ImgAmex" src="<spring:url value='/static/images/creditCard/iconAmex.png' />" /> <img id="ImgMastercard"
+        src="<spring:url value='/static/images/creditCard/iconMasterCard.png' />" /> <img id="ImgVisa"
+        src="<spring:url value='/static/images/creditCard/iconVisa.png' />" /> <img id="ImgDiscover"
+        src="<spring:url value='/static/images/creditCard/iconDiscover.png' />" />
+    </div>
+
+    <h3>Billing Address</h3>
+
+    <div class="control-group">
+      <form:label path="address1" cssClass="control-label required">Address 1</form:label>
+      <div class="controls">
+        <form:input path="address1" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="address2" cssClass="control-label required">Address 2</form:label>
+      <div class="controls">
+        <form:input path="address2" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="city" cssClass="control-label required">City</form:label>
+      <div class="controls">
+        <form:input path="city" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="state" cssClass="control-label required">State</form:label>
+      <div class="controls">
+        <form:select path="state" cssClass="span5" cssErrorClass="span5 validationFailed">
+          <form:option value="0">
+            <spring:message code="label.selectOne" />
+          </form:option>
+          <form:options items="${states}" itemValue="value" itemLabel="key" />
+        </form:select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="zip" cssClass="control-label required">Billing Zip Code</form:label>
+      <div class="controls">
+        <form:input path="zip" maxLength="5" cssClass="span5 numOnly" cssErrorClass="span5 numOnly validationFailed" />
+      </div>
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="controls">
+      <button onclick="location.href='<spring:url value="/profile" />'" class="button">Cancel</button>
+      <button type="submit" name="_eventId_submitAddCreditCard">Add</button>
+    </div>
+
+  </fieldset>
 
 </form:form>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

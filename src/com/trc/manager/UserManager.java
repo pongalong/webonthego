@@ -1,7 +1,6 @@
 package com.trc.manager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,12 +69,7 @@ public class UserManager implements UserManagerModel {
 
 	@Transactional(readOnly = true)
 	public List<User> getAllInternalUsers() {
-		List<ROLE> roles = new ArrayList<ROLE>();
-		roles.add(ROLE.ROLE_ADMIN);
-		roles.add(ROLE.ROLE_MANAGER);
-		roles.add(ROLE.ROLE_AGENT);
-		roles.add(ROLE.ROLE_SU);
-		return userDao.getAllUsersWithRole(roles);
+		return userDao.getAllUsersWithRole(ROLE.getInternalRoles());
 	}
 
 	@Override

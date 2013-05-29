@@ -87,7 +87,7 @@ public class FAQController {
 	 * 
 	 * @return String
 	 */
-	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.GET)
 	public String insertArticle(
 			@ModelAttribute("categoryList") List<Category> categoryList, @ModelAttribute("article") Article article) {
@@ -100,7 +100,7 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.POST)
 	public ModelAndView processInsertArticle(
 			@ModelAttribute("article") Article article) {
@@ -117,7 +117,7 @@ public class FAQController {
 
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "/create/category", method = RequestMethod.GET)
 	public String insertCategory(
 			@ModelAttribute("category") Category category) {
@@ -130,7 +130,7 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "/create/category", method = RequestMethod.POST)
 	public ModelAndView processInsertCategory(
 			@ModelAttribute("category") Category category, @RequestParam(value = "categoryName", required = true) String categoryName) {

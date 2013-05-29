@@ -1,62 +1,13 @@
 /***********************************************
 Style inputs for the entire page
-************************************************/
-input[type="text"],input[type="password"],select {
-	outline: none;
-	transition: all 0.25s ease-in-out;
-	-moz-transition: all 0.25s ease-in-out;
-	-webkit-transition: all 0.25s ease-in-out;
-}
-
-input[type="text"],input[type="password"] {
-	padding: 1px 5px;
-}
-
-select {
-	padding: 1px 0px 1px 5px;
-}
-
-input:focus,select:focus,checkbox:focus {
-	border: 1px solid #56B4EF;
-	box-shadow: 0 0 5px rgba(0, 103, 178, 1);
-	-webkit-box-shadow: 0 0 5px rgba(0, 103, 178, 1);
-	-moz-box-shadow: 0 0 5px rgba(0, 103, 178, 1);
-}
-
-input[readOnly="readOnly"],input[readOnly="true"],input[readOnly] {
-	border: none;
-	background: transparent;
-}
-
-form label::after {
+***********************************************/
+label::after {
 	content: ':';
 }
 
-form label.required::after {
+label.required::after {
 	content: '*';
 	color: #9C1111;
-}
-
-form p {
-	margin: 15px 0;
-}
-
-/***********************************************
-Button styles
-************************************************/
-form.validatedForm .buttons {
-	text-align: right;
-	clear: both;
-	width: 100%;
-	height: 30px;
-	position: absolute;
-	bottom: 0px;
-	float: right;
-	margin: 10px 0;
-}
-
-form.validatedForm .buttons a.button {
-	float: right;
 }
 
 /***********************************************
@@ -83,79 +34,61 @@ Captcha form style
 }
 
 /***********************************************
-Styles for Login Form
-***********************************************/
-form.login fieldset {
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-}
-
-form.login fieldset legend {
-	font-size: 18px;
-	color: #0067B2;
-	font-weight: normal;
-	margin: 0;
-	padding: 10px 0 10px 0;
-	font-family: "myriad-pro-1", "myriad-pro-2", sans-serif;
-}
-
-/***********************************************
 Form definition
 ***********************************************/
-form.validatedForm {
-	position: relative;
-	padding-bottom: 60px;
+form .right {
+	text-align: right;
 }
 
-form.validatedForm div.buttons::before {
-	float: left;
-	/* content: '* required information';*/
-	color: #9C1111;
-}
-
-form div.row {
+.validatedForm .row {
 	min-height: 25px;
 	line-height: 25px;
 	padding: 4px;
 	position: relative;
 }
 
+.validatedForm .buttons {
+	text-align: right;
+	clear: both;
+	margin: 10px 0;
+}
+
+.buttons input {
+	float: none !important;
+	width: auto !important;
+	min-width: 120px;
+}
+
 /***********************************************
-Generic Validated Form - 
-formatted to allow for error messages and tooltips
-to appear on the right.
+Generic Validated Form
 ***********************************************/
-input.validationFailed,select.validationFailed,textarea.validationFailed {
+.validationFailed {
 	background: #FAEBE7 !important;
 }
 
-input.validationFailed:focus,select.validationFailed:focus {
+.validationFailed:focus {
 	background: #FAF6F6 !important;
 	box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
 	-webkit-box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
 	-moz-box-shadow: 0 0 5px rgba(255, 0, 0, 0.6);
 }
 
-form.validatedForm textarea {
+.validatedForm input,textarea {
 	width: 300px;
+	float: left;
 }
 
-form.validatedForm input[type="text"],form.validatedForm input[type="password"] {
-	width: 300px;
-	margin: 0px;
-	float: left;
+.validatedForm input[type="text"],.validatedForm input[type="password"] {
+	margin: 0;
 	height: 20px;
 }
 
-form.validatedForm select { /*
-	width: 303px; */
+.validatedForm select {
 	width: 312px;
 	margin: 3px 0px 0px 0px;
-	float: left;
 }
 
-form.validatedForm label {
+.validatedForm label {
 	float: left;
 	width: 180px;
 	line-height: 25px;
@@ -163,23 +96,22 @@ form.validatedForm label {
 	font-size: 14px;
 }
 
-form.validatedForm .pushed {
-	margin: 0px 0px 0px 180px;
+.validatedForm .pushed {
+	margin-left: 180px;
 }
 
-form.validatedForm span[id*="errors"] {
+.alert span[id*="errors"] {
 	display: list-item;
 	list-style-position: inside;
 	color: #666;
 	font-size: 12px;
 	line-height: 16px;
-	margin-left: 10px;
+	margin: 0 10px;
 }
 
-form.validatedForm .padded {
-	margin: 0.2em 1em 0.2em 1em;
-}
-
+/***********************************************
+Graphics for valid/invalid inputs to a form
+***********************************************/
 .validation {
 	display: none;
 }
@@ -200,10 +132,9 @@ form.validatedForm .padded {
 
 /***********************************************
 ToolTips
-these appear to the right of an input box as a 
-span
+these appear to the right of an input box as a span
 ***********************************************/
-form.validatedForm .hover_tooltip {
+.validatedForm .hover_tooltip {
 	position: absolute;
 	z-index: 10;
 	display: none;
@@ -217,7 +148,7 @@ form.validatedForm .hover_tooltip {
 	border: 1px gray dotted;
 }
 
-#main-content form.validatedForm span.hover_tooltip p {
+.validatedForm .hover_tooltip p {
 	line-height: 14px;
 	font-size: 12px;
 	color: #333;
@@ -225,7 +156,7 @@ form.validatedForm .hover_tooltip {
 }
 
 /** adds a left arrow to the div. left should be set to -border-width x 2 */
-form.validatedForm span.hover_tooltip_bak:after {
+.validatedForm .hover_tooltip_bak:after {
 	content: '';
 	display: block;
 	position: absolute;
@@ -239,29 +170,23 @@ form.validatedForm span.hover_tooltip_bak:after {
 	z-index: 10;
 }
 
-form.validatedForm span.hover_tooltip .ttExample {
+.validatedForm .hover_tooltip .ttExample {
 	border-top: 1px #333 dashed;
 	padding-top: 4px;
 	margin-top: 4px;
 	color: #333;
 }
 
-form.validatedForm div.terms {
-	width: 630px;
-	height: 220px;
-	margin: 10px auto 10px auto;
-	border: 1px #404040 solid;
-	height: 200px;
-	padding: 20px;
-	overflow: auto;
-}
-
-form.validatedForm div.registrationTerms {
+/***********************************************
+Registration and Activation Form Styles
+***********************************************/
+.registrationTerms {
 	height: 220px;
 	border: 1px #bbb solid;
 	height: 150px;
 	padding: 20px;
 	overflow: auto;
+	margin-bottom: 20px;
 }
 
 .objectSelect {
@@ -288,15 +213,6 @@ form.validatedForm div.registrationTerms {
 
 .unselected {
 	opacity: 0.5;
-	/*background-image: -webkit-linear-gradient(#FFF9BF, #EBC98F);
-	background-image: -o-linear-gradient(#FFF9BF, #EBC98F);
-	background-image: linear-gradient(#FFF9BF, #EBC98F);
-	background-position: 0 0;
-	border-color: #E8C284;*/
-}
-
-.hover_tooltip {
-	display: none;
 }
 
 /***********************************************
@@ -314,4 +230,18 @@ ul.info span {
 	margin-right: 10px;
 	font-weight: bold;
 	text-align: right;
+}
+
+/***********************************************
+Simple table style to present form labels and values
+***********************************************/
+.info_table_form {
+	border: 1px #ccc solid;
+	border-radius: 4px;
+}
+
+.info_table_form tr td:first-child {
+	font-weight: bold;
+	width: 150px;
+	margin-right: 10px;
 }

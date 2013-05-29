@@ -39,6 +39,7 @@ import com.trc.web.validation.TicketValidator;
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
+		"INTERNAL_USERS",
 		"ticket",
 		"ticketNote",
 		"ticketCategories",
@@ -118,9 +119,11 @@ public class TicketController {
 		ResultModel model = new ResultModel("support/ticket/update");
 
 		List<User> internalUsers = userManager.getAllInternalUsers();
-		model.addAttribute("internalUsers", internalUsers);
+		model.addAttribute("INTERNAL_USERS", internalUsers);
 
 		Ticket ticket;
+
+		// fetch the customer's email
 		try {
 			ticket = ticketManager.getTicketById(ticketId);
 
@@ -131,9 +134,7 @@ public class TicketController {
 					model.addAttribute("customer", userManager.getUserById(cTicket.getCustomerId()));
 				model.addAttribute("assignee", userManager.getUserById(cTicket.getAssigneeId()));
 				model.addAttribute("ticket", cTicket);
-
 			}
-
 			// agent ticket
 			if (ticket instanceof AgentTicket) {
 				AgentTicket aTicket = (AgentTicket) ticket;
@@ -142,9 +143,7 @@ public class TicketController {
 				else
 					model.addAttribute("creator", userManager.getUserById(aTicket.getCreatorId()));
 				model.addAttribute("ticket", aTicket);
-
 			}
-
 			// inquiry ticket
 			if (ticket instanceof InquiryTicket) {
 				InquiryTicket iTicket = (InquiryTicket) ticket;
@@ -156,14 +155,13 @@ public class TicketController {
 		} catch (TicketManagementException e) {
 			return model.getAccessException();
 		}
-
 	}
 
 	@RequestMapping(value = "/update/{ticketId}", method = RequestMethod.POST)
 	public ModelAndView postUpdateTicket(
 			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + ticket.getId(), "support/ticket/update");
+		ResultModel model = new ResultModel("redirect:/support/ticket/" + ticket.getId(), "support/ticket/update");
 
 		ticketValidator.validate(ticket, result);
 
@@ -211,7 +209,7 @@ public class TicketController {
 	public ModelAndView postReplyTicket(
 			@ModelAttribute("contactEmail") String contactEmail, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("ticketNote") TicketNote note, BindingResult result, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/ticket/" + ticketId, "support/ticket/reply/reply");
+		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticketId, "support/ticket/reply/reply");
 
 		if (result.hasErrors()) {
 			return model.getError();

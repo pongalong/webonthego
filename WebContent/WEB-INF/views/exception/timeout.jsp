@@ -1,11 +1,12 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
 
-<h3>Your Previous Session Has Expired</h3>
-<p>
-  Your previous session has expired.<br /> <b>You will be redirected in <span id="counter">5</span> seconds to a valid session
-  </b>
-</p>
-<p>Or you can use the navigation links on the right side of the page.</p>
+<div class="span12">
+  <h3>Your Previous Session Has Expired</h3>
+  <p>
+    Your previous session has expired.<br /> <b>You will be redirected in <span id="counter">5</span> seconds to a valid session
+    </b>
+  </p>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -27,4 +28,4 @@
 	};
 </script>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>

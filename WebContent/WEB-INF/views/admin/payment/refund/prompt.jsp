@@ -1,77 +1,85 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
-<form:form id="refund" cssClass="validatedForm" method="POST" commandName="refundRequest">
+<form:form id="refund" cssClass="form-horizontal" method="POST" commandName="refundRequest">
+  <fieldset>
+    <legend>Reverse Transaction</legend>
 
-  <h3 style="margin-bottom: 10px; padding-bottom: 0px;">Reverse Transaction</h3>
+    <!-- Errors -->
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.refundRequest'].allErrors}">
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
+        <form:errors path="code" />
+        <form:errors path="notes" />
+        <form:errors path="verified" />
+        <form:errors path="jcaptcha" />
+        <!-- Global Errors -->
+        <spring:bind path="refundRequest">
+          <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
+            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+          </c:forEach>
+        </spring:bind>
+      </div>
+    </c:if>
 
-  <!-- Errors -->
-  <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.refundRequest'].allErrors}">
-    <div class="alert error">
-      <h1>Please correct the following problems</h1>
-      <form:errors path="code" />
-      <form:errors path="notes" />
-      <form:errors path="verified" />
-      <form:errors path="jcaptcha" />
-      <!-- Global Errors -->
-      <spring:bind path="refundRequest">
-        <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-          <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
-        </c:forEach>
-      </spring:bind>
+    <div id="verifyInfo" class="alert alert-info">
+      <p>This reversal has been requested by ${CONTROLLING_USER.username}. Please verify the following information:</p>
+      <ul class="info">
+        <li><span>User:</span> ${USER.userId}</li>
+        <li><span>Email:</span> ${USER.email}</li>
+        <li><span>Amount:</span> &#36;<fmt:formatNumber value="${refundRequest.paymentTransaction.paymentAmount}" pattern="0.00" /></li>
+        <li><span>Account:</span> ${refundRequest.paymentTransaction.accountNo}</li>
+        <li><span>Date:</span> ${refundRequest.paymentTransaction.paymentUnitDate.month}/ ${refundRequest.paymentTransaction.paymentUnitDate.day}/
+          ${refundRequest.paymentTransaction.paymentUnitDate.year} ${refundRequest.paymentTransaction.paymentUnitDate.hour}: <fmt:formatNumber
+            value="${refundRequest.paymentTransaction.paymentUnitDate.minute}" pattern="00" /> <c:choose>
+            <c:when test="${refundRequest.paymentTransaction.paymentUnitDate.hour >= 12}">pm</c:when>
+            <c:otherwise>am</c:otherwise>
+          </c:choose></li>
+        <li><span>Method:</span> ${refundRequest.paymentTransaction.paymentMethod} ${refundRequest.paymentTransaction.paymentSource}</li>
+      </ul>
+
+      <div class="control-group">
+        <form:label path="verified" cssClass="checkbox" onclick="verifyPaymentInformation()">
+          <form:checkbox path="verified" />
+          I have verified the user's information
+        </form:label>
+      </div>
     </div>
-  </c:if>
 
-  <div id="verifyInfo" class="info">
-    <p>This reversal has been requested by ${CONTROLLING_USER.username}. Please verify the following information:</p>
-    <ul class="info">
-      <li><span>User:</span> ${USER.userId}</li>
-      <li><span>Email:</span> ${USER.email}</li>
-      <li><span>Amount:</span> &#36;<fmt:formatNumber value="${refundRequest.paymentTransaction.paymentAmount}" pattern="0.00" /></li>
-      <li><span>Account:</span> ${refundRequest.paymentTransaction.accountNo}</li>
-      <li><span>Date:</span> ${refundRequest.paymentTransaction.paymentUnitDate.month}/ ${refundRequest.paymentTransaction.paymentUnitDate.day}/
-        ${refundRequest.paymentTransaction.paymentUnitDate.year} ${refundRequest.paymentTransaction.paymentUnitDate.hour}: <fmt:formatNumber
-          value="${refundRequest.paymentTransaction.paymentUnitDate.minute}" pattern="00" /> <c:choose>
-          <c:when test="${refundRequest.paymentTransaction.paymentUnitDate.hour >= 12}">pm</c:when>
-          <c:otherwise>am</c:otherwise>
-        </c:choose></li>
-      <li><span>Method:</span> ${refundRequest.paymentTransaction.paymentMethod} ${refundRequest.paymentTransaction.paymentSource}</li>
-    </ul>
-
-    <div class="row clearfix">
-      <form:checkbox path="verified" cssErrorClass="validationFailed" cssStyle="vertical-align: middle;" />
-      <span style="vertical-align: middle;" onclick="verifyPaymentInformation()">I have verified the user's information </span>
+    <div class="control-group">
+      <form:label path="code" cssClass="control-label required">Refund Reason</form:label>
+      <div class="controls">
+        <form:select path="code" items="${refundCodes}" itemLabel="description" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
     </div>
-  </div>
 
-  <div class="row clearfix">
-    <form:label path="code" cssClass="required">Refund Reason</form:label>
-    <form:select path="code" items="${refundCodes}" itemLabel="description" cssErrorClass="validationFailed" />
-  </div>
-
-  <div class="row clearfix">
-    <form:label path="notes" cssClass="required">Notes</form:label>
-    <form:textarea path="notes" cssErrorClass="validationFailed" />
-  </div>
-
-  <div class="clear"></div>
-
-  <!-- Jcaptcha -->
-  <div class="row clearfix captchaImage">
-    <form:label path="jcaptcha" cssClass="required">Word Verification</form:label>
-    <div class="image">
-      Enter the text in the image below<img id="jCaptchaImage" src="<spring:url value='/static/images/jcaptcha.jpg' htmlEscape='true' />" alt="Security image" />
+    <div class="control-group">
+      <form:label path="notes" cssClass="control-label required">Notes</form:label>
+      <div class="controls">
+        <form:textarea path="notes" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
     </div>
-    <a href="#" class="pushed captchaReload" tabindex="-1">request another image</a>
-  </div>
-  <div class="clear"></div>
-  <div class="row clearfix pushed">
-    <form:input cssErrorClass="validationFailed" autocomplete="off" path="jcaptcha" />
-  </div>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <input id="refundSubmit" type="submit" name="_eventId_submit" value="Continue" />
-  </div>
+    <div class="control-group">
+      <form:label path="jcaptcha" cssClass="control-label required">Security Verification</form:label>
+      <div class="controls">
+        <form:input path="jcaptcha" autocomplete="off" placeholder="Enter the below text" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+      <div class="controls">
+        <div class="span5 captcha">
+          <img id="jCaptchaImage" src="<spring:url value='/static/images/jcaptcha.jpg' htmlEscape='true' />" alt="Security image" />
+        </div>
+      </div>
+      <div class="controls">
+        <a href="#" class="span5 captchaReload" style="margin-left: 0;" tabindex="-1">request another image</a>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button type="submit" class="button" name="_eventId_submit">Continue</button>
+    </div>
+
+  </fieldset>
 </form:form>
 
 <script type="text/javascript" src="<spring:url value='/static/javascript/jCaptcha.js' />"></script>
@@ -79,8 +87,8 @@
 <script type="text/javascript">
 	$(function() {
 		$("#verified1").click(function() {
-			$("#verifyInfo").toggleClass("info");
-			$("#verifyInfo").toggleClass("success");
+			$("#verifyInfo").toggleClass("alert-info");
+			$("#verifyInfo").toggleClass("alert-success");
 		});
 	});
 
@@ -89,4 +97,4 @@
 	}
 </script>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

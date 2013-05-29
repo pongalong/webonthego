@@ -14,7 +14,7 @@
 <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
 
 <noscript>
-  <div style="display: inline;">
+  <div style="display: none;">
     <img height="1" width="1" style="border-style: none;" alt=""
       src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/999355784/?value=0&amp;label=5ckaCNjz-AQQiOvD3AM&amp;guid=ON&amp;script=0" />
   </div>

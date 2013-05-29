@@ -1,23 +1,4 @@
 /**
- * Setup login forms and caption effects
- */
-$(function() {
-	if ($("#j_username").exists()) {
-		$("#j_username").enableCaption();
-		$("#j_password_holder").enableCaption().focus(function() {
-			$(this).addClass("hidden");
-			$("#j_password").removeClass("hidden").focus();
-		});
-		$("#j_password").blur(function() {
-			if ($("#j_password").val() == "") {
-				$("#j_password").addClass("hidden");
-				$("#j_password_holder").removeClass("hidden").showCaption();
-			}
-		});
-	}
-});
-
-/**
  * Setup curtain effect on form submission
  */
 $(function() {
@@ -42,12 +23,6 @@ $(function() {
 		else if ($("#creditCardNumber").exists())
 			path = "#";
 
-		$("#cvvInfo").hover(function() {
-			$(this).next("span.hover_tooltip").show();
-		}, function() {
-			$(this).next("span.hover_tooltip").hide();
-		});
-
 		highlightCard($(path + "creditCardNumber").val());
 
 		var inDate = $(path + "expirationDate").val();
@@ -61,7 +36,7 @@ $(function() {
 		});
 
 		$(path + "creditCardNumber").change(function() {
-			highlightCard();
+			highlightCard($(path + "creditCardNumber").val());
 		});
 	}
 });

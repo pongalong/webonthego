@@ -57,7 +57,15 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 	}
 
 	public List<User> getAllUsersWithRole(
-			List<ROLE> roles) {
+			Collection roles) {
+		DetachedCriteria subCriteria = DetachedCriteria.forClass(Authority.class);
+		subCriteria.add(Property.forName("role").in(roles));
+		subCriteria.setProjection(Projections.property("user"));
+		return getHibernateTemplate().findByCriteria(subCriteria);
+	}
+
+	public List<User> getAllUsersWithRole(
+			ROLE[] roles) {
 		DetachedCriteria subCriteria = DetachedCriteria.forClass(Authority.class);
 		subCriteria.add(Property.forName("role").in(roles));
 		subCriteria.setProjection(Projections.property("user"));
@@ -131,32 +139,25 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 	}
 
 	public List<User> searchByEmailAndDate(
-			String email,
-			DateTime startDate,
-			DateTime endDate) {
+			String email, DateTime startDate, DateTime endDate) {
 		endDate.plusDays(1);
 		Date sqlStartDate = new Date(startDate.getMillis());
 		Date sqlEndDate = new Date(endDate.getMillis());
-		List<User> results = getHibernateTemplate().find("from User user where email like ? and dateEnabled between ? and ?", wildcard(email), sqlStartDate,
-				sqlEndDate);
+		List<User> results = getHibernateTemplate().find("from User user where email like ? and dateEnabled between ? and ?", wildcard(email), sqlStartDate, sqlEndDate);
 		return results;
 	}
 
 	public List<User> searchByNotEmailAndDate(
-			String email,
-			DateTime startDate,
-			DateTime endDate) {
+			String email, DateTime startDate, DateTime endDate) {
 		endDate.plusDays(1);
 		Date sqlStartDate = new Date(startDate.getMillis());
 		Date sqlEndDate = new Date(endDate.getMillis());
-		List<User> results = getHibernateTemplate().find("from User user where email not like ? and dateEnabled between ? and ?", wildcard(email), sqlStartDate,
-				sqlEndDate);
+		List<User> results = getHibernateTemplate().find("from User user where email not like ? and dateEnabled between ? and ?", wildcard(email), sqlStartDate, sqlEndDate);
 		return results;
 	}
 
 	public List<User> searchByDate(
-			Date startDate,
-			Date endDate) {
+			Date startDate, Date endDate) {
 		java.sql.Date sqlStartDate = new java.sql.Date(startDate.getTime());
 		java.sql.Date sqlEndDate = new java.sql.Date(endDate.getTime());
 		List<User> results = getHibernateTemplate().find("from User user where dateEnabled between ? and ?", sqlStartDate, sqlEndDate);
@@ -211,9 +212,7 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 			sDateDisabled = "null";
 		}
 		String columns = "user_id, username, password, email, hint_id, hint_answer, enabled, date_enabled, date_disabled";
-		String values = user.getUserId() + ", '" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', "
-				+ user.getSecurityQuestionAnswer().getId() + ", '" + user.getSecurityQuestionAnswer().getAnswer() + "', " + (user.isEnabled() ? 1 : 0) + ", '"
-				+ sDateEnabled + "', " + sDateDisabled;
+		String values = user.getUserId() + ", '" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', " + user.getSecurityQuestionAnswer().getId() + ", '" + user.getSecurityQuestionAnswer().getAnswer() + "', " + (user.isEnabled() ? 1 : 0) + ", '" + sDateEnabled + "', " + sDateDisabled;
 		final String sql = "insert into users (" + columns + ") values (" + values + ")";
 		Long count = (Long) getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			public Object doInHibernate(
@@ -237,19 +236,19 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 		getHibernateTemplate().persist(user);
 	}
 
-//	@Override
-//	public void enableUser(
-//			User user) {
-//		user.setEnabled(true);
-//		user.setDateEnabled(new DateTime().toDate());
-//		updateUser(user);
-//	}
-//
-//	@Override
-//	public void disableUser(
-//			User user) {
-//		user.setEnabled(false);
-//		user.setDateDisabled(new DateTime().toDate());
-//		updateUser(user);
-//	}
+	// @Override
+	// public void enableUser(
+	// User user) {
+	// user.setEnabled(true);
+	// user.setDateEnabled(new DateTime().toDate());
+	// updateUser(user);
+	// }
+	//
+	// @Override
+	// public void disableUser(
+	// User user) {
+	// user.setEnabled(false);
+	// user.setDateDisabled(new DateTime().toDate());
+	// updateUser(user);
+	// }
 }

@@ -1,11 +1,11 @@
 <c:if test="${USER.userId > 0}">
   <c:choose>
     <c:when test="${CONTROLLING_USER.userId > 0}">
-      <h3 style="margin-bottom: 0;">Manage User</h3>
-      <div style="font-size: .9em; margin-bottom: 8px;">${USER.email}</div>
+      <h4 style="margin-bottom: 0;">Manage User</h4>
+      <div style="font-size: .8em; margin-bottom: 8px;">${USER.email}</div>
     </c:when>
     <c:otherwise>
-      <h3 style="margin-bottom: 0;">Manage Account</h3>
+      <h4 style="margin-bottom: 0;">Manage Account</h4>
     </c:otherwise>
   </c:choose>
 
@@ -45,7 +45,7 @@
 
 
 <c:if test="${(empty CONTROLLING_USER && empty USER) || (CONTROLLING_USER.userId < 1 && USER.userId < 1)}">
-  <h3>Manage Account</h3>
+  <h4>Manage Account</h4>
   <ul>
     <li><a href="<spring:url value="/login"/>">Login</a></li>
     <li><a href="<spring:url value="/register"/>">Register</a></li>

@@ -1,47 +1,38 @@
-<%@ include file="/WEB-INF/views/include/headerAndBody.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>Support</h3>
 
-<div style="border: 1px solid lightgrey; background-color: azure; padding: 5px; margin: 0 0 20px 0;">
-  <h4>
-    <a href="<spring:url value="/support/faq" />">Frequently Asked Questions</a>
-  </h4>
-</div>
+<h4>
+  <a href="<spring:url value="/support/faq" />">Frequently Asked Questions</a>
+</h4>
 
-<div style="border: 1px solid lightgrey; background-color: azure; padding: 5px; margin: 0 0 20px 0;">
-  <h4>
-    <a href="<spring:url value="/support/download" />">Download</a>
-  </h4>
-</div>
+<h4>
+  <a href="<spring:url value="/support/download" />">Downloads</a>
+</h4>
 
-<div style="border: 1px solid lightgrey; background-color: azure; padding: 5px; margin: 20px 0 20px 0;">
-  <h4>
-    <c:choose>
-      <c:when test="${user.userId > 0}">
-        <a href="<spring:url value="/support/ticket/create"/>">Contact Us</a>
-      </c:when>
-      <c:otherwise>
-        <a href="<spring:url value="/support/inquire"/>">Contact Us</a>
-      </c:otherwise>
-    </c:choose>
-  </h4>
-</div>
+<h4>
+  <c:choose>
+    <c:when test="${USER.userId > 0}">
+      <a href="<spring:url value="/support/ticket/create"/>">Contact Us</a>
+    </c:when>
+    <c:otherwise>
+      <a href="<spring:url value="/support/inquire" />">Contact Us</a>
+    </c:otherwise>
+  </c:choose>
+</h4>
 
-<form:form id="search" cssClass="search validatedForm" method="post" commandName="article">
-  <h3 style="border-bottom: 1px #ccc dotted; margin-bottom: 10px;">Search</h3>
+<form method="post">
 
-  <input id="search_support_input" type="text" name="keyword" placeholder="Enter your query here" style="width: 100%;"></input>
+  <fieldset>
+    <legend>Search</legend>
 
-  <div class="clear"></div>
-  <div class="buttons">
-    <input type="submit" name="_eventId_submit"></input>
-  </div>
-</form:form>
+    <div class="input-append">
+      <input type="text" name="keyword" autocomplete="off" placeholder="Enter your query here" />
+      <button type="submit" class="btn">Search</button>
+    </div>
 
-<script type="text/javascript">
-	$(function() {
-		$("#search_support_input").enableCaption();
-	});
-</script>
+  </fieldset>
 
-<%@ include file="/WEB-INF/views/include/footerAndNav.jsp"%>
+</form>
+
+<%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>
