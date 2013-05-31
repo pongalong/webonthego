@@ -1,15 +1,15 @@
-<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-<div class="span12">
-  <h3>Your Previous Session Has Expired</h3>
-  <p>
-    Your previous session has expired.<br /> <b>You will be redirected in <span id="counter">5</span> seconds to a valid session
-    </b>
-  </p>
-</div>
+
+<h3>Your Previous Session Has Expired</h3>
+
+<p>Your previous session has expired.</p>
+<p style="font-weight: bold;">
+  You will be redirected in <span id="counter">5</span> seconds to a valid session
+</p>
 
 <script type="text/javascript">
-	$(document).ready(function() {
+	$(function() {
 		$("span#counter").countDown();
 	});
 
@@ -28,4 +28,4 @@
 	};
 </script>
 
-<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerNoMenu.jsp"%>

@@ -64,22 +64,22 @@ function typeToIndex(target, placeholder, index) {
  * 
  * @returns {Boolean}
  */
-function highlightCard(cardNumber) {
+function highlightCard(path, cardNumber) {
 	if (cardNumber.length > 0) {
 		var cardType = cardNumber.substring(0, 1);
-		var cvv = document.getElementById("verificationcode");
+		var cvv = $(path + "verificationcode");
 		if (mod10(cardNumber)) {
 			if (cardType == 4) {
-				cvv.maxLength = 3;
+				cvv.attr("maxLength", 3);
 				blurAllExcept($("#ImgVisa"));
 			} else if (cardType == "5") {
-				cvv.maxLength = 3;
+				cvv.attr("maxLength", 3);
 				blurAllExcept($("#ImgMastercard"));
 			} else if (cardType == "3") {
-				cvv.maxLength = 4;
+				cvv.attr("maxLength", 4);
 				blurAllExcept($("#ImgAmex"));
 			} else if (cardType == "6") {
-				cvv.maxLength = 3;
+				cvv.attr("maxLength", 3);
 				blurAllExcept($("#ImgDiscover"));
 			} else {
 				blurAllExcept("unknown");
@@ -97,10 +97,10 @@ function highlightCard(cardNumber) {
  * @param cardImgObj
  */
 function blurAllExcept(cardImgObj) {
-	$("#creditCardImages").find("img").fadeTo("fast", 0.3);
-	if (cardImgObj != "unknown") {
-		$(cardImgObj).fadeTo("fast", 1).css("border", "1px solid blue");
-	}
+	$("#creditCardImages").find("img").not($(cardImgObj)).fadeTo("fast", 0.3);
+//	if (cardImgObj != "unknown") {
+//		$(cardImgObj).fadeTo("fast", 1).css("border", "1px solid blue");
+//	}
 }
 
 /*******************************************************************************

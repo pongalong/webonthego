@@ -1,17 +1,17 @@
 <link rel="stylesheet" href="<spring:url value='/static/styles/admin/controlBar.css' />" type="text/css" />
-<script type="text/javascript" src="<spring:url value='/static/javascript/pages/admin/controlBar.js' />"></script>
+<script type="text/javascript" src="<spring:url value='/static/javascript/admin/controlBar.js' />"></script>
 
-<div id="admin_control_bar">
+<div id="admin-control-container">
 
   <!-- ADMIN LOGO -->
-  <div class="logo">
+  <div id="admin-logo-container">
     <a href="<spring:url value="/home" />"> <img src="<spring:url value='/static/images/logo/logo_admin_sm.png' />" />
     </a>
   </div>
   <!-- END ADMIN LOGO -->
 
   <!-- LOGOUT/ID -->
-  <div class="logout">
+  <div id="admin-logout-container">
     <c:choose>
       <c:when test="${CONTROLLING_USER.userId != -1}">
         <b>Internal:</b>
@@ -35,22 +35,25 @@
       <c:set var="currentUser" value="Search by Email or ID" />
     </c:otherwise>
   </c:choose>
-  <div class="currentUser hidden">
-    <a href="<spring:url value="/account" />">${currentUser} </a>
-  </div>
   <!--  END CURRENTLY VIEWED USER -->
 
   <!-- SEARCH FORM -->
-  <form id="adminControl" method="post" action="<spring:url value="/admin/search" />">
+  <form id="admin-search" method="post" action="<spring:url value="/admin/search" />">
 
-    <input name="admin_search_id" id="admin_search_id" type="text" class="hidden" value="${USER.userId}" />
+    <input type="text" name="admin-search-param-id" id="admin-search-param-id" class="hidden" value="${USER.userId}" />
 
     <div class="input-append">
-      <input autocomplete="off" name="admin_search_param" id="admin_search_param" type="text" placeholder="${currentUser}" />
-      <button id="adminControl_button_submit" class="btn" type="submit">Go</button>
-      <button id="adminControl_button_reset" class="btn" type="reset">Reset</button>
+      <input autocomplete="off" name="admin-search-param" id="admin-search-param" type="text" placeholder="${currentUser}" />
+      <button id="admin-search-submit" class="btn" type="submit">Go</button>
+      <button id="admin-search-reset" class="btn" type="reset">Reset</button>
     </div>
-    <div id="admin_search_results" class="search_results_box"></div>
+
+    <div id="admin-search-results-container">
+      <div id="admin-search-results-header">
+        <span class="id">ID</span><span class="value">Email</span>
+      </div>
+      <div id="admin-search-results"></div>
+    </div>
 
   </form>
   <!--  END SEARCH FORM -->

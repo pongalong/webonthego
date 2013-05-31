@@ -1,8 +1,8 @@
 package com.trc.domain.support.knowledgebase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,157 +11,133 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "swkbarticles")
-public class Article implements java.io.Serializable {
+public class Article implements Serializable {
 	private static final long serialVersionUID = 1495544695293668738L;
-	@Id
-	@Column(name = "kbarticleid", updatable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	Integer id;
-	@Column(name = "subject")
-	String subject;
-	@Column
+	private int id;
+	private String subject;
 	private int creatorid;
-	@Column
 	private int views;
-	@Column
 	private int hasattachments;
-	@Column
 	private int dateline;
-	@Column
 	private String articlestatus;
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	@JoinTable(name = "article_category", joinColumns = { @JoinColumn(name = "articleid") }, inverseJoinColumns = { @JoinColumn(name = "categoryid") })
 	private List<Category> categories = new ArrayList<Category>();
-
-	// @OneToOne(mappedBy="article")
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "kbarticleid", nullable = false, insertable = true, updatable = true)
 	private ArticleData articleData;
 
 	public Article() {
+		articleData = new ArticleData();
+		articleData.setArticle(this);
 	}
 
-	public Integer getId() {
+	@Id
+	@Column(name = "kbarticleid", updatable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(
+			int id) {
 		this.id = id;
 	}
 
+	@Column(name = "subject")
 	public String getSubject() {
 		return subject;
 	}
 
-	public void setSubject(String subject) {
+	public void setSubject(
+			String subject) {
 		this.subject = subject;
 	}
 
+	@Column(name = "creatorid")
 	public int getCreatorid() {
 		return creatorid;
 	}
 
-	public void setCreatorid(int creatorid) {
+	public void setCreatorid(
+			int creatorid) {
 		this.creatorid = creatorid;
 	}
 
+	@Column(name = "views")
 	public int getViews() {
 		return views;
 	}
 
-	public void setViews(int views) {
+	public void setViews(
+			int views) {
 		this.views = views;
 	}
 
+	@Column(name = "hasattachments")
 	public int getHasattachments() {
 		return hasattachments;
 	}
 
-	public void setHasattachments(int hasattachments) {
+	public void setHasattachments(
+			int hasattachments) {
 		this.hasattachments = hasattachments;
 	}
 
+	@Column(name = "dateline")
 	public int getDateline() {
 		return dateline;
 	}
 
-	public void setDateline(int dateline) {
+	public void setDateline(
+			int dateline) {
 		this.dateline = dateline;
 	}
 
+	@Column(name = "articlestatus")
 	public String getArticlestatus() {
 		return articlestatus;
 	}
 
-	public void setArticlestatus(String articlestatus) {
+	public void setArticlestatus(
+			String articlestatus) {
 		this.articlestatus = articlestatus;
 	}
 
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@JoinTable(name = "article_category", joinColumns = { @JoinColumn(name = "articleid") }, inverseJoinColumns = { @JoinColumn(name = "categoryid") })
 	public List<Category> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(
+			List<Category> categories) {
 		this.categories = categories;
 	}
 
-	public void addCategory(Category category) {
-		categories.add(category);
-	}
-
+	@OneToOne(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public ArticleData getArticleData() {
 		return articleData;
 	}
 
-	public void setArticleData(ArticleData articleData) {
+	public void setArticleData(
+			ArticleData articleData) {
 		this.articleData = articleData;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((categories == null) ? 0 : categories.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
-		return result;
-	}
+	/* ************************************************************************
+	 * Helper Methods
+	 */
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Article other = (Article) obj;
-		if (categories == null) {
-			if (other.categories != null)
-				return false;
-		} else if (!categories.equals(other.categories))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (subject == null) {
-			if (other.subject != null)
-				return false;
-		} else if (!subject.equals(other.subject))
-			return false;
-		return true;
+	@Transient
+	public void addCategory(
+			Category category) {
+		categories.add(category);
 	}
 
 }

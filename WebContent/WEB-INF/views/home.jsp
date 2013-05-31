@@ -4,7 +4,7 @@
 <div class="span8 colborder">
   <h3>Create Your Web on the Go &#8480; Account</h3>
   <p>If you have received your Web on the Go &#8480; device you can create your account and activate it here. Start by creating a new user account.</p>
-  <div style="text-align: center; margin-top: 35px;">
+  <div class="button-row align-center">
     <a href='<spring:url value="/register" />' class="button">Create Account</a>
   </div>
 </div>
@@ -24,6 +24,7 @@
 
   <form id="login" class="login" action="<spring:url value='/j_spring_security_check' />" method="post">
     <fieldset>
+
       <legend>Existing Users</legend>
 
       <p>If you already have a Web on the Go &#8480; login, you can manage your account, view your usage, adjust your payment options and add additional
@@ -36,6 +37,7 @@
         <button class="button" type="submit" style="float: right;">Log In</button>
         <a href="<spring:url value='/reset/password' />" style="float: left;">Forgot password</a>
       </div>
+
     </fieldset>
   </form>
 

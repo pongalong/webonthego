@@ -27,17 +27,12 @@
         </c:if>
 
         <div class="control-group">
-          <form:label path="title" cssClass="control-label">Ticket Title</form:label>
-          <div class="controls">
-            <form:input path="title" cssClass="span6" cssErrorClass="span6 validationFailed" />
-          </div>
-        </div>
-
-        <div class="control-group">
           <form:label path="category.id" cssClass="control-label required">Ticket Category</form:label>
           <div class="controls">
             <form:select path="category.id" cssClass="span6" cssErrorClass="span6 validationFailed">
-              <option value="0">Select one...</option>
+              <form:option value="0">
+                <spring:message code="label.selectOne" />
+              </form:option>
               <c:forEach var="cat" items="${ticketCategories}">
                 <optgroup label="${cat.description}">
                   <c:forEach var="subcategory" items="${cat.subcategories}">
@@ -46,6 +41,13 @@
                 </optgroup>
               </c:forEach>
             </form:select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <form:label path="title" cssClass="control-label">Short Description</form:label>
+          <div class="controls">
+            <form:input path="title" cssClass="span6" cssErrorClass="span6 validationFailed" />
           </div>
         </div>
 
@@ -63,7 +65,7 @@
         </c:if>
 
         <div class="control-group">
-          <form:label path="description" cssClass="control-label required">Description</form:label>
+          <form:label path="description" cssClass="control-label required">Long Description</form:label>
           <div class="controls">
             <form:textarea path="description" cssClass="span6" cssErrorClass="span6 validationFailed" />
           </div>

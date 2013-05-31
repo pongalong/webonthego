@@ -13,7 +13,7 @@
         <!-- Global Errors -->
         <spring:bind path="simpleRegistrationTerms">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
-            <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
+            <span id="global.${status.index}.errors"><c:out value="${error}" /></span>
           </c:forEach>
         </spring:bind>
       </div>
@@ -28,7 +28,7 @@
       <span onclick="$('#acceptTerms1').click()">I have read and understand the terms and conditions</span>
     </form:label>
 
-    <button type="submit" class="button" name="_eventId_submit">Continue</button>
+    <button type="submit" class="button" name="_eventId_submit" style="margin-top: 20px;">Continue</button>
 
   </fieldset>
 </form:form>

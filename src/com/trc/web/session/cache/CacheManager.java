@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.trc.config.Config;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.security.encryption.StringEncryptor;
+import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.account.PaymentHistory;
@@ -26,8 +28,7 @@ public class CacheManager extends SessionManager {
 	private AccountManager accountManager;
 
 	public static final void set(
-			Enum cacheKey,
-			Object obj) {
+			Enum cacheKey, Object obj) {
 		SessionManager.set(cacheKey.toString(), obj);
 	}
 
@@ -50,6 +51,20 @@ public class CacheManager extends SessionManager {
 	public final void clearCache() {
 		for (CacheKey cacheKey : CacheKey.values())
 			clear(cacheKey);
+	}
+
+	@Loggable(value = LogLevel.INFO)
+	public void beginSession(
+			User user) {
+		if (Config.ADMIN && user.isInternalUser()) {
+			set(SessionKey.CONTROLLING_USER, user);
+			set(SessionKey.USER, new EmptyUser());
+		} else {
+			set(SessionKey.CONTROLLING_USER, new EmptyUser());
+			set(SessionKey.USER, user);
+		}
+		set(SessionKey.ENCRYPTOR, new StringEncryptor(SessionManager.getCurrentSession().getId()));
+		refreshCache(user);
 	}
 
 	@Loggable(value = LogLevel.INFO)

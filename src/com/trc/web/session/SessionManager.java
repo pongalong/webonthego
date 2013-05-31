@@ -13,8 +13,7 @@ public class SessionManager {
 	}
 
 	protected static final void set(
-			String key,
-			Object obj) {
+			String key, Object obj) {
 		HttpSession session = getCurrentSession();
 		if (session != null)
 			session.setAttribute(key, obj);

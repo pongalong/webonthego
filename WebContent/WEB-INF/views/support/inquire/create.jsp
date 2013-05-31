@@ -21,7 +21,9 @@
       </div>
     </c:if>
 
-    <p>Send your question to us and we'll do our best to help you. Please provide as much information that is relevant to the issue as possible.</p>
+    <div class="well">
+      <p>Send your question to us and we'll do our best to help you. Please provide as much information that is relevant to the issue as possible.</p>
+    </div>
 
     <div class="control-group">
       <form:label path="contactEmail" cssClass="control-label required">Email</form:label>
@@ -33,7 +35,7 @@
     <div class="control-group">
       <form:label path="contactPhone" cssClass="control-label">Phone</form:label>
       <div class="controls">
-        <form:input path="contactPhone" cssClass="span5" cssErrorClass="span5 validationFailed" />
+        <form:input path="contactPhone" placeholder="A Contact Number For Faster Response" cssClass="span5" cssErrorClass="span5 validationFailed" />
       </div>
     </div>
 
@@ -41,6 +43,9 @@
       <form:label path="category.id" cssClass="control-label required">Ticket Category</form:label>
       <div class="controls">
         <form:select path="category.id" cssClass="span5" cssErrorClass="span5 validationFailed">
+          <form:option value="0">
+            <spring:message code="label.selectOne" />
+          </form:option>
           <c:forEach var="cat" items="${ticketCategories}">
             <optgroup label="${cat.description}">
               <c:forEach var="subcategory" items="${cat.subcategories}">

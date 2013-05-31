@@ -112,9 +112,9 @@
 </c:choose>
 <!-- End Notes -->
 
-<div class="buttons" style="text-align: right;">
-  <a href="../update/${ticket.id}" class="mBtn">Update</a> <a href="../note/add/${ticket.id}" class="mBtn">Add a Note</a> <a href="../reply/${ticket.id}"
-    class="mBtn">Reply</a>
+<div class="buttons align-right">
+  <a href="../update/${ticket.id}" class="button">Update</a> <a href="../note/add/${ticket.id}" class="button">Add a Note</a> <a href="../reply/${ticket.id}"
+    class="button">Reply</a>
 </div>
 
 <%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

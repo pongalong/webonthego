@@ -14,13 +14,10 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import com.trc.config.Config;
 import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.StringEncryptor;
-import com.trc.user.EmptyUser;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
-import com.trc.web.session.SessionKey;
 import com.trc.web.session.SessionManager;
 import com.trc.web.session.cache.CacheKey;
 import com.trc.web.session.cache.CacheManager;
@@ -39,9 +36,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 	@Loggable(value = LogLevel.INFO)
 	@Override
 	public void onAuthenticationSuccess(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+			HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
 		User user = userManager.getLoggedInUser();
 
@@ -50,7 +45,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		if (!user.isInternalUser())
 			userManager.getUserRealName(user);
 
-		setSessionAttributes(user);
+		cacheManager.beginSession(user);
 
 		if (Config.ADMIN && user.isInternalUser())
 			setAdminDefaultTargetUrl(user);
@@ -58,22 +53,6 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 			setUserDefaultTargetUrl(user);
 
 		super.onAuthenticationSuccess(request, response, authentication);
-	}
-
-	private void setSessionAttributes(
-			User user) {
-
-		if (Config.ADMIN && user.isInternalUser()) {
-			CacheManager.set(SessionKey.CONTROLLING_USER, user);
-			CacheManager.set(SessionKey.USER, new EmptyUser());
-		} else {
-			CacheManager.set(SessionKey.CONTROLLING_USER, new EmptyUser());
-			CacheManager.set(SessionKey.USER, user);
-		}
-
-		CacheManager.set(SessionKey.ENCRYPTOR, new StringEncryptor(SessionManager.getCurrentSession().getId()));
-
-		cacheManager.refreshCache(user);
 	}
 
 	private void setAdminDefaultTargetUrl(

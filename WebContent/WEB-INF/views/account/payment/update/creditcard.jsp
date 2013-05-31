@@ -76,77 +76,78 @@
             <option value="${year.value}">${year.key}</option>
           </c:forEach>
         </select>
-        <form:input cssClass="numOnly hidden" maxLength="4" cssErrorClass="numOnly verificationFailed" path="expirationDate" />
+        <form:input path="expirationDate" cssClass="numOnly hidden" maxLength="4" cssErrorClass="numOnly hidden verificationFailed" />
       </div>
-    </div>
-
-
-    <h3>Edit Billing Address</h3>
-
-    <div id="billingAddress">
-
-      <div class="control-group">
-        <form:label path="address1" cssClass="control-label required">Address 1</form:label>
-        <div class="controls">
-          <form:input path="address1" cssClass="span5" cssErrorClass="span5 validationFailed" />
-        </div>
-      </div>
-
-      <div class="control-group">
-        <form:label path="address2" cssClass="control-label">Address 2</form:label>
-        <div class="controls">
-          <form:input path="address2" cssClass="span5" cssErrorClass="span5 validationFailed" />
-        </div>
-      </div>
-
-      <div class="control-group">
-        <form:label path="city" cssClass="control-label required">City</form:label>
-        <div class="controls">
-          <form:input path="city" cssClass="span5" cssErrorClass="span5 validationFailed" />
-        </div>
-      </div>
-
-      <div class="control-group">
-        <form:label path="state" cssClass="control-label required">State</form:label>
-        <div class="controls">
-          <form:select path="state" cssClass="span5" cssErrorClass="span5 validationFailed">
-            <form:option value="0">
-              <spring:message code="label.selectOne" />
-            </form:option>
-            <form:options items="${states}" itemValue="value" itemLabel="key" />
-          </form:select>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <form:label path="zip" cssClass="control-label required">Billing Zip Code</form:label>
-        <div class="controls">
-          <form:input path="zip" maxLength="5" cssClass="span2 numOnly" cssErrorClass="span2 numOnly validationFailed" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="controls">
-      <button type="button" class="button" onclick="location.href='<spring:url value="/profile" />'">Cancel</button>
-      <button type="submit" class="button">Save</button>
     </div>
 
   </fieldset>
+
+  <fieldset>
+    <legend>Edit Billing Address</legend>
+
+    <div class="control-group">
+      <form:label path="address1" cssClass="control-label required">Address 1</form:label>
+      <div class="controls">
+        <form:input path="address1" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="address2" cssClass="control-label">Address 2</form:label>
+      <div class="controls">
+        <form:input path="address2" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="city" cssClass="control-label required">City</form:label>
+      <div class="controls">
+        <form:input path="city" cssClass="span5" cssErrorClass="span5 validationFailed" />
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="state" cssClass="control-label required">State</form:label>
+      <div class="controls">
+        <form:select path="state" cssClass="span5" cssErrorClass="span5 validationFailed">
+          <form:option value="0">
+            <spring:message code="label.selectOne" />
+          </form:option>
+          <form:options items="${states}" itemValue="value" itemLabel="key" />
+        </form:select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <form:label path="zip" cssClass="control-label required">Billing Zip Code</form:label>
+      <div class="controls">
+        <form:input path="zip" maxLength="5" cssClass="span5 numOnly" cssErrorClass="span5 numOnly validationFailed" />
+      </div>
+    </div>
+
+  </fieldset>
+
+  <!-- Buttons -->
+  <div class="controls">
+    <button type="button" class="button" onclick="location.href='<spring:url value="/profile" />'">Cancel</button>
+    <button type="submit" class="button">Save</button>
+  </div>
+
+
 </form:form>
 
-    <script>
-          $(function() {
-            var txt = "<p>This is the 3 digit code on the back of the card for Visa and Mastercard, or the 4 digit number on the front for American Express.</p>";
-            var img = "<img src='/static/images/creditCard/securityExample.png' />";
-            $("#cvvInfo").popover({
-              content : txt + img,
-              html : true
-            });
-            $("#cvvInfo").click(function(e) {
-              e.preventDefault();
-            });
-          });
-        </script>
+<script>
+	$(function() {
+		var txt = "<p>This is the 3 digit code on the back of the card for Visa and Mastercard, or the 4 digit number on the front for American Express.</p>";
+		var img = "<img src='/static/images/creditCard/securityExample.png' />";
+		$("#cvvInfo").popover({
+			content : txt + img,
+			html : true
+		});
+		$("#cvvInfo").click(function(e) {
+			e.preventDefault();
+		});
+	});
+</script>
 
 <%@ include file="/WEB-INF/views/include/footer/footerAndMenu.jsp"%>

@@ -5,8 +5,9 @@ $(function() {
 	var $forms = $("form");
 	$.each($forms, function() {
 		$(this).submit(function() {
-			$("#curtain").fillHeight().center().fadeIn("fast");
-			$("#loadingMsg").center().fadeIn("fast");
+			$("#curtain").fadeIn("fast");
+			// $("#curtain").fillHeight().center().fadeIn("fast");
+			// $("#loadingMsg").center().fadeIn("fast");
 		});
 	});
 });
@@ -16,14 +17,14 @@ $(function() {
  */
 $(function() {
 	if ($("#creditCard\\.creditCardNumber").exists() || $("#creditCardNumber").exists()) {
-		var path = "#";
 
+		var path = "#";
 		if ($("#creditCard\\.creditCardNumber").exists())
 			path = "#creditCard\\.";
 		else if ($("#creditCardNumber").exists())
 			path = "#";
 
-		highlightCard($(path + "creditCardNumber").val());
+		highlightCard(path, $(path + "creditCardNumber").val());
 
 		var inDate = $(path + "expirationDate").val();
 		if (inDate != null && inDate != "") {
@@ -36,7 +37,7 @@ $(function() {
 		});
 
 		$(path + "creditCardNumber").change(function() {
-			highlightCard($(path + "creditCardNumber").val());
+			highlightCard(path, $(path + "creditCardNumber").val());
 		});
 	}
 });

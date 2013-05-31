@@ -33,15 +33,15 @@ public class SearchController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	protected ModelAndView showUser(
-			@ModelAttribute("USER") User user, @RequestParam String admin_search_id) {
+			@ModelAttribute("USER") User user, @RequestParam("admin-search-param-id") String userId) {
 
 		ResultModel model = new ResultModel("redirect:/account");
 
 		if (!Config.ADMIN)
 			return model.getAccessDenied();
 
-		if (!admin_search_id.equals("0")) {
-			user = userManager.getUserById(Integer.parseInt(admin_search_id));
+		if (!userId.equals("0")) {
+			user = userManager.getUserById(Integer.parseInt(userId));
 		} else {
 			user = new EmptyUser();
 			model.setSuccessViewName("redirect:/");

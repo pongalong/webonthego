@@ -1,28 +1,22 @@
 package com.trc.user.activation.simple;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import com.trc.exception.EmailException;
 import com.trc.exception.GatewayException;
 import com.trc.manager.UserManager;
 import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.tscp.util.logger.LogLevel;
-import com.tscp.util.logger.aspect.Loggable;
 
 @Component
 public class SimpleRegistrationManager {
@@ -37,7 +31,8 @@ public class SimpleRegistrationManager {
 
 	private static final Logger logger = LoggerFactory.getLogger("devLogger");
 
-	public User createUser(SimpleRegistration registration) {
+	public User createUser(
+			SimpleRegistration registration) {
 		User user = new User();
 		user.setEmail(registration.getLogin().getEmail().getValue());
 		user.setUsername(user.getEmail());
@@ -54,16 +49,19 @@ public class SimpleRegistrationManager {
 		return user;
 	}
 
-	public void autoLogin(User user) {
+	public void autoLogin(
+			User user) {
 		HttpServletRequest request = (HttpServletRequest) RequestContextHolder.getRequestContext().getExternalContext().getNativeRequest();
 		userManager.autoLogin(user, authenticationManager);
 	}
 
-	protected void autoLogin(User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
+	protected void autoLogin(
+			User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
 		userManager.autoLogin(user, request, authenticationManager);
 	}
 
-	public void sendAccountNotice(User user) {
+	public void sendAccountNotice(
+			User user) {
 		try {
 			emailService.sendRegistrationEmail(user);
 		} catch (GatewayException e) {

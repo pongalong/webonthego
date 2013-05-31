@@ -161,7 +161,7 @@ public class TicketController {
 	public ModelAndView postUpdateTicket(
 			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/" + ticket.getId(), "support/ticket/update");
+		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticket.getId(), "support/ticket/update");
 
 		ticketValidator.validate(ticket, result);
 

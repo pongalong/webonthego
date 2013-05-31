@@ -27,7 +27,7 @@
     <legend>Search</legend>
 
     <div class="input-append">
-      <input type="text" name="keyword" autocomplete="off" placeholder="Enter your query here" />
+      <input type="text" class="span4" name="keyword" autocomplete="off" placeholder="Enter your query here" />
       <button type="submit" class="btn">Search</button>
     </div>
 

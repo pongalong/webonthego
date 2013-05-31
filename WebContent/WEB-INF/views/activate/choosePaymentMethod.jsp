@@ -1,14 +1,14 @@
-<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
+<%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-<div class="span-18">
+<form:form commandName="creditCardPayment" method="post" cssClass="form-horizontal">
+  <fieldset>
+    <legend> Choose a Payment Method </legend>
 
-  <h3>Choose a Payment Method</h3>
-
-  <form:form id="choose_payment" cssClass="validatedForm" method="post" commandName="creditCardPayment">
     <!-- Error Alert -->
     <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.creditCardPayment'].allErrors}">
-      <div class="alert error">
-        <h1>Please correct the following problems</h1>
+      <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <h4>Please correct the following problems</h4>
         <form:errors path="creditCard.nameOnCreditCard" />
         <form:errors path="creditCard.creditCardNumber" />
         <form:errors path="creditCard.verificationcode" />
@@ -30,51 +30,41 @@
       </div>
     </c:if>
 
-    <p>The payment method you choose will be used to keep your device topped-up.</p>
+    <div class="well">
+      <p>The payment method you choose will be used to keep your device topped-up.</p>
+    </div>
 
-    <!-- List Payment Methods -->
-    <c:forEach var="creditCard" items="${existingPaymentMethods}" varStatus="status">
-      <div id="${creditCard.paymentid}" class="objectSelect yellowSelect unselected">
-        <c:if test="${creditCard.isDefault == 'Y'}">
-          <span style="font-weight: bold; float: right;">Default Method</span>
-        </c:if>
-        <p style="margin: 0; padding: 0;">${creditCard.nameOnCreditCard}</p>
-        <p style="margin: 0; padding: 0;">${creditCard.creditCardNumber}</p>
+    <div class="control-group">
+      <form:label path="creditCard.paymentid" cssClass="control-label">Existing Methods</form:label>
+      <div class="controls">
+        <form:select path="creditCard.paymentid" cssClass="span6">
+          <form:option value="0">
+            <spring:message code="label.selectOne" />
+          </form:option>
+          <c:forEach var="cc" items="${existingPaymentMethods}">
+            <form:option value="${cc.paymentid}">
+              ${cc.creditCardNumber} (${cc.nameOnCreditCard})
+              <c:if test="${cc.isDefault == 'Y'}">Default</c:if>
+            </form:option>
+          </c:forEach>
+        </form:select>
       </div>
-    </c:forEach>
+    </div>
 
-    <!-- Payment Method Buttons -->
-    <a id="addNewMethodButton" href="#" class="button escape-m" style="float: right;"><span>Add New Card</span> </a>
-    <a id="resetChoiceButton" href="#" class="button escape-m" style="display: none; float: right;"><span>Choose Another Card</span> </a>
-    <div class="clear"></div>
-
-    <!-- Coupon -->
-    <h3 style="margin: 10px 0 10px 0; padding: 10px 0 0 0; border-top: 1px #ccc solid;" onClick="$(this).next('div').slideToggle();">
-      <img src="<spring:url value='/static/images/buttons/icons/add.png' />" style="vertical-align: middle;" /> Click Here If You Have a Coupon
-    </h3>
-
-    <div style="display: none;">
-      <div class="row clearfix">
-        <form:label cssClass="required" path="coupon.couponCode">Enter Coupon Code</form:label>
-        <form:input cssClass="span-8" cssErrorClass="span-8 validationFailed" path="coupon.couponCode" />
-      </div>
-      <div class="row clearfix pushed">
+    <div class="control-group">
+      <form:label path="coupon.couponCode" cssClass="control-label">Coupon Code</form:label>
+      <div class="controls">
+        <form:input path="coupon.couponCode" placeholder="Enter a Code If You Have One" cssClass="span6" cssErrorClass="span6 validationFailed" />
         <span id="couponMessage"></span>
       </div>
     </div>
 
-    <form:input path="creditCard.paymentid" cssClass="hidden" />
-
-    <div class="buttons">
-      <input id="addNewMethod_submit" type="submit" name="_eventId_new" value="Add New Payment Method" /> <input type="submit" name="_eventId_select"
-        value="Continue" />
+    <div class="controls">
+      <button type="submit" class="button" name="_eventId_new">Add New Payment Method</button>
+      <button type="submit" class="button" name="_eventId_select">Continue</button>
     </div>
 
+  </fieldset>
+</form:form>
 
-  </form:form>
-
-</div>
-
-<script type="text/javascript" src="<spring:url value='/static/javascript/pages/selectPaymentMethod.js' />"></script>
-
-<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>
+<%@ include file="/WEB-INF/views/include/footer/footerNoMenu.jsp"%>

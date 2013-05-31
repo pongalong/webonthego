@@ -44,13 +44,15 @@ public class UserManager implements UserManagerModel {
 	public static SecurityContextFacade securityContext;
 	private UserDao userDao;
 	private AccountManager accountManager;
+	private CacheManager cacheManager;
 	private TSCPMVNA port;
 
 	@Autowired
 	public void init(
-			UserDao userDao, AccountManager accountManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
+			UserDao userDao, AccountManager accountManager, CacheManager cacheManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
 		this.userDao = userDao;
 		this.accountManager = accountManager;
+		this.cacheManager = cacheManager;
 		this.port = gateway.getPort();
 		securityContext = securityContextFacade;
 	}
@@ -281,7 +283,7 @@ public class UserManager implements UserManagerModel {
 	 * ************************************************************************************************
 	 */
 
-	@PreAuthorize("hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN', 'isAtLeast')")
 	public void forceLogout(
 			SessionRegistry sessionRegistry, int userId) {
 
@@ -315,6 +317,8 @@ public class UserManager implements UserManagerModel {
 
 		// setting role to the session
 		request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+
+		cacheManager.beginSession(user);
 	}
 
 }

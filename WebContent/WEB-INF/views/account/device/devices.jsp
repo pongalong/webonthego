@@ -50,7 +50,7 @@
               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel${status.index}" style="margin: 1px; padding: 0; min-width: 296px;">
                 <h1>Device Details</h1>
                 <li style="margin-left: 20px;">ESN: ${accountDetail.deviceInfo.value}</li>
-                <li class="device_esn"><a href="#">Show Details</a></li>
+                <li class="device_esn"><a href="#" onclick="return false;">Show Details</a></li>
                 <li class="divider"></li>
                 <c:if test="${CONTROLLING_USER.userId > 0}">
                   <h1>User Functions</h1>

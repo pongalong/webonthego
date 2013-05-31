@@ -85,14 +85,16 @@ public class FAQController {
 	/**
 	 * This method is used to insert an article
 	 * 
-	 * @return String
 	 */
 	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.GET)
-	public String insertArticle(
-			@ModelAttribute("categoryList") List<Category> categoryList, @ModelAttribute("article") Article article) {
-		article = new Article();
-		return "/admin/support/faq/createArticle";
+	public ModelAndView insertArticle(
+			@ModelAttribute("categoryList") List<Category> categoryList) {
+
+		ResultModel model = new ResultModel("admin/support/faq/create");
+		model.addAttribute("article", new Article());
+
+		return model.getSuccess();
 	}
 
 	/**
@@ -109,7 +111,7 @@ public class FAQController {
 
 		try {
 			int articleId = supportManager.insertArticle(article);
-			resultModel.setSuccessViewName("support/faq/article/" + articleId);
+			resultModel.setSuccessViewName("redirect:/support/faq/article/" + articleId);
 			return resultModel.getSuccess();
 		} catch (SupportManagementException te) {
 			return resultModel.getAccessException();
@@ -117,8 +119,8 @@ public class FAQController {
 
 	}
 
-	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
-	@RequestMapping(value = "/create/category", method = RequestMethod.GET)
+	// @PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	// @RequestMapping(value = "/create/category", method = RequestMethod.GET)
 	public String insertCategory(
 			@ModelAttribute("category") Category category) {
 		category = new Category();
@@ -130,8 +132,8 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
-	@RequestMapping(value = "/create/category", method = RequestMethod.POST)
+	// @PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	// @RequestMapping(value = "/create/category", method = RequestMethod.POST)
 	public ModelAndView processInsertCategory(
 			@ModelAttribute("category") Category category, @RequestParam(value = "categoryName", required = true) String categoryName) {
 
@@ -142,7 +144,7 @@ public class FAQController {
 
 		try {
 			int categoryId = supportManager.createCategory(category);
-			resultModel.setSuccessViewName("support/faq/category/" + categoryId);
+			resultModel.setSuccessViewName("redirect:/support/faq/category/" + categoryId);
 			return resultModel.getSuccess();
 		} catch (SupportManagementException e) {
 			return resultModel.getAccessException();

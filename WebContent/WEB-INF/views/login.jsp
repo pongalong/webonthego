@@ -46,8 +46,8 @@
     <li>Manage devices</li>
     <li>Get support</li>
   </ul>
-  <div style="text-align: right; margin-top: 20px;">
-    <a class="button slim" href="<spring:url value="/register" />">Create an Account</a>
+  <div class="button-row align-center">
+    <a class="button" href="<spring:url value="/register" />">Create an Account</a>
   </div>
 </div>
 <!--  End right column -->

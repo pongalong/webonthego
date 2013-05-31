@@ -1,18 +1,16 @@
-<%@ include file="/WEB-INF/views/include/header/header.jsp"%>
-<div>
+<%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-  <form:form id="prompt_complete_account" cssClass="validatedForm" method="post">
+<form:form method="post">
 
-    <h3>Complete Your Account</h3>
+  <fieldset>
+    <legend>Complete Your Account</legend>
 
     <p>You have an incomplete activation with a payment on file. Your activation will now resume.</p>
 
-    <!-- Buttons -->
-    <div class="buttons">
-      <input type="submit" name="_eventId_submit" value="Continue"></input>
-    </div>
+    <button type="submit" class="button" name="_eventId_submit">Continue</button>
 
-  </form:form>
+  </fieldset>
 
-</div>
-<%@ include file="/WEB-INF/views/include/footer/footer.jsp"%>
+</form:form>
+
+<%@ include file="/WEB-INF/views/include/footer/footerNoMenu.jsp"%>
