@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="<spring:url value='/static/styles/admin/controlBar.css' />" type="text/css" />
-<script type="text/javascript" src="<spring:url value='/static/javascript/admin/controlBar.js' />"></script>
+<link rel="stylesheet" href="<spring:url value='/static/styles/admin/wotg_admin.css' />" type="text/css" />
+<script type="text/javascript" src="<spring:url value='/static/javascript/admin/admin_controls.js' />"></script>
 
 <div id="admin-control-container">
 

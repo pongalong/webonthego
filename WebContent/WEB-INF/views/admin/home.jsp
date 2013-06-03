@@ -10,35 +10,36 @@
   </p>
 </div>
 
-<c:forEach var="user" items="${activeUsers}" varStatus="status">
+<table>
 
-  <a href="#" class="userSession">${user.email}</a>
-  <sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SU')">
-    <span class="forceLogout hidden"> <a href="<spring:url value="/admin/logout/${user.userId}" />">force logout</a></span>
-  </sec:authorize>
+  <c:forEach var="session" items="${activeSessions}">
 
-  <div class="sessionInfo hidden">
-    <ul>
-      <c:forEach var="sessionInfo" items="${userSessionInfo[status.index]}">
-        <li>[${sessionInfo.sessionId}] ${sessionInfo.lastRequest} ${sessionInfo.expired}</li>
-      </c:forEach>
-    </ul>
-  </div>
-</c:forEach>
+    <tr>
+      <td><a href="#" class="userSession">${session.user.email}</a>
 
-<style type="text/css">
-  .forceLogout {
-    margin-left: 15px;
-    color: black;
-  }
-</style>
+        <div class="sessionInfo hidden">
+          <ul>
+            <c:forEach var="sessionInfo" items="${session.sessionInformation}">
+              <li>[${sessionInfo.sessionId}] ${sessionInfo.lastRequest} ${sessionInfo.expired}</li>
+            </c:forEach>
+          </ul>
+        </div></td>
+      <td style="vertical-align: top;"><sec:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SU')">
+          <span class="forceLogout hidden"> <a href="<spring:url value="/admin/session/logout/${session.user.userId}" />">force logout</a></span>
+        </sec:authorize></td>
+
+    </tr>
+
+  </c:forEach>
+
+</table>
 
 <script type="text/javascript">
 	$(function() {
 		$(".userSession").click(function(e) {
 			e.preventDefault();
-			$(this).next(".forceLogout").toggleClass("hidden");
-			$(this).next().next(".sessionInfo").toggleClass("hidden");
+			$(this).next(".sessionInfo").toggleClass("hidden");
+			$(this).parent().next().children(".forceLogout").toggleClass("hidden");
 		});
 	});
 </script>

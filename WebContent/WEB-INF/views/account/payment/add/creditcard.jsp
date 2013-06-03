@@ -28,7 +28,7 @@
     </c:if>
 
     <div class="control-group">
-      <form:label path="isDefault" class="control-label">Default</form:label>
+      <form:label path="isDefault" class="control-label">Set As Default</form:label>
       <div class="controls">
         <form:checkbox path="isDefault" value="Y" />
       </div>
@@ -37,7 +37,7 @@
     <div class="control-group">
       <form:label path="nameOnCreditCard" cssClass="control-label required">Name on Card</form:label>
       <div class="controls">
-        <form:input path="nameOnCreditCard" cssClass="span5" cssErrorClass="span5 validationFailed" />
+        <form:input path="nameOnCreditCard" cssClass="span6" cssErrorClass="span6 validationFailed" />
       </div>
     </div>
 
@@ -46,7 +46,7 @@
         <spring:message code="label.payment.cardNumber" />
       </form:label>
       <div class="controls">
-        <form:input path="creditCardNumber" cssClass="span5 numOnly" cssErrorClass="span5 numOnly validationFailed" maxLength="16" />
+        <form:input path="creditCardNumber" cssClass="span6 numOnly" cssErrorClass="span6 numOnly validationFailed" maxLength="16" />
         <div id="creditCardImages" style="margin-top: 5px;">
           <img id="ImgAmex" src="<spring:url value='/static/images/creditCard/iconAmex.png' />" /> <img id="ImgMastercard"
             src="<spring:url value='/static/images/creditCard/iconMasterCard.png' />" /> <img id="ImgVisa"
@@ -88,28 +88,28 @@
     <div class="control-group">
       <form:label path="address1" cssClass="control-label required">Address 1</form:label>
       <div class="controls">
-        <form:input path="address1" cssClass="span5" cssErrorClass="span5 validationFailed" />
+        <form:input path="address1" cssClass="span6" cssErrorClass="span6 validationFailed" />
       </div>
     </div>
 
     <div class="control-group">
       <form:label path="address2" cssClass="control-label">Address 2</form:label>
       <div class="controls">
-        <form:input path="address2" cssClass="span5" cssErrorClass="span5 validationFailed" />
+        <form:input path="address2" cssClass="span6" cssErrorClass="span6 validationFailed" />
       </div>
     </div>
 
     <div class="control-group">
       <form:label path="city" cssClass="control-label required">City</form:label>
       <div class="controls">
-        <form:input path="city" cssClass="span5" cssErrorClass="span5 validationFailed" />
+        <form:input path="city" cssClass="span6" cssErrorClass="span6 validationFailed" />
       </div>
     </div>
 
     <div class="control-group">
       <form:label path="state" cssClass="control-label required">State</form:label>
       <div class="controls">
-        <form:select path="state" cssClass="span5" cssErrorClass="span5 validationFailed">
+        <form:select path="state" cssClass="span6" cssErrorClass="span6 validationFailed">
           <form:option value="0">
             <spring:message code="label.selectOne" />
           </form:option>
@@ -121,7 +121,7 @@
     <div class="control-group">
       <form:label path="zip" cssClass="control-label required">Billing Zip Code</form:label>
       <div class="controls">
-        <form:input path="zip" maxLength="5" cssClass="span5 numOnly" cssErrorClass="span5 numOnly validationFailed" />
+        <form:input path="zip" maxLength="5" cssClass="span6 numOnly" cssErrorClass="span6 numOnly validationFailed" />
       </div>
     </div>
 

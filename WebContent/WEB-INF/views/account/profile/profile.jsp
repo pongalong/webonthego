@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <c:if test="${not empty param.notification_sent}">

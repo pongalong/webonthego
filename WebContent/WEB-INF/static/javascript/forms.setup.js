@@ -6,8 +6,6 @@ $(function() {
 	$.each($forms, function() {
 		$(this).submit(function() {
 			$("#curtain").fadeIn("fast");
-			// $("#curtain").fillHeight().center().fadeIn("fast");
-			// $("#loadingMsg").center().fadeIn("fast");
 		});
 	});
 });

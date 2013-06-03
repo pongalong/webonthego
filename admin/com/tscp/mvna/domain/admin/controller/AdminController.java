@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.web.model.ResultModel;
+import com.trc.web.session.SessionInfo;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")
@@ -37,19 +37,18 @@ public class AdminController {
 			"home" }, method = RequestMethod.GET)
 	public ModelAndView showHome() {
 		ResultModel model = new ResultModel("admin/home");
+		model.addAttribute("activeSessions", getAllActiveSessions());
+		return model.getSuccess();
+	}
 
-		List<Object> activePrincipals = sessionRegistry.getAllPrincipals();
-		List<User> activeUsers = new ArrayList<User>();
-		List<List<SessionInformation>> userSessionInfo = new ArrayList<List<SessionInformation>>();
+	protected List<SessionInfo> getAllActiveSessions() {
+		List<SessionInfo> activeSessions = new ArrayList<SessionInfo>();
 
-		for (Object principal : activePrincipals) {
-			activeUsers.add((User) principal);
-			userSessionInfo.add(sessionRegistry.getAllSessions((User) principal, false));
+		for (Object principal : sessionRegistry.getAllPrincipals()) {
+			activeSessions.add(new SessionInfo((User) principal, sessionRegistry.getAllSessions((User) principal, false)));
 		}
 
-		model.addAttribute("userSessionInfo", userSessionInfo);
-		model.addAttribute("activeUsers", activeUsers);
-		return model.getSuccess();
+		return activeSessions;
 	}
 
 }

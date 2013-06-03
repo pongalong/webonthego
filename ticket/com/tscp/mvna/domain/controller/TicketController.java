@@ -83,8 +83,8 @@ public class TicketController {
 			((AdminTicket) ticket).setCustomerId(user.getUserId());
 			((AdminTicket) ticket).setCreatorId(controllingUser.getUserId());
 		} else if (ticket instanceof AgentTicket) {
-			((AdminTicket) ticket).setCustomerId(user.getUserId());
-			((AdminTicket) ticket).setCreatorId(controllingUser.getUserId());
+			((AgentTicket) ticket).setCustomerId(user.getUserId());
+			((AgentTicket) ticket).setCreatorId(controllingUser.getUserId());
 		}
 
 		model.addAttribute("ticket", ticket);

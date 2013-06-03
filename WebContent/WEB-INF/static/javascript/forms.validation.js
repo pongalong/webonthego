@@ -1,5 +1,8 @@
 /*******************************************************************************
  * NAMESPACE DECLARATION
+ * 
+ * Currenty unused but this is the framework for form validation using object
+ * and namespaces to separate functions
  ******************************************************************************/
 var forms = forms || {};
 

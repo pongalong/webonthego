@@ -283,7 +283,7 @@ public class UserManager implements UserManagerModel {
 	 * ************************************************************************************************
 	 */
 
-	@PreAuthorize("hasPermission('ROLE_ADMIN', 'isAtLeast')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN', 'isAtleast')")
 	public void forceLogout(
 			SessionRegistry sessionRegistry, int userId) {
 
