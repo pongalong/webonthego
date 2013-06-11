@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="/WEB-INF/views/include/header/headerAndMenu.jsp"%>
 
 <h3>
@@ -10,52 +11,64 @@
       </c:otherwise>
   </c:choose>
   (
-  <c:out value="${ticketList.size()}" />
+  <c:out value="${ticketList.records.size()}" />
   )
 </h3>
 
 <c:if test="${not empty ticketSearchContextString}">
-  <div class="info">
+  <div class="alert alert-info">
     <p>${ticketSearchContextString}</p>
   </div>
 </c:if>
 
 <c:choose>
   <c:when test="${not empty ticketList}">
+
     <table>
       <tr>
-        <th>Id</th>
+        <th>ID</th>
+        <th></th>
         <th>Title</th>
         <th>Category</th>
         <th>Priority</th>
         <th>Status</th>
-        <th style="text-align: right;">Created Date</th>
+        <th style="text-align: right;">Date</th>
       </tr>
-      <c:forEach var="ticket" items="${ticketList}">
+
+      <c:forEach var="ticket" items="${ticketList.currentPage}">
         <tr>
           <td><a href="<spring:url value="/support/ticket/view/${ticket.id}" />">${ticket.id}</a></td>
-          <td class="ticketTitle" style="position: relative;"><c:if test="${ticket.type == 'INQUIRY'}">
-              <img style="vertical-align: middle; margin-left: -18px;" src="<spring:url value="/static/images/icons/help.png" />" alt="Inquiry Ticket" />
-            </c:if> <a style="text-decoration: none;" href="<spring:url value="/support/ticket/view/${ticket.id}"  />">${ticket.title}</a>
-            <div class="ticketSummary"
-              style="border: 1px solid #dc6f64; margin-left: 8px; padding: 5px; background: #FCFFE6; box-shadow: 1px 1px 10px #999; -moz-box-shadow: 1px 1px 10px #999; -webkit-box-shadow: 1px 1px 10px #999; border-radius: 4px; z-index: 20; position: absolute; top: 15px; right: -350px; width: 400px; display: none;">
-              <span style="font-weight: bold;">${ticket.title}</span><span style="position: absolute; top: 3px; right: 3px;">ID: ${ticket.id}</span>
-              <p>${ticket.description}</p>
-            </div></td>
+          <td style="width: 16px;"><c:if test="${ticket.type == 'INQUIRY'}">
+              <img style="vertical-align: middle;" src="<spring:url value="/static/images/icons/help.png" />" alt="Inquiry Ticket" />
+            </c:if></td>
+          <td style="max-width: 150px;"><a class="ticketTitle" href="<spring:url value="/support/ticket/view/${ticket.id}" />" data-toggle="popover"
+            data-placement="right" data-original-title="${ticket.title}" data-content="${ticket.description}">${ticket.title}</a></td>
           <td>${fn:toLowerCase(ticket.category.description)}</td>
-          <c:choose>
-            <c:when test="${ticket.priority == 'HIGH' || ticket.priority == 'VERY_HIGH'}">
-              <td style="color: red"><c:out value="${fn:toLowerCase(ticket.priority)}" /></td>
-            </c:when>
-            <c:otherwise>
-              <td>${fn:toLowerCase(ticket.priority)}</td>
+          <td><c:choose>
+              <c:when test="${ticket.priority == 'HIGH' || ticket.priority == 'VERY_HIGH'}">
+                <span style="color: red;">${fn:toLowerCase(ticket.priority.description)}</span>
+              </c:when>
+              <c:otherwise>
+              ${fn:toLowerCase(ticket.priority.description)}
             </c:otherwise>
-          </c:choose>
-          <td>${fn:toLowerCase(ticket.status)}</td>
+            </c:choose></td>
+          <td>${fn:toLowerCase(ticket.status.description)}</td>
           <td style="text-align: right;"><fmt:formatDate type="date" value="${ticket.createdDate}" /></td>
         </tr>
+
       </c:forEach>
+
     </table>
+
+    <c:set var="prevPageNum" value="${ticketList.currentPageNum - 1}" />
+    <c:set var="nextPageNum" value="${ticketList.currentPageNum + 1}" />
+    <c:if test="${prevPageNum > 0}">
+      <a class="prev" href="<spring:url value="/support/ticket/search/results/${prevPageNum}" />">Previous Page</a>
+    </c:if>
+    <c:if test="${ticketList.currentPageNum < ticketList.pageCount}">
+      <a class="next" href="<spring:url value="/support/ticket/search/results/${nextPageNum}" />">Next Page</a>
+    </c:if>
+
   </c:when>
 
   <c:otherwise>
@@ -64,12 +77,13 @@
 
 </c:choose>
 
+
 <script type="text/javascript">
 	$(function() {
-		$(".ticketTitle").hover(function() {
-			$(this).find(".ticketSummary").show();
-		}, function() {
-			$(this).find(".ticketSummary").hide();
+		$(".ticketTitle").popover({
+			placement : 'right',
+			trigger : 'hover',
+			html : true
 		});
 	});
 </script>

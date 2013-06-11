@@ -463,7 +463,7 @@ public class SimpleActivationManager {
 		Account account = sa.getAccount();
 		CreditCard cc = sa.getCreditCardPayment().getCreditCard();
 
-		logger.trace("{} Making activation payment on account {} with payment ID {}", new Object[] {
+		logger.info("{} Making activation payment on account {} with payment ID {}", new Object[] {
 				user.getEmail(),
 				account.getAccountNo(),
 				cc.getPaymentid() });
@@ -582,7 +582,7 @@ public class SimpleActivationManager {
 			mailModel.put("accountNo", sa.getAccount().getAccountNo());
 			mailModel.put("mdn", sa.getNetworkInfo().getMdn());
 			mailModel.put("esn", sa.getNetworkInfo().getEsnmeiddec());
-			velocityEmailService.send("error_test_activation", myMessage, mailModel);
+			velocityEmailService.send("error_release_mdn", myMessage, mailModel);
 		} catch (EmailException e) {
 			// do nothing
 		}
@@ -592,8 +592,8 @@ public class SimpleActivationManager {
 			SimpleActivation sa) throws WebFlowException {
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();
-			myMessage.setTo("truconnect_alerts@telscape.net");
-			myMessage.setFrom("system-activations@truconnect.com");
+			myMessage.setTo("wotg_alerts@telscape.net");
+			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while creating service for Account " + sa.getAccount().getAccountNo());
 			Map<Object, Object> mailModel = new HashMap<Object, Object>();
 			mailModel.put("dateTime", new Date());

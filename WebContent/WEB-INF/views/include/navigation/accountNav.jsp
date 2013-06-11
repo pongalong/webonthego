@@ -1,7 +1,7 @@
 <c:if test="${USER.userId > 0}">
   <c:choose>
     <c:when test="${CONTROLLING_USER.userId > 0}">
-      <h4 style="margin-bottom: 0;">Manage User</h4>
+      <h4 style="margin-bottom: 2px;">Manage User</h4>
       <div style="text-rendering: optimizeLegibility; font-size: .8em; margin-bottom: 8px;">${USER.email}</div>
     </c:when>
     <c:otherwise>
@@ -41,8 +41,16 @@
       <li><a href="<spring:url value="/support/ticket"/>">Tickets</a></li>
     </sec:authorize>
   </ul>
+  <h4>Under Development</h4>
+  <ul>
+    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN')">
+      <li><a href="<spring:url value="/admin/affiliate" />">Affiliates</a>
+    </sec:authorize>
+    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SALES')">
+      <li><a href="<spring:url value="/admin/affiliate/register/thirdparty"/>">Register New User</a></li>
+    </sec:authorize>
+  </ul>
 </c:if>
-
 
 <c:if test="${(empty CONTROLLING_USER && empty USER) || (CONTROLLING_USER.userId < 1 && USER.userId < 1)}">
   <h4>Manage Account</h4>

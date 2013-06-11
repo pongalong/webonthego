@@ -72,14 +72,19 @@ public class TicketDao extends HibernateDaoSupport {
 			criteria.add(Restrictions.eq("assigneeId", assigneeId));
 		if (status != null && status != TicketStatus.NONE)
 			criteria.add(Restrictions.eq("status", status));
-		if (category != null && category.getId() > 0)
-			criteria.add(Restrictions.eq("category.id", category.getId()));
 		if (priority != null && priority != TicketPriority.NONE)
 			criteria.add(Restrictions.eq("priority", priority));
 		if (title != null && !title.trim().isEmpty())
 			criteria.add(Restrictions.like("title", "%" + title + "%"));
 		if (description != null && !description.trim().isEmpty())
 			criteria.add(Restrictions.like("description", "%" + description + "%"));
+
+		if (category != null && category.getId() > 0) {
+			criteria.add(Restrictions.eq("category.id", category.getId()));
+		} else {
+			criteria.add(Restrictions.gt("category.id", 0));
+			criteria.add(Restrictions.disjunction().add(Restrictions.isNotNull("category.id")).add(Restrictions.isNull("category.id")));
+		}
 
 		criteria.addOrder(Order.desc("id"));
 		return getHibernateTemplate().findByCriteria(criteria);

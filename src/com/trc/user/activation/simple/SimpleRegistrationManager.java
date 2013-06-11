@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.execution.RequestContextHolder;
 
@@ -17,6 +18,10 @@ import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
+import com.tscp.mvna.domain.affiliate.SourceCode;
+import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
+import com.tscp.mvna.domain.registration.ThirdPartyRegistration;
+import com.tscp.util.logger.DevLogger;
 
 @Component
 public class SimpleRegistrationManager {
@@ -24,6 +29,8 @@ public class SimpleRegistrationManager {
 	private UserManager userManager;
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	@Autowired
+	private SourceCodeManager sourceCodeManager;
 	@Autowired
 	private VelocityEmailService velocityEmailService;
 	@Autowired
@@ -41,6 +48,12 @@ public class SimpleRegistrationManager {
 		user.setDateEnabled(new Date());
 		user.setEnabled(true);
 
+		if (registration instanceof ThirdPartyRegistration) {
+			String code = ((ThirdPartyRegistration) registration).getSourceCode().getCode();
+			SourceCode sourceCode = sourceCodeManager.getByCode(code);
+			user.setSourceCode(sourceCode);
+		}
+
 		userManager.saveUser(user);
 		userManager.setCurrentUser(user);
 
@@ -57,7 +70,13 @@ public class SimpleRegistrationManager {
 
 	protected void autoLogin(
 			User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
-		userManager.autoLogin(user, request, authenticationManager);
+
+		if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+			DevLogger.log("auto-login running for user " + user.getEmail());
+			userManager.autoLogin(user, request, authenticationManager);
+		} else {
+			DevLogger.log("user is already logged in, skipping auto-login");
+		}
 	}
 
 	public void sendAccountNotice(

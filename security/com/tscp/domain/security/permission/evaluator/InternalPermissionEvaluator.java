@@ -9,7 +9,8 @@ import org.springframework.security.core.Authentication;
 
 import com.tscp.domain.security.permission.Permission;
 import com.tscp.domain.security.permission.exception.PermissionNotDefinedException;
-import com.tscp.util.logger.DevLogger;
+import com.tscp.util.logger.LogLevel;
+import com.tscp.util.logger.aspect.Loggable;
 
 public class InternalPermissionEvaluator implements PermissionEvaluator {
 	private Map<String, Permission> permissionNameToPermissionMap = new HashMap<String, Permission>();
@@ -22,17 +23,15 @@ public class InternalPermissionEvaluator implements PermissionEvaluator {
 		this.permissionNameToPermissionMap = permissionNameToPermissionMap;
 	}
 
+	@Loggable(value = LogLevel.TRACE)
 	@Override
 	public boolean hasPermission(
-			Authentication authentication,
-			Object targetDomainObject,
-			Object permissionName) {
+			Authentication authentication, Object targetDomainObject, Object permissionName) {
 
 		boolean hasPermission = false;
 
 		if (authentication != null && permissionName instanceof String) {
 			Permission p = getPermission((String) permissionName);
-			DevLogger.debug("fetched permission " + permissionName);
 			hasPermission = p.isAllowed(authentication, targetDomainObject);
 		}
 
@@ -41,10 +40,7 @@ public class InternalPermissionEvaluator implements PermissionEvaluator {
 
 	@Override
 	public boolean hasPermission(
-			Authentication authentication,
-			Serializable targetId,
-			String targetType,
-			Object permissionName) {
+			Authentication authentication, Serializable targetId, String targetType, Object permissionName) {
 
 		// not yet implemented
 		throw new PermissionNotDefinedException("Id and Class permissions are not supported by " + this.getClass().toString());

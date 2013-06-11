@@ -20,7 +20,7 @@
         <div class="sessionInfo hidden">
           <ul>
             <c:forEach var="sessionInfo" items="${session.sessionInformation}">
-              <li>[${sessionInfo.sessionId}] ${sessionInfo.lastRequest} ${sessionInfo.expired}</li>
+              <li><span>${sessionInfo.sessionId}</span><span>${sessionInfo.lastRequest}</span><span>${sessionInfo.expired}</span></li>
             </c:forEach>
           </ul>
         </div></td>
@@ -33,6 +33,17 @@
   </c:forEach>
 
 </table>
+
+<style type="text/css">
+.sessionInfo ul li span {
+	margin-left: 20px;
+}
+
+.sessionInfo ul li:first-child {
+	color: red;
+	margin-left: 0 !important;
+}
+</style>
 
 <script type="text/javascript">
 	$(function() {

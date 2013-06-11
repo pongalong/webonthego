@@ -11,6 +11,7 @@
 
   <flow-registry id="flowRegistry" flow-builder-services="flowBuilderServices">
     <flow-location path="/WEB-INF/resources/flows/register/register.xml" />
+    <flow-location path="/WEB-INF/resources/flows/register/thirdparty.xml" />
     <flow-location path="/WEB-INF/resources/flows/activate/activate.xml" />
     <flow-location path="/WEB-INF/resources/flows/activate/requestPaymentMethod.xml" />
     <flow-location path="/WEB-INF/resources/flows/activate/choosePaymentMethod.xml" />
@@ -37,6 +38,7 @@
       <b:value>
         /register=flowController
         /activate=flowController
+        /admin/affiliate/register/thirdparty=flowController
       </b:value>
     </b:property>
     <b:property name="alwaysUseFullPath" value="true" />

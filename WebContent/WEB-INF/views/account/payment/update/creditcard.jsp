@@ -142,6 +142,7 @@
 		var img = "<img src='/static/images/creditCard/securityExample.png' />";
 		$("#cvvInfo").popover({
 			content : txt + img,
+			trigger : 'hover',
 			html : true
 		});
 		$("#cvvInfo").click(function(e) {

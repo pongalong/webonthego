@@ -11,6 +11,8 @@
 	<classpathentry kind="src" path="ticket"/>
 	<classpathentry kind="src" path="WebContent/WEB-INF/resources"/>
 	<classpathentry kind="src" path="refund"/>
+	<classpathentry kind="src" path="registration"/>
+	<classpathentry kind="src" path="affiliate"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.sun.enterprise.jst.server.runtimeTarget/GlassFish Server Open Source Edition 3 (Java EE 6)"/>

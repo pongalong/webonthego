@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,12 +16,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -30,6 +32,7 @@ import com.trc.manager.UserManager;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.trc.user.contact.ContactInfo;
+import com.tscp.mvna.domain.affiliate.SourceCode;
 
 @Entity
 @Table(name = "Users")
@@ -46,6 +49,19 @@ public class User implements UserModel, UserDetails {
 	private SecurityQuestionAnswer userHint = new SecurityQuestionAnswer();
 	private Collection<Authority> authorities = new HashSet<Authority>();
 	private ContactInfo contactInfo = new ContactInfo();
+
+	private SourceCode sourceCode;
+
+	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_source_code", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "source_code_id"))
+	public SourceCode getSourceCode() {
+		return sourceCode;
+	}
+
+	public void setSourceCode(
+			SourceCode sourceCode) {
+		this.sourceCode = sourceCode;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -141,8 +157,7 @@ public class User implements UserModel, UserDetails {
 		this.userHint = securityQuestionAnswer;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	@Cascade({ CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
 	public Collection<Authority> getRoles() {
 		return this.authorities;
 	}
@@ -255,8 +270,7 @@ public class User implements UserModel, UserDetails {
 	@Override
 	@Transient
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", dateEnabled=" + dateEnabled + ", dateDisabled=" + dateDisabled
-				+ ", enabled=" + enabled + ", authorities=" + authorities + "]";
+		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", dateEnabled=" + dateEnabled + ", dateDisabled=" + dateDisabled + ", enabled=" + enabled + ", authorities=" + authorities + "]";
 	}
 
 	@Transient

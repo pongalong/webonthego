@@ -69,7 +69,7 @@ public class PaymentManager implements PaymentManagerModel {
 	}
 
 	@Override
-	@Loggable(value = LogLevel.TRACE)
+	@Loggable(value = LogLevel.INFO)
 	public PaymentUnitResponse makePayment(
 			User user, Account account, int paymentId, String amount) throws PaymentFailureException, PaymentManagementException {
 		try {
