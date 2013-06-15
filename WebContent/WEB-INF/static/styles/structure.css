@@ -1,0 +1,51 @@
+html,body {
+	height: 100%;
+}
+
+#wrapper {
+	min-height: 100%;
+}
+
+#header {
+	width: 100%;
+	height: 93px;
+	padding-bottom: 65px;
+}
+
+#main {
+	width: 100%;
+	overflow: auto;
+	padding-bottom: 295px;
+}
+
+#footerContainer {
+	position: relative;
+	height: 260px;
+	margin-top: -260px;
+	clear: both;
+}
+
+#curtain {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #111;
+	z-index: 9000;
+	width: 100%;
+	min-height: 100% !important;
+	margin: 0;
+	padding: 0;
+	opacity: 0.6;
+	filter: alpha(opacity = 0.6);
+}
+
+#loadingMsg {
+	position: absolute;
+	top: 33%;
+	width: 100%;
+	z-index: 9001;
+	color: white;
+	font-size: 2.5em;
+	text-align: center;
+}

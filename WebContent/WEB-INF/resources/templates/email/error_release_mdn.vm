@@ -1,0 +1,19 @@
+<html>
+<body >
+<div>
+	<div style="border-bottom:1px solid #999; margin-bottom:15px; font-size:15px;">
+		<img src="https://account.webonthego.com/static/images/logo/logo_s1.png">
+	</div>
+	<div style="width: 95%; margin:0px auto;">
+		<h3 style="color:gray;">Warning</h3>
+		<p>Exception occurred while releasing an MDN after a failed activation. Device may be active. Please check the status of the account and either build manually or disconnect the device and have the customer resume the activation.</p>
+		<b>DATE:</b> ${dateTime}<br/><br/>
+		<b>USERID:</b> ${userId}<br/>
+		<b>EMAIL:</b> ${email}<br/>
+		<b>ACCOUNT:</b> ${accountNo}</br></br>
+		<b>MDN:</b> ${mdn}<br/>
+		<b>ESN:</b> ${esn}<br/>
+	</div>
+</div>
+</body>
+</html>

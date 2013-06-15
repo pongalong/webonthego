@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/webflow  
+    http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+
+  <!-- This flow is the same as registraion.xml but includes an initial state to record the source code and does not automatically login the user on success -->
+
+  <!-- DECLARE REQUIRED OBJECTS -->
+  <var name="registration" class="com.tscp.mvna.domain.registration.ThirdPartyRegistration" />
+
+  <on-start>
+    <set name="flowScope.sourceCode" value="registration.sourceCode" />
+    <set name="flowScope.simpleRegistrationLogin" value="registration.login" />
+    <set name="flowScope.simpleRegistrationSecurity" value="registration.security" />
+    <set name="flowScope.simpleRegistrationTerms" value="registration.terms" />
+  </on-start>
+
+  <!-- BEGIN GATHERING INFORMATION -->
+  <view-state id="sourceCodeEntry" view="register/sourcecode" model="sourceCode">
+    <transition on="submit" to="usernamePassword" />
+  </view-state>
+
+  <view-state id="usernamePassword" view="register/username" model="simpleRegistrationLogin">
+    <transition on="submit" to="securityVerification" />
+  </view-state>
+
+  <view-state id="securityVerification" view="register/security" model="simpleRegistrationSecurity">
+    <on-entry>
+      <set name="viewScope.questions" value="securityQuestionManager.getSecurityQuestions()" />
+    </on-entry>
+    <transition on="submit" to="terms" />
+  </view-state>
+
+  <view-state id="terms" view="register/terms" model="simpleRegistrationTerms">
+    <transition on="submit" to="createUser" />
+  </view-state>
+
+  <!-- BEGIN CREATING THE USER -->
+  <action-state id="createUser">
+    <evaluate expression="simpleRegistrationManager.createUser(registration)" result="flowScope.user" />
+    <transition on="success" to="sendNotification" />
+    <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
+  </action-state>
+
+  <action-state id="sendNotification">
+    <evaluate expression="simpleRegistrationManager.sendAccountNotice(user)" />
+    <transition on="success" to="success" />
+    <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
+  </action-state>
+
+
+  <!-- END STATES -->
+  <end-state id="success" view="register/success_thirdparty" />
+
+  <end-state id="cancel" view="externalRedirect:contextRelative:/" />
+
+  <end-state id="generalError" view="exception/uncaughtException" />
+
+  <!-- Global Transitions -->
+  <global-transitions>
+    <transition on="cancel" to="cancel" validate="false" />
+    <transition on="generalError" to="generalError" validate="false" />
+  </global-transitions>
+</flow>

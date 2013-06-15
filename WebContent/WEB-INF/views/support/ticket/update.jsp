@@ -65,7 +65,7 @@
     </tr>
     <tr>
       <td><form:label path="description">Description</form:label></td>
-      <td><form:input path="description" cssClass="span5" cssErrorClass="span5 validationFailed" /></td>
+      <td><form:textarea path="description" cssStyle="min-height: 150px;" cssClass="span5" cssErrorClass="span5 validationFailed" /></td>
     </tr>
   </table>
   <!-- End Description -->

@@ -57,7 +57,7 @@
   </tr>
   <tr>
     <td>Description:</td>
-    <td>${ticket.description}</td>
+    <td style="white-space: pre-wrap;">${ticket.description}</td>
   </tr>
   <tr>
     <td>Status:</td>

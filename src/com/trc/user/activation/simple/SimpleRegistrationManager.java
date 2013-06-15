@@ -18,7 +18,6 @@ import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.EmailService;
 import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.tscp.mvna.domain.affiliate.SourceCode;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
 import com.tscp.mvna.domain.registration.ThirdPartyRegistration;
 import com.tscp.util.logger.DevLogger;
@@ -49,9 +48,10 @@ public class SimpleRegistrationManager {
 		user.setEnabled(true);
 
 		if (registration instanceof ThirdPartyRegistration) {
-			String code = ((ThirdPartyRegistration) registration).getSourceCode().getCode();
-			SourceCode sourceCode = sourceCodeManager.getByCode(code);
-			user.setSourceCode(sourceCode);
+			int id = ((ThirdPartyRegistration) registration).getSourceCode().getId();
+			user.setSourceCode(sourceCodeManager.get(id));
+			logger.debug("setting created by user to " + userManager.getLoggedInUser().getEmail());
+			user.setCreatedBy(userManager.getLoggedInUser());
 		}
 
 		userManager.saveUser(user);

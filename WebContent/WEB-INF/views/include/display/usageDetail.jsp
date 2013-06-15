@@ -12,7 +12,7 @@
       <c:when test="${usageDetail.usageType == 'Coupon'}">
         ${fn:replace(usageDetail.rate, 'TruConnect ', '' )}
       </c:when>
-      <c:when test="${usageDetail.usageAmount > 0 }">
+      <c:when test="${usageDetail.usageAmount > 0.0 }">
       ${usageDetail.usageAmount} <c:if test="${usageDetail.usageAmount > 0.0}">Mb</c:if>
       </c:when>
       <c:otherwise>-

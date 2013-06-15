@@ -38,7 +38,7 @@
       </tr>
       <tr>
         <td>Description:</td>
-        <td class="value">${ticketNote.ticket.description}</td>
+        <td class="value" style="white-space: pre-wrap;">${ticketNote.ticket.description}</td>
       </tr>
       <tr>
         <td>Category:</td>

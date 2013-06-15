@@ -38,7 +38,7 @@
   <!--  END CURRENTLY VIEWED USER -->
 
   <!-- SEARCH FORM -->
-  <form id="admin-search" method="post" action="<spring:url value="/admin/search" />">
+  <form id="admin-search" method="post" action="<spring:url value="/search/user" />">
 
     <input type="text" name="admin-search-param-id" id="admin-search-param-id" class="hidden" value="${USER.userId}" />
 

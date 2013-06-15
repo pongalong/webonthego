@@ -50,19 +50,6 @@ public class User implements UserModel, UserDetails {
 	private Collection<Authority> authorities = new HashSet<Authority>();
 	private ContactInfo contactInfo = new ContactInfo();
 
-	private SourceCode sourceCode;
-
-	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "users_source_code", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "source_code_id"))
-	public SourceCode getSourceCode() {
-		return sourceCode;
-	}
-
-	public void setSourceCode(
-			SourceCode sourceCode) {
-		this.sourceCode = sourceCode;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "user_id")
@@ -277,4 +264,34 @@ public class User implements UserModel, UserDetails {
 	public String toShortString() {
 		return "User [userId=" + userId + ", username=" + username + ", email=" + email + "]";
 	}
+
+	/* *******************************************************************************
+	 * 2013/06/04 properties to map the source code and the user that registered this user
+	 */
+
+	private SourceCode sourceCode;
+	private User createdBy;
+
+	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_source_code", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "source_code_id"))
+	public SourceCode getSourceCode() {
+		return sourceCode;
+	}
+
+	public void setSourceCode(
+			SourceCode sourceCode) {
+		this.sourceCode = sourceCode;
+	}
+
+	@OneToOne(optional = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_created_by", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "creator_id"))
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(
+			User createdBy) {
+		this.createdBy = createdBy;
+	}
+
 }

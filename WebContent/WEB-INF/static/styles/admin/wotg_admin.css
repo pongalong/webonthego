@@ -1,0 +1,153 @@
+/************************************************
+* admin structure elements
+*************************************************/
+#header {
+	margin-top: 70px;
+}
+
+#admin-control-container {
+	-moz-box-shadow: 0px 5px 5px #ccc;
+	-webkit-box-shadow: 0px 5px 5px #ccc;
+	box-shadow: 0px 5px 5px #ccc;
+	background: #f1f1f1;
+	border-bottom: 2px #888 solid;
+	height: 70px;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+	z-index: 200;
+}
+
+/************************************************
+* admin logo area
+*************************************************/
+#admin-logo-container {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}
+
+#admin-logout-container {
+	position: absolute;
+	right: 10px;
+	bottom: 5px;
+	font-family: consolas;
+	font-size: 16px;
+}
+
+/************************************************
+* admin search controls
+*************************************************/
+#admin-search {
+	position: absolute;
+	top: 20px;
+	left: 10px;
+	z-index: 10;
+	width: 600px;
+}
+
+#admin-search-param {
+	width: 400px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 3px;
+}
+
+#admin_search_account_no {
+	width: 110px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 3px;
+}
+
+#admin-search-results-container {
+	z-index: 10;
+	position: relative;
+	top: -10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: none;
+	border: #ccc solid;
+	border-width: 0px 1px 1px 1px;
+	margin-top: 0px;
+	width: 408px;
+	-moz-box-shadow: 5px 5px 5px #ccc;
+	-webkit-box-shadow: 5px 5px 5px #ccc;
+	box-shadow: 0px 5px 5px #ccc;
+	background-color: rgba(255, 255, 255, 0.8);
+}
+
+#admin-search-results-container .loading-msg {
+	text-align: center;
+	position: relative;
+	top: 30px;
+}
+
+#admin-search-results-container .results-list {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	width: 150%;
+	list-style: none;
+}
+
+#admin-search-results-container .id {
+	float: left;
+	text-align: right;
+	width: 50px;
+	padding-right: 10px;
+}
+
+#admin-search-results-container .value {
+	padding-left: 10px;
+}
+
+#admin-search-results-container .desc {
+	display: none;
+}
+
+#admin-search-results-header {
+	border-bottom: 1px solid #ccc;
+	background: #6E9C9A;
+	color: white;
+}
+
+#admin-search-results-header {
+	border-bottom: 1px solid #ccc;
+}
+
+#admin-search-results-header .id {
+	border-right: 1px solid #ccc;
+}
+
+/************************************************
+* admin device information on devices page
+*************************************************/
+.admin_tooltip {
+	box-sizing: border-box;
+	background: #D2FFFD;
+	padding: 0 15px;
+	margin-top: 15px;
+	border: 1px #666 solid;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: 4px 4px 4px #ccc;
+	-webkit-box-shadow: 4px 4px 4px #ccc;
+	box-shadow: 4px 4px 4px #ccc;
+	width: 300px;
+}
+
+.admin_tooltip li,.device_detail li {
+	list-style: none;
+}
+
+.admin_tooltip div,.device_detail div {
+	margin: 10px 0;
+}
+
+.admin_tooltip li.header,.device_detail li.header {
+	font-weight: bold;
+	width: 100%;
+	border-bottom: 1px #121212 solid;
+}

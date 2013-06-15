@@ -20,7 +20,10 @@ public class HomeController {
 	@Autowired
 	private DeviceManager deviceManager;
 
-	@RequestMapping(value = { "", "/", "home" }, method = RequestMethod.GET)
+	@RequestMapping(value = {
+			"",
+			"/",
+			"home" }, method = RequestMethod.GET)
 	public String showHome() {
 		User user = userManager.getLoggedInUser();
 		return getHomePage(user);

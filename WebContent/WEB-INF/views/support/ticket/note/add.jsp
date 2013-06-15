@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td>Description:</td>
-        <td>${ticketNote.ticket.description}</td>
+        <td style="white-space: pre-wrap;">${ticketNote.ticket.description}</td>
       </tr>
       <tr>
         <td>Category:</td>
