@@ -2,9 +2,9 @@
 <flow xmlns="http://www.springframework.org/schema/webflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/webflow http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-  <var name="creditCardPayment" class="com.trc.user.activation.CreditCardPayment" />
+  <var name="creditCardPayment" class="com.tscp.mvna.domain.payment.CreditCardPayment" />
 
-  <input name="creditCardPayment_edit" type="com.trc.user.activation.CreditCardPayment" />
+  <input name="creditCardPayment_edit" type="com.tscp.mvna.domain.payment.CreditCardPayment" />
 
   <on-start>
     <set name="creditCardPayment.creditCard.paymentid" value="0" />

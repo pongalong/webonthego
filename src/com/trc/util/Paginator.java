@@ -13,14 +13,6 @@ public class Paginator<T> {
 		// do nothing
 	}
 
-	public void setSummarySize(int summarySize) {
-		this.summarySize = summarySize;
-	}
-
-	public int getSummarySize() {
-		return this.summarySize;
-	}
-
 	public List<T> getRecordsSummary() {
 		return getRecords(0, summarySize);
 	}
@@ -29,7 +21,8 @@ public class Paginator<T> {
 		return getRecords(0, 1);
 	}
 
-	public List<T> getRecords(int from, int to) {
+	public List<T> getRecords(
+			int from, int to) {
 		if (from < records.size()) {
 			if (to < records.size()) {
 				return records.subList(from, to);
@@ -41,7 +34,8 @@ public class Paginator<T> {
 		}
 	}
 
-	public List<T> getPage(int page) {
+	public List<T> getPage(
+			int page) {
 		if (page == 0) {
 			return records;
 		} else {
@@ -65,11 +59,20 @@ public class Paginator<T> {
 		}
 	}
 
+	public boolean isEmpty() {
+		return records == null || records.isEmpty();
+	}
+
+	/* *****************************************************
+	 * Getters and Setters
+	 */
+
 	public List<T> getRecords() {
 		return records;
 	}
 
-	public void setRecords(List<T> records) {
+	public void setRecords(
+			List<T> records) {
 		this.records = records;
 	}
 
@@ -77,7 +80,8 @@ public class Paginator<T> {
 		return currentPageNum;
 	}
 
-	public void setCurrentPageNum(int pageNum) {
+	public void setCurrentPageNum(
+			int pageNum) {
 		this.currentPageNum = pageNum;
 	}
 
@@ -85,11 +89,18 @@ public class Paginator<T> {
 		return pageSize;
 	}
 
-	public void setPageSize(int pageSize) {
+	public void setPageSize(
+			int pageSize) {
 		this.pageSize = pageSize;
 	}
 
-	public boolean isEmpty() {
-		return records == null || records.isEmpty();
+	public void setSummarySize(
+			int summarySize) {
+		this.summarySize = summarySize;
 	}
+
+	public int getSummarySize() {
+		return this.summarySize;
+	}
+
 }

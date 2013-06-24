@@ -7,7 +7,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
-import com.trc.coupon.UserCoupon;
+import com.tscp.mvna.domain.payment.coupon.UserCoupon;
 
 @Repository
 @SuppressWarnings("unchecked")

@@ -6,13 +6,13 @@
   <!-- This flow is the same as registraion.xml but includes an initial state to record the source code and does not automatically login the user on success -->
 
   <!-- DECLARE REQUIRED OBJECTS -->
-  <var name="registration" class="com.tscp.mvna.domain.registration.ThirdPartyRegistration" />
+  <var name="registration" class="com.tscp.mvna.domain.registration.AffiliateRegistration" />
 
   <on-start>
     <set name="flowScope.sourceCode" value="registration.sourceCode" />
-    <set name="flowScope.simpleRegistrationLogin" value="registration.login" />
-    <set name="flowScope.simpleRegistrationSecurity" value="registration.security" />
-    <set name="flowScope.simpleRegistrationTerms" value="registration.terms" />
+    <set name="flowScope.registrationLogin" value="registration.login" />
+    <set name="flowScope.registrationSecurity" value="registration.security" />
+    <set name="flowScope.registrationTerms" value="registration.terms" />
   </on-start>
 
   <!-- BEGIN GATHERING INFORMATION -->
@@ -20,18 +20,18 @@
     <transition on="submit" to="usernamePassword" />
   </view-state>
 
-  <view-state id="usernamePassword" view="register/username" model="simpleRegistrationLogin">
+  <view-state id="usernamePassword" view="register/username" model="registrationLogin">
     <transition on="submit" to="securityVerification" />
   </view-state>
 
-  <view-state id="securityVerification" view="register/security" model="simpleRegistrationSecurity">
+  <view-state id="securityVerification" view="register/security" model="registrationSecurity">
     <on-entry>
       <set name="viewScope.questions" value="securityQuestionManager.getSecurityQuestions()" />
     </on-entry>
     <transition on="submit" to="terms" />
   </view-state>
 
-  <view-state id="terms" view="register/terms" model="simpleRegistrationTerms">
+  <view-state id="terms" view="register/terms" model="registrationTerms">
     <transition on="submit" to="createUser" />
   </view-state>
 

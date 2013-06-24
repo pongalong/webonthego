@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://www.springframework.org/schema/webflow  
     http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-  <var name="creditCardPayment" class="com.trc.user.activation.CreditCardPayment" />
+  <var name="creditCardPayment" class="com.tscp.mvna.domain.payment.CreditCardPayment" />
 
   <input name="existingPaymentMethods" type="java.util.List" />
 

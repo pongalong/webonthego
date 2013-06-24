@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.trc.coupon.Coupon;
-import com.trc.coupon.CouponStackable;
-import com.trc.exception.management.CouponManagementException;
 import com.trc.manager.AccountManager;
-import com.trc.manager.CouponManager;
 import com.trc.manager.UserManager;
+import com.tscp.mvna.domain.payment.coupon.Coupon;
+import com.tscp.mvna.domain.payment.coupon.CouponStackable;
+import com.tscp.mvna.domain.payment.coupon.exception.CouponManagementException;
+import com.tscp.mvna.domain.payment.coupon.manager.CouponManager;
 
 @Component
 public class CouponValidator implements Validator {

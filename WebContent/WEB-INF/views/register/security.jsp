@@ -1,11 +1,11 @@
 <%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-<form:form commandName="simpleRegistrationSecurity" method="post" cssClass="form-horizontal">
+<form:form commandName="registrationSecurity" method="post" cssClass="form-horizontal">
   <fieldset>
     <legend>Setup ID Verification</legend>
 
     <!-- Errors -->
-    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationSecurity'].allErrors}">
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.registrationSecurity'].allErrors}">
       <div class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4>Please correct the following problems</h4>
@@ -13,7 +13,7 @@
         <form:errors path="securityQuestionAnswer.answer" />
         <form:errors path="captcha.value" />
         <!-- Global Errors -->
-        <spring:bind path="simpleRegistrationSecurity">
+        <spring:bind path="registrationSecurity">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
             <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
           </c:forEach>

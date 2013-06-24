@@ -16,18 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.trc.coupon.Coupon;
-import com.trc.coupon.CouponRequest;
-import com.trc.coupon.ajax.CouponResponse;
 import com.trc.exception.management.AccountManagementException;
-import com.trc.exception.management.CouponManagementException;
 import com.trc.manager.AccountManager;
-import com.trc.manager.CouponManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.web.model.ResultModel;
 import com.trc.web.validation.CouponRequestValidator;
+import com.tscp.mvna.domain.payment.coupon.Coupon;
+import com.tscp.mvna.domain.payment.coupon.CouponRequest;
+import com.tscp.mvna.domain.payment.coupon.CouponResponse;
+import com.tscp.mvna.domain.payment.coupon.exception.CouponManagementException;
+import com.tscp.mvna.domain.payment.coupon.manager.CouponManager;
 
 @Controller
 @RequestMapping("/coupons")

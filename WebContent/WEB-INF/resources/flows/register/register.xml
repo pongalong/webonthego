@@ -4,45 +4,45 @@
     http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
   <!-- DECLARE REQUIRED OBJECTS -->
-  <var name="simpleRegistration" class="com.trc.user.activation.simple.SimpleRegistration" />
+  <var name="registration" class="com.tscp.mvna.domain.registration.Registration" />
 
   <on-start>
-    <set name="flowScope.simpleRegistrationLogin" value="simpleRegistration.login" />
-    <set name="flowScope.simpleRegistrationSecurity" value="simpleRegistration.security" />
-    <set name="flowScope.simpleRegistrationTerms" value="simpleRegistration.terms" />
+    <set name="flowScope.registrationLogin" value="registration.login" />
+    <set name="flowScope.registrationSecurity" value="registration.security" />
+    <set name="flowScope.registrationTerms" value="registration.terms" />
   </on-start>
 
   <!-- BEGIN GATHERING INFORMATION -->
-  <view-state id="usernamePassword" view="register/username" model="simpleRegistrationLogin">
+  <view-state id="usernamePassword" view="register/username" model="registrationLogin">
     <transition on="submit" to="securityVerification" />
   </view-state>
 
-  <view-state id="securityVerification" view="register/security" model="simpleRegistrationSecurity">
+  <view-state id="securityVerification" view="register/security" model="registrationSecurity">
     <on-entry>
       <set name="viewScope.questions" value="securityQuestionManager.getSecurityQuestions()" />
     </on-entry>
     <transition on="submit" to="terms" />
   </view-state>
 
-  <view-state id="terms" view="register/terms" model="simpleRegistrationTerms">
+  <view-state id="terms" view="register/terms" model="registrationTerms">
     <transition on="submit" to="createUser" />
   </view-state>
 
   <!-- BEGIN CREATING THE USER -->
   <action-state id="createUser">
-    <evaluate expression="simpleRegistrationManager.createUser(simpleRegistration)" result="flowScope.user" />
+    <evaluate expression="registrationManager.createUser(registration)" result="flowScope.user" />
     <transition on="success" to="sendNotification" />
     <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
   </action-state>
 
   <action-state id="sendNotification">
-    <evaluate expression="simpleRegistrationManager.sendAccountNotice(user)" />
+    <evaluate expression="registrationManager.sendAccountNotice(user)" />
     <transition on="success" to="autoLogin" />
     <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
   </action-state>
 
   <action-state id="autoLogin">
-    <evaluate expression="simpleRegistrationManager.autoLogin(user)" />
+    <evaluate expression="registrationManager.autoLogin(user)" />
     <transition on="success" to="success" />
   </action-state>
 

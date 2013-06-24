@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.PaymentFailureException;
 import com.trc.exception.service.PaymentServiceException;
-import com.trc.service.gateway.WebserviceAdapter;
-import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
 import com.trc.web.session.SessionManager;
+import com.tscp.mvna.service.gateway.WebserviceAdapter;
+import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.CustPmtMap;

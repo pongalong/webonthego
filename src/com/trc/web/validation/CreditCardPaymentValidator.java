@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.trc.coupon.Coupon;
-import com.trc.user.activation.CreditCardPayment;
+import com.tscp.mvna.domain.payment.CreditCardPayment;
+import com.tscp.mvna.domain.payment.coupon.Coupon;
 import com.tscp.mvne.CreditCard;
 
 @Component

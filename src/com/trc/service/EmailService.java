@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.GatewayException;
-import com.trc.service.gateway.WebserviceAdapter;
-import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
+import com.tscp.mvna.service.gateway.WebserviceAdapter;
+import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.TSCPMVNA;
 

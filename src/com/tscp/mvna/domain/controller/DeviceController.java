@@ -22,12 +22,12 @@ import com.trc.exception.management.DeviceManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
-import com.trc.service.gateway.WebserviceAdapter;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.web.model.ResultModel;
 import com.trc.web.session.cache.CachedAttributeNotFound;
 import com.trc.web.validation.DeviceValidator;
+import com.tscp.mvna.service.gateway.WebserviceAdapter;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.NetworkInfo;
 

@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trc.exception.service.AccountServiceException;
-import com.trc.service.gateway.WebserviceAdapter;
-import com.trc.service.gateway.WebserviceGateway;
 import com.trc.user.User;
 import com.trc.util.Formatter;
+import com.tscp.mvna.service.gateway.WebserviceAdapter;
+import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CustAcctMapDAO;
 import com.tscp.mvne.CustInfo;

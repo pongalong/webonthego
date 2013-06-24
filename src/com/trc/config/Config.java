@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.trc.service.gateway.WebserviceGateway;
+import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.util.logger.DevLogger;
 
 @Component

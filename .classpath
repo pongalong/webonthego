@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="service"/>
 	<classpathentry kind="src" path="config"/>
-	<classpathentry kind="src" path="logging"/>
-	<classpathentry kind="src" path="admin"/>
-	<classpathentry kind="src" path="report"/>
-	<classpathentry kind="src" path="security"/>
 	<classpathentry kind="src" path="support"/>
-	<classpathentry kind="src" path="ticket"/>
-	<classpathentry kind="src" path="WebContent/WEB-INF/resources"/>
 	<classpathentry kind="src" path="refund"/>
 	<classpathentry kind="src" path="registration"/>
+	<classpathentry kind="src" path="activation"/>
 	<classpathentry kind="src" path="affiliate"/>
 	<classpathentry kind="src" path="search"/>
+	<classpathentry kind="src" path="WebContent/WEB-INF/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.sun.enterprise.jst.server.runtimeTarget/GlassFish Server Open Source Edition 3 (Java EE 6)"/>

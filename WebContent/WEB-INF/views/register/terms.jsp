@@ -1,17 +1,17 @@
 <%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-<form:form commandName="simpleRegistrationTerms" method="post">
+<form:form commandName="registrationTerms" method="post">
   <fieldset>
     <legend>Terms and Conditions</legend>
 
     <!-- Begin Errors -->
-    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationTerms'].allErrors}">
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.registrationTerms'].allErrors}">
       <div class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4>Please correct the following problems</h4>
         <form:errors path="acceptTerms" />
         <!-- Global Errors -->
-        <spring:bind path="simpleRegistrationTerms">
+        <spring:bind path="registrationTerms">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
             <span id="global.${status.index}.errors"><c:out value="${error}" /></span>
           </c:forEach>

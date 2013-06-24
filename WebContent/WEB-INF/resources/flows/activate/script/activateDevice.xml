@@ -3,30 +3,30 @@
   xsi:schemaLocation="http://www.springframework.org/schema/webflow  
     http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
 
-  <input name="sa" type="com.trc.user.activation.simple.SimpleActivation" />
+  <input name="activation" type="com.tscp.mvna.domain.activation.Activation" />
 
   <action-state id="addDevice">
-    <evaluate expression="simpleActivationManager.addDevice(sa)" />
+    <evaluate expression="simpleActivationManager.addDevice(activation)" />
     <transition on="success" to="reserveAndActivate" />
     <transition on-exception="com.trc.exception.management.DeviceManagementException" to="unsuccessfulDeviceAddition" />
   </action-state>
 
   <action-state id="reserveAndActivate">
-    <evaluate expression="simpleActivationManager.reserveAndActivate(sa)" />
+    <evaluate expression="simpleActivationManager.reserveAndActivate(activation)" />
     <transition on="success" to="success" />
     <transition on-exception="com.trc.exception.management.DeviceReservationException" to="unsuccessfulReservation">
-      <evaluate expression="simpleActivationManager.removeDevice(sa)" />
+      <evaluate expression="simpleActivationManager.removeDevice(activation)" />
     </transition>
     <transition on-exception="com.trc.exception.management.DeviceActivationException" to="releaseMdn" />
   </action-state>
 
   <action-state id="releaseMdn">
-    <evaluate expression="simpleActivationManager.releaseMdn(sa)" />
+    <evaluate expression="simpleActivationManager.releaseMdn(activation)" />
     <transition on="success" to="unsuccessfulActivation">
-      <evaluate expression="simpleActivationManager.removeDevice(sa)" />
+      <evaluate expression="simpleActivationManager.removeDevice(activation)" />
     </transition>
     <transition on-exception="com.trc.exception.management.DeviceDisconnectException" to="unsuccessfulActivation">
-      <evaluate expression="simpleActivationManager.notifyReleaseMdnException(sa)" />
+      <evaluate expression="simpleActivationManager.notifyReleaseMdnException(activation)" />
     </transition>
   </action-state>
 

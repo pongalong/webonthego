@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.trc.coupon.Coupon;
-import com.trc.coupon.CouponRequest;
-import com.trc.coupon.UserCoupon;
 import com.trc.exception.ValidationException;
-import com.trc.exception.management.CouponManagementException;
-import com.trc.manager.CouponManager;
+import com.tscp.mvna.domain.payment.coupon.Coupon;
+import com.tscp.mvna.domain.payment.coupon.CouponRequest;
+import com.tscp.mvna.domain.payment.coupon.UserCoupon;
+import com.tscp.mvna.domain.payment.coupon.exception.CouponManagementException;
+import com.tscp.mvna.domain.payment.coupon.manager.CouponManager;
 import com.tscp.mvne.Account;
 
 @Component

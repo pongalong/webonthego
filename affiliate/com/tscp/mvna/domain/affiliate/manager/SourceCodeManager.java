@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tscp.mvna.domain.affiliate.SourceCode;
-import com.tscp.mvna.domain.affiliate.manager.dao.SourceCodeDao;
+import com.tscp.mvna.domain.affiliate.manager.service.dao.SourceCodeDao;
 
 @Component
 public class SourceCodeManager {

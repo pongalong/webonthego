@@ -1,12 +1,12 @@
 <%@ include file="/WEB-INF/views/include/header/headerNoMenu.jsp"%>
 
-<form:form commandName="simpleRegistrationLogin" method="post" cssClass="form-horizontal">
+<form:form commandName="registrationLogin" method="post" cssClass="form-horizontal">
 
   <fieldset>
     <legend>Sign Up For An Account</legend>
 
     <!-- Errors -->
-    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.simpleRegistrationLogin'].allErrors}">
+    <c:if test="${not empty requestScope['org.springframework.validation.BindingResult.registrationLogin'].allErrors}">
       <div class="alert alert-error">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <h4>Please correct the following problems</h4>
@@ -15,7 +15,7 @@
         <form:errors path="password.value" />
         <form:errors path="password.confirmValue" />
         <!-- Global Errors -->
-        <spring:bind path="simpleRegistrationLogin">
+        <spring:bind path="registrationLogin">
           <c:forEach items="${status.errorMessages}" var="error" varStatus="status">
             <span id="global.${status.index}.errors"><c:out value="${error}" /> </span>
           </c:forEach>
