@@ -62,8 +62,12 @@ public class SearchController {
 		List<User> searchResults = userManager.searchCustomersByEmail(email);
 		SearchResult[] users = new SearchResult[searchResults.size()];
 
-		for (int i = 0; i < searchResults.size(); i++)
-			users[i] = new SearchResult(searchResults.get(i).getUserId(), searchResults.get(i).getEmail(), searchResults.get(i).getUsername());
+		String label;
+
+		for (int i = 0; i < searchResults.size(); i++) {
+			label = searchResults.get(i).isEnabled() ? searchResults.get(i).getEmail() : searchResults.get(i).getEmail() + " (disabled)";
+			users[i] = new SearchResult(searchResults.get(i).getUserId(), label, searchResults.get(i).getUsername());
+		}
 
 		return new SearchResponse(searchResults.size() > 0, users);
 	}
