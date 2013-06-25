@@ -60,28 +60,42 @@
 
                 <c:if test="${CONTROLLING_USER.userId > 0}">
                   <li class="divider"></li>
-                  <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
-                    <h1>Payment</h1>
-                    <li><a href="<spring:url value="/admin/payment/topup/queue/" />">Queue Topup</a></li>
-                    <li><a href="<spring:url value="/admin/payment/topup/force/${accountDetail.encodedDeviceId}" />">Force Topup</a></li>
-                    <li class="divider"></li>
+
+                  <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_AGENT')">
+
+                    <!-- ADMIN PAYMENT FUNCTIONS -->
+                    <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+                      <h1>Payment</h1>
+                      <li><a href="<spring:url value="/admin/payment/topup/queue/" />">Queue Topup</a></li>
+                      <li><a href="<spring:url value="/admin/payment/topup/force/${accountDetail.encodedDeviceId}" />">Force Topup</a></li>
+                      <li class="divider"></li>
+                    </sec:authorize>
+
+                    <!-- ADMIN NETWORK FUNCTIONS -->
                     <h1>Network</h1>
                     <c:choose>
                       <c:when test="${accountDetail.deviceInfo.statusId == 2}">
-                        <li><a href="<spring:url value="/devices/suspend/${accountDetail.encodedDeviceId}" />">Suspend</a></li>
+                        <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+                          <li><a href="<spring:url value="/devices/suspend/${accountDetail.encodedDeviceId}" />">Suspend</a></li>
+                        </sec:authorize>
                         <li><a href="<spring:url value="/devices/disconnect/${accountDetail.encodedDeviceId}" />">Disconnect</a></li>
                       </c:when>
                       <c:when test="${accountDetail.deviceInfo.statusId == 3}">
-                        <li><a href="<spring:url value="/devices/reconnect/${accountDetail.encodedDeviceId}" />">Reconnect</a></li>
+                        <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+                          <li><a href="<spring:url value="/devices/reconnect/${accountDetail.encodedDeviceId}" />">Reconnect</a></li>
+                        </sec:authorize>
                       </c:when>
                       <c:when test="${accountDetail.deviceInfo.statusId == 5}">
-                        <li><a href="<spring:url value="/devices/restore/${accountDetail.encodedDeviceId}" />">Restore</a></li>
+                        <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN', 'ROLE_MANAGER')">
+                          <li><a href="<spring:url value="/devices/restore/${accountDetail.encodedDeviceId}" />">Restore</a></li>
+                        </sec:authorize>
                       </c:when>
                       <c:otherwise>
                         <li><a href="#">Status: ${accountDetail.deviceInfo.status}</a></li>
                       </c:otherwise>
                     </c:choose>
                   </sec:authorize>
+
                   <sec:authorize access="hasAnyRole('ROLE_SU', 'ROLE_ADMIN',)">
                     <li><a href="<spring:url value="/devices/swap/${accountDetail.encodedDeviceId}" />">Swap</a></li>
                   </sec:authorize>

@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.trc.manager.AccountManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.cache.CachedAttributeNotFound;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.cache.CachedAttributeNotFound;
 
 @Controller
 @RequestMapping("/account")

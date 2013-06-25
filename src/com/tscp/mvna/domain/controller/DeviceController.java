@@ -24,10 +24,10 @@ import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.cache.CachedAttributeNotFound;
 import com.trc.web.validation.DeviceValidator;
 import com.tscp.mvna.service.gateway.WebserviceAdapter;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.cache.CachedAttributeNotFound;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.NetworkInfo;
 
@@ -207,7 +207,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showRestoreDevice(
 			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -223,7 +223,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postRestoreDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
@@ -238,7 +238,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showDisconnectDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -256,7 +256,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postDisconnectDevice(
 			@ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
@@ -278,7 +278,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showReinstallDevice(
 			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
@@ -293,7 +293,7 @@ public class DeviceController {
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postReinstallDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {

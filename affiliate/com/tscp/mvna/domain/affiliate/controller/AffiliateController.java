@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.trc.web.model.ResultModel;
 import com.tscp.mvna.domain.affiliate.SourceCode;
 import com.tscp.mvna.domain.affiliate.SourceCodeValidator;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")

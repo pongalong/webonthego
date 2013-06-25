@@ -5,8 +5,8 @@ import java.util.List;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.user.User;
-import com.trc.util.Paginator;
 import com.tscp.mvne.UsageDetail;
+import com.tscp.util.Paginator;
 
 /**
  * UsageHistory is a paginated list of the user's usageDetails.

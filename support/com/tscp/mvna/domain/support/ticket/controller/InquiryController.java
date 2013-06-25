@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.trc.web.model.ResultModel;
 import com.tscp.mvna.domain.support.ticket.InquiryTicket;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/support/inquire")

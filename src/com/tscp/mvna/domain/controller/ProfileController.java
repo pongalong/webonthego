@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,14 +19,13 @@ import com.trc.exception.management.PaymentManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
-import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.cache.CacheKey;
-import com.trc.web.session.cache.CacheManager;
 import com.trc.web.validation.UserUpdateValidator;
+import com.tscp.mvna.service.email.VelocityEmailService;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.cache.CacheKey;
+import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.CreditCard;
-import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/profile")
@@ -32,6 +33,7 @@ import com.tscp.util.logger.DevLogger;
 		"USER",
 		"CONTROLLING_USER" })
 public class ProfileController {
+	private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -57,7 +59,7 @@ public class ProfileController {
 				try {
 					encodedPaymentIds.add(CacheManager.getEncryptor().encryptIntUrlSafe(creditCard.getPaymentid()));
 				} catch (UnsupportedEncodingException e) {
-					DevLogger.error("Exception encoding IDs in PaymentController", e);
+					logger.error("Exception encoding IDs in PaymentController", e);
 				}
 			}
 			model.addAttribute("encodedPaymentIds", encodedPaymentIds);

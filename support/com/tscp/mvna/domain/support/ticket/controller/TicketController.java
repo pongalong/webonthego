@@ -19,9 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.exception.EmailException;
 import com.trc.manager.UserManager;
-import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
 import com.tscp.mvna.domain.support.ticket.AdminTicket;
 import com.tscp.mvna.domain.support.ticket.AgentTicket;
 import com.tscp.mvna.domain.support.ticket.CustomerTicket;
@@ -33,6 +31,8 @@ import com.tscp.mvna.domain.support.ticket.TicketStatus;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
+import com.tscp.mvna.service.email.VelocityEmailService;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/support/ticket")

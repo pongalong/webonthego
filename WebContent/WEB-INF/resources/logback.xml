@@ -6,7 +6,7 @@
     <!-- encoders are assigned by default the type ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
     <encoder>
       <pattern>
-        %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %X{sessionId} %X{username} %msg%n
+        %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{24} - %X{sessionId} %X{username} %msg%n
       </pattern>
     </encoder>
   </appender>
@@ -24,16 +24,16 @@
     </encoder>
   </appender>
 
-  <appender name="DEV_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego_dev.log</File>
+  <appender name="DEBUG_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>../logs/webonthego_debug.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego_dev.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/webonthego/webonthego_debug.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
     </rollingPolicy>
     <encoder>
-      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36}: %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{24}: %msg%n</pattern>
     </encoder>
   </appender>
 
@@ -73,7 +73,7 @@
     <appender-ref ref="HIBERNATE_ROLLINGFILE" />
   </logger>
 
-  <logger name="com.trc.user.activation" level="info">
+  <logger name="com.tscp.mvna.domain.activation" level="info">
     <appender-ref ref="ACTIVATION_ROLLINGFILE" />
   </logger>
 
@@ -81,8 +81,8 @@
     <appender-ref ref="AOP_ROLLINGFILE" />
   </logger>
 
-  <logger name="devLogger" level="DEBUG">
-    <appender-ref ref="DEV_ROLLINGFILE" />
+  <logger name="com.tscp" level="DEBUG">
+    <appender-ref ref="DEBUG_ROLLINGFILE" />
   </logger>
 
   <root level="OFF">

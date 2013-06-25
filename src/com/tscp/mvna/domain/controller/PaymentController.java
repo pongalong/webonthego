@@ -2,9 +2,9 @@ package com.tscp.mvna.domain.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,19 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.trc.config.Config;
 import com.trc.exception.management.PaymentManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.PaymentHistory;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.cache.CacheKey;
-import com.trc.web.session.cache.CacheManager;
 import com.trc.web.validation.CreditCardValidator;
+import com.tscp.mvna.config.Config;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.CreditCard;
-import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/account/payment")
@@ -39,6 +37,7 @@ import com.tscp.util.logger.DevLogger;
 		"PAYMENT_METHODS",
 		"creditCard" })
 public class PaymentController {
+	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -72,30 +71,6 @@ public class PaymentController {
 		return model.getSuccess();
 	}
 
-	@Deprecated
-	// @RequestMapping(value = "/methods", method = RequestMethod.GET)
-	public ModelAndView showPaymentMethods() {
-		DevLogger.debug("showPaymentMethods");
-		User user = userManager.getCurrentUser();
-		ResultModel model = new ResultModel("payment/methods");
-		try {
-			List<CreditCard> paymentMethods = paymentManager.getCreditCards(user);
-			List<String> encodedPaymentIds = new ArrayList<String>();
-			for (CreditCard creditCard : paymentMethods) {
-				try {
-					encodedPaymentIds.add(CacheManager.getEncryptor().encryptIntUrlSafe(creditCard.getPaymentid()));
-				} catch (UnsupportedEncodingException e) {
-					DevLogger.error("Exception encoding IDs in PaymentController", e);
-				}
-			}
-			model.addAttribute("encodedPaymentIds", encodedPaymentIds);
-			model.addAttribute(CacheKey.PAYMENT_METHODS, paymentMethods);
-			return model.getSuccess();
-		} catch (PaymentManagementException e) {
-			return model.getAccessException();
-		}
-	}
-
 	@RequestMapping(value = "/methods/edit/{encodedPaymentId}", method = RequestMethod.GET)
 	public ModelAndView updatePaymentMethod(
 			@PathVariable("encodedPaymentId") String encodedPaymentId) {
@@ -107,9 +82,9 @@ public class PaymentController {
 			try {
 				decodedPaymentId = CacheManager.getEncryptor().decryptIntUrlSafe(encodedPaymentId);
 			} catch (UnsupportedEncodingException e) {
-				DevLogger.error("Exception decrypting ID in PaymentController", e);
+				logger.error("Exception decrypting ID in PaymentController", e);
 			} catch (IOException e) {
-				DevLogger.error("Exception decrypting ID in PaymentController", e);
+				logger.error("Exception decrypting ID in PaymentController", e);
 			}
 
 			CreditCard cardToUpdate = paymentManager.getCreditCard(decodedPaymentId);
@@ -149,9 +124,9 @@ public class PaymentController {
 		try {
 			decodedPaymentId = CacheManager.getEncryptor().decryptIntUrlSafe(encodedPaymentId);
 		} catch (UnsupportedEncodingException e) {
-			DevLogger.error("Exception decrypting ID in PaymentController", e);
+			logger.error("Exception decrypting ID in PaymentController", e);
 		} catch (IOException e) {
-			DevLogger.error("Exception decrypting ID in PaymentController", e);
+			logger.error("Exception decrypting ID in PaymentController", e);
 		}
 
 		try {

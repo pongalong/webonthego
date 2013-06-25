@@ -21,13 +21,13 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.web.model.ResultModel;
 import com.trc.web.validation.CouponRequestValidator;
 import com.tscp.mvna.domain.payment.coupon.Coupon;
 import com.tscp.mvna.domain.payment.coupon.CouponRequest;
 import com.tscp.mvna.domain.payment.coupon.CouponResponse;
 import com.tscp.mvna.domain.payment.coupon.exception.CouponManagementException;
 import com.tscp.mvna.domain.payment.coupon.manager.CouponManager;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/coupons")

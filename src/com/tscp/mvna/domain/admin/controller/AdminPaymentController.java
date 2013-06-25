@@ -17,10 +17,9 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.cache.CachedAttributeNotFound;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.cache.CachedAttributeNotFound;
 import com.tscp.mvne.PaymentUnitResponse;
-import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/admin/payment")
@@ -94,7 +93,6 @@ public class AdminPaymentController {
 			model.addAttribute("paymentResponse", response);
 			return model.getError();
 		} catch (PaymentManagementException e) {
-			DevLogger.log(e.getMessage() + " " + e.getCause());
 			model.addAttribute("paymentResponse", new PaymentUnitResponse());
 			return model.getError();
 		}

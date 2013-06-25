@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
@@ -21,20 +23,25 @@ import com.trc.exception.EmailException;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.Md5Encoder;
-import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
 import com.trc.user.security.UpdateEmail;
 import com.trc.user.security.UpdatePassword;
-import com.trc.web.model.ResultModel;
 import com.trc.web.validation.UserUpdateValidator;
-import com.tscp.util.logger.DevLogger;
+import com.tscp.mvna.security.encryption.Md5Encoder;
+import com.tscp.mvna.service.email.VelocityEmailService;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/profile/update")
-@SessionAttributes({ "USER", "CONTROLLING_USER", "ACCOUNT_DETAILS", "updateEmail", "updatePassword" })
+@SessionAttributes({
+		"USER",
+		"CONTROLLING_USER",
+		"ACCOUNT_DETAILS",
+		"updateEmail",
+		"updatePassword" })
 public class ProfileUpdateController {
+	private static final Logger logger = LoggerFactory.getLogger(ProfileUpdateController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -53,12 +60,7 @@ public class ProfileUpdateController {
 
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public ModelAndView postUpdateEmail(
-			HttpSession session,
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@ModelAttribute("updateEmail") UpdateEmail updateEmail,
-			BindingResult result) {
+			HttpSession session, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @ModelAttribute("updateEmail") UpdateEmail updateEmail, BindingResult result) {
 
 		ResultModel model = new ResultModel("redirect:/profile?notification_sent=" + updateEmail.getNewEmail(), "account/profile/update/email");
 
@@ -82,11 +84,7 @@ public class ProfileUpdateController {
 
 	@RequestMapping(value = "/email/verify/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView confirmUpdateEmail(
-			HttpSession session,
-			@ModelAttribute("USER") User user,
-			@ModelAttribute("updateEmail") UpdateEmail updateEmail,
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails,
-			@PathVariable("sessionId") String sessionId) {
+			HttpSession session, @ModelAttribute("USER") User user, @ModelAttribute("updateEmail") UpdateEmail updateEmail, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable("sessionId") String sessionId) {
 
 		ResultModel model = new ResultModel("redirect:/profile?updated=email");
 
@@ -105,10 +103,7 @@ public class ProfileUpdateController {
 
 	@RequestMapping(value = "/password", method = RequestMethod.POST)
 	public ModelAndView postUpdatePassword(
-			@ModelAttribute("updatePassword") UpdatePassword updatePassword,
-			BindingResult result,
-			@ModelAttribute("CONTROLLING_USER") User controllingUser,
-			@ModelAttribute("USER") User user) {
+			@ModelAttribute("updatePassword") UpdatePassword updatePassword, BindingResult result, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("USER") User user) {
 
 		ResultModel model = new ResultModel("redirect:/profile?updated=password", "account/profile/update/password");
 
@@ -127,9 +122,7 @@ public class ProfileUpdateController {
 	}
 
 	private void updateEmail(
-			User user,
-			UpdateEmail updateEmail,
-			List<AccountDetail> accountDetails) {
+			User user, UpdateEmail updateEmail, List<AccountDetail> accountDetails) {
 
 		String oldEmail = user.getEmail();
 
@@ -137,11 +130,11 @@ public class ProfileUpdateController {
 			user.setUsername(updateEmail.getNewEmail());
 			user.setEmail(updateEmail.getNewEmail());
 
-			DevLogger.debug("updating user with new email " + updateEmail.getNewEmail());
+			logger.debug("updating user with new email " + updateEmail.getNewEmail());
 			userManager.updateUser(user);
 
 			for (AccountDetail ad : accountDetails) {
-				DevLogger.debug("updating account " + ad.getAccount().getAccountNo() + " with new email " + updateEmail.getNewEmail());
+				logger.debug("updating account " + ad.getAccount().getAccountNo() + " with new email " + updateEmail.getNewEmail());
 				ad.getAccount().setContactEmail(updateEmail.getNewEmail());
 				accountManager.updateEmail(ad.getAccount());
 			}
@@ -155,9 +148,7 @@ public class ProfileUpdateController {
 	}
 
 	private void sendUpdateEmailVerificationNotice(
-			User user,
-			UpdateEmail updateEmail,
-			String sessionId) {
+			User user, UpdateEmail updateEmail, String sessionId) {
 
 		try {
 			SimpleMailMessage myMessage = new SimpleMailMessage();

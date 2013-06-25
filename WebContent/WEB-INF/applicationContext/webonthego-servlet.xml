@@ -26,17 +26,9 @@
   <!-- <aop:config> <aop:advisor advice-ref="customizableTraceInterceptor" pointcut="execution(public * com.trc.manager..*(..))" /> </aop:config> -->
 
   <!-- Begin Component Scan -->
-  <context:component-scan base-package="com.trc.config.**" />
-  <context:component-scan base-package="com.trc.dao.**" />
-  <context:component-scan base-package="com.trc.service.**" />
-  <context:component-scan base-package="com.trc.manager.**" />
-  <context:component-scan base-package="com.trc.web.context.**" />
-  <context:component-scan base-package="com.trc.web.validation.**" />
-  <context:component-scan base-package="com.trc.web.session.**" />
-
   <context:component-scan base-package="com.tscp.util.logger.**" scoped-proxy="targetClass" />
-  <context:component-scan base-package="com.tscp.mvna.service.**" />
-  <context:component-scan base-package="com.tscp.mvna.domain.**" />
+  <context:component-scan base-package="com.trc.**" />
+  <context:component-scan base-package="com.tscp.mvna.**" />
 
   <!-- <context:component-scan base-package="com.tscp.mvna.domain.controller.**" scoped-proxy="targetClass" /> <context:component-scan base-package="com.tscp.mvna.domain.admin.controller.**" 
     scoped-proxy="targetClass" /> <context:component-scan base-package="com.tscp.mvna.domain.search.**" /> <context:component-scan base-package="com.tscp.mvna.domain.registration.**" 

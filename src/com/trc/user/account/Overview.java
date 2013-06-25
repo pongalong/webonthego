@@ -7,9 +7,8 @@ import java.util.List;
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.user.User;
-import com.trc.web.session.cache.CacheManager;
+import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Device;
-import com.tscp.util.logger.DevLogger;
 
 /**
  * Overview contains all accountDetails and the paymentHistory for the given user.
@@ -26,7 +25,7 @@ public class Overview {
 		try {
 			this.paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
 		} catch (AccountManagementException e) {
-			DevLogger.error("Could not fetch paymentHistory for user " + user.toShortString(), e);
+			// DevLogger.error("Could not fetch paymentHistory for user " + user.toShortString(), e);
 		}
 
 		this.accountDetails = new ArrayList<AccountDetail>();
@@ -38,9 +37,9 @@ public class Overview {
 				accountDetail.setEncodedDeviceId(CacheManager.getEncryptor().encryptIntUrlSafe(accountDetail.getDeviceInfo().getId()));
 				this.accountDetails.add(accountDetail);
 			} catch (AccountManagementException e) {
-				DevLogger.error("Could not fetch accountDetail for account " + device.getAccountNo(), e);
+				// DevLogger.error("Could not fetch accountDetail for account " + device.getAccountNo(), e);
 			} catch (UnsupportedEncodingException e) {
-				DevLogger.error("Exception encoding IDs while creating Overview", e);
+				// DevLogger.error("Exception encoding IDs while creating Overview", e);
 			}
 		}
 	}

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.trc.exception.service.PaymentFailureException;
 import com.trc.exception.service.PaymentServiceException;
 import com.trc.user.User;
-import com.trc.web.session.SessionManager;
 import com.tscp.mvna.service.gateway.WebserviceAdapter;
 import com.tscp.mvna.service.gateway.WebserviceGateway;
+import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.CustPmtMap;
@@ -158,7 +158,7 @@ public class PaymentService implements PaymentServiceModel {
 	public PaymentUnitResponse makePayment(
 			User user, Account account, CreditCard creditCard, String amount) throws PaymentFailureException {
 		try {
-			return port.submitPaymentByCreditCard(SessionManager.getCurrentSession().getId(), account, creditCard, amount);
+			return port.submitPaymentByCreditCard(SessionManager.getSessionId(), account, creditCard, amount);
 		} catch (WebServiceException e) {
 			throw new PaymentFailureException(e);
 		}
@@ -168,7 +168,7 @@ public class PaymentService implements PaymentServiceModel {
 	public PaymentUnitResponse makePayment(
 			User user, Account account, int paymentId, String amount) throws PaymentFailureException {
 		try {
-			return port.submitPaymentByPaymentId(SessionManager.getCurrentSession().getId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
+			return port.submitPaymentByPaymentId(SessionManager.getSessionId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
 		} catch (WebServiceException e) {
 			throw new PaymentFailureException(e);
 		}

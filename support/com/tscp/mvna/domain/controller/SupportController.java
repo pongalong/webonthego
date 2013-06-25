@@ -14,7 +14,7 @@ import com.trc.domain.support.knowledgebase.Article;
 import com.trc.exception.management.SupportManagementException;
 import com.trc.manager.SupportManager;
 import com.trc.manager.UserManager;
-import com.trc.web.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/support")

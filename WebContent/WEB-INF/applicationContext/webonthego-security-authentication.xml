@@ -16,14 +16,14 @@
     <property name="expiredUrl" value="/timeout" />
   </bean>
 
-  <bean id="myAuthFilter" class="com.trc.web.security.authentication.MyAuthenticationProcessingFilter">
+  <bean id="myAuthFilter" class="com.tscp.mvna.web.security.authentication.MyAuthenticationProcessingFilter">
     <property name="sessionAuthenticationStrategy" ref="sas" />
     <property name="authenticationManager" ref="webonthegoAuthentication" />
     <property name="authenticationFailureHandler" ref="failureHandler" />
     <property name="authenticationSuccessHandler" ref="successHandler" />
   </bean>
 
-  <bean id="successHandler" class="com.trc.web.security.authentication.MySavedRequestAwareAuthenticationSuccessHandler">
+  <bean id="successHandler" class="com.tscp.mvna.web.security.authentication.MySavedRequestAwareAuthenticationSuccessHandler">
     <property name="defaultTargetUrl" value="/manage" />
   </bean>
 
@@ -52,7 +52,7 @@
     <property name="userDetailsService" ref="myUserDetailsService" />
   </bean>
 
-  <bean id="myUserDetailsService" class="com.trc.web.security.authentication.MyUserDetailsService">
+  <bean id="myUserDetailsService" class="com.tscp.mvna.web.security.authentication.MyUserDetailsService">
     <property name="userManager" ref="userManager" />
     <!-- <property name="assembler" ref="assembler" /> -->
   </bean>

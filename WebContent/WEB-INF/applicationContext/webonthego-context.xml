@@ -34,7 +34,7 @@
     </property>
   </bean>
 
-  <bean id="velocityEmailService" class="com.trc.service.email.VelocityEmailService">
+  <bean id="velocityEmailService" class="com.tscp.mvna.service.email.VelocityEmailService">
     <property name="velocityEngine" ref="velocityEngine" />
     <property name="mailSender" ref="mailSender" />
   </bean>

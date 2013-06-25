@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -25,12 +27,11 @@ import com.trc.manager.PaymentManager;
 import com.trc.manager.RefundManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
 import com.trc.web.validation.JCaptchaValidator;
 import com.trc.web.validation.RefundRequestValidator;
+import com.tscp.mvna.web.controller.model.ResultModel;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.PaymentTransaction;
-import com.tscp.util.logger.DevLogger;
 
 @Controller
 @RequestMapping("/admin/refund")
@@ -41,6 +42,7 @@ import com.tscp.util.logger.DevLogger;
 		"ACCOUNT_DETAILS",
 		"refundRequest" })
 public class RefundController {
+	private static final Logger logger = LoggerFactory.getLogger(RefundController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -92,7 +94,7 @@ public class RefundController {
 				refundManager.refundPayment(user, refundRequest);
 				return resultModel.getSuccess();
 			} catch (RefundManagementException e) {
-				DevLogger.getLogger().debug("exception {}", e);
+				logger.debug("Exception while refunding payment", e);
 				return resultModel.getException();
 			}
 		}

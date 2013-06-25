@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.validation.ValidationUtils;
 
-import com.trc.security.encryption.Md5Encoder;
+import com.tscp.mvna.security.encryption.Md5Encoder;
 
 public class ValidationUtil extends ValidationUtils {
 

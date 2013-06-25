@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.Md5Encoder;
 import com.trc.user.SecurityQuestionAnswer;
 import com.trc.user.User;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
-import com.trc.web.model.ResultModel;
 import com.trc.web.validation.InternalUserValidator;
+import com.tscp.mvna.security.encryption.Md5Encoder;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")

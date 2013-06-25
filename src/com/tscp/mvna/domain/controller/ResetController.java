@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
@@ -20,15 +22,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.trc.exception.EmailException;
 import com.trc.manager.SecurityQuestionManager;
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.Md5Encoder;
-import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
 import com.trc.user.security.UpdatePassword;
 import com.trc.user.security.VerifyIdentity;
-import com.trc.web.model.ResultModel;
 import com.trc.web.validation.EmailValidator;
 import com.trc.web.validation.UserUpdateValidator;
-import com.tscp.util.logger.DevLogger;
+import com.tscp.mvna.security.encryption.Md5Encoder;
+import com.tscp.mvna.service.email.VelocityEmailService;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/reset")
@@ -38,6 +39,7 @@ import com.tscp.util.logger.DevLogger;
 		"updatePassword",
 		"userToReset" })
 public class ResetController {
+	private static final Logger logger = LoggerFactory.getLogger(ResetController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -140,9 +142,8 @@ public class ResetController {
 
 	}
 
-	/* ********************************************************************************************************
+	/* **********************************************************************************
 	 * Helper Methods
-	 * ********************************************************************************************************
 	 */
 
 	private boolean isValidKey(
@@ -164,7 +165,7 @@ public class ResetController {
 		message.setTo(user.getEmail());
 		message.setFrom("no-reply@webonthego.com");
 		message.setSubject("A request to reset your password has been made.");
-		DevLogger.log("http://localhost:8080/reset/password/verify/" + key);
+		logger.debug("Sending verifcation email with url ../reset/password/verify/" + key);
 		try {
 			velocityEmailService.send("passwordReset", message, mailModel);
 		} catch (EmailException e) {

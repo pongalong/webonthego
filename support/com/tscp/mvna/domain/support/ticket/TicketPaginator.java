@@ -2,7 +2,7 @@ package com.tscp.mvna.domain.support.ticket;
 
 import java.util.List;
 
-import com.trc.util.Paginator;
+import com.tscp.util.Paginator;
 
 public class TicketPaginator extends Paginator<Ticket> {
 

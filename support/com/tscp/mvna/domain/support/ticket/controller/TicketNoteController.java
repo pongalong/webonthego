@@ -12,11 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
 import com.tscp.mvna.domain.support.ticket.TicketNote;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 //TODO CREATE ticketNoteValidator
 @Controller

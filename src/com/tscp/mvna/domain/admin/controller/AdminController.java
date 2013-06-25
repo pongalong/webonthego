@@ -14,8 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.SessionInfo;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.SessionInfo;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")

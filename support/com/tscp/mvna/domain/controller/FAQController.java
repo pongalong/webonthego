@@ -3,6 +3,8 @@ package com.tscp.mvna.domain.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,13 +21,13 @@ import com.trc.domain.support.knowledgebase.Article;
 import com.trc.domain.support.knowledgebase.Category;
 import com.trc.exception.management.SupportManagementException;
 import com.trc.manager.SupportManager;
-import com.trc.web.model.ResultModel;
-import com.tscp.util.logger.DevLogger;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/support/faq")
 @SessionAttributes({ "categoryList" })
 public class FAQController {
+	private static final Logger logger = LoggerFactory.getLogger(FAQController.class);
 	@Autowired
 	private SupportManager supportManager;
 
@@ -35,7 +37,7 @@ public class FAQController {
 		try {
 			map.addAttribute("categoryList", supportManager.getAllCategories());
 		} catch (SupportManagementException e) {
-			DevLogger.debug("Error fetching categoryList in FAQController", e);
+			logger.error("Error fetching categoryList in FAQController", e);
 		}
 	}
 

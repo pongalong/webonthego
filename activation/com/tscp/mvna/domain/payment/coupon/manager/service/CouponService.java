@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trc.dao.UserCouponDao;
 import com.trc.user.User;
-import com.trc.util.Formatter;
 import com.tscp.mvna.domain.payment.coupon.Coupon;
 import com.tscp.mvna.domain.payment.coupon.CouponDetail;
 import com.tscp.mvna.domain.payment.coupon.CouponRequest;
@@ -29,6 +28,7 @@ import com.tscp.mvne.Account;
 import com.tscp.mvne.KenanContract;
 import com.tscp.mvne.ServiceInstance;
 import com.tscp.mvne.TSCPMVNA;
+import com.tscp.util.Formatter;
 
 @Service
 public class CouponService {

@@ -16,13 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.trc.manager.UserManager;
 import com.trc.user.EmptyUser;
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
-import com.trc.web.session.SessionKey;
-import com.trc.web.session.cache.CacheManager;
 import com.tscp.mvna.domain.affiliate.SourceCode;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
 import com.tscp.mvna.domain.search.SearchResponse;
 import com.tscp.mvna.domain.search.SearchResult;
+import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.session.SessionKey;
+import com.tscp.mvna.web.session.cache.CacheManager;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")

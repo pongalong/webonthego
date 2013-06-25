@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 
 import com.trc.user.contact.Address;
-import com.trc.util.SimpleDate;
 import com.tscp.mvna.service.gateway.WebserviceAdapter;
 import com.tscp.mvne.CreditCard;
+import com.tscp.util.SimpleDate;
 
 @Component
 public class CreditCardValidator extends AddressValidator {

@@ -11,6 +11,7 @@
 <div class="admin_tooltip device_detail" style="display: none; font-size: .9em;">
   <div>
     <li class="header">Device Information <a href="#" style="float: right;" onclick="$(this).parents('.device_detail').slideToggle(); return false;">close</a></li>
+    <li>ESN: ${accountDetail.deviceInfo.value}</li>
     <li>Account Number: ${accountDetail.deviceInfo.accountNo}</li>
     <li>Device ID: ${accountDetail.deviceInfo.id}</li>
     <li>Status: ${accountDetail.deviceInfo.status}</li>

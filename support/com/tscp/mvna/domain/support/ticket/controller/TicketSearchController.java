@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.user.User;
-import com.trc.web.model.ResultModel;
 import com.tscp.mvna.domain.support.ticket.AdminTicket;
 import com.tscp.mvna.domain.support.ticket.SearchTicket;
 import com.tscp.mvna.domain.support.ticket.TicketPaginator;
@@ -21,6 +20,7 @@ import com.tscp.mvna.domain.support.ticket.TicketPriority;
 import com.tscp.mvna.domain.support.ticket.TicketStatus;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
+import com.tscp.mvna.web.controller.model.ResultModel;
 
 @Controller
 @RequestMapping("/support/ticket/search")

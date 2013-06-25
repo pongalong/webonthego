@@ -14,17 +14,17 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import com.trc.exception.GatewayException;
 import com.trc.manager.UserManager;
-import com.trc.security.encryption.Md5Encoder;
 import com.trc.service.EmailService;
-import com.trc.service.email.VelocityEmailService;
 import com.trc.user.User;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
 import com.tscp.mvna.domain.registration.Registration;
 import com.tscp.mvna.domain.registration.affiliate.AffiliateRegistration;
-import com.tscp.util.logger.DevLogger;
+import com.tscp.mvna.security.encryption.Md5Encoder;
+import com.tscp.mvna.service.email.VelocityEmailService;
 
 @Component
 public class RegistrationManager {
+	private static final Logger logger = LoggerFactory.getLogger(RegistrationManager.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -35,8 +35,6 @@ public class RegistrationManager {
 	private VelocityEmailService velocityEmailService;
 	@Autowired
 	private EmailService emailService;
-
-	private static final Logger logger = LoggerFactory.getLogger("devLogger");
 
 	public User createUser(
 			Registration registration) {
@@ -73,10 +71,10 @@ public class RegistrationManager {
 			User user, HttpServletRequest request, AuthenticationManager authenticationManager) {
 
 		if (!SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-			DevLogger.log("auto-login running for user " + user.getEmail());
+			logger.debug("auto-login running for user " + user.getEmail());
 			userManager.autoLogin(user, request, authenticationManager);
 		} else {
-			DevLogger.log("user is already logged in, skipping auto-login");
+			logger.debug("user is already logged in, skipping auto-login");
 		}
 	}
 

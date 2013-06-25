@@ -5,12 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.trc.config.Config;
 import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
+import com.tscp.mvna.config.Config;
 
 @Controller
 @RequestMapping("/")
