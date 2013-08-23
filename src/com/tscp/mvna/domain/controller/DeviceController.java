@@ -65,7 +65,7 @@ public class DeviceController {
 
 		try {
 			AccountDetail accountDetail = accountDetails.findByDevice(encodedDeviceId);
-			view.addObject("label", accountDetail.getDeviceInfo().getLabel());
+			view.addObject("label", accountDetail.getDevice().getLabel());
 			view.addObject("accountDetail", accountDetail);
 			return view;
 		} catch (CachedAttributeNotFound e) {
@@ -80,18 +80,18 @@ public class DeviceController {
 		ClientFormView view = new ClientFormView("account/device/rename/success", "account/device/rename/prompt");
 
 		result.pushNestedPath("deviceInfo");
-		deviceInfoValidator.checkDeviceLabel(accountDetail.getDeviceInfo().getLabel(), result);
+		deviceInfoValidator.checkDeviceLabel(accountDetail.getDevice().getLabel(), result);
 		result.popNestedPath();
 
 		if (result.hasErrors()) {
-			accountDetail.getDeviceInfo().setLabel(oldLabel);
+			accountDetail.getDevice().setLabel(oldLabel);
 			return view.validationFailed();
 		}
 
 		try {
-			deviceManager.updateDeviceInfo(user, accountDetail.getDeviceInfo());
+			deviceManager.updateDeviceInfo(user, accountDetail.getDevice());
 			view.addObject("oldLabel", oldLabel);
-			view.addObject("newLabel", accountDetail.getDeviceInfo().getLabel());
+			view.addObject("newLabel", accountDetail.getDevice().getLabel());
 			return view;
 		} catch (DeviceManagementException e) {
 			result.reject("device.update.label.error", null, "There was an error renaming your device");
@@ -151,11 +151,11 @@ public class DeviceController {
 
 		try {
 			// the existing device is in the accountDetail object
-			Device oldDevice = accountDetail.getDeviceInfo();
+			Device oldDevice = accountDetail.getDevice();
 
 			// fetch the old device and give it the new values so all other properties will be filled
 			// TODO make a device wrapper class that implements cloneable
-			Device newDeviceCopy = deviceManager.getDeviceInfo(user, accountDetail.getDeviceInfo().getId());
+			Device newDeviceCopy = deviceManager.getDeviceInfo(user, accountDetail.getDevice().getId());
 			newDeviceCopy.setLabel(newDevice.getLabel());
 			newDeviceCopy.setValue(newDevice.getValue());
 
@@ -193,7 +193,7 @@ public class DeviceController {
 		ClientPageView view = new ClientPageView("account/device/suspend/success");
 
 		try {
-			deviceManager.suspendService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDeviceInfo().getId());
+			deviceManager.suspendService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDevice().getId());
 			return view;
 		} catch (DeviceManagementException e) {
 			return view.exception();
@@ -223,7 +223,7 @@ public class DeviceController {
 		ClientFormView view = new ClientFormView("devices", "account/device/restore/prompt");
 
 		try {
-			deviceManager.restoreService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDeviceInfo().getId());
+			deviceManager.restoreService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDevice().getId());
 			return view.redirect();
 		} catch (DeviceManagementException e) {
 			return view.exception();
@@ -255,8 +255,8 @@ public class DeviceController {
 		ClientFormView view = new ClientFormView("account/device/disconnect/success", "account/device/disconnect/prompt");
 
 		try {
-			NetworkInfo networkInfo = deviceManager.getNetworkInfo(accountDetail.getDeviceInfo().getValue(), null);
-			if (!deviceManager.compareEsn(accountDetail.getDeviceInfo(), networkInfo)) {
+			NetworkInfo networkInfo = deviceManager.getNetworkInfo(accountDetail.getDevice().getValue(), null);
+			if (!deviceManager.compareEsn(accountDetail.getDevice(), networkInfo)) {
 				errors.rejectValue("value", "device.deactivate.error");
 				return view.formError();
 			} else {
@@ -292,7 +292,7 @@ public class DeviceController {
 		ClientFormView view = new ClientFormView("devices", "account/device/reconnect/prompt");
 
 		try {
-			deviceManager.reinstallCustomerDevice(user, accountDetail.getDeviceInfo());
+			deviceManager.reinstallCustomerDevice(user, accountDetail.getDevice());
 			return view.redirect();
 		} catch (DeviceManagementException e) {
 			errors.rejectValue("value", "device.reinstall.error");

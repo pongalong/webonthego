@@ -1,6 +1,6 @@
 package com.trc.manager;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -21,14 +21,13 @@ import com.trc.user.account.AccountDetailCollection;
 import com.trc.user.account.Overview;
 import com.trc.user.account.PaymentHistory;
 import com.trc.user.account.UsageHistory;
+import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CustInfo;
 import com.tscp.mvne.CustTopUp;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.UsageDetail;
-import com.tscp.util.logger.LogLevel;
-import com.tscp.util.logger.aspect.Loggable;
 
 @Component
 public class AccountManager implements AccountManagerModel {
@@ -39,6 +38,8 @@ public class AccountManager implements AccountManagerModel {
 	private DeviceManager deviceManager;
 	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
+	private SessionManager sessionManager;
 
 	@Override
 	public Account getUnlinkedAccount(
@@ -60,73 +61,65 @@ public class AccountManager implements AccountManagerModel {
 		}
 	}
 
-	@Override
-	public AccountDetail getAccountDetail(
-			User user, Device device) throws AccountManagementException {
-		return getAccountDetail(user, device, false);
+	/* **************************************
+	 * Overview Methods
+	 */
+
+	public Overview getOverview(
+			User user) {
+		return new Overview(getAccountDetailCollection(user), getPaymentHistory(user));
 	}
 
+	/* **************************************
+	 * Account Methods
+	 */
+
 	@Override
-	public AccountDetailCollection getAccountDetails(
-			User user) throws AccountManagementException {
+	public Account getAccount(
+			int accountNo) throws AccountManagementException {
 
-		AccountDetailCollection cachedCollection = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
-		if (cachedCollection != null && !cachedCollection.isInvalidated()) {
-			logger.debug("returning cachedColllection");
-			return cachedCollection;
-		}
+		AccountDetail cachedObject = fromCache(accountNo);
+		if (cachedObject != null && !cachedObject.isInvalidated())
+			return cachedObject.getAccount();
 
-		List<Device> devices;
 		try {
-			devices = deviceManager.getDeviceInfoList(user);
-		} catch (DeviceManagementException e) {
-			devices = new ArrayList<Device>();
-		}
-
-		AccountDetailCollection accountDetails = new AccountDetailCollection();
-		try {
-			for (Device device : devices)
-				accountDetails.add(getAccountDetail(user, device));
-		} catch (AccountManagementException e) {
-			throw e;
-		}
-
-		cacheManager.cache(accountDetails);
-		return accountDetails;
-	}
-
-	public CustInfo getCustInfo(
-			User user) throws AccountManagementException {
-		try {
-			return accountService.getCustInfo(user);
+			return accountService.getAccount(accountNo);
 		} catch (AccountServiceException e) {
 			throw new AccountManagementException(e.getMessage(), e.getCause());
 		}
 	}
 
+	/* ****************************************
+	 * AccountDetail Methods
+	 */
+
+	private AccountDetailCollection fromCache() {
+		return (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
+	}
+
+	private AccountDetail fromCache(
+			int accountNo) {
+		AccountDetailCollection cachedCollection = fromCache();
+		AccountDetail cachedItem = cachedCollection == null ? null : cachedCollection.find(accountNo);
+		return cachedItem != null && !cachedItem.isInvalidated() ? cachedItem : null;
+	}
+
+	private void cache(
+			AccountDetail accountDetail) {
+		AccountDetailCollection collection = fromCache();
+		if (collection != null)
+			collection.update(accountDetail);
+		else
+			cacheManager.cache(new AccountDetailCollection(accountDetail));
+	}
+
+	@Override
 	public AccountDetail getAccountDetail(
-			User user, int deviceId) throws AccountManagementException {
-		try {
-			return getAccountDetail(user, deviceManager.getDeviceInfo(user, deviceId));
-		} catch (DeviceManagementException e) {
-			throw new AccountManagementException(e);
-		}
-	}
-
-	public AccountDetail getAccountDetailAndUsage(
 			User user, Device device) throws AccountManagementException {
-		return getAccountDetail(user, device, true);
-	}
 
-	private AccountDetail getAccountDetail(
-			User user, Device device, boolean getUsage) throws AccountManagementException {
-
-		AccountDetailCollection cachedCollection = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
-		AccountDetail cachedObject = cachedCollection == null ? null : cachedCollection.findByDevice(device.getId());
-		if (cachedObject != null && !cachedObject.isInvalidated()) {
-			logger.debug("returning cachedObject");
+		AccountDetail cachedObject = fromCache(device.getAccountNo());
+		if (cachedObject != null)
 			return cachedObject;
-		}
 
 		Account account;
 		CustTopUp topup;
@@ -144,34 +137,59 @@ public class AccountManager implements AccountManagerModel {
 		}
 
 		AccountDetail accountDetail = new AccountDetail();
-		accountDetail.setDeviceInfo(device);
+		accountDetail.setDevice(device);
 		accountDetail.setAccount(account);
 		accountDetail.setTopUp(topup.getTopupAmount());
+		accountDetail.setUsageHistory(getUsageHistory(user, account.getAccountNo()));
 
-		if (getUsage)
-			accountDetail.setUsageHistory(getUsageHistory(user, account.getAccountNo()));
+		try {
+			accountDetail.setEncodedAccountNum(sessionManager.getEncryptor().encryptIntUrlSafe(account.getAccountNo()));
+			accountDetail.setEncodedDeviceId(sessionManager.getEncryptor().encryptIntUrlSafe(device.getId()));
+		} catch (UnsupportedEncodingException e) {
+			logger.error("Error encoding identifiers for {}", accountDetail, e);
+		}
 
-		if (cachedCollection != null && cachedObject != null)
-			cachedCollection.update(accountDetail, cachedObject);
-
+		cache(accountDetail);
 		return accountDetail;
 	}
 
-	@Override
-	public Account getAccount(
-			int accountNo) throws AccountManagementException {
+	public AccountDetailCollection getAccountDetailCollection(
+			User user) {
 
-		Account account = null;
-		AccountDetailCollection accountDetails = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
-		if (accountDetails != null)
-			account = accountDetails.find(accountNo).getAccount();
+		AccountDetailCollection collection = fromCache();
+		if (collection != null)
+			return collection;
+
+		logger.debug("Building AccountDetailCollection from scratch");
+		List<Device> devices = null;
+		Device device = null;
+		collection = new AccountDetailCollection();
+		try {
+			devices = deviceManager.getDeviceInfoList(user);
+		} catch (DeviceManagementException e) {
+			logger.error("Error getting devices for {}", user);
+			return collection;
+		}
 
 		try {
-			return account != null ? account : accountService.getAccount(accountNo);
-		} catch (AccountServiceException e) {
-			throw new AccountManagementException(e.getMessage(), e.getCause());
+			if (devices != null)
+				for (Device d : devices) {
+					device = d;
+					collection.add(getAccountDetail(user, device));
+				}
+		} catch (AccountManagementException e) {
+			logger.error("Error getting AccountDetail for {}", device);
+			return collection;
 		}
+
+		logger.debug("Caching AccountDetailCollection");
+		cacheManager.cache(collection);
+		return collection;
 	}
+
+	/* ****************************************
+	 * UsageHistory Methods
+	 */
 
 	@Override
 	public UsageHistory getUsageHistory(
@@ -193,30 +211,38 @@ public class AccountManager implements AccountManagerModel {
 			usageHistory = new UsageHistory();
 		}
 
-		for (UsageDetail usageDetail : usageHistory.getRecords())
+		for (UsageDetail usageDetail : usageHistory)
 			if (usageDetail.getUsageType().equals("Access Fee"))
 				return usageDetail.getEndTime();
 
 		return null;
 	}
 
-	@Loggable(value = LogLevel.INFO)
-	public Overview getOverview(
-			User user) {
-		List<Device> devices;
-		try {
-			devices = deviceManager.getDeviceInfoList(user);
-		} catch (DeviceManagementException e) {
-			devices = new ArrayList<Device>();
-		}
-		return new Overview(this, devices, user);
-	}
+	/* ****************************************
+	 * PaymentHistory Methods
+	 */
 
 	@Override
 	public PaymentHistory getPaymentHistory(
+			User user) {
+		try {
+			PaymentHistory paymentHistory = new PaymentHistory(accountService.getPaymentRecords(user));
+			cacheManager.cache(paymentHistory);
+			return paymentHistory;
+		} catch (AccountServiceException e) {
+			logger.error("Error fetching PaymentRecords for PaymentHistory", e);
+		}
+		return new PaymentHistory();
+	}
+
+	/* ****************************************
+	 * Customer Information Methods
+	 */
+
+	public CustInfo getCustInfo(
 			User user) throws AccountManagementException {
 		try {
-			return new PaymentHistory(accountService.getPaymentRecords(user));
+			return accountService.getCustInfo(user);
 		} catch (AccountServiceException e) {
 			throw new AccountManagementException(e.getMessage(), e.getCause());
 		}

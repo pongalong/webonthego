@@ -332,7 +332,7 @@ public class DeviceManager implements DeviceManagerModel {
 		if (accountDetails != null) {
 			List<Device> devices = new ArrayList<Device>();
 			for (AccountDetail ad : accountDetails)
-				devices.add(ad.getDeviceInfo());
+				devices.add(ad.getDevice());
 			return devices;
 		}
 

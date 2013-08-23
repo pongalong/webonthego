@@ -1,7 +1,6 @@
 package com.trc.user.account;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.tscp.mvna.web.session.cache.CacheManager;
@@ -17,17 +16,25 @@ import com.tscp.util.Paginator;
  */
 public class UsageHistory extends Paginator<UsageDetail> implements Cacheable, Serializable {
 	private static final long serialVersionUID = -6335833376678017325L;
-	private long cachedTime = System.currentTimeMillis();
-	private boolean invalidated;
+
+	/* **************************************
+	 * Constructors
+	 */
 
 	public UsageHistory() {
-		super.setRecords(new ArrayList<UsageDetail>());
+		// do nothing
 	}
 
 	public UsageHistory(List<UsageDetail> usageDetails) {
-		super.setRecords(usageDetails);
-		super.setSummarySize(3);
+		super(usageDetails);
 	}
+
+	/* **************************************
+	 * Cacheable Methods
+	 */
+
+	private long cachedTime = System.currentTimeMillis();
+	private boolean invalidated;
 
 	@Override
 	public String getCacheKey() {

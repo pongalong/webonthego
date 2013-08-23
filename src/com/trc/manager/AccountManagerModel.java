@@ -27,7 +27,7 @@ public interface AccountManagerModel {
 
 	@Loggable(value = LogLevel.INFO)
 	public PaymentHistory getPaymentHistory(
-			User user) throws AccountManagementException;
+			User user);
 
 	@Loggable(value = LogLevel.INFO)
 	public void updateEmail(
@@ -41,6 +41,6 @@ public interface AccountManagerModel {
 			User user, Device device) throws AccountManagementException;
 
 	@Loggable(value = LogLevel.INFO)
-	public AccountDetailCollection getAccountDetails(
+	public AccountDetailCollection getAccountDetailCollection(
 			User user) throws AccountManagementException;
 }

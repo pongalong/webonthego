@@ -5,10 +5,10 @@ import java.util.List;
 import com.tscp.util.Paginator;
 
 public class TicketPaginator extends Paginator<Ticket> {
+	private static final long serialVersionUID = -7785100183853120339L;
 
 	public TicketPaginator(List<Ticket> tickets) {
-		super.setRecords(tickets);
-		super.setSummarySize(3);
+		super(tickets);
 	}
 
 }

@@ -18,7 +18,6 @@ import com.trc.user.User;
 import com.trc.user.account.AccountDetailCollection;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
-import com.tscp.mvna.config.Config;
 import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.util.logger.LogLevel;
@@ -50,7 +49,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		sessionManager.createSession(user);
 		cacheManager.createCache(user);
 
-		if (Config.ADMIN && user.isInternalUser())
+		if (user.isInternalUser())
 			setAdminDefaultTargetUrl(user);
 		else
 			setUserDefaultTargetUrl(user);
@@ -81,7 +80,7 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		String targetUrl = "/";
 		boolean hasDevice = false;
 
-		AccountDetailCollection accountDetailSet = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
+		AccountDetailCollection accountDetailSet = accountManager.getAccountDetailCollection(user);
 		hasDevice = accountDetailSet != null && !accountDetailSet.isEmpty();
 		targetUrl = hasDevice ? "/account" : "/start";
 

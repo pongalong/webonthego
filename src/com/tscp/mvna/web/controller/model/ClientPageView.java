@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tscp.mvna.config.Config;
 
 public class ClientPageView extends PageView {
-	private String client = Config.client;
+	private String client = Config.CLIENT;
 
 	/* ************************************
 	 * Constructors

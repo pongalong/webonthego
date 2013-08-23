@@ -56,7 +56,7 @@ public class AccountController {
 
 		AccountDetail accountDetail = accountDetails.find(encodedAccountNum);
 		if (accountDetail != null)
-			accountDetail.getUsageHistory().setCurrentPageNum(page);
+			accountDetail.getUsageHistory().setPageNum(page);
 
 		ClientPageView view = new ClientPageView("account/activity");
 		view.addObject("accountDetail", accountDetail);

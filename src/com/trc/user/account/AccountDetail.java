@@ -14,10 +14,14 @@ import com.tscp.mvne.Device;
 public class AccountDetail implements Cacheable {
 	private Account account;
 	private UsageHistory usageHistory;
-	private Device deviceInfo;
+	private Device device;
 	private String topUp;
 	private String encodedDeviceId;
 	private String encodedAccountNum;
+
+	/* ****************************************
+	 * Getter and Setter Methods
+	 */
 
 	public String getEncodedAccountNum() {
 		return encodedAccountNum;
@@ -64,21 +68,18 @@ public class AccountDetail implements Cacheable {
 		this.account = account;
 	}
 
-	public Device getDeviceInfo() {
-		return deviceInfo;
+	public Device getDevice() {
+		return device;
 	}
 
-	public void setDeviceInfo(
+	public void setDevice(
 			Device deviceInfo) {
-		this.deviceInfo = deviceInfo;
+		this.device = deviceInfo;
 	}
 
-	@Override
-	public String toString() {
-		Integer accountNo = account == null ? null : account.getAccountNo();
-		Integer deviceId = deviceInfo == null ? null : deviceInfo.getId();
-		return "AccountDetail [account=" + accountNo + ", deviceInfo=" + deviceId + "]";
-	}
+	/* ****************************************
+	 * Cacheable Methods
+	 */
 
 	private long cachedTime = System.currentTimeMillis();
 	private boolean invalidated;
@@ -106,6 +107,40 @@ public class AccountDetail implements Cacheable {
 	@Override
 	public String getCacheKey() {
 		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public boolean equals(
+			Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountDetail other = (AccountDetail) obj;
+		if (account == null) {
+			if (other.account != null)
+				return false;
+		} else if (account.getAccountNo() != other.account.getAccountNo())
+			return false;
+		if (device == null) {
+			if (other.device != null)
+				return false;
+		} else if (device.getId() != other.device.getId())
+			return false;
+		return true;
+	}
+
+	/* ****************************************
+	 * Debug Methods
+	 */
+
+	@Override
+	public String toString() {
+		Integer accountNo = account == null ? null : account.getAccountNo();
+		Integer deviceId = device == null ? null : device.getId();
+		return "AccountDetail [account=" + accountNo + ", deviceInfo=" + deviceId + "]";
 	}
 
 }

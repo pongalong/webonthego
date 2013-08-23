@@ -1,48 +1,41 @@
 package com.tscp.mvna.web.session;
 
-import javax.servlet.http.HttpSession;
+import javax.annotation.PostConstruct;
 
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.tscp.mvna.security.encryption.StringEncryptor;
+import com.trc.user.User;
+import com.tscp.mvna.web.session.security.Encryptor;
 import com.tscp.util.logger.LogLevel;
 import com.tscp.util.logger.aspect.Loggable;
 
-public class SessionManager {
+public interface SessionManager {
+	public static final String USER = "CONTROLLING_USER";
 
-	protected static final HttpSession getCurrentSession() {
-		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return attr.getRequest().getSession(true);
-	}
+	@PostConstruct
+	public void init();
 
-	protected static final void set(
-			String key, Object obj) {
-		HttpSession session = getCurrentSession();
-		if (session != null)
-			session.setAttribute(key, obj);
-	}
+	public String getSessionId();
 
-	protected static final Object get(
-			String key) {
-		HttpSession session = getCurrentSession();
-		return session != null ? session.getAttribute(key) : null;
-	}
+	public Object get(
+			SessionObject sessionObject);
 
-	protected static final void clear(
-			String key) {
-		HttpSession session = getCurrentSession();
-		if (session != null)
-			session.removeAttribute(key);
-	}
+	public void set(
+			SessionObject sessionObject);
 
-	public static final String getSessionId() {
-		return getCurrentSession().getId();
-	}
+	public void remove(
+			SessionObject sessionObject);
+
+	public Encryptor getEncryptor();
+
+	public User getUser();
+	
+	public void setUser(User user);
+
+	public User getTargetUser();
+	
+	public void setTargetUser(User user);
 
 	@Loggable(value = LogLevel.TRACE)
-	public static final StringEncryptor getEncryptor() {
-		StringEncryptor encryptor = (StringEncryptor) get(SessionKey.ENCRYPTOR.toString());
-		return encryptor == null ? new StringEncryptor(SessionManager.getSessionId()) : encryptor;
-	}
+	public void createSession(
+			User user);
+
 }

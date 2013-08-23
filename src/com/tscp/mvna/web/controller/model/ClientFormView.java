@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tscp.mvna.config.Config;
 
 public class ClientFormView extends FormView {
-	private String client = Config.client;
+	private String client = Config.CLIENT;
 
 	/* ************************************
 	 * Constructors

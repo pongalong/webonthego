@@ -16,13 +16,25 @@ import com.tscp.util.Paginator;
  */
 public class PaymentHistory extends Paginator<PaymentRecord> implements Cacheable, Serializable {
 	private static final long serialVersionUID = -5541427186661512811L;
-	private long cachedTime = System.currentTimeMillis();
-	private boolean invalidated;
+
+	/* **************************************
+	 * Constructors
+	 */
+
+	public PaymentHistory() {
+		// do nothing
+	}
 
 	public PaymentHistory(List<PaymentRecord> paymentRecords) {
-		super.setRecords(paymentRecords);
-		super.setSummarySize(3);
+		super(paymentRecords);
 	}
+
+	/* **************************************
+	 * Cacheable Methods
+	 */
+
+	private long cachedTime = System.currentTimeMillis();
+	private boolean invalidated;
 
 	@Override
 	public String getCacheKey() {

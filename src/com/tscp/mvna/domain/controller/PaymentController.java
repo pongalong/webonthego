@@ -23,7 +23,7 @@ import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.PaymentHistory;
 import com.trc.web.validation.CreditCardValidator;
-import com.tscp.mvna.config.Config;
+import com.tscp.mvna.config.DomainConfig;
 import com.tscp.mvna.web.controller.model.ClientFormView;
 import com.tscp.mvna.web.controller.model.ClientPageView;
 import com.tscp.mvna.web.session.security.UrlSafeEncryptor;
@@ -51,9 +51,9 @@ public class PaymentController {
 	@ModelAttribute
 	private void paymentReferenceData(
 			ModelMap modelMap) {
-		modelMap.addAttribute("states", Config.states.entrySet());
-		modelMap.addAttribute("months", Config.months.entrySet());
-		modelMap.addAttribute("years", Config.yearsFuture.entrySet());
+		modelMap.addAttribute("states", DomainConfig.states.entrySet());
+		modelMap.addAttribute("months", DomainConfig.months.entrySet());
+		modelMap.addAttribute("years", DomainConfig.yearsFuture.entrySet());
 	}
 
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
@@ -65,7 +65,7 @@ public class PaymentController {
 	@RequestMapping(value = "/history/{page}", method = RequestMethod.GET)
 	public ModelAndView showPaymentHistory(
 			@ModelAttribute("PaymentHistory") PaymentHistory paymentHistory, @PathVariable("page") int page) {
-		paymentHistory.setCurrentPageNum(page);
+		paymentHistory.setPageNum(page);
 		ClientPageView view = new ClientPageView("account/payment/history");
 		return view;
 	}

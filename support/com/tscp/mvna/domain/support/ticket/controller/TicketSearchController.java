@@ -81,7 +81,7 @@ public class TicketSearchController {
 
 		ClientFormView view = new ClientFormView("support/ticket/tickets", "support/ticket/home");
 
-		ticketList.setCurrentPageNum(page);
+		ticketList.setPageNum(page);
 		view.addObject("ticketList", ticketList);
 		return view;
 	}

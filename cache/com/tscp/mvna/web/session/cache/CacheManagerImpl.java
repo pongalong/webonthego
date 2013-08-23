@@ -1,6 +1,5 @@
 package com.tscp.mvna.web.session.cache;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 
 import org.slf4j.Logger;
@@ -8,11 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.user.User;
-import com.trc.user.account.AccountDetail;
 import com.trc.user.account.AccountDetailCollection;
+import com.trc.user.account.PaymentHistory;
 import com.tscp.mvna.web.session.SessionManagerImpl;
 
 @Component
@@ -37,7 +35,7 @@ public class CacheManagerImpl extends SessionManagerImpl implements CacheManager
 		if (fromCache == null)
 			return null;
 
-		if (fromCache.isStale()) {
+		if (fromCache.isStale() || fromCache.isInvalidated()) {
 			clear(cacheable);
 			return null;
 		}
@@ -67,36 +65,11 @@ public class CacheManagerImpl extends SessionManagerImpl implements CacheManager
 
 		logger.info("Building cache for {}", user);
 
-		try {
-			AccountDetailCollection accountDetailSet = accountManager.getAccountDetails(user);
-			logger.debug("... loaded {} accounts", accountDetailSet.size());
+		AccountDetailCollection accountDetails = accountManager.getAccountDetailCollection(user);
+		logger.debug("... loaded {} accounts", accountDetails.size());
 
-			for (AccountDetail ad : accountDetailSet) {
-				try {
-					ad.setEncodedAccountNum(getEncryptor().encryptIntUrlSafe(ad.getAccount().getAccountNo()));
-					ad.setEncodedDeviceId(getEncryptor().encryptIntUrlSafe(ad.getDeviceInfo().getId()));
-				} catch (UnsupportedEncodingException e) {
-					logger.error("Exception encrypting IDs for {}", user, e);
-				}
-
-				try {
-					ad.setUsageHistory(accountManager.getUsageHistory(user, ad.getAccount().getAccountNo()));
-				} catch (AccountManagementException e) {
-					logger.error("Exception building UsageHistory for", user, e);
-				}
-
-			}
-
-			cache(accountDetailSet);
-		} catch (AccountManagementException e) {
-			logger.error("Exception building AccountDetailCollection for {}", user, e);
-		}
-
-		try {
-			cache(accountManager.getPaymentHistory(user));
-		} catch (AccountManagementException e) {
-			logger.error("Exception building PaymentHistory for {}", user, e);
-		}
+		PaymentHistory paymentHistory = accountManager.getPaymentHistory(user);
+		logger.debug("... loaded {} PaymentRecords", paymentHistory.size());
 	}
 
 	@Override
