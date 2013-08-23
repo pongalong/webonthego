@@ -2,13 +2,9 @@ package com.trc.dao;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
@@ -16,7 +12,6 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -195,34 +190,24 @@ public class UserDao extends HibernateDaoSupport implements UserDaoModel {
 		return getHibernateTemplate().save(user);
 	}
 
-	@Deprecated
-	/**
+	/*
 	 * This method uses plain sql to insert a user. It was created to insert users with negative values that do not use
 	 * the auto-increment of MySQL for a userID. Code is left here as an example
+	 * 
 	 * @param user
+	 * 
+	 * @Deprecated public void saveAdminSql( User user) { SimpleDateFormat dateFormat = new
+	 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); String sDateEnabled = dateFormat.format(user.getDateEnabled()); String
+	 * sDateDisabled; if (user.getDateDisabled() != null) { sDateDisabled = dateFormat.format((user.getDateDisabled())); }
+	 * else { sDateDisabled = "null"; } String columns =
+	 * "user_id, username, password, email, hint_id, hint_answer, enabled, date_enabled, date_disabled"; String values =
+	 * user.getUserId() + ", '" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', " +
+	 * user.getSecurityQuestionAnswer().getId() + ", '" + user.getSecurityQuestionAnswer().getAnswer() + "', " +
+	 * (user.isEnabled() ? 1 : 0) + ", '" + sDateEnabled + "', " + sDateDisabled; final String sql = "insert into users ("
+	 * + columns + ") values (" + values + ")"; Long count = (Long) getHibernateTemplate().execute(new
+	 * HibernateCallback<Object>() { public Object doInHibernate( Session session) throws HibernateException { SQLQuery
+	 * query = session.createSQLQuery(sql); long value = query.executeUpdate(); return Long.valueOf(value); } }); }
 	 */
-	public void saveAdminSql(
-			User user) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String sDateEnabled = dateFormat.format(user.getDateEnabled());
-		String sDateDisabled;
-		if (user.getDateDisabled() != null) {
-			sDateDisabled = dateFormat.format((user.getDateDisabled()));
-		} else {
-			sDateDisabled = "null";
-		}
-		String columns = "user_id, username, password, email, hint_id, hint_answer, enabled, date_enabled, date_disabled";
-		String values = user.getUserId() + ", '" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "', " + user.getSecurityQuestionAnswer().getId() + ", '" + user.getSecurityQuestionAnswer().getAnswer() + "', " + (user.isEnabled() ? 1 : 0) + ", '" + sDateEnabled + "', " + sDateDisabled;
-		final String sql = "insert into users (" + columns + ") values (" + values + ")";
-		Long count = (Long) getHibernateTemplate().execute(new HibernateCallback<Object>() {
-			public Object doInHibernate(
-					Session session) throws HibernateException {
-				SQLQuery query = session.createSQLQuery(sql);
-				long value = query.executeUpdate();
-				return Long.valueOf(value);
-			}
-		});
-	}
 
 	@Override
 	public void saveOrUpdateUser(

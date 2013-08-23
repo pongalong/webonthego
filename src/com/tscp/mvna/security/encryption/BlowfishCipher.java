@@ -13,8 +13,9 @@ import org.springframework.web.util.UriUtils;
 
 import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.sun.org.apache.xml.internal.security.utils.Base64;
+import com.tscp.mvna.web.session.security.Encryptor;
 
-public class BlowfishCipher implements Encrypter {
+public class BlowfishCipher implements Encryptor {
 	private static final String encoding = "UTF-8";
 	private static KeyGenerator keyGenerator;
 	private static Cipher cipher;

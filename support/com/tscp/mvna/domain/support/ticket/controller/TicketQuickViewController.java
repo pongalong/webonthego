@@ -20,7 +20,8 @@ import com.tscp.mvna.domain.support.ticket.TicketPaginator;
 import com.tscp.mvna.domain.support.ticket.TicketType;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support/ticket/view")
@@ -39,7 +40,7 @@ public class TicketQuickViewController {
 	public ModelAndView viewTicketById(
 			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("support/ticket/ticket");
+		ClientPageView view = new ClientPageView("support/ticket/ticket");
 
 		try {
 			Ticket ticket = ticketManager.getTicketById(ticketId);
@@ -48,31 +49,30 @@ public class TicketQuickViewController {
 			if (ticket instanceof CustomerTicket) {
 				CustomerTicket cTicket = (CustomerTicket) ticket;
 				if (cTicket.getCustomerId() != controllingUser.getUserId())
-					model.addAttribute("customer", userManager.getUserById(cTicket.getCustomerId()));
-				model.addAttribute("assignee", userManager.getUserById(cTicket.getAssigneeId()));
-				model.addAttribute("ticket", cTicket);
+					view.addObject("customer", userManager.getUserById(cTicket.getCustomerId()));
+				view.addObject("assignee", userManager.getUserById(cTicket.getAssigneeId()));
+				view.addObject("ticket", cTicket);
 			}
 
 			// agent ticket
 			if (ticket instanceof AgentTicket) {
 				AgentTicket aTicket = (AgentTicket) ticket;
 				if (aTicket.getCreatorId() == controllingUser.getUserId())
-					model.addAttribute("creator", controllingUser);
+					view.addObject("creator", controllingUser);
 				else
-					model.addAttribute("creator", userManager.getUserById(aTicket.getCreatorId()));
-				model.addAttribute("ticket", aTicket);
+					view.addObject("creator", userManager.getUserById(aTicket.getCreatorId()));
+				view.addObject("ticket", aTicket);
 			}
 
 			// inquiry ticket
 			if (ticket instanceof InquiryTicket) {
 				InquiryTicket iTicket = (InquiryTicket) ticket;
-				model.addAttribute("ticket", iTicket);
+				view.addObject("ticket", iTicket);
 			}
 
-			return model.getSuccess();
-
+			return view;
 		} catch (TicketManagementException e) {
-			return model.getAccessException();
+			return view.exception();
 		}
 
 	}
@@ -80,15 +80,15 @@ public class TicketQuickViewController {
 	protected ModelAndView getView(
 			SearchTicket searchTicket, String context) {
 
-		ResultModel resultModel = new ResultModel("redirect:/support/ticket/search/results", "support/ticket/home");
+		ClientFormView view = new ClientFormView("support/ticket/search/results", "support/ticket/home");
 
 		try {
-			resultModel.addAttribute("searchTicket", searchTicket);
-			resultModel.addAttribute("ticketList", new TicketPaginator(ticketManager.searchTickets(searchTicket)));
-			resultModel.addAttribute("ticketSearchContextString", context);
-			return resultModel.getSuccess();
+			view.addObject("searchTicket", searchTicket);
+			view.addObject("ticketList", new TicketPaginator(ticketManager.searchTickets(searchTicket)));
+			view.addObject("ticketSearchContextString", context);
+			return view.redirect();
 		} catch (TicketManagementException e) {
-			return resultModel.getAccessException();
+			return view.exception();
 		}
 	}
 

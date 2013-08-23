@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.manager.UserManager;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")
@@ -26,11 +28,10 @@ public class AdminSessionController {
 	private UserManager userManager;
 
 	@RequestMapping(value = "/logout/{userId}", method = RequestMethod.GET)
-	public String forceLogout(
+	public ModelAndView forceLogout(
 			@PathVariable("userId") int userId) {
-
 		userManager.forceLogout(sessionRegistry, userId);
-
-		return "redirect:/admin";
+		return new ClientPageView("admin").redirect();
 	}
+
 }

@@ -31,7 +31,7 @@ import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.mvna.web.context.security.SecurityContextFacade;
-import com.tscp.mvna.web.session.SessionKey;
+import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CustInfo;
@@ -45,14 +45,16 @@ public class UserManager implements UserManagerModel {
 	private UserDao userDao;
 	private AccountManager accountManager;
 	private CacheManager cacheManager;
+	private SessionManager sessionManager;
 	private TSCPMVNA port;
 
 	@Autowired
 	public void init(
-			UserDao userDao, AccountManager accountManager, CacheManager cacheManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
+			UserDao userDao, AccountManager accountManager, CacheManager cacheManager, SessionManager sessionManager, SecurityContextFacade securityContextFacade, WebserviceGateway gateway) {
 		this.userDao = userDao;
 		this.accountManager = accountManager;
 		this.cacheManager = cacheManager;
+		this.sessionManager = sessionManager;
 		this.port = gateway.getPort();
 		securityContext = securityContextFacade;
 	}
@@ -200,7 +202,7 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','minimumRole')")
 	public void enableUser(
 			User user) {
 		user.setEnabled(true);
@@ -209,7 +211,7 @@ public class UserManager implements UserManagerModel {
 
 	@Override
 	@Transactional(readOnly = false)
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','minimumRole')")
 	public void disableUser(
 			User user) {
 		user.setEnabled(false);
@@ -258,24 +260,25 @@ public class UserManager implements UserManagerModel {
 	 * ************************************************************************************************
 	 */
 
+	// TODO FIX THESE TO USE CACHEABLE ATTRIBUTES
 	@Override
 	public User getCurrentUser() {
-		User user = (User) CacheManager.get(SessionKey.USER);
+		User user = (User) sessionManager.getTargetUser();
 		return user == null ? new EmptyUser() : user;
 	}
 
 	public void setCurrentUser(
 			User user) {
-		CacheManager.set(SessionKey.USER, user);
+		sessionManager.setTargetUser(user);
 	}
 
 	public User getControllingUser() {
-		return (User) CacheManager.get(SessionKey.CONTROLLING_USER);
+		return (User) sessionManager.getUser();
 	}
 
 	public void setControllingUser(
 			User user) {
-		CacheManager.set(SessionKey.CONTROLLING_USER, user);
+		sessionManager.setUser(user);
 	}
 
 	/* ************************************************************************************************
@@ -283,7 +286,7 @@ public class UserManager implements UserManagerModel {
 	 * ************************************************************************************************
 	 */
 
-	@PreAuthorize("hasPermission('ROLE_ADMIN', 'isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN', 'minimumRole')")
 	public void forceLogout(
 			SessionRegistry sessionRegistry, int userId) {
 
@@ -318,7 +321,8 @@ public class UserManager implements UserManagerModel {
 		// setting role to the session
 		request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-		cacheManager.beginSession(user);
+		sessionManager.createSession(user);
+		cacheManager.createCache(user);
 	}
 
 }

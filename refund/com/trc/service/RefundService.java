@@ -14,10 +14,8 @@ import org.springframework.stereotype.Service;
 import com.trc.exception.service.RefundServiceException;
 import com.tscp.mvna.service.gateway.WebserviceGateway;
 import com.tscp.mvne.Account;
-import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.PaymentTransaction;
 import com.tscp.mvne.TSCPMVNA;
-import com.tscp.util.Formatter;
 
 @Service
 public class RefundService implements RefundServiceModel {
@@ -29,15 +27,17 @@ public class RefundService implements RefundServiceModel {
 		this.port = gateway.getPort();
 	}
 
-	public void applyCredit(
-			CreditCard creditCard, Double amount) throws RefundServiceException {
-		try {
-			String stringAmount = Formatter.formatDollarAmount(amount);
-			port.applyChargeCredit(creditCard, stringAmount);
-		} catch (WebServiceException e) {
-			throw new RefundServiceException(e.getMessage(), e.getCause());
-		}
-	}
+	// procedure should be unused as it is pointing to an old stored procedure used by truconnect
+	// @Deprecated
+	// public void applyCredit(
+	// CreditCard creditCard, Double amount) throws RefundServiceException {
+	// try {
+	// String stringAmount = Formatter.formatDollarAmount(amount);
+	// port.applyChargeCredit(creditCard, stringAmount);
+	// } catch (WebServiceException e) {
+	// throw new RefundServiceException(e.getMessage(), e.getCause());
+	// }
+	// }
 
 	@Deprecated
 	public void reversePayment(
@@ -56,7 +56,7 @@ public class RefundService implements RefundServiceModel {
 
 	public void refundPayment(
 			int accountNo, int transId, String amount, int trackingId, String refundBy, int refundCode, String notes) throws RefundServiceException {
-		try {			
+		try {
 			port.refundPayment(accountNo, transId, amount, trackingId, refundBy, refundCode, notes);
 		} catch (WebServiceException we) {
 			throw new RefundServiceException("WebServiceException occured: " + we.getMessage(), we.getCause());

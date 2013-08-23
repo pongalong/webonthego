@@ -33,11 +33,12 @@ import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.trc.user.contact.ContactInfo;
 import com.tscp.mvna.domain.affiliate.SourceCode;
+import com.tscp.mvna.web.session.SessionObject;
 
 @Entity
 @Table(name = "Users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class User implements UserModel, UserDetails {
+public class User implements UserModel, UserDetails, SessionObject {
 	private static final long serialVersionUID = 1L;
 	private int userId;
 	private String username;
@@ -255,13 +256,7 @@ public class User implements UserModel, UserDetails {
 	}
 
 	@Override
-	@Transient
 	public String toString() {
-		return "User [userId=" + userId + ", username=" + username + ", email=" + email + ", dateEnabled=" + dateEnabled + ", dateDisabled=" + dateDisabled + ", enabled=" + enabled + ", authorities=" + authorities + "]";
-	}
-
-	@Transient
-	public String toShortString() {
 		return "User [userId=" + userId + ", username=" + username + ", email=" + email + "]";
 	}
 
@@ -292,6 +287,11 @@ public class User implements UserModel, UserDetails {
 	public void setCreatedBy(
 			User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	@Override
+	public String getSessionKey() {
+		return this.getClass().getSimpleName();
 	}
 
 }

@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 
 import com.trc.user.authority.ROLE;
 
-public class ReportViewPermission extends RoleAtLeastPermission {
+public class ReportViewPermission extends MinimumRolePermission {
 
 	@Override
 	public boolean isAllowed(

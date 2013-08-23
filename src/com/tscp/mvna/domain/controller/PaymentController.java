@@ -24,8 +24,9 @@ import com.trc.user.User;
 import com.trc.user.account.PaymentHistory;
 import com.trc.web.validation.CreditCardValidator;
 import com.tscp.mvna.config.Config;
-import com.tscp.mvna.web.controller.model.ResultModel;
-import com.tscp.mvna.web.session.cache.CacheManager;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
+import com.tscp.mvna.web.session.security.UrlSafeEncryptor;
 import com.tscp.mvne.CreditCard;
 
 @Controller
@@ -33,8 +34,8 @@ import com.tscp.mvne.CreditCard;
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"PAYMENT_HISTORY",
-		"PAYMENT_METHODS",
+		"PaymentHistory",
+		"PaymentMethodCollection",
 		"creditCard" })
 public class PaymentController {
 	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
@@ -57,30 +58,30 @@ public class PaymentController {
 
 	@RequestMapping(value = "/history", method = RequestMethod.GET)
 	public ModelAndView showPaymentHistory(
-			@ModelAttribute("PAYMENT_HISTORY") PaymentHistory paymentHistory) {
+			@ModelAttribute("PaymentHistory") PaymentHistory paymentHistory) {
 		return showPaymentHistory(paymentHistory, 1);
 	}
 
 	@RequestMapping(value = "/history/{page}", method = RequestMethod.GET)
 	public ModelAndView showPaymentHistory(
-			@ModelAttribute("PAYMENT_HISTORY") PaymentHistory paymentHistory, @PathVariable("page") int page) {
-
-		ResultModel model = new ResultModel("account/payment/history");
-
+			@ModelAttribute("PaymentHistory") PaymentHistory paymentHistory, @PathVariable("page") int page) {
 		paymentHistory.setCurrentPageNum(page);
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/payment/history");
+		return view;
 	}
 
 	@RequestMapping(value = "/methods/edit/{encodedPaymentId}", method = RequestMethod.GET)
 	public ModelAndView updatePaymentMethod(
-			@PathVariable("encodedPaymentId") String encodedPaymentId) {
+			@ModelAttribute("Encrypter") UrlSafeEncryptor encryptor, @PathVariable("encodedPaymentId") String encodedPaymentId) {
 
-		ResultModel model = new ResultModel("account/payment/update/creditcard");
+		ClientPageView view = new ClientPageView("account/payment/update/creditcard");
 
 		try {
 			int decodedPaymentId = 0;
 			try {
-				decodedPaymentId = CacheManager.getEncryptor().decryptIntUrlSafe(encodedPaymentId);
+
+				// TODO VERIFIY ENCRYPTOR IS FETCHED
+				decodedPaymentId = encryptor.decryptIntUrlSafe(encodedPaymentId);
 			} catch (UnsupportedEncodingException e) {
 				logger.error("Exception decrypting ID in PaymentController", e);
 			} catch (IOException e) {
@@ -88,10 +89,10 @@ public class PaymentController {
 			}
 
 			CreditCard cardToUpdate = paymentManager.getCreditCard(decodedPaymentId);
-			model.addAttribute("creditCard", cardToUpdate);
-			return model.getSuccess();
+			view.addObject("creditCard", cardToUpdate);
+			return view;
 		} catch (PaymentManagementException e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
@@ -99,30 +100,31 @@ public class PaymentController {
 	public ModelAndView postUpdatePaymentMethod(
 			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/profile", "account/payment/update/creditcard");
+		ClientFormView view = new ClientFormView("profile", "account/payment/update/creditcard");
 
 		creditCardValidator.validate(creditCard, result);
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				paymentManager.updateCreditCard(user, creditCard);
-				return model.getSuccess();
-			} catch (PaymentManagementException e) {
-				return model.getException();
-			}
+
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			paymentManager.updateCreditCard(user, creditCard);
+			return view.redirect();
+		} catch (PaymentManagementException e) {
+			return view.exception();
 		}
+
 	}
 
 	@RequestMapping(value = "/methods/remove/{encodedPaymentId}", method = RequestMethod.GET)
 	public ModelAndView deletePaymentMethod(
-			@PathVariable("encodedPaymentId") String encodedPaymentId) {
+			@ModelAttribute("Encrypter") UrlSafeEncryptor encryptor, @PathVariable("encodedPaymentId") String encodedPaymentId) {
 
-		ResultModel model = new ResultModel("account/payment/remove/creditcard");
+		ClientPageView view = new ClientPageView("account/payment/remove/creditcard");
 
 		int decodedPaymentId = 0;
 		try {
-			decodedPaymentId = CacheManager.getEncryptor().decryptIntUrlSafe(encodedPaymentId);
+			decodedPaymentId = encryptor.decryptIntUrlSafe(encodedPaymentId);
 		} catch (UnsupportedEncodingException e) {
 			logger.error("Exception decrypting ID in PaymentController", e);
 		} catch (IOException e) {
@@ -130,11 +132,10 @@ public class PaymentController {
 		}
 
 		try {
-			CreditCard creditCard = paymentManager.getCreditCard(decodedPaymentId);
-			model.addAttribute("creditCard", creditCard);
-			return model.getSuccess();
+			view.addObject("creditCard", paymentManager.getCreditCard(decodedPaymentId));
+			return view;
 		} catch (PaymentManagementException e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
@@ -142,43 +143,41 @@ public class PaymentController {
 	public ModelAndView postDeletePaymentMethod(
 			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard) {
 
-		ResultModel model = new ResultModel("redirect:/profile");
+		ClientPageView view = new ClientPageView("profile");
 
 		try {
 			paymentManager.removeCreditCard(user, creditCard.getPaymentid());
-			return model.getSuccess();
+			return view.redirect();
 		} catch (PaymentManagementException e) {
-			return model.getException();
+			return view.exception();
 		}
 	}
 
 	@RequestMapping(value = "/methods/add", method = RequestMethod.GET)
 	public ModelAndView addPaymentMethod() {
-
-		ResultModel model = new ResultModel("account/payment/add/creditcard");
-
-		model.addAttribute("creditCard", new CreditCard());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/payment/add/creditcard");
+		view.addObject("creditCard", new CreditCard());
+		return view;
 	}
 
 	@RequestMapping(value = "/methods/add", method = RequestMethod.POST)
 	public ModelAndView postAddPaymentMethod(
 			@ModelAttribute("USER") User user, @ModelAttribute("creditCard") CreditCard creditCard, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/profile", "account/payment/add/creditcard");
+		ClientFormView model = new ClientFormView("profile", "account/payment/add/creditcard");
 
 		creditCardValidator.validate(creditCard, result);
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				creditCard.setIsDefault(creditCard.getIsDefault() == null ? "N" : creditCard.getIsDefault());
-				paymentManager.addCreditCard(user, creditCard);
-				return model.getSuccess();
-			} catch (PaymentManagementException e) {
-				return model.getException();
-			}
+		if (result.hasErrors())
+			return model.validationFailed();
+
+		try {
+			creditCard.setIsDefault(creditCard.getIsDefault() == null ? "N" : creditCard.getIsDefault());
+			paymentManager.addCreditCard(user, creditCard);
+			return model.redirect();
+		} catch (PaymentManagementException e) {
+			return model.exception();
 		}
+
 	}
 
 }

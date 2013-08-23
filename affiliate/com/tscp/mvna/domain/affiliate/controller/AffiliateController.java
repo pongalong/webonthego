@@ -14,7 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tscp.mvna.domain.affiliate.SourceCode;
 import com.tscp.mvna.domain.affiliate.SourceCodeValidator;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")
@@ -32,58 +33,56 @@ public class AffiliateController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView home() {
-		ResultModel model = new ResultModel("admin/affiliate/home");
-		model.addAttribute("sourceCodeList", sourceCodeManager.getAll());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/affiliate/home");
+		view.addObject("sourceCodeList", sourceCodeManager.getAll());
+		return view;
 	}
 
 	@RequestMapping(value = "/source/add", method = RequestMethod.GET)
 	public ModelAndView addSourceCode() {
-		ResultModel model = new ResultModel("admin/affiliate/source/add/prompt");
-		model.addAttribute("sourceCode", new SourceCode());
-		model.addAttribute("sourceCodeList", sourceCodeManager.getAll());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/affiliate/source/add/prompt");
+		view.addObject("sourceCode", new SourceCode());
+		view.addObject("sourceCodeList", sourceCodeManager.getAll());
+		return view;
 	}
 
 	@RequestMapping(value = "/source/add", method = RequestMethod.POST)
 	public ModelAndView addSourceCodePost(
 			@ModelAttribute("sourceCode") SourceCode sourceCode, BindingResult result) {
-		ResultModel model = new ResultModel("admin/affiliate/source/add/success", "admin/affiliate/source/add/prompt");
+		ClientFormView view = new ClientFormView("admin/affiliate/source/add/success", "admin/affiliate/source/add/prompt");
 
 		sourceCodeValidator.validate(sourceCode, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			return sourceCodeManager.save(sourceCode) > 0 ? model.getSuccess() : model.getException();
-		}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		return sourceCodeManager.save(sourceCode) > 0 ? view : view.exception();
 	}
 
 	@RequestMapping(value = "/source/update/{id}", method = RequestMethod.GET)
 	public ModelAndView editSourceCode(
 			@PathVariable("id") int id) {
-		ResultModel model = new ResultModel("admin/affiliate/source/update/prompt");
-		model.addAttribute("sourceCode", sourceCodeManager.get(id));
-		model.addAttribute("sourceCodeList", sourceCodeManager.getAll());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/affiliate/source/update/prompt");
+		view.addObject("sourceCode", sourceCodeManager.get(id));
+		view.addObject("sourceCodeList", sourceCodeManager.getAll());
+		return view;
 	}
 
 	@RequestMapping(value = "/source/update/{id}", method = RequestMethod.POST)
 	public ModelAndView editSourceCodePost(
 			@PathVariable("id") int id, @ModelAttribute("sourceCode") SourceCode sourceCode, BindingResult result) {
-		ResultModel model = new ResultModel("admin/affiliate/source/update/success", "admin/affiliate/source/update/prompt");
+		ClientFormView view = new ClientFormView("admin/affiliate/source/update/success", "admin/affiliate/source/update/prompt");
 
 		sourceCodeValidator.validate(sourceCode, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				sourceCodeManager.update(sourceCode);
-				return model.getSuccess();
-			} catch (Exception e) {
-				return model.getException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			sourceCodeManager.update(sourceCode);
+			return view;
+		} catch (Exception e) {
+			return view.exception();
 		}
 
 	}

@@ -17,7 +17,7 @@ import com.trc.exception.service.DeviceServiceException;
 import com.trc.service.DeviceService;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.tscp.mvna.web.session.cache.CacheKey;
+import com.trc.user.account.AccountDetailCollection;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.Device;
@@ -311,23 +311,37 @@ public class DeviceManager implements DeviceManagerModel {
 	 * *************************************************************************************************
 	 */
 
-	@SuppressWarnings("unchecked")
 	private List<Device> getDevicesFromCache() {
-		List<AccountDetail> accountDetails = (List<AccountDetail>) cacheManager.get(CacheKey.ACCOUNT_DETAILS);
+		// List<AccountDetail> accountDetails = (List<AccountDetail>) cacheManager.get(CacheKey.ACCOUNT_DETAILS);
+		// if (accountDetails != null) {
+		// logger.debug("found " + accountDetails.size() + " accountDetails in cache");
+		// List<Device> devices = new ArrayList<Device>();
+		// for (AccountDetail ad : accountDetails)
+		// devices.add(ad.getDeviceInfo());
+		// return devices;
+		// }
+
+		// AccountDetailSet accountDetailSet = new AccountDetailSet();
+		// accountDetailSet = (AccountDetailSet) CacheManager.get(accountDetailSet);
+
+		// CachedCollection<AccountDetail> accountDetailSet = new CachedCollection<AccountDetail>(AccountDetail.class);
+		// accountDetailSet = (CachedCollection<AccountDetail>) CacheManager.get(accountDetailSet);
+
+		AccountDetailCollection accountDetails = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
+
 		if (accountDetails != null) {
-			logger.debug("found " + accountDetails.size() + " accountDetails in cache");
 			List<Device> devices = new ArrayList<Device>();
 			for (AccountDetail ad : accountDetails)
 				devices.add(ad.getDeviceInfo());
 			return devices;
 		}
+
 		logger.debug("no accountDetails in cache");
 		return null;
 	}
 
 	private void clearDevicesFromCache() {
-		// CacheManager.clear(CacheKey.DEVICES);
-		cacheManager.clear(CacheKey.ACCOUNT_DETAILS);
+		cacheManager.clear(new AccountDetailCollection());
 	}
 
 	// private void saveDevicesToCache(

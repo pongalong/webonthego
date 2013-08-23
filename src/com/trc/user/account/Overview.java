@@ -1,13 +1,13 @@
 package com.trc.user.account;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.trc.exception.management.AccountManagementException;
 import com.trc.manager.AccountManager;
 import com.trc.user.User;
-import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Device;
 
 /**
@@ -17,31 +17,24 @@ import com.tscp.mvne.Device;
  * 
  */
 public class Overview {
-	private List<AccountDetail> accountDetails;
+	private static final Logger logger = LoggerFactory.getLogger(Overview.class);
+	private AccountDetailCollection accountDetails;
 	private PaymentHistory paymentHistory;
 
 	public Overview(AccountManager accountManager, List<Device> devices, User user) {
 
 		try {
-			this.paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
+			accountDetails = accountManager.getAccountDetails(user);
 		} catch (AccountManagementException e) {
-			// DevLogger.error("Could not fetch paymentHistory for user " + user.toShortString(), e);
+			logger.error("Exception building AccountDetailCollection for Overview", e);
 		}
 
-		this.accountDetails = new ArrayList<AccountDetail>();
-		AccountDetail accountDetail;
-		for (Device device : devices) {
-			try {
-				accountDetail = accountManager.getAccountDetail(user, device);
-				accountDetail.setEncodedAccountNum(CacheManager.getEncryptor().encryptIntUrlSafe(accountDetail.getAccount().getAccountNo()));
-				accountDetail.setEncodedDeviceId(CacheManager.getEncryptor().encryptIntUrlSafe(accountDetail.getDeviceInfo().getId()));
-				this.accountDetails.add(accountDetail);
-			} catch (AccountManagementException e) {
-				// DevLogger.error("Could not fetch accountDetail for account " + device.getAccountNo(), e);
-			} catch (UnsupportedEncodingException e) {
-				// DevLogger.error("Exception encoding IDs while creating Overview", e);
-			}
+		try {
+			paymentHistory = accountManager.getPaymentHistory(user);
+		} catch (AccountManagementException e) {
+			logger.error("Exception building PaymentHistory for Overview", e);
 		}
+
 	}
 
 	public PaymentHistory getPaymentDetails() {
@@ -53,11 +46,8 @@ public class Overview {
 	}
 
 	public AccountDetail getAccountDetail(
-			int accountNum) {
-		for (AccountDetail accountDetail : accountDetails)
-			if (accountDetail.getAccount().getAccountNo() == accountNum)
-				return accountDetail;
-		return null;
+			int accountNo) {
+		return accountDetails == null ? null : accountDetails.find(accountNo);
 	}
 
 }

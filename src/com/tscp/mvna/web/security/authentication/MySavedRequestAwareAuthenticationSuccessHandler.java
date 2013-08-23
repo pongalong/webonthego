@@ -1,7 +1,6 @@
 package com.tscp.mvna.web.security.authentication;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +15,11 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.trc.user.account.AccountDetail;
+import com.trc.user.account.AccountDetailCollection;
 import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.tscp.mvna.config.Config;
-import com.tscp.mvna.web.session.cache.CacheKey;
+import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.util.logger.LogLevel;
 import com.tscp.util.logger.aspect.Loggable;
@@ -33,6 +32,8 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 	private AccountManager accountManager;
 	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
+	private SessionManager sessionManager;
 
 	@Loggable(value = LogLevel.INFO)
 	@Override
@@ -46,7 +47,8 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		if (!user.isInternalUser())
 			userManager.getUserRealName(user);
 
-		cacheManager.beginSession(user);
+		sessionManager.createSession(user);
+		cacheManager.createCache(user);
 
 		if (Config.ADMIN && user.isInternalUser())
 			setAdminDefaultTargetUrl(user);
@@ -79,12 +81,11 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SavedReques
 		String targetUrl = "/";
 		boolean hasDevice = false;
 
-		List<AccountDetail> accountDetails = (List<AccountDetail>) CacheManager.get(CacheKey.ACCOUNT_DETAILS);
-		hasDevice = accountDetails != null && !accountDetails.isEmpty();
+		AccountDetailCollection accountDetailSet = (AccountDetailCollection) cacheManager.fetch(new AccountDetailCollection());
+		hasDevice = accountDetailSet != null && !accountDetailSet.isEmpty();
 		targetUrl = hasDevice ? "/account" : "/start";
 
 		setAlwaysUseDefaultTargetUrl(!hasDevice);
 		setDefaultTargetUrl(targetUrl);
 	}
-
 }

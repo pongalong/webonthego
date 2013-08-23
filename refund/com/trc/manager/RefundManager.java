@@ -11,8 +11,6 @@ import com.trc.exception.service.RefundServiceException;
 import com.trc.service.PaymentService;
 import com.trc.service.RefundService;
 import com.trc.user.User;
-import com.trc.user.account.PaymentHistory;
-import com.tscp.mvna.web.session.cache.CacheKey;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.PaymentTransaction;
 import com.tscp.util.logger.LogLevel;
@@ -26,6 +24,8 @@ public class RefundManager implements RefundManagerModel {
 	PaymentService paymentService;
 	@Autowired
 	private AccountManager accountManager;
+	@Autowired
+	private CacheManager cacheManager;
 
 	@PreAuthorize("isAuthenticated() and hasPermission(#user, 'canRefund')")
 	public void refundPayment(
@@ -37,8 +37,7 @@ public class RefundManager implements RefundManagerModel {
 				refundPayment(pt.getAccountNo(), pt.getTransId(), pt.getPaymentAmount(), String.valueOf(pt.getBillingTrackingId()), user, refundRequest.getCode(), refundRequest.getNotes());
 			}
 
-			PaymentHistory paymentHistory = new PaymentHistory(accountManager.getPaymentRecords(user), user);
-			CacheManager.set(CacheKey.PAYMENT_HISTORY, paymentHistory); // need to refresh "PAYMENT_HISTORY" in cache
+			cacheManager.cache(accountManager.getPaymentHistory(user));
 		} catch (Exception e) {
 			throw new RefundManagementException("Refund failed due to: " + e.getMessage());
 		}

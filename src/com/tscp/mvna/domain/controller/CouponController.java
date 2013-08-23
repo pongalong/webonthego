@@ -1,7 +1,5 @@
 package com.tscp.mvna.domain.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +19,22 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
+import com.trc.user.account.AccountDetailCollection;
 import com.trc.web.validation.CouponRequestValidator;
 import com.tscp.mvna.domain.payment.coupon.Coupon;
 import com.tscp.mvna.domain.payment.coupon.CouponRequest;
 import com.tscp.mvna.domain.payment.coupon.CouponResponse;
 import com.tscp.mvna.domain.payment.coupon.exception.CouponManagementException;
 import com.tscp.mvna.domain.payment.coupon.manager.CouponManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/coupons")
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"ACCOUNT_DETAILS",
+		"AccountDetailCollection",
 		"couponRequest",
 		"coupon" })
 public class CouponController {
@@ -67,16 +67,16 @@ public class CouponController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showRedeemCoupon() {
-		ResultModel model = new ResultModel("account/coupon/redeem/prompt");
-		model.addAttribute("couponRequest", new CouponRequest());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/coupon/redeem/prompt");
+		view.addObject("couponRequest", new CouponRequest());
+		return view;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView postRedeemCoupon(
-			HttpServletRequest request, @ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @ModelAttribute("couponRequest") CouponRequest couponRequest, BindingResult result) {
+			HttpServletRequest request, @ModelAttribute("USER") User user, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @ModelAttribute("couponRequest") CouponRequest couponRequest, BindingResult result) {
 
-		ResultModel model = new ResultModel("account/coupon/redeem/success", "account/coupon/redeem/prompt");
+		ClientFormView view = new ClientFormView("account/coupon/redeem/success", "account/coupon/redeem/prompt");
 
 		try {
 			couponRequest.setCoupon(couponManager.getCouponByCode(couponRequest.getCoupon().getCouponCode()));
@@ -85,26 +85,22 @@ public class CouponController {
 			couponRequest.setUser(user);
 			couponRequestValidator.validate(couponRequest, result);
 		} catch (CouponManagementException | AccountManagementException e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 
 		if (result.hasErrors())
-			return model.getError();
-		else
-			try {
-				couponManager.applyCoupon(couponRequest);
+			return view.validationFailed();
 
-				// update the AccountDetail in session with the updated Account
-				AccountDetail accountDetail = null;
-				for (AccountDetail ad : accountDetails)
-					if (ad.getAccount().getAccountNo() == couponRequest.getAccount().getAccountNo())
-						accountDetail = ad;
+		try {
+			couponManager.applyCoupon(couponRequest);
 
-				model.addAttribute("accountDetail", accountDetail);
-				model.addAttribute("coupon", couponRequest.getCoupon());
-				return model.getSuccess();
-			} catch (CouponManagementException e) {
-				return model.getAccessException();
-			}
+			// update the AccountDetail in session with the updated Account
+			AccountDetail accountDetail = accountDetails.find(couponRequest.getAccount().getAccountNo());
+			view.addObject("accountDetail", accountDetail);
+			view.addObject("coupon", couponRequest.getCoupon());
+			return view;
+		} catch (CouponManagementException e) {
+			return view.dataFetchException();
+		}
 	}
 }

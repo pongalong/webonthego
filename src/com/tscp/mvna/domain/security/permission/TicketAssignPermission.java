@@ -10,7 +10,7 @@ import com.trc.user.authority.ROLE;
  * @author Jonathan
  * 
  */
-public class TicketAssignPermission extends RoleAtLeastPermission {
+public class TicketAssignPermission extends MinimumRolePermission {
 
 	@Override
 	public boolean isAllowed(

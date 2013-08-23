@@ -24,7 +24,8 @@ import com.trc.user.authority.Authority;
 import com.trc.user.authority.ROLE;
 import com.trc.web.validation.InternalUserValidator;
 import com.tscp.mvna.security.encryption.Md5Encoder;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @PreAuthorize("isAuthenticated() and hasPermission('', 'isInternalUser')")
@@ -48,20 +49,21 @@ public class AdminUserController {
 	public ModelAndView createUser(
 			@ModelAttribute("CONTROLLING_USER") User internalUser) {
 
-		ResultModel model = new ResultModel("admin/users/create/prompt");
-		model.addAttribute("availableRoles", ROLE.getRolesBelow(internalUser.getGreatestAuthority().getRole(), true));
-		model.addAttribute("newInternalUser", new User());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/users/create/prompt");
+		view.addObject("availableRoles", ROLE.getRolesBelow(internalUser.getGreatestAuthority().getRole(), true));
+		view.addObject("newInternalUser", new User());
+		return view;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView postCreateUser(
 			HttpServletRequest request, @ModelAttribute("availableRoles") ArrayList<ROLE> availableRoles, @ModelAttribute("newInternalUser") User newInternalUser, BindingResult result) {
 
-		ResultModel model = new ResultModel("admin/users/create/success", "admin/users/create/prompt");
+		ClientFormView view = new ClientFormView("admin/users/create/success", "admin/users/create/prompt");
 
 		String requestedRole = request.getParameter("user_role");
 
+		// TODO set these defaults elsewhere
 		SecurityQuestionAnswer securityQuestionAnswer = new SecurityQuestionAnswer();
 		securityQuestionAnswer.setId(1);
 		securityQuestionAnswer.setAnswer("Telscape");
@@ -75,14 +77,12 @@ public class AdminUserController {
 		newInternalUser.getRoles().add(new Authority(newInternalUser, ROLE.valueOf(requestedRole)));
 		internalUserValidator.validate(newInternalUser, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			newInternalUser.setPassword(Md5Encoder.encode(newInternalUser.getPassword()));
-			userManager.saveUser(newInternalUser);
-			return model.getSuccess();
-		}
+		if (result.hasErrors())
+			return view.validationFailed();
 
+		newInternalUser.setPassword(Md5Encoder.encode(newInternalUser.getPassword()));
+		userManager.saveUser(newInternalUser);
+		return view;
 	}
 
 	/* *********************************************************************************
@@ -93,27 +93,24 @@ public class AdminUserController {
 	public ModelAndView showUsersPrompt(
 			@ModelAttribute("CONTROLLING_USER") User internalUser) {
 
-		ResultModel model = new ResultModel("admin/users/view/prompt");
-		model.addAttribute("availableRoles", ROLE.getRolesBelow(internalUser.getGreatestAuthority().getRole(), true));
-
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/users/view/prompt");
+		view.addObject("availableRoles", ROLE.getRolesBelow(internalUser.getGreatestAuthority().getRole(), true));
+		return view;
 	}
 
 	@RequestMapping(value = "/view", method = RequestMethod.POST)
-	public String showUsersPost(
+	public ModelAndView showUsersPost(
 			HttpServletRequest request) {
-		return "redirect:/admin/user/view/" + request.getParameter("user_role");
+		return new ClientPageView("admin/user/view/" + request.getParameter("user_role")).redirect();
 	}
 
 	@RequestMapping(value = "/view/{role}", method = RequestMethod.GET)
 	public ModelAndView showUsersWithRole(
 			@PathVariable("role") ROLE requestedRole) {
-
-		ResultModel model = new ResultModel("admin/users/view/success");
-		model.addAttribute("requestedRole", requestedRole);
-		model.addAttribute("members", userManager.getAllUsersWithRole(requestedRole));
-
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/users/view/success");
+		view.addObject("requestedRole", requestedRole);
+		view.addObject("members", userManager.getAllUsersWithRole(requestedRole));
+		return view;
 	}
 
 	/* *********************************************************************************
@@ -121,7 +118,7 @@ public class AdminUserController {
 	 */
 
 	@RequestMapping(value = "/toggle/{userId}", method = RequestMethod.GET)
-	public String toggleUser(
+	public ModelAndView toggleUser(
 			ModelMap map, @PathVariable("userId") int userId, @ModelAttribute("requestedRole") ROLE requestedRole) {
 
 		User user = userManager.getUserById(userId);
@@ -134,7 +131,7 @@ public class AdminUserController {
 		// removing the attribute to stop it from appearing in the URL in the redirect
 		map.remove("requestedRole");
 
-		return "redirect:/admin/user/view/" + requestedRole;
+		return new ClientPageView("admin/user/view/" + requestedRole).redirect();
 	}
 
 }

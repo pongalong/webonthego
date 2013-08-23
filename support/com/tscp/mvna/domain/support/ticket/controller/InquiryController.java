@@ -13,7 +13,8 @@ import com.tscp.mvna.domain.support.ticket.InquiryTicket;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support/inquire")
@@ -30,28 +31,27 @@ public class InquiryController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String showInquiryForm(
+	public ModelAndView showInquiryForm(
 			@ModelAttribute("ticket") InquiryTicket ticket) {
-		return "support/inquire/create";
+		return new ClientPageView("support/inquire/create");
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView postInquiryForm(
 			@ModelAttribute("ticket") InquiryTicket ticket, BindingResult result) {
 
-		ResultModel model = new ResultModel("support/inquire/success", "support/inquire/create");
+		ClientFormView view = new ClientFormView("support/inquire/success", "support/inquire/create");
 
 		ticketValidator.validate(ticket, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				ticketManager.openTicket(ticket);
-				return model.getSuccess();
-			} catch (TicketManagementException te) {
-				return model.getAccessException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			ticketManager.openTicket(ticket);
+			return view;
+		} catch (TicketManagementException te) {
+			return view.exception();
 		}
 	}
 

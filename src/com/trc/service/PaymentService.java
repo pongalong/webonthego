@@ -23,11 +23,13 @@ import com.tscp.mvne.TSCPMVNA;
 @Service
 public class PaymentService implements PaymentServiceModel {
 	private TSCPMVNA port;
+	private SessionManager sessionManager;
 
 	@Autowired
 	public void init(
-			WebserviceGateway gateway) {
+			WebserviceGateway gateway, SessionManager sessionManager) {
 		this.port = gateway.getPort();
+		this.sessionManager = sessionManager;
 	}
 
 	public void queueTopup(
@@ -158,7 +160,7 @@ public class PaymentService implements PaymentServiceModel {
 	public PaymentUnitResponse makePayment(
 			User user, Account account, CreditCard creditCard, String amount) throws PaymentFailureException {
 		try {
-			return port.submitPaymentByCreditCard(SessionManager.getSessionId(), account, creditCard, amount);
+			return port.submitPaymentByCreditCard(sessionManager.getSessionId(), account, creditCard, amount);
 		} catch (WebServiceException e) {
 			throw new PaymentFailureException(e);
 		}
@@ -168,7 +170,7 @@ public class PaymentService implements PaymentServiceModel {
 	public PaymentUnitResponse makePayment(
 			User user, Account account, int paymentId, String amount) throws PaymentFailureException {
 		try {
-			return port.submitPaymentByPaymentId(SessionManager.getSessionId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
+			return port.submitPaymentByPaymentId(sessionManager.getSessionId(), WebserviceAdapter.toCustomer(user), paymentId, account, amount);
 		} catch (WebServiceException e) {
 			throw new PaymentFailureException(e);
 		}

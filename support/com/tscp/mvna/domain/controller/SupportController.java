@@ -14,7 +14,7 @@ import com.trc.domain.support.knowledgebase.Article;
 import com.trc.exception.management.SupportManagementException;
 import com.trc.manager.SupportManager;
 import com.trc.manager.UserManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support")
@@ -26,25 +26,24 @@ public class SupportController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView support() {
-		ResultModel model = new ResultModel("support/support");
-		return model.getSuccess();
+		return new ClientPageView("support/support");
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView supportSearchPost(
 			@RequestParam(value = "keyword", required = true) String keyword) {
 
-		ResultModel model = new ResultModel("support/faq/article");
+		ClientPageView view = new ClientPageView("support/faq/article");
 
 		List<Article> articleList = new ArrayList<Article>();
 		if (keyword != null && !keyword.equals("")) {
 			try {
 				articleList = supportManager.searchArticlesByKeyword(keyword);
 			} catch (SupportManagementException te) {
-				return model.getAccessException();
+				return view.dataFetchException();
 			}
-			model.addAttribute("articleList", articleList);
-			return model.getSuccess();
+			view.addObject("articleList", articleList);
+			return view;
 		} else {
 			throw new IllegalArgumentException("No keyword specified.");
 		}
@@ -52,8 +51,7 @@ public class SupportController {
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ModelAndView download() {
-		ResultModel model = new ResultModel("support/download/download");
-		return model.getSuccess();
+		return new ClientPageView("support/download/download");
 	}
 
 }

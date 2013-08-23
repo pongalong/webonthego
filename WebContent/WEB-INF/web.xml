@@ -54,13 +54,14 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-      /WEB-INF/applicationContext/webonthego-context.xml
-      /WEB-INF/applicationContext/webonthego-data.xml
-      /WEB-INF/applicationContext/webonthego-webflow.xml
-      /WEB-INF/applicationContext/webonthego-servlet.xml   
-      /WEB-INF/applicationContext/webonthego-security.xml
-      /WEB-INF/applicationContext/webonthego-security-authentication.xml
-      /WEB-INF/applicationContext/webonthego-security-permission.xml
+     /WEB-INF/applicationContext/context.xml
+     <!-- 
+      /WEB-INF/applicationContext/context.xml
+      /WEB-INF/applicationContext/data.xml
+      /WEB-INF/applicationContext/webflow.xml
+      /WEB-INF/applicationContext/servlet.xml
+      /WEB-INF/applicationContext/security.xml
+       -->
     </param-value>
   </context-param>
 
@@ -101,12 +102,12 @@
 
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
-    <location>/WEB-INF/views/exception/uncaughtException.jsp</location>
+    <location>/WEB-INF/views/default/exception/uncaughtException.jsp</location>
   </error-page>
 
   <error-page>
     <error-code>404</error-code>
-    <location>/WEB-INF/views/exception/404.jsp</location>
+    <location>/WEB-INF/views/default/exception/404.jsp</location>
   </error-page>
 
 </web-app>

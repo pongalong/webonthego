@@ -20,11 +20,11 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
+import com.trc.user.account.PaymentMethodCollection;
 import com.trc.web.validation.UserUpdateValidator;
 import com.tscp.mvna.service.email.VelocityEmailService;
-import com.tscp.mvna.web.controller.model.ResultModel;
-import com.tscp.mvna.web.session.cache.CacheKey;
-import com.tscp.mvna.web.session.cache.CacheManager;
+import com.tscp.mvna.web.controller.model.ClientPageView;
+import com.tscp.mvna.web.session.security.UrlSafeEncryptor;
 import com.tscp.mvne.CreditCard;
 
 @Controller
@@ -47,9 +47,9 @@ public class ProfileController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showProfile(
-			@ModelAttribute("USER") User user) {
+			@ModelAttribute("Encrypter") UrlSafeEncryptor encryptor, @ModelAttribute("USER") User user) {
 
-		ResultModel model = new ResultModel("account/profile/profile");
+		ClientPageView view = new ClientPageView("account/profile/profile");
 
 		List<CreditCard> paymentMethods;
 		List<String> encodedPaymentIds = new ArrayList<String>();
@@ -57,34 +57,34 @@ public class ProfileController {
 			paymentMethods = paymentManager.getCreditCards(user);
 			for (CreditCard creditCard : paymentMethods) {
 				try {
-					encodedPaymentIds.add(CacheManager.getEncryptor().encryptIntUrlSafe(creditCard.getPaymentid()));
+					encodedPaymentIds.add(encryptor.encryptIntUrlSafe(creditCard.getPaymentid()));
 				} catch (UnsupportedEncodingException e) {
 					logger.error("Exception encoding IDs in PaymentController", e);
 				}
 			}
-			model.addAttribute("encodedPaymentIds", encodedPaymentIds);
-			model.addAttribute(CacheKey.PAYMENT_METHODS, paymentMethods);
+			view.addObject("encodedPaymentIds", encodedPaymentIds);
+			view.addObject(PaymentMethodCollection.class.getSimpleName(), paymentMethods);
 		} catch (PaymentManagementException e) {
-			e.printStackTrace();
+			logger.error("Error fetching Payment Methods and Encoded IDs", e);
 		}
 
-		return model.getSuccess();
+		return view;
 	}
 
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','minimumRole')")
 	@RequestMapping(value = "/user/disable", method = RequestMethod.GET)
-	public String disableUser(
+	public ModelAndView disableUser(
 			@ModelAttribute("USER") User user) {
 		userManager.disableUser(user);
-		return "redirect:/profile";
+		return new ClientPageView("profile").redirect();
 	}
 
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_MANAGER','minimumRole')")
 	@RequestMapping(value = "/user/enable", method = RequestMethod.GET)
-	public String enableUser(
+	public ModelAndView enableUser(
 			@ModelAttribute("USER") User user) {
 		userManager.enableUser(user);
-		return "redirect:/profile";
+		return new ClientPageView("profile").redirect();
 	}
 
 }

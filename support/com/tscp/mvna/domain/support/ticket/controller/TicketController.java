@@ -32,7 +32,8 @@ import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
 import com.tscp.mvna.service.email.VelocityEmailService;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support/ticket")
@@ -64,18 +65,17 @@ public class TicketController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView home() {
-		ResultModel model = new ResultModel("support/ticket/home");
-		return model.getSuccess();
+		return new ClientPageView("support/ticket/home");
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView showTicketForm(
 			@ModelAttribute("USER") User user, @ModelAttribute("CONTROLLING_USER") User controllingUser) {
 
-		ResultModel model = new ResultModel("support/ticket/create/create", "support/ticket/exception/error_select_user");
+		ClientFormView view = new ClientFormView("support/ticket/create/create", "support/ticket/exception/error_select_user");
 
 		if (user.getUserId() == 0)
-			return model.getError();
+			return view.validationFailed();
 
 		Ticket ticket = ticketManager.buildMyTicketType(controllingUser);
 
@@ -87,39 +87,39 @@ public class TicketController {
 			((AgentTicket) ticket).setCreatorId(controllingUser.getUserId());
 		}
 
-		model.addAttribute("ticket", ticket);
-		return model.getSuccess();
+		view.addObject("ticket", ticket);
+		return view;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ModelAndView postTicketForm(
 			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
-		ResultModel model = new ResultModel("support/ticket/create/success", "support/ticket/create/create");
+		ClientFormView view = new ClientFormView("support/ticket/create/success", "support/ticket/create/create");
 
 		ticketValidator.validate(ticket, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				int ticketId = ticketManager.openTicket(ticket);
-				ticket.setId(ticketId);
-				return model.getSuccess();
-			} catch (TicketManagementException e) {
-				return model.getException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			int ticketId = ticketManager.openTicket(ticket);
+			ticket.setId(ticketId);
+			return view;
+		} catch (TicketManagementException e) {
+			return view.exception();
 		}
+
 	}
 
 	@RequestMapping(value = "/update/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView showUpdateTicket(
 			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("support/ticket/update");
+		ClientPageView view = new ClientPageView("support/ticket/update");
 
 		List<User> internalUsers = userManager.getAllInternalUsers();
-		model.addAttribute("INTERNAL_USERS", internalUsers);
+		view.addObject("INTERNAL_USERS", internalUsers);
 
 		Ticket ticket;
 
@@ -131,29 +131,29 @@ public class TicketController {
 			if (ticket instanceof CustomerTicket) {
 				CustomerTicket cTicket = (CustomerTicket) ticket;
 				if (cTicket.getCustomerId() != controllingUser.getUserId())
-					model.addAttribute("customer", userManager.getUserById(cTicket.getCustomerId()));
-				model.addAttribute("assignee", userManager.getUserById(cTicket.getAssigneeId()));
-				model.addAttribute("ticket", cTicket);
+					view.addObject("customer", userManager.getUserById(cTicket.getCustomerId()));
+				view.addObject("assignee", userManager.getUserById(cTicket.getAssigneeId()));
+				view.addObject("ticket", cTicket);
 			}
 			// agent ticket
 			if (ticket instanceof AgentTicket) {
 				AgentTicket aTicket = (AgentTicket) ticket;
 				if (aTicket.getCreatorId() == controllingUser.getUserId())
-					model.addAttribute("creator", controllingUser);
+					view.addObject("creator", controllingUser);
 				else
-					model.addAttribute("creator", userManager.getUserById(aTicket.getCreatorId()));
-				model.addAttribute("ticket", aTicket);
+					view.addObject("creator", userManager.getUserById(aTicket.getCreatorId()));
+				view.addObject("ticket", aTicket);
 			}
 			// inquiry ticket
 			if (ticket instanceof InquiryTicket) {
 				InquiryTicket iTicket = (InquiryTicket) ticket;
-				model.addAttribute("ticket", iTicket);
+				view.addObject("ticket", iTicket);
 			}
 
-			model.addAttribute("ticket", ticket);
-			return model.getSuccess();
+			view.addObject("ticket", ticket);
+			return view;
 		} catch (TicketManagementException e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
@@ -161,26 +161,26 @@ public class TicketController {
 	public ModelAndView postUpdateTicket(
 			@ModelAttribute("ticket") Ticket ticket, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticket.getId(), "support/ticket/update");
+		ClientFormView model = new ClientFormView("support/ticket/view/" + ticket.getId(), "support/ticket/update");
 
 		ticketValidator.validate(ticket, result);
 
 		if (result.hasErrors())
-			return model.getError();
-		else
-			try {
-				ticketManager.updateTicket(ticket);
-				return model.getSuccess();
-			} catch (TicketManagementException e) {
-				return model.getException();
-			}
+			return model.validationFailed();
+
+		try {
+			ticketManager.updateTicket(ticket);
+			return model.redirect();
+		} catch (TicketManagementException e) {
+			return model.exception();
+		}
 	}
 
 	@RequestMapping(value = "/reply/{ticketId}", method = RequestMethod.GET)
 	public ModelAndView showReplyTicket(
 			@ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("ticket") Ticket ticket, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("support/ticket/reply/reply");
+		ClientPageView view = new ClientPageView("support/ticket/reply/reply");
 
 		String email = "unknown";
 
@@ -188,8 +188,8 @@ public class TicketController {
 		if (ticket instanceof CustomerTicket) {
 			CustomerTicket cTicket = (CustomerTicket) ticket;
 			User customer = userManager.getUserById(cTicket.getCustomerId());
-			model.addAttribute("customer", customer);
-			model.addAttribute("assignee", userManager.getUserById(cTicket.getAssigneeId()));
+			view.addObject("customer", customer);
+			view.addObject("assignee", userManager.getUserById(cTicket.getAssigneeId()));
 			email = customer.getEmail();
 		} else if (ticket instanceof InquiryTicket) {
 			email = ((InquiryTicket) ticket).getContactEmail();
@@ -199,41 +199,40 @@ public class TicketController {
 		note.setTicket(ticket);
 		note.setCreator(controllingUser);
 
-		model.addAttribute("contactEmail", email);
-		model.addAttribute("ticketNote", note);
+		view.addObject("contactEmail", email);
+		view.addObject("ticketNote", note);
 
-		return model.getSuccess();
+		return view;
 	}
 
 	@RequestMapping(value = "/reply/{ticketId}", method = RequestMethod.POST)
 	public ModelAndView postReplyTicket(
 			@ModelAttribute("contactEmail") String contactEmail, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("ticketNote") TicketNote note, BindingResult result, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticketId, "support/ticket/reply/reply");
+		ClientFormView view = new ClientFormView("support/ticket/view/" + ticketId, "support/ticket/reply/reply");
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			Map<String, Object> mailModel = new HashMap<String, Object>();
+			mailModel.put("ticketNote", note);
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setTo(contactEmail);
+			message.setFrom("no-reply@webonthego.com");
+			message.setSubject("A response to your ticket #" + note.getTicket().getId());
+
 			try {
-
-				Map<Object, Object> mailModel = new HashMap<Object, Object>();
-				mailModel.put("ticketNote", note);
-				SimpleMailMessage message = new SimpleMailMessage();
-				message.setTo(contactEmail);
-				message.setFrom("no-reply@webonthego.com");
-				message.setSubject("A response to your ticket #" + note.getTicket().getId());
-
-				try {
-					velocityEmailService.send("ticketReply", message, mailModel);
-				} catch (EmailException e) {
-					e.printStackTrace();
-				}
-
-				ticketManager.saveNote(note);
-				return model.getSuccess();
-			} catch (TicketManagementException e) {
-				return model.getException();
+				velocityEmailService.send("ticketReply", message, mailModel);
+			} catch (EmailException e) {
+				e.printStackTrace();
 			}
+
+			ticketManager.saveNote(note);
+			return view.redirect();
+		} catch (TicketManagementException e) {
+			return view.exception();
 		}
+
 	}
 }

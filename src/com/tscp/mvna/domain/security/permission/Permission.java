@@ -29,7 +29,8 @@ public abstract class Permission {
 
 	protected Collection<GrantedAuthority> getAuthorities(
 			Authentication authentication) {
-		return ((UserDetails) authentication.getPrincipal()).getAuthorities();
+		return (Collection<GrantedAuthority>) authentication.getAuthorities();
+		// return (Collection<GrantedAuthority>) ((UserDetails) authentication.getPrincipal()).getAuthorities();
 	}
 
 	protected boolean isAuthenticated(

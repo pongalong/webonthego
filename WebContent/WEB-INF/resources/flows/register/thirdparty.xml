@@ -48,7 +48,6 @@
     <transition on-exception="com.trc.exception.management.UserManagementException" to="generalError" />
   </action-state>
 
-
   <!-- END STATES -->
   <end-state id="success" view="register/success_thirdparty" />
 

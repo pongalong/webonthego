@@ -17,7 +17,8 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.PaymentManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 import com.tscp.mvna.web.session.cache.CachedAttributeNotFound;
 import com.tscp.mvne.PaymentUnitResponse;
 
@@ -26,7 +27,7 @@ import com.tscp.mvne.PaymentUnitResponse;
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"ACCOUNT_DETAILS",
+		"AccountDetailCollection",
 		"accountDetail",
 		"topupAmount" })
 public class AdminPaymentController {
@@ -36,24 +37,21 @@ public class AdminPaymentController {
 	private AccountManager accountManager;
 
 	@RequestMapping(value = "/topup/queue", method = RequestMethod.GET)
-	public ModelAndView queueTopup(
-			@ModelAttribute("USER") User user) {
-
-		ResultModel model = new ResultModel("admin/payment/topup/queue/prompt");
-		return model.getSuccess();
+	public ModelAndView queueTopup() {
+		return new ClientPageView("admin/payment/topup/queue/prompt");
 	}
 
 	@RequestMapping(value = "/topup/queue", method = RequestMethod.POST)
 	public ModelAndView queueTopupPost(
 			@ModelAttribute("USER") User user) {
 
-		ResultModel model = new ResultModel("admin/payment/topup/queue/success", "admin/payment/topup/queue/prompt");
+		ClientFormView view = new ClientFormView("admin/payment/topup/queue/success", "admin/payment/topup/queue/prompt");
 
 		try {
 			paymentManager.queueTopup(user);
-			return model.getSuccess();
+			return view;
 		} catch (PaymentManagementException e) {
-			return model.getException();
+			return view.exception();
 		}
 	}
 
@@ -61,16 +59,17 @@ public class AdminPaymentController {
 	public ModelAndView forceTopup(
 			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable("encodedDeviceId") String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("admin/payment/topup/force/prompt");
+		ClientPageView model = new ClientPageView("admin/payment/topup/force/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-			String topupAmount = paymentManager.getTopupAmount(user, accountDetail.getAccount());
-			model.addAttribute("topupAmount", topupAmount);
-			model.addAttribute("accountDetail", accountDetail);
-			return model.getSuccess();
+			AccountDetail accountDetail = find(accountDetails, encodedDeviceId);
+			model.addObject("topupAmount", paymentManager.getTopupAmount(user, accountDetail.getAccount()));
+			model.addObject("accountDetail", accountDetail);
+			return model;
+		} catch (CachedAttributeNotFound e) {
+			return model.dataFetchException();
 		} catch (PaymentManagementException e) {
-			return model.getAccessException();
+			return model.dataFetchException();
 		}
 
 	}
@@ -79,26 +78,26 @@ public class AdminPaymentController {
 	public ModelAndView forceTopupPost(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("topupAmount") String topupAmount) {
 
-		ResultModel model = new ResultModel("admin/payment/topup/force/success", "admin/payment/topup/force/fail");
+		ClientFormView model = new ClientFormView("admin/payment/topup/force/success", "admin/payment/topup/force/fail");
 
 		try {
 			PaymentUnitResponse response = paymentManager.makePayment(user, accountDetail.getAccount());
-			model.addAttribute("paymentResponse", response);
-			return model.getSuccess();
+			model.addObject("paymentResponse", response);
+			return model;
 		} catch (PaymentFailureException e) {
 			PaymentUnitResponse response = new PaymentUnitResponse();
 			response.setAuthcode(e.getAuthCode());
 			response.setConfcode(e.getResponse());
 			response.setConfdescr(e.getMessage());
-			model.addAttribute("paymentResponse", response);
-			return model.getError();
+			model.addObject("paymentResponse", response);
+			return model.validationFailed();
 		} catch (PaymentManagementException e) {
-			model.addAttribute("paymentResponse", new PaymentUnitResponse());
-			return model.getError();
+			model.addObject("paymentResponse", new PaymentUnitResponse());
+			return model.validationFailed();
 		}
 	}
 
-	private AccountDetail getAccountDetailFromSession(
+	private AccountDetail find(
 			List<AccountDetail> accountDetails, String encodedDeviceId) throws CachedAttributeNotFound {
 
 		for (AccountDetail ad : accountDetails)
@@ -107,4 +106,5 @@ public class AdminPaymentController {
 
 		throw new CachedAttributeNotFound("Could not find AccountDetail for Device");
 	}
+
 }

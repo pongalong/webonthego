@@ -20,7 +20,8 @@ import com.tscp.mvna.domain.support.ticket.TicketPriority;
 import com.tscp.mvna.domain.support.ticket.TicketStatus;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support/ticket/search")
@@ -45,27 +46,27 @@ public class TicketSearchController {
 	public ModelAndView ticketSearchShow(
 			@ModelAttribute("USER") User user) {
 
-		ResultModel model = new ResultModel("support/ticket/search");
+		ClientPageView view = new ClientPageView("support/ticket/search");
 
 		SearchTicket searchTicket = new SearchTicket();
 		searchTicket.setCustomerId(user.getUserId());
-		model.addAttribute("searchTicket", searchTicket);
+		view.addObject("searchTicket", searchTicket);
 
-		return model.getSuccess();
+		return view;
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView ticketSearchPost(
 			@ModelAttribute("searchTicket") SearchTicket searchTicket) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/search/results", "support/ticket/search");
+		ClientFormView view = new ClientFormView("support/ticket/search/results", "support/ticket/search");
 
 		try {
-			model.addAttribute("ticketList", new TicketPaginator(ticketManager.searchTickets(searchTicket)));
-			model.addAttribute("ticketSearchContextString", getContextString(searchTicket));
-			return model.getSuccess();
+			view.addObject("ticketList", new TicketPaginator(ticketManager.searchTickets(searchTicket)));
+			view.addObject("ticketSearchContextString", getContextString(searchTicket));
+			return view.redirect();
 		} catch (TicketManagementException e) {
-			return model.getAccessException();
+			return view.exception();
 		}
 	}
 
@@ -78,11 +79,11 @@ public class TicketSearchController {
 	public ModelAndView viewResults(
 			@PathVariable("page") int page, @ModelAttribute("ticketList") TicketPaginator ticketList) {
 
-		ResultModel resultModel = new ResultModel("support/ticket/tickets", "support/ticket/home");
+		ClientFormView view = new ClientFormView("support/ticket/tickets", "support/ticket/home");
 
 		ticketList.setCurrentPageNum(page);
-		resultModel.addAttribute("ticketList", ticketList);
-		return resultModel.getSuccess();
+		view.addObject("ticketList", ticketList);
+		return view;
 	}
 
 	protected static String getContextString(

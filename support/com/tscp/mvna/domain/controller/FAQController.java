@@ -21,7 +21,7 @@ import com.trc.domain.support.knowledgebase.Article;
 import com.trc.domain.support.knowledgebase.Category;
 import com.trc.exception.management.SupportManagementException;
 import com.trc.manager.SupportManager;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/support/faq")
@@ -51,16 +51,16 @@ public class FAQController {
 			@PathVariable int categoryId) {
 		List<Article> articleList = null;
 		Category category = null;
-		ResultModel resultModel = new ResultModel("support/faq/article");
+		ClientPageView view = new ClientPageView("support/faq/article");
 		try {
 			category = supportManager.getCategoryById(categoryId);
 			articleList = supportManager.getArticlesByCategory(categoryId);
 		} catch (SupportManagementException te) {
-			return resultModel.getAccessException();
+			return view.dataFetchException();
 		}
-		resultModel.addAttribute("category", category);
-		resultModel.addAttribute("articleList", articleList);
-		return resultModel.getSuccess();
+		view.addObject("category", category);
+		view.addObject("articleList", articleList);
+		return view;
 	}
 
 	/**
@@ -73,30 +73,29 @@ public class FAQController {
 			@PathVariable int articleId) {
 		List<Article> articleList = new ArrayList<Article>();
 		Article article;
-		ResultModel resultModel = new ResultModel("support/faq/article");
+		ClientPageView view = new ClientPageView("support/faq/article");
 		try {
 			article = supportManager.getArticleById(articleId);
 			articleList.add(article);
 		} catch (SupportManagementException te) {
-			return resultModel.getAccessException();
+			return view.dataFetchException();
 		}
-		resultModel.addAttribute("articleList", articleList);
-		return resultModel.getSuccess();
+		view.addObject("articleList", articleList);
+		return view;
 	}
 
 	/**
 	 * This method is used to insert an article
 	 * 
 	 */
-	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.GET)
 	public ModelAndView insertArticle(
 			@ModelAttribute("categoryList") List<Category> categoryList) {
 
-		ResultModel model = new ResultModel("admin/support/faq/create");
-		model.addAttribute("article", new Article());
-
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/support/faq/create");
+		view.addObject("article", new Article());
+		return view;
 	}
 
 	/**
@@ -104,29 +103,29 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	@PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "/create/article", method = RequestMethod.POST)
 	public ModelAndView processInsertArticle(
 			@ModelAttribute("article") Article article) {
 
-		ResultModel resultModel = new ResultModel("support/faq/faq");
+		ClientPageView view = new ClientPageView("support/faq/faq");
 
 		try {
 			int articleId = supportManager.insertArticle(article);
-			resultModel.setSuccessViewName("redirect:/support/faq/article/" + articleId);
-			return resultModel.getSuccess();
+			view.setViewName("support/faq/article/" + articleId);
+			return view.redirect();
 		} catch (SupportManagementException te) {
-			return resultModel.getAccessException();
+			return view.exception();
 		}
 
 	}
 
-	// @PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	// @PreAuthorize("hasPermission('ROLE_ADMIN','minimumRole')")
 	// @RequestMapping(value = "/create/category", method = RequestMethod.GET)
-	public String insertCategory(
+	public ModelAndView insertCategory(
 			@ModelAttribute("category") Category category) {
 		category = new Category();
-		return "/admin/support/faq/createArticle";
+		return new ClientPageView("/admin/support/faq/createArticle");
 	}
 
 	/**
@@ -134,22 +133,22 @@ public class FAQController {
 	 * 
 	 * @return ModelAndView
 	 */
-	// @PreAuthorize("hasPermission('ROLE_ADMIN','isAtleast')")
+	// @PreAuthorize("hasPermission('ROLE_ADMIN','minimumRole')")
 	// @RequestMapping(value = "/create/category", method = RequestMethod.POST)
 	public ModelAndView processInsertCategory(
 			@ModelAttribute("category") Category category, @RequestParam(value = "categoryName", required = true) String categoryName) {
 
-		ResultModel resultModel = new ResultModel("support/faq/faq");
+		ClientPageView view = new ClientPageView("support/faq/faq");
 
 		category = new Category();
 		category.setTitle(categoryName);
 
 		try {
 			int categoryId = supportManager.createCategory(category);
-			resultModel.setSuccessViewName("redirect:/support/faq/category/" + categoryId);
-			return resultModel.getSuccess();
+			view.setViewName("support/faq/category/" + categoryId);
+			return view.redirect();
 		} catch (SupportManagementException e) {
-			return resultModel.getAccessException();
+			return view.exception();
 		}
 	}
 }

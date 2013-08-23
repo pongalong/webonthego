@@ -40,7 +40,7 @@ public class VelocityEmailService {
 	}
 
 	public void send(
-			String template, final SimpleMailMessage message, final Map<Object, Object> model) throws EmailException {
+			String template, final SimpleMailMessage message, final Map<String, Object> model) throws EmailException {
 
 		final String vmTemplate = getTemplateLocation(template);
 

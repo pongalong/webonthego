@@ -29,7 +29,8 @@ import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.web.validation.JCaptchaValidator;
 import com.trc.web.validation.RefundRequestValidator;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.PaymentTransaction;
 
@@ -39,7 +40,7 @@ import com.tscp.mvne.PaymentTransaction;
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"ACCOUNT_DETAILS",
+		"AccountDetailCollection",
 		"refundRequest" })
 public class RefundController {
 	private static final Logger logger = LoggerFactory.getLogger(RefundController.class);
@@ -60,44 +61,44 @@ public class RefundController {
 		modelMap.addAttribute("refundCodes", Arrays.asList(RefundCode.values()));
 	}
 
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "{transId}", method = RequestMethod.GET)
 	public ModelAndView showRefund(
 			@ModelAttribute("USER") User user, @PathVariable int transId) {
 
-		ResultModel model = new ResultModel("/admin/payment/refund/prompt");
+		ClientPageView view = new ClientPageView("/admin/payment/refund/prompt");
 
 		try {
 			PaymentTransaction paymentTransaction = refundManager.getPaymentTransaction(user.getUserId(), transId);
 			RefundRequest refundRequest = new RefundRequest(paymentTransaction);
-			model.addAttribute("refundRequest", refundRequest);
-			return model.getSuccess();
+			view.addObject("refundRequest", refundRequest);
+			return view;
 		} catch (RefundManagementException e) {
-			return model.getAccessException();
+			return view.exception();
 		}
 	}
 
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "{transId}", method = RequestMethod.POST)
 	public ModelAndView processRefund(
 			HttpServletRequest request, @ModelAttribute("USER") User user, @ModelAttribute("refundRequest") RefundRequest refundRequest, BindingResult result, @PathVariable int transId) {
 
-		ResultModel resultModel = new ResultModel("redirect:/account/payment/history", "/admin/payment/refund/prompt");
+		ClientFormView view = new ClientFormView("account/payment/history", "admin/payment/refund/prompt");
 
 		JCaptchaValidator.validate(request, result);
 		refundRequestValidator.validate(refundRequest, result);
 
-		if (result.hasErrors()) {
-			return resultModel.getError();
-		} else {
-			try {
-				refundManager.refundPayment(user, refundRequest);
-				return resultModel.getSuccess();
-			} catch (RefundManagementException e) {
-				logger.debug("Exception while refunding payment", e);
-				return resultModel.getException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			refundManager.refundPayment(user, refundRequest);
+			return view.redirect();
+		} catch (RefundManagementException e) {
+			logger.debug("Exception while refunding payment", e);
+			return view.exception();
 		}
+
 	}
 
 	private boolean isRefundable(

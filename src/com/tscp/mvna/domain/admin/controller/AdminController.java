@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.trc.manager.UserManager;
 import com.trc.user.User;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 import com.tscp.mvna.web.session.SessionInfo;
 
 @Controller
@@ -36,18 +36,15 @@ public class AdminController {
 			"/",
 			"home" }, method = RequestMethod.GET)
 	public ModelAndView showHome() {
-		ResultModel model = new ResultModel("admin/home");
-		model.addAttribute("activeSessions", getAllActiveSessions());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("admin/home");
+		view.addObject("activeSessions", getAllActiveSessions());
+		return view;
 	}
 
-	protected List<SessionInfo> getAllActiveSessions() {
+	private List<SessionInfo> getAllActiveSessions() {
 		List<SessionInfo> activeSessions = new ArrayList<SessionInfo>();
-
-		for (Object principal : sessionRegistry.getAllPrincipals()) {
+		for (Object principal : sessionRegistry.getAllPrincipals())
 			activeSessions.add(new SessionInfo((User) principal, sessionRegistry.getAllSessions((User) principal, false)));
-		}
-
 		return activeSessions;
 	}
 

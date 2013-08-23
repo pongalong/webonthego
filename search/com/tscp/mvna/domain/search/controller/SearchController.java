@@ -20,8 +20,8 @@ import com.tscp.mvna.domain.affiliate.SourceCode;
 import com.tscp.mvna.domain.affiliate.manager.SourceCodeManager;
 import com.tscp.mvna.domain.search.SearchResponse;
 import com.tscp.mvna.domain.search.SearchResult;
-import com.tscp.mvna.web.controller.model.ResultModel;
-import com.tscp.mvna.web.session.SessionKey;
+import com.tscp.mvna.web.controller.model.ClientPageView;
+import com.tscp.mvna.web.session.SessionManager;
 import com.tscp.mvna.web.session.cache.CacheManager;
 
 @Controller
@@ -35,17 +35,21 @@ public class SearchController {
 	protected SourceCodeManager sourceCodeManager;
 	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
+	private SessionManager sessionManager;
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	protected ModelAndView switchToUser(
 			@ModelAttribute("USER") User user, @RequestParam("admin-search-param-id") String userId) {
 
 		user = userId.equals("0") ? new EmptyUser() : userManager.getUserById(Integer.parseInt(userId));
-		ResultModel model = user.getUserId() < 0 ? new ResultModel("redirect:/") : new ResultModel("redirect:/account");
 
-		model.addAttribute(SessionKey.USER, user);
-		cacheManager.refreshCache(user);
-		return model.getSuccess();
+		cacheManager.setTargetUser(user);
+		cacheManager.refresh();
+
+		ClientPageView view = user.getUserId() < 0 ? new ClientPageView("/") : new ClientPageView("account");
+		view.addObject(CacheManager.TARGET_USER, user);
+		return view.redirect();
 	}
 
 	/**

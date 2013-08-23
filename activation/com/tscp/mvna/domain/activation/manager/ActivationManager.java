@@ -556,7 +556,7 @@ public class ActivationManager {
 			myMessage.setTo("wotg_alerts@telscape.net");
 			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while disconnecting MDN " + sa.getNetworkInfo().getMdn());
-			Map<Object, Object> mailModel = new HashMap<Object, Object>();
+			Map<String, Object> mailModel = new HashMap<String, Object>();
 			mailModel.put("dateTime", new Date());
 			mailModel.put("email", sa.getUser().getEmail());
 			mailModel.put("userId", sa.getUser().getUserId());
@@ -576,7 +576,7 @@ public class ActivationManager {
 			myMessage.setTo("wotg_alerts@telscape.net");
 			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while releasing a reserved MDN on a failed activation " + sa.getNetworkInfo().getMdn());
-			Map<Object, Object> mailModel = new HashMap<Object, Object>();
+			Map<String, Object> mailModel = new HashMap<String, Object>();
 			mailModel.put("dateTime", new Date());
 			mailModel.put("email", sa.getUser().getEmail());
 			mailModel.put("userId", sa.getUser().getUserId());
@@ -596,7 +596,7 @@ public class ActivationManager {
 			myMessage.setTo("wotg_alerts@telscape.net");
 			myMessage.setFrom("system-activations@webonthego.com");
 			myMessage.setSubject("Exception while creating service for Account " + sa.getAccount().getAccountNo());
-			Map<Object, Object> mailModel = new HashMap<Object, Object>();
+			Map<String, Object> mailModel = new HashMap<String, Object>();
 			mailModel.put("dateTime", new Date());
 			mailModel.put("email", sa.getUser().getEmail());
 			mailModel.put("userId", sa.getUser().getUserId());
@@ -611,7 +611,8 @@ public class ActivationManager {
 
 	public void refreshCache(
 			Activation sa) {
-		cacheManager.refreshCache(sa.getUser());
+		cacheManager.setTargetUser(sa.getUser());
+		cacheManager.refresh();
 	}
 
 }

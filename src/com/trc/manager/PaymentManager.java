@@ -1,6 +1,5 @@
 package com.trc.manager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import com.trc.exception.service.PaymentServiceException;
 import com.trc.service.PaymentService;
 import com.trc.user.User;
 import com.trc.user.account.PaymentHistory;
-import com.tscp.mvna.web.session.cache.CacheKey;
+import com.trc.user.account.PaymentMethodCollection;
 import com.tscp.mvna.web.session.cache.CacheManager;
 import com.tscp.mvne.Account;
 import com.tscp.mvne.CreditCard;
@@ -28,7 +27,6 @@ public class PaymentManager implements PaymentManagerModel {
 	private PaymentService paymentService;
 	@Autowired
 	private AccountManager accountManager;
-
 	@Autowired
 	private CacheManager cacheManager;
 
@@ -59,7 +57,9 @@ public class PaymentManager implements PaymentManagerModel {
 			int paymentId = paymentService.getDefaultPaymentMethodId(user);
 			String topupAmount = paymentService.getTopupAmount(user, account);
 			PaymentUnitResponse response = paymentService.makePayment(user, account, paymentId, topupAmount);
-			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			PaymentHistory paymentHistory = accountManager.getPaymentHistory(user);
+			cacheManager.cache(paymentHistory);
+			// CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
 			return response;
 		} catch (PaymentFailureException e) {
 			throw e;
@@ -74,7 +74,7 @@ public class PaymentManager implements PaymentManagerModel {
 			User user, Account account, int paymentId, String amount) throws PaymentFailureException, PaymentManagementException {
 		try {
 			PaymentUnitResponse response = paymentService.makePayment(user, account, paymentId, amount);
-			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			cacheManager.cache(accountManager.getPaymentHistory(user));
 			return response;
 		} catch (AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -87,7 +87,7 @@ public class PaymentManager implements PaymentManagerModel {
 			User user, Account account, CreditCard creditCard, String amount) throws PaymentFailureException, PaymentManagementException {
 		try {
 			PaymentUnitResponse response = paymentService.makePayment(user, account, creditCard, amount);
-			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			cacheManager.cache(accountManager.getPaymentHistory(user));
 			return response;
 		} catch (AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -100,7 +100,7 @@ public class PaymentManager implements PaymentManagerModel {
 			User user, Account account, CreditCard creditCard) throws PaymentFailureException, PaymentManagementException {
 		try {
 			PaymentUnitResponse response = makePayment(user, account, creditCard.getPaymentid(), "10.00");
-			CacheManager.set(CacheKey.PAYMENT_HISTORY, new PaymentHistory(accountManager.getPaymentRecords(user), user));
+			cacheManager.cache(accountManager.getPaymentHistory(user));
 			return response;
 		} catch (AccountManagementException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -129,7 +129,8 @@ public class PaymentManager implements PaymentManagerModel {
 	public CreditCard addCreditCard(
 			User user, CreditCard creditCard) throws PaymentManagementException {
 		try {
-			cacheManager.clear(CacheKey.PAYMENT_METHODS);
+			// cacheManager.clear(CacheKey.PAYMENT_METHODS);
+			cacheManager.clear(new PaymentMethodCollection());
 			return paymentService.addCreditCard(user, creditCard);
 		} catch (PaymentServiceException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -152,7 +153,8 @@ public class PaymentManager implements PaymentManagerModel {
 		try {
 			List<CustPmtMap> paymentMethods = paymentService.getPaymentMap(user);
 			if (paymentMethods.size() > 1) {
-				cacheManager.clear(CacheKey.PAYMENT_METHODS);
+				// cacheManager.clear(CacheKey.PAYMENT_METHODS);
+				cacheManager.clear(new PaymentMethodCollection());
 				return paymentService.removeCreditCard(user, paymentId);
 			} else {
 				return paymentMethods;
@@ -167,7 +169,8 @@ public class PaymentManager implements PaymentManagerModel {
 	public List<CustPmtMap> updateCreditCard(
 			User user, CreditCard creditCard) throws PaymentManagementException {
 		try {
-			cacheManager.clear(CacheKey.PAYMENT_METHODS);
+			// cacheManager.clear(CacheKey.PAYMENT_METHODS);
+			cacheManager.clear(new PaymentMethodCollection());
 			return paymentService.updateCreditCard(user, creditCard);
 		} catch (PaymentServiceException e) {
 			throw new PaymentManagementException(e.getMessage(), e.getCause());
@@ -218,20 +221,22 @@ public class PaymentManager implements PaymentManagerModel {
 	}
 
 	@Loggable(value = LogLevel.TRACE)
-	public List<CreditCard> getCreditCards(
+	public PaymentMethodCollection getCreditCards(
 			User user) throws PaymentManagementException {
-		List<CreditCard> creditCardList = getCreditCardListFromCache();
-		if (creditCardList != null) {
-			return creditCardList;
+		// List<CreditCard> creditCardList = getCreditCardListFromCache();
+		PaymentMethodCollection creditCardCollection = (PaymentMethodCollection) cacheManager.fetch(new PaymentMethodCollection());
+		if (creditCardCollection != null) {
+			return creditCardCollection;
 		} else {
 			try {
-				creditCardList = new ArrayList<CreditCard>();
+				creditCardCollection = new PaymentMethodCollection();
 				List<CustPmtMap> paymentMap = getPaymentMap(user);
 				for (CustPmtMap paymentMethod : paymentMap) {
-					creditCardList.add(getCreditCard(paymentMethod.getPaymentid()));
+					creditCardCollection.add(getCreditCard(paymentMethod.getPaymentid()));
 				}
-				cacheManager.set(CacheKey.PAYMENT_METHODS, creditCardList);
-				return creditCardList;
+				// cacheManager.set(CacheKey.PAYMENT_METHODS, creditCardList);
+				cacheManager.cache(creditCardCollection);
+				return creditCardCollection;
 			} catch (PaymentManagementException e) {
 				throw e;
 			}
@@ -253,21 +258,13 @@ public class PaymentManager implements PaymentManagerModel {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private List<CreditCard> getCreditCardListFromCache() {
-		return (List<CreditCard>) cacheManager.get(CacheKey.PAYMENT_METHODS);
-	}
-
 	private CreditCard getCreditCardFromCache(
 			int paymentId) {
-		List<CreditCard> creditCards = getCreditCardListFromCache();
-		if (creditCards != null) {
-			for (CreditCard cc : creditCards) {
-				if (cc.getPaymentid() == paymentId) {
+		PaymentMethodCollection creditCards = (PaymentMethodCollection) cacheManager.fetch(new PaymentMethodCollection());
+		if (creditCards != null)
+			for (CreditCard cc : creditCards)
+				if (cc.getPaymentid() == paymentId)
 					return cc;
-				}
-			}
-		}
 		return null;
 	}
 

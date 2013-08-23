@@ -25,19 +25,21 @@ import com.trc.manager.AccountManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
+import com.trc.user.account.AccountDetailCollection;
 import com.trc.user.security.UpdateEmail;
 import com.trc.user.security.UpdatePassword;
 import com.trc.web.validation.UserUpdateValidator;
 import com.tscp.mvna.security.encryption.Md5Encoder;
 import com.tscp.mvna.service.email.VelocityEmailService;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/profile/update")
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"ACCOUNT_DETAILS",
+		"AccountDetailCollection",
 		"updateEmail",
 		"updatePassword" })
 public class ProfileUpdateController {
@@ -53,72 +55,71 @@ public class ProfileUpdateController {
 
 	@RequestMapping(value = "/email", method = RequestMethod.GET)
 	public ModelAndView showUpdateEmail() {
-		ResultModel model = new ResultModel("account/profile/update/email");
-		model.addAttribute("updateEmail", new UpdateEmail());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/profile/update/email");
+		view.addObject("updateEmail", new UpdateEmail());
+		return view;
 	}
 
 	@RequestMapping(value = "/email", method = RequestMethod.POST)
 	public ModelAndView postUpdateEmail(
-			HttpSession session, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @ModelAttribute("updateEmail") UpdateEmail updateEmail, BindingResult result) {
+			HttpSession session, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("USER") User user, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @ModelAttribute("updateEmail") UpdateEmail updateEmail, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/profile?notification_sent=" + updateEmail.getNewEmail(), "account/profile/update/email");
+		ClientFormView view = new ClientFormView("profile?notification_sent=" + updateEmail.getNewEmail(), "account/profile/update/email");
 
 		if (controllingUser != null && controllingUser.getUserId() > 0) {
-			model.setSuccessViewName("redirect:/profile");
+			view.setViewName("profile");
 			userUpdateValidator.validateNewEmail(updateEmail, result);
 		} else {
 			userUpdateValidator.validateEmailChange(updateEmail, result, user);
 		}
 
 		if (result.hasErrors())
-			return model.getError();
+			return view.validationFailed();
 
 		if (controllingUser != null && controllingUser.getUserId() > 0)
 			updateEmail(user, updateEmail, accountDetails);
 		else
 			sendUpdateEmailVerificationNotice(user, updateEmail, session.getId());
 
-		return model.getSuccess();
+		return view.redirect();
 	}
 
 	@RequestMapping(value = "/email/verify/{sessionId}", method = RequestMethod.GET)
 	public ModelAndView confirmUpdateEmail(
-			HttpSession session, @ModelAttribute("USER") User user, @ModelAttribute("updateEmail") UpdateEmail updateEmail, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable("sessionId") String sessionId) {
+			HttpSession session, @ModelAttribute("USER") User user, @ModelAttribute("updateEmail") UpdateEmail updateEmail, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable("sessionId") String sessionId) {
 
-		ResultModel model = new ResultModel("redirect:/profile?updated=email");
+		ClientPageView view = new ClientPageView("profile?updated=email");
 
 		if (session.getId().equals(sessionId))
 			updateEmail(user, updateEmail, accountDetails);
 
-		return model.getSuccess();
+		return view.redirect();
 	}
 
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
 	public ModelAndView updatePassword() {
-		ResultModel model = new ResultModel("account/profile/update/password");
-		model.addAttribute("updatePassword", new UpdatePassword());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/profile/update/password");
+		view.addObject("updatePassword", new UpdatePassword());
+		return view;
 	}
 
 	@RequestMapping(value = "/password", method = RequestMethod.POST)
 	public ModelAndView postUpdatePassword(
 			@ModelAttribute("updatePassword") UpdatePassword updatePassword, BindingResult result, @ModelAttribute("CONTROLLING_USER") User controllingUser, @ModelAttribute("USER") User user) {
 
-		ResultModel model = new ResultModel("redirect:/profile?updated=password", "account/profile/update/password");
+		ClientFormView view = new ClientFormView("profile?updated=password", "account/profile/update/password");
 
 		if (controllingUser != null && controllingUser.getUserId() != -1)
 			userUpdateValidator.validateNewPassword(updatePassword, result);
 		else
 			userUpdateValidator.validatePasswordChange(updatePassword, result, user);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			user.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
-			userManager.updateUser(user);
-			return model.getSuccess();
-		}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		user.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
+		userManager.updateUser(user);
+		return view.redirect();
 	}
 
 	private void updateEmail(
@@ -155,7 +156,7 @@ public class ProfileUpdateController {
 			myMessage.setTo(updateEmail.getNewEmail());
 			myMessage.setFrom("no-reply@webonthego.com");
 			myMessage.setSubject("Verify Your New Email Address");
-			Map<Object, Object> mailModel = new HashMap<Object, Object>();
+			Map<String, Object> mailModel = new HashMap<String, Object>();
 			mailModel.put("user", user);
 			mailModel.put("sessionId", sessionId);
 			velocityEmailService.send("profileUpdate", myMessage, mailModel);

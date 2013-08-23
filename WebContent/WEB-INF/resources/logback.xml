@@ -12,9 +12,9 @@
   </appender>
 
   <appender name="AOP_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego.log</File>
+    <File>../logs/domain/wotg/webonthego.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/domain/wotg/webonthego.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -25,9 +25,9 @@
   </appender>
 
   <appender name="DEBUG_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego_debug.log</File>
+    <File>../logs/domain/wotg/debug.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego_debug.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/domain/wotg/debug.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -38,9 +38,9 @@
   </appender>
 
   <appender name="ACTIVATION_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego_activation.log</File>
+    <File>../logs/domain/wotg/activation.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego_activation.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/domain/wotg/activation.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -51,9 +51,9 @@
   </appender>
 
   <appender name="HIBERNATE_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>../logs/webonthego_hibernate.log</File>
+    <File>../logs/domain/wotg/hibernate.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>../logs/webonthego/webonthego_hibernate.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>../logs/domain/wotg/hibernate.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -64,12 +64,12 @@
   </appender>
 
   <!-- set to debug for more info -->
-  <logger name="org.hibernate.SQL" level="off">
+  <logger name="org.hibernate.SQL" level="debug">
     <appender-ref ref="HIBERNATE_ROLLINGFILE" />
   </logger>
 
   <!-- set to trace for more info -->
-  <logger name="org.hibernate.type" level="off">
+  <logger name="org.hibernate.type" level="debug">
     <appender-ref ref="HIBERNATE_ROLLINGFILE" />
   </logger>
 
@@ -81,7 +81,7 @@
     <appender-ref ref="AOP_ROLLINGFILE" />
   </logger>
 
-  <logger name="com.tscp" level="DEBUG">
+  <logger name="com.tscp" level="all">
     <appender-ref ref="DEBUG_ROLLINGFILE" />
   </logger>
 

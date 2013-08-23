@@ -1,10 +1,7 @@
 package com.tscp.mvna.domain.controller;
 
-import java.util.Calendar;
-import java.util.List;
-
-import javax.xml.datatype.XMLGregorianCalendar;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,9 +21,11 @@ import com.trc.manager.DeviceManager;
 import com.trc.manager.UserManager;
 import com.trc.user.User;
 import com.trc.user.account.AccountDetail;
+import com.trc.user.account.AccountDetailCollection;
 import com.trc.web.validation.DeviceValidator;
 import com.tscp.mvna.service.gateway.WebserviceAdapter;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 import com.tscp.mvna.web.session.cache.CachedAttributeNotFound;
 import com.tscp.mvne.Device;
 import com.tscp.mvne.NetworkInfo;
@@ -36,11 +35,12 @@ import com.tscp.mvne.NetworkInfo;
 @SessionAttributes({
 		"USER",
 		"CONTROLLING_USER",
-		"ACCOUNT_DETAILS",
+		"accountDetailCollection",
 		"label",
 		"accountDetail",
 		"newDevice" })
 public class DeviceController {
+	private static final Logger logger = LoggerFactory.getLogger(DeviceController.class);
 	@Autowired
 	private UserManager userManager;
 	@Autowired
@@ -51,24 +51,25 @@ public class DeviceController {
 	private DeviceValidator deviceInfoValidator;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String showDevices() {
-		return "account/device/devices";
+	public ModelAndView showDevices(
+			@ModelAttribute AccountDetailCollection accountDetailCollection) {
+		logger.debug("showDevices has @ModelAttribute {}", accountDetailCollection);
+		return new ClientPageView("account/device/devices");
 	}
 
 	@RequestMapping(value = "/rename/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView renameDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/rename/prompt");
+		ClientPageView view = new ClientPageView("account/device/rename/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-			model.addAttribute("label", accountDetail.getDeviceInfo().getLabel());
-			model.addAttribute("accountDetail", accountDetail);
-			return model.getSuccess();
+			AccountDetail accountDetail = accountDetails.findByDevice(encodedDeviceId);
+			view.addObject("label", accountDetail.getDeviceInfo().getLabel());
+			view.addObject("accountDetail", accountDetail);
+			return view;
 		} catch (CachedAttributeNotFound e) {
-
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
@@ -76,83 +77,77 @@ public class DeviceController {
 	public ModelAndView postRenameDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("label") String oldLabel, @ModelAttribute("accountDetail") AccountDetail accountDetail, BindingResult result) {
 
-		ResultModel model = new ResultModel("account/device/rename/success", "account/device/rename/prompt");
+		ClientFormView view = new ClientFormView("account/device/rename/success", "account/device/rename/prompt");
 
 		result.pushNestedPath("deviceInfo");
 		deviceInfoValidator.checkDeviceLabel(accountDetail.getDeviceInfo().getLabel(), result);
 		result.popNestedPath();
+
 		if (result.hasErrors()) {
 			accountDetail.getDeviceInfo().setLabel(oldLabel);
-			return model.getError();
+			return view.validationFailed();
 		}
 
 		try {
 			deviceManager.updateDeviceInfo(user, accountDetail.getDeviceInfo());
-			model.addAttribute("oldLabel", oldLabel);
-			model.addAttribute("newLabel", accountDetail.getDeviceInfo().getLabel());
-			return model.getSuccess();
+			view.addObject("oldLabel", oldLabel);
+			view.addObject("newLabel", accountDetail.getDeviceInfo().getLabel());
+			return view;
 		} catch (DeviceManagementException e) {
 			result.reject("device.update.label.error", null, "There was an error renaming your device");
-			return model.getError();
+			return view.formError();
 		}
 	}
 
 	@RequestMapping(value = "/topup/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showChangeTopUp(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
-
-		ResultModel model = new ResultModel("account/device/topup/change/prompt");
-
-		model.addAttribute("accountDetail", getAccountDetailFromSession(accountDetails, encodedDeviceId));
-		return model.getSuccess();
-
+			@ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
+		ClientPageView view = new ClientPageView("account/device/topup/change/prompt");
+		view.addObject("accountDetail", accountDetails.findByDevice(encodedDeviceId));
+		return view;
 	}
 
 	@RequestMapping(value = "/topup/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postChangeTopUp(
 			@PathVariable String encodedDeviceId, @ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
-		ResultModel model = new ResultModel("account/device/topup/change/success", "account/device/topup/change/prompt");
+		ClientFormView view = new ClientFormView("account/device/topup/change/success", "account/device/topup/change/prompt");
 
 		try {
 			accountDetail.setTopUp(accountDetail.getTopUp());
 			accountManager.setTopup(user, new Double(accountDetail.getTopUp()), accountDetail.getAccount());
-			return model.getSuccess();
+			return view;
 		} catch (AccountManagementException e) {
-			model.addAttribute("accountDetail", accountDetail);
+			view.addObject("accountDetail", accountDetail);
 			errors.rejectValue("topUp", "account.topUp.change.error");
-			return model.getError();
+			return view.formError();
 		}
 	}
 
 	@Deprecated
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSwapDevice(
-			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/swap/prompt");
+		ClientPageView view = new ClientPageView("account/device/swap/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-
-			Device newDevice = new Device();
-
-			model.addAttribute("accountDetail", accountDetail);
-			model.addAttribute("newDevice", newDevice);
-			return model.getSuccess();
+			view.addObject("accountDetail", accountDetails.findByDevice(encodedDeviceId));
+			view.addObject("newDevice", new Device());
+			return view;
 		} catch (CachedAttributeNotFound e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
 	@Deprecated
-	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','isAtleast')")
+	@PreAuthorize("isAuthenticated() and hasPermission('ROLE_ADMIN','minimumRole')")
 	@RequestMapping(value = "/swap/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSwapDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @ModelAttribute("newDevice") Device newDevice, Errors errors) {
 
-		ResultModel model = new ResultModel("account/device/swap/success", "account/device/swap/prompt");
+		ClientFormView view = new ClientFormView("account/device/swap/success", "account/device/swap/prompt");
 
 		try {
 			// the existing device is in the accountDetail object
@@ -165,163 +160,144 @@ public class DeviceController {
 			newDeviceCopy.setValue(newDevice.getValue());
 
 			deviceManager.swapDevice(user, oldDevice, newDeviceCopy);
-			return model.getSuccess();
+			return view;
 		} catch (DeviceManagementException e) {
 			errors.rejectValue("value", "device.swap.error");
-			model.addAttribute("accountDetail", accountDetail);
-			return model.getError();
+			view.addObject("accountDetail", accountDetail);
+			return view.formError();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','minimumRole')")
 	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showSuspendDevice(
-			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/suspend/prompt");
+		ClientPageView view = new ClientPageView("account/device/suspend/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-			XMLGregorianCalendar accessFeeDate = accountManager.getLastAccessFeeDate(user, accountDetail.getAccount());
-
-			model.addAttribute("accountDetail", accountDetail);
-			model.addAttribute("accessFeeDate", accessFeeDate);
-			return model.getSuccess();
+			AccountDetail accountDetail = accountDetails.findByDevice(encodedDeviceId);
+			view.addObject("accountDetail", accountDetail);
+			view.addObject("accessFeeDate", accountManager.getLastAccessFeeDate(user, accountDetail.getAccount()));
+			return view;
 		} catch (CachedAttributeNotFound e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_MANAGER','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_MANAGER','minimumRole')")
 	@RequestMapping(value = "/suspend/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postSuspendDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/suspend/success");
+		ClientPageView view = new ClientPageView("account/device/suspend/success");
 
 		try {
 			deviceManager.suspendService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDeviceInfo().getId());
-			return model.getSuccess();
+			return view;
 		} catch (DeviceManagementException e) {
-			return model.getException();
+			return view.exception();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showRestoreDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/restore/prompt");
+		ClientPageView view = new ClientPageView("account/device/restore/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-			model.addAttribute("accountDetail", accountDetail);
-			return model.getSuccess();
+			view.addObject("accountDetail", accountDetails.findByDevice(encodedDeviceId));
+			return view;
 		} catch (CachedAttributeNotFound e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/restore/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postRestoreDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("redirect:/devices", "account/device/restore/prompt");
+		ClientFormView view = new ClientFormView("devices", "account/device/restore/prompt");
 
 		try {
 			deviceManager.restoreService(user.getUserId(), accountDetail.getAccount().getAccountNo(), accountDetail.getDeviceInfo().getId());
-			return model.getSuccess();
+			return view.redirect();
 		} catch (DeviceManagementException e) {
-			return model.getException();
+			return view.exception();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showDisconnectDevice(
-			@ModelAttribute("USER") User user, @ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("USER") User user, @ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/disconnect/prompt");
+		ClientPageView view = new ClientPageView("account/device/disconnect/prompt");
 
 		try {
-			AccountDetail accountDetail = getAccountDetailFromSession(accountDetails, encodedDeviceId);
-			XMLGregorianCalendar accessFeeDate = accountManager.getLastAccessFeeDate(user, accountDetail.getAccount());
-			model.addAttribute("accountDetail", accountDetail);
-			model.addAttribute("accessFeeDate", accessFeeDate);
-			return model.getSuccess();
+			AccountDetail accountDetail = accountDetails.findByDevice(encodedDeviceId);
+			view.addObject("accountDetail", accountDetail);
+			view.addObject("accessFeeDate", accountManager.getLastAccessFeeDate(user, accountDetail.getAccount()));
+			return view;
 		} catch (CachedAttributeNotFound e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/disconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postDisconnectDevice(
 			@ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
-		ResultModel model = new ResultModel("account/device/disconnect/success", "account/device/disconnect/prompt");
+		ClientFormView view = new ClientFormView("account/device/disconnect/success", "account/device/disconnect/prompt");
 
 		try {
 			NetworkInfo networkInfo = deviceManager.getNetworkInfo(accountDetail.getDeviceInfo().getValue(), null);
 			if (!deviceManager.compareEsn(accountDetail.getDeviceInfo(), networkInfo)) {
 				errors.rejectValue("value", "device.deactivate.error");
-				return model.getError();
+				return view.formError();
 			} else {
 				deviceManager.disconnectService(WebserviceAdapter.toServiceInstance(networkInfo));
-				return model.getSuccess();
+				return view;
 			}
 		} catch (DeviceManagementException e) {
 			errors.rejectValue("value", "device.deactivate.error");
-			return model.getError();
+			return view.formError();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.GET)
 	public ModelAndView showReinstallDevice(
-			@ModelAttribute("ACCOUNT_DETAILS") List<AccountDetail> accountDetails, @PathVariable String encodedDeviceId) {
+			@ModelAttribute("AccountDetailCollection") AccountDetailCollection accountDetails, @PathVariable String encodedDeviceId) {
 
-		ResultModel model = new ResultModel("account/device/reconnect/prompt");
+		ClientPageView view = new ClientPageView("account/device/reconnect/prompt");
 
 		try {
-			model.addAttribute("accountDetail", getAccountDetailFromSession(accountDetails, encodedDeviceId));
-			return model.getSuccess();
+			view.addObject("accountDetail", accountDetails.findByDevice(encodedDeviceId));
+			return view;
 		} catch (CachedAttributeNotFound e) {
-			return model.getAccessException();
+			return view.dataFetchException();
 		}
 	}
 
-	@PreAuthorize("hasPermission('ROLE_AGENT','isAtleast')")
+	@PreAuthorize("hasPermission('ROLE_AGENT','minimumRole')")
 	@RequestMapping(value = "/reconnect/{encodedDeviceId}", method = RequestMethod.POST)
 	public ModelAndView postReinstallDevice(
 			@ModelAttribute("USER") User user, @ModelAttribute("accountDetail") AccountDetail accountDetail, Errors errors) {
 
-		ResultModel model = new ResultModel("redirect:/devices", "account/device/reconnect/prompt");
+		ClientFormView view = new ClientFormView("devices", "account/device/reconnect/prompt");
 
 		try {
 			deviceManager.reinstallCustomerDevice(user, accountDetail.getDeviceInfo());
-			return model.getSuccess();
+			return view.redirect();
 		} catch (DeviceManagementException e) {
 			errors.rejectValue("value", "device.reinstall.error");
-			return model.getError();
+			return view.formError();
 		}
-	}
-
-	/* ****************************************************************************************************************
-	 * Helper Methods
-	 * ****************************************************************************************************************
-	 */
-
-	private AccountDetail getAccountDetailFromSession(
-			List<AccountDetail> accountDetails, String encodedDeviceId) throws CachedAttributeNotFound {
-
-		for (AccountDetail ad : accountDetails)
-			if (ad.getEncodedDeviceId().equals(encodedDeviceId))
-				return ad;
-
-		throw new CachedAttributeNotFound("Could not find AccountDetail for Device");
 	}
 
 }

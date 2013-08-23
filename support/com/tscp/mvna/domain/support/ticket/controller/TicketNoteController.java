@@ -16,7 +16,8 @@ import com.tscp.mvna.domain.support.ticket.TicketNote;
 import com.tscp.mvna.domain.support.ticket.exception.TicketManagementException;
 import com.tscp.mvna.domain.support.ticket.manager.TicketManager;
 import com.tscp.mvna.domain.support.ticket.validation.TicketValidator;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 //TODO CREATE ticketNoteValidator
 @Controller
@@ -38,18 +39,18 @@ public class TicketNoteController {
 	public ModelAndView showAddNote(
 			@ModelAttribute("CONTROLLING_USER") User controllingUser, @PathVariable int ticketId) {
 
-		ResultModel model = new ResultModel("support/ticket/note/add");
+		ClientPageView view = new ClientPageView("support/ticket/note/add");
 
 		try {
 			TicketNote note = new TicketNote();
 			note.setCreator(controllingUser);
 			note.setTicket(ticketManager.getTicketById(ticketId));
 
-			model.addAttribute("ticketNote", note);
+			view.addObject("ticketNote", note);
 
-			return model.getSuccess();
+			return view;
 		} catch (TicketManagementException e) {
-			return model.getAccessException();
+			return view.exception();
 		}
 	}
 
@@ -57,33 +58,33 @@ public class TicketNoteController {
 	public ModelAndView postAddNote(
 			@PathVariable int ticketId, @ModelAttribute("ticketNote") TicketNote note, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + ticketId, "support/ticket/note/add");
+		ClientFormView view = new ClientFormView("support/ticket/view/" + ticketId, "support/ticket/note/add");
 
 		// TODO ADD VALIDATION
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				ticketManager.saveNote(note);
-				return model.getSuccess();
-			} catch (TicketManagementException e) {
-				return model.getException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			ticketManager.saveNote(note);
+			return view.redirect();
+		} catch (TicketManagementException e) {
+			return view.exception();
 		}
+
 	}
 
 	@RequestMapping(value = "/update/{noteId}", method = RequestMethod.GET)
 	public ModelAndView showUpdateNote(
 			@PathVariable int noteId) {
 
-		ResultModel model = new ResultModel("support/ticket/note/update");
+		ClientPageView view = new ClientPageView("support/ticket/note/update");
 
 		try {
-			model.addAttribute("ticketNote", ticketManager.getNoteById(noteId));
-			return model.getSuccess();
+			view.addObject("ticketNote", ticketManager.getNoteById(noteId));
+			return view;
 		} catch (TicketManagementException e) {
-			return model.getAccessException();
+			return view.exception();
 		}
 	}
 
@@ -91,20 +92,20 @@ public class TicketNoteController {
 	public ModelAndView postUpdateNote(
 			@ModelAttribute("ticketNote") TicketNote note, BindingResult result) {
 
-		ResultModel model = new ResultModel("redirect:/support/ticket/view/" + note.getTicket().getId(), "support/ticket/note/edit");
+		ClientFormView view = new ClientFormView("support/ticket/view/" + note.getTicket().getId(), "support/ticket/note/edit");
 
 		// TODO ADD VALIDATION
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			try {
-				ticketManager.updateNote(note);
-				return model.getSuccess();
-			} catch (TicketManagementException e) {
-				return model.getAccessException();
-			}
+		if (result.hasErrors())
+			return view.validationFailed();
+
+		try {
+			ticketManager.updateNote(note);
+			return view.redirect();
+		} catch (TicketManagementException e) {
+			return view.exception();
 		}
+
 	}
 
 }

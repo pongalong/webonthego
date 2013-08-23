@@ -29,7 +29,8 @@ import com.trc.web.validation.EmailValidator;
 import com.trc.web.validation.UserUpdateValidator;
 import com.tscp.mvna.security.encryption.Md5Encoder;
 import com.tscp.mvna.service.email.VelocityEmailService;
-import com.tscp.mvna.web.controller.model.ResultModel;
+import com.tscp.mvna.web.controller.model.ClientFormView;
+import com.tscp.mvna.web.controller.model.ClientPageView;
 
 @Controller
 @RequestMapping("/reset")
@@ -51,30 +52,30 @@ public class ResetController {
 
 	@RequestMapping(value = "/password", method = RequestMethod.GET)
 	public ModelAndView showRequest() {
-		ResultModel model = new ResultModel("account/reset/password/request/prompt");
-		model.addAttribute("verifyIdentity", new VerifyIdentity());
-		return model.getSuccess();
+		ClientPageView view = new ClientPageView("account/reset/password/request/prompt");
+		view.addObject("verifyIdentity", new VerifyIdentity());
+		return view;
 	}
 
 	@RequestMapping(value = "/password", method = RequestMethod.POST)
 	public ModelAndView postRequest(
 			HttpSession session, @ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity, Errors errors) {
 
-		ResultModel model = new ResultModel("account/reset/password/request/success", "account/reset/password/request/prompt");
+		ClientFormView view = new ClientFormView("account/reset/password/request/success", "account/reset/password/request/prompt");
 
 		if (!EmailValidator.checkEmail(verifyIdentity.getEmail())) {
 			errors.rejectValue("email", "email.invalid", "Not a valid email address.");
-			return model.getError();
+			return view.validationFailed();
 		}
 
 		User userToReset = userManager.getUserByEmail(verifyIdentity.getEmail());
 
 		if (userToReset == null) {
-			return model.getSuccess();
+			return view;
 		} else {
 			sendVerificationEmail(session.getId(), userToReset);
-			model.addAttribute("userToReset", userToReset);
-			return model.getSuccess();
+			view.addObject("userToReset", userToReset);
+			return view;
 		}
 	}
 
@@ -82,13 +83,13 @@ public class ResetController {
 	public ModelAndView showVerification(
 			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset) {
 
-		ResultModel model = new ResultModel("account/reset/password/verify/security");
+		ClientPageView view = new ClientPageView("account/reset/password/verify/security");
 
 		if (isValidKey(session, key)) {
-			model.addAttribute("securityQuestion", securityQuestionManager.getSecurityQuestion(userToReset.getSecurityQuestionAnswer().getId()));
-			return model.getSuccess();
+			view.addObject("securityQuestion", securityQuestionManager.getSecurityQuestion(userToReset.getSecurityQuestionAnswer().getId()));
+			return view;
 		} else {
-			return model.getTimeout();
+			return view.timeout();
 		}
 	}
 
@@ -96,16 +97,16 @@ public class ResetController {
 	public ModelAndView postVerification(
 			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset, @ModelAttribute("verifyIdentity") VerifyIdentity verifyIdentity, Errors errors) {
 
-		ResultModel model = new ResultModel("redirect:/reset/password/update/" + key, "account/reset/password/verify/security");
+		ClientFormView view = new ClientFormView("reset/password/update/" + key, "account/reset/password/verify/security");
 
 		if (!isValidKey(session, key))
-			return model.getTimeout();
+			return view.timeout();
 		else if (!isCorrectAnswer(userToReset, verifyIdentity)) {
 			errors.reject("securtyQuestion.answer.incorrect", "Your response did not match your saved answer");
-			return model.getError();
+			return view.formError();
 		} else {
-			model.addAttribute("updatePassword", new UpdatePassword());
-			return model.getSuccess();
+			view.addObject("updatePassword", new UpdatePassword());
+			return view.redirect();
 		}
 	}
 
@@ -113,33 +114,31 @@ public class ResetController {
 	public ModelAndView updatePassword(
 			HttpSession session, @ModelAttribute("updatePassword") UpdatePassword updatePassword, @PathVariable("key") String key) {
 
-		ResultModel model = new ResultModel("account/reset/password/update/prompt");
+		ClientPageView view = new ClientPageView("account/reset/password/update/prompt");
 
 		if (isValidKey(session, key))
-			return model.getSuccess();
+			return view;
 		else
-			return model.getTimeout();
+			return view.timeout();
 	}
 
 	@RequestMapping(value = "/password/update/{key}", method = RequestMethod.POST)
 	public ModelAndView postUpdatePassword(
 			HttpSession session, @PathVariable("key") String key, @ModelAttribute("userToReset") User userToReset, @ModelAttribute("updatePassword") UpdatePassword updatePassword, BindingResult result) {
 
-		ResultModel model = new ResultModel("account/reset/password/update/success", "account/reset/password/update/prompt");
+		ClientFormView view = new ClientFormView("account/reset/password/update/success", "account/reset/password/update/prompt");
 
 		if (!isValidKey(session, key))
-			return model.getTimeout();
+			return view.timeout();
 
 		userUpdateValidator.validateNewPassword(updatePassword, result);
 
-		if (result.hasErrors()) {
-			return model.getError();
-		} else {
-			userToReset.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
-			userManager.updateUser(userToReset);
-			return model.getSuccess();
-		}
+		if (result.hasErrors())
+			return view.validationFailed();
 
+		userToReset.setPassword(Md5Encoder.encode(updatePassword.getNewPassword()));
+		userManager.updateUser(userToReset);
+		return view;
 	}
 
 	/* **********************************************************************************
@@ -158,7 +157,7 @@ public class ResetController {
 
 	private void sendVerificationEmail(
 			String key, User user) {
-		Map<Object, Object> mailModel = new HashMap<Object, Object>();
+		Map<String, Object> mailModel = new HashMap<String, Object>();
 		mailModel.put("key", key);
 		mailModel.put("user", user);
 		SimpleMailMessage message = new SimpleMailMessage();
